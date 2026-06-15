@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bamboo & Biochar Industry — Bombay Bioenergy Deep Dive</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--ink:#111;--paper:#f7f4ee;--g:#3d7a35;--gl:#6aaa5e;--gp:#d8ead4;--am:#b86800;--ap:#fdf0d5;--rd:#aa2222;--rp:#fce8e8;--tl:#1a6060;--tp:#d4eaea;--pu:#5a2a7a;--pp:#ead4f0;--mid:#555;--lt:#e6e0d4;--dk:#1a1a1a;--bd:#c0b8a8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;font-size:14px;line-height:1.55}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;background:var(--dk);z-index:200;border-bottom:2px solid var(--g);display:flex;align-items:stretch;overflow-x:auto}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;color:var(--gl);padding:13px 24px 13px 48px;white-space:nowrap;flex-shrink:0;border-right:1px solid #2a2a2a}
+.nav-tabs{display:flex;align-items:stretch}
+.tab-btn{font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:#888;padding:14px 16px;cursor:pointer;white-space:nowrap;border:none;background:none;border-bottom:3px solid transparent;transition:all .2s}
+.tab-btn:hover{color:#ddd;background:rgba(255,255,255,0.04)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--gl);background:rgba(106,170,94,0.08)}
+
+/* ── SECTIONS ── */
+.tab-content{display:none}
+.tab-content.active{display:block}
+section{padding:56px 64px;border-bottom:1px solid var(--bd)}
+section:last-child{border:none}
+section.alt{background:var(--lt)}
+.s-label{font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--g);margin-bottom:8px}
+.s-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:0.5px;margin-bottom:32px}
+p{font-size:14px;line-height:1.65;color:#333;max-width:900px;margin-bottom:14px}
+strong{font-weight:700}
+
+/* ── HERO PANEL ── */
+.hero-panel{background:var(--dk);color:#f0ece4;padding:56px 64px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:2px}
+.hp-stat{padding:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}
+.hp-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:36px;color:var(--gl);line-height:1;margin-bottom:4px}
+.hp-lbl{font-family:'Fira Mono',monospace;font-size:9.5px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.hp-sub{font-size:11px;color:#555;margin-top:4px}
+
+/* ── CARDS ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-family:'Fira Mono',monospace;font-size:9.5px;font-weight:500}
+.b-g{background:var(--gp);color:var(--g)}.b-a{background:var(--ap);color:var(--am)}.b-r{background:var(--rp);color:var(--rd)}.b-t{background:var(--tp);color:var(--tl)}.b-p{background:var(--pp);color:var(--pu)}.b-dk{background:#e4e0d8;color:var(--mid)}
+
+.insight{border-left:4px solid var(--g);background:var(--gp);padding:14px 18px;margin:18px 0;font-size:13.5px;line-height:1.6}
+.insight.warn{border-color:var(--am);background:var(--ap)}
+.insight.danger{border-color:var(--rd);background:var(--rp)}
+.insight.purple{border-color:var(--pu);background:var(--pp)}
+.i-lbl{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:4px;display:block}
+.insight.warn .i-lbl{color:var(--am)}.insight.danger .i-lbl{color:var(--rd)}.insight.purple .i-lbl{color:var(--pu)}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.cc{background:var(--paper);border:1px solid var(--bd);padding:20px}
+.cc h3{font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:14px}
+.cc canvas{max-height:240px}
+
+/* ── SPECIES TABLE ── */
+.sp-wrap{overflow-x:auto;margin-bottom:24px}
+.sp-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:1100px}
+.sp-tbl th{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;text-align:left;padding:10px 12px;background:var(--dk);color:#888;border:1px solid #2a2a2a;white-space:nowrap}
+.sp-tbl td{padding:10px 12px;border:1px solid var(--bd);background:var(--paper);vertical-align:top;font-size:12px}
+.sp-tbl tr:hover td{background:#fffff2}
+.sp-tbl td:first-child{font-weight:700;color:var(--g)}
+.sp-tbl td:nth-child(2){font-family:'Fira Mono',monospace;font-size:10px;color:var(--mid)}
+.score-cell{text-align:center;font-weight:700;font-family:'Fira Mono',monospace}
+.score-5{color:var(--g)}.score-4{color:#5e9950}.score-3{color:var(--am)}.score-2{color:var(--rd)}
+
+/* ── PRICING TABLE ── */
+.price-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
+.price-tbl th{font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;text-align:left;padding:11px 14px;background:var(--dk);color:#888;border:1px solid #2a2a2a}
+.price-tbl td{padding:11px 14px;border:1px solid var(--bd);background:var(--paper);vertical-align:middle}
+.price-tbl tr:hover td{background:#fffff2}
+.price-tbl td:first-child{font-weight:600}
+.pass{color:var(--g);font-weight:700}.fail{color:var(--rd);font-weight:700}.warn-c{color:var(--am);font-weight:700}
+
+/* ── PLAYER CARDS ── */
+.player-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.pc{border:1px solid var(--bd);padding:18px;background:var(--paper);border-top:3px solid var(--bd)}
+.pc.g-top{border-top-color:var(--g)}.pc.a-top{border-top-color:var(--am)}.pc.t-top{border-top-color:var(--tl)}.pc.p-top{border-top-color:var(--pu)}
+.pc-name{font-weight:700;font-size:14px;margin-bottom:3px}
+.pc-role{font-family:'Fira Mono',monospace;font-size:9.5px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.pc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd);font-size:12px}
+.pc-row:last-child{border:none}
+.pk{color:var(--mid)}.pv{font-weight:600}
+
+/* ── HYPOTHESIS ── */
+.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.hyp{border:1px solid var(--bd);padding:20px;background:var(--paper);position:relative;overflow:hidden}
+.hyp::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.hyp.h-g::before{background:var(--g)}.hyp.h-a::before{background:var(--am)}.hyp.h-t::before{background:var(--tl)}.hyp.h-p::before{background:var(--pu)}
+.hyp-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:42px;color:var(--bd);position:absolute;top:12px;right:16px;line-height:1}
+.hyp-t{font-weight:700;font-size:14.5px;margin-bottom:6px;padding-right:40px}
+.hyp-body{font-size:12.5px;line-height:1.6;color:#444;margin-bottom:12px}
+.hyp-action{font-family:'Fira Mono',monospace;font-size:10px;color:var(--g);border-top:1px solid var(--bd);padding-top:10px;margin-top:10px;line-height:1.5}
+.hyp.h-a .hyp-action{color:var(--am)}.hyp.h-t .hyp-action{color:var(--tl)}.hyp.h-p .hyp-action{color:var(--pu)}
+
+/* ── AGE MATRIX ── */
+.age-matrix{display:grid;grid-template-columns:120px repeat(6,1fr);gap:1px;background:var(--bd);margin-bottom:24px;font-size:12px}
+.am-head{background:var(--dk);color:#888;font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:10px 8px;text-align:center}
+.am-lbl{background:var(--lt);font-weight:600;font-size:12px;padding:10px 12px;display:flex;align-items:center}
+.am-cell{background:var(--paper);padding:9px 8px;text-align:center;font-size:11.5px}
+.am-cell.best{background:var(--gp);color:var(--g);font-weight:700}
+.am-cell.ok{background:var(--tp);color:var(--tl)}
+.am-cell.warn{background:var(--ap);color:var(--am)}
+.am-cell.bad{background:var(--rp);color:var(--rd);font-weight:700}
+
+/* ── BIOCHAR ECONOMICS ── */
+.econ-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--bd);margin-bottom:24px}
+.econ-col{background:var(--paper);padding:22px 20px}
+.econ-h{font-weight:700;font-size:14px;margin-bottom:3px}
+.econ-sub{font-family:'Fira Mono',monospace;font-size:9.5px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.econ-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eee;font-size:12.5px}
+.econ-row:last-child{border:none}
+.ek{color:var(--mid)}.ev{font-weight:700;font-family:'Fira Mono',monospace;font-size:12px}
+.ev.g{color:var(--g)}.ev.a{color:var(--am)}.ev.r{color:var(--rd)}
+
+/* ── FOOTER ── */
+footer{background:var(--dk);padding:28px 64px;display:flex;justify-content:space-between;align-items:center}
+footer p{font-family:'Fira Mono',monospace;font-size:10px;color:#444;letter-spacing:0.8px}
+
+@media(max-width:900px){
+  section{padding:40px 20px}
+  .hero-panel{grid-template-columns:1fr 1fr}
+  .g2,.g3,.g4,.player-grid,.hyp-grid,.econ-grid{grid-template-columns:1fr}
+  .nav-brand{padding:13px 16px}
+  footer{flex-direction:column;gap:8px;padding:20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Bombay Bioenergy</div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+    <button class="tab-btn" onclick="showTab('species')">Species & Grading</button>
+    <button class="tab-btn" onclick="showTab('uses')">Commercial Uses</button>
+    <button class="tab-btn" onclick="showTab('players')">Players & Trade</button>
+    <button class="tab-btn" onclick="showTab('biochar')">Biochar</button>
+    <button class="tab-btn" onclick="showTab('byproducts')">Byproducts</button>
+    <button class="tab-btn" onclick="showTab('economics')">Economics</button>
+    <button class="tab-btn" onclick="showTab('acstudy')">Activated Carbon Study</button>
+    <button class="tab-btn" onclick="showTab('hypothesis')">Validation Sprint</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: OVERVIEW -->
+<div id="tab-overview" class="tab-content active">
+<div class="hero-panel">
+  <div class="hp-stat"><div class="hp-lbl">India bamboo resource</div><div class="hp-val">13.96M ha</div><div class="hp-sub">Second largest in world after China; 136 species</div></div>
+  <div class="hp-stat"><div class="hp-lbl">Annual bamboo supply</div><div class="hp-val">~14.6 MT</div><div class="hp-sub">Domestic demand: ~26 MT. Deficit: 7–8 MT/yr</div></div>
+  <div class="hp-stat"><div class="hp-lbl">India bamboo market 2024</div><div class="hp-val">₹5,836 Cr</div><div class="hp-sub">Growing at 4.6–7.5% CAGR through 2030</div></div>
+  <div class="hp-stat"><div class="hp-lbl">India biochar market 2024</div><div class="hp-val">₹598 Cr</div><div class="hp-sub">(USD 71.9M) Growing at 11% CAGR to 2033</div></div>
+  <div class="hp-stat"><div class="hp-lbl">Bamboo species in India</div><div class="hp-val">136</div><div class="hp-sub">NBM identified 16 for commercial cultivation</div></div>
+  <div class="hp-stat"><div class="hp-lbl">NE India share</div><div class="hp-val">67%</div><div class="hp-sub">Assam, Manipur, Tripura, Meghalaya dominant</div></div>
+  <div class="hp-stat"><div class="hp-lbl">Biochar BCR market 2024</div><div class="hp-val">$181.5M</div><div class="hp-sub">Global; 131.6% CAGR 2022–2024; tripling yearly</div></div>
+  <div class="hp-stat"><div class="hp-lbl">Varaha (India) BCR deal</div><div class="hp-val">200K MT</div><div class="hp-sub">Google (100K) + Microsoft (100K+) by 2030</div></div>
+</div>
+
+<section>
+  <div class="s-label">The Opportunity — India Context</div>
+  <h2 class="s-h">BAMBOO & BIOCHAR:<br>INDIA'S UNDERUTILISED ASSET</h2>
+  <p>India holds the world's second-largest bamboo resource base — 13.96 million hectares — yet extracts a fraction of its economic value. Annual supply of ~14.6 MT against domestic demand of 26 MT creates a structural deficit that the National Bamboo Mission and state governments are trying to address through plantation expansion. The 2017 Forest Act amendment (de-classifying bamboo grown outside forests as a "tree") was the catalytic policy shift that opened private bamboo cultivation at scale.</p>
+  <p>The biochar opportunity is even more nascent but moving fast. Two of the world's largest carbon removal deals ever signed — Google and Microsoft's contracts with Indian startup Varaha — are India-based. Tata Steel became the first Indian steel manufacturer to use biochar in production (replacing 30,000 tonnes of fossil fuel) in November 2024. The global biochar carbon removal market grew 131.6% CAGR between 2022–2024. India, with its agricultural residue base and bamboo stock, is uniquely positioned.</p>
+
+  <div class="g4" style="margin-top:24px">
+    <div style="border:1px solid var(--bd);padding:16px;background:var(--paper);border-top:4px solid var(--g)"><div style="font-family:'Fira Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--g);margin-bottom:6px">Policy Tailwind</div><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">National Bamboo Mission</div><div style="font-size:12px;color:var(--mid)">₹1,290 Cr budget; 14 priority states; nursery, plantation, industry linkage support; RKVY integration</div></div>
+    <div style="border:1px solid var(--bd);padding:16px;background:var(--paper);border-top:4px solid var(--tl)"><div style="font-family:'Fira Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--tl);margin-bottom:6px">Carbon Market</div><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">India CCTS Active</div><div style="font-size:12px;color:var(--mid)">Compliance carbon trading scheme notified June 2023; biochar eligible; Puro.Earth + Gold Standard active in India</div></div>
+    <div style="border:1px solid var(--bd);padding:16px;background:var(--paper);border-top:4px solid var(--am)"><div style="font-family:'Fira Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--am);margin-bottom:6px">Demand Gap</div><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">26 MT/yr Deficit</div><div style="font-size:12px;color:var(--mid)">Domestic demand exceeds supply by 7–8 MT; agarbatti industry alone imports 5,000–6,000 t/month from China</div></div>
+    <div style="border:1px solid var(--bd);padding:16px;background:var(--paper);border-top:4px solid var(--pu)"><div style="font-family:'Fira Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--pu);margin-bottom:6px">Biorefinery</div><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">Assam Plant 2025</div><div style="font-size:12px;color:var(--mid)">India's first bamboo biorefinery — ₹7,200 Cr JV; 5 lakh t bamboo/yr; ethanol, furfural, biochar outputs</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="cc"><h3>India bamboo use by sector — revenue share 2024</h3><canvas id="sectorC"></canvas></div>
+    <div class="cc"><h3>Biochar carbon removal market — global $ million</h3><canvas id="bcrC"></canvas></div>
+    <div class="cc"><h3>India bamboo market size — ₹ Crore (projected)</h3><canvas id="mktC"></canvas></div>
+    <div class="cc"><h3>India biochar market — USD million</h3><canvas id="bioMktC"></canvas></div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: SPECIES -->
+<div id="tab-species" class="tab-content">
+<section>
+  <div class="s-label">02 / Species & Quality Grading</div>
+  <h2 class="s-h">SPECIES GUIDE &<br>QUALITY GRADING</h2>
+
+  <div class="sp-wrap">
+  <table class="sp-tbl">
+    <thead>
+      <tr>
+        <th>Species / Common Name</th><th>Scientific Name</th><th>Growth Zone (India)</th><th>Height (m)</th><th>Culm Ø (mm)</th><th>GCV (kcal/kg)</th><th>Lignin %</th><th>Ash %</th><th>Primary Uses</th><th>MH Avail.</th><th>Bioenergy Score /5</th><th>Construction</th><th>Agarbatti</th><th>Furniture</th><th>Biochar Yield</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Beema Bamboo</td><td>B. balcooa</td><td>MH, WB, Odisha, Karnataka</td><td>15–25</td><td>80–150</td><td>4,685</td><td>24–28%</td><td>1.4–2.2%</td><td>Bioenergy, pellets, paper pulp</td><td><span class="badge b-g">VERY HIGH</span></td><td class="score-cell score-5">★★★★★</td><td><span class="badge b-a">Moderate</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-a">Moderate</span></td><td>27–32%</td></tr>
+      <tr><td>Nutan (Nutans)</td><td>B. nutans</td><td>MH, NE India, WB</td><td>10–20</td><td>50–100</td><td>4,590</td><td>29.66%</td><td>1.28%</td><td>Bioenergy, high-quality pellets, paper</td><td><span class="badge b-t">MED-HIGH</span></td><td class="score-cell score-5">★★★★★</td><td><span class="badge b-a">Moderate</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-a">Moderate</span></td><td>28–33%</td></tr>
+      <tr><td>Male / Solid Bamboo</td><td>D. strictus</td><td>MH, MP, CG, UP, Bihar (widest)</td><td>8–18</td><td>30–80</td><td>4,530</td><td>24–26%</td><td>1.5–3.0%</td><td>Agarbatti sticks, construction, paper, bioenergy</td><td><span class="badge b-g">HIGHEST</span></td><td class="score-cell score-4">★★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-g">Primary</span></td><td><span class="badge b-a">Low</span></td><td>25–30%</td></tr>
+      <tr><td>Giant Thorny</td><td>B. bambos</td><td>Pan-India (farm boundaries)</td><td>20–30</td><td>70–150</td><td>4,530</td><td>22–26%</td><td>1.8–3.0%</td><td>Construction, scaffolding, furniture, bioenergy</td><td><span class="badge b-g">VERY HIGH</span></td><td class="score-cell score-3">★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-g">High</span></td><td>22–27%</td></tr>
+      <tr><td>Moso / Phyllostachys</td><td>P. edulis / pubescens</td><td>Meghalaya, Sikkim, HP (limited)</td><td>15–28</td><td>80–180</td><td>4,700</td><td>28–32%</td><td>0.8–1.5%</td><td>Flooring, furniture, shoots, biochar (premium)</td><td><span class="badge b-r">VERY LOW</span></td><td class="score-cell score-5">★★★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-g">High</span></td><td>30–38%</td></tr>
+      <tr><td>Muli Bamboo</td><td>M. baccifera</td><td>Assam, Tripura, Mizoram (dominant)</td><td>10–20</td><td>30–60</td><td>4,300</td><td>25–28%</td><td>1.8–3.5%</td><td>Paper pulp, mat weaving, low-cost construction</td><td><span class="badge b-r">ASSAM ONLY</span></td><td class="score-cell score-3">★★★</td><td><span class="badge b-a">Low</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-r">No</span></td><td>20–25%</td></tr>
+      <tr><td>Bambusa vulgaris</td><td>B. vulgaris</td><td>Kerala, TN, Karnataka, Goa</td><td>10–20</td><td>60–100</td><td>4,420</td><td>22–25%</td><td>2.0–4.0%</td><td>Construction, handicrafts, shoots, paper</td><td><span class="badge b-a">SOUTH ONLY</span></td><td class="score-cell score-3">★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-a">Moderate</span></td><td>20–26%</td></div></td></tr>
+      <tr><td>God Bamboo (Asper)</td><td>D. asper</td><td>MH, NE India (introduced)</td><td>20–30</td><td>80–200</td><td>4,445</td><td>22–26%</td><td>1.5–2.5%</td><td>Bioenergy, shoots (food), construction</td><td><span class="badge b-a">MEDIUM</span></td><td class="score-cell score-4">★★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-a">Moderate</span></td><td>24–30%</td></tr>
+      <tr><td>Bambusa tulda</td><td>B. tulda</td><td>Assam, WB, Odisha</td><td>10–20</td><td>50–100</td><td>4,490</td><td>22–25%</td><td>1.8–4.3%</td><td>Paper, construction, weaving</td><td><span class="badge b-r">NE ONLY</span></td><td class="score-cell score-4">★★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-a">Low</span></td><td>22–28%</td></tr>
+      <tr><td>Dendrocalamus hamiltonii</td><td>D. hamiltonii</td><td>Assam, Arunachal, Manipur</td><td>15–25</td><td>80–160</td><td>4,460</td><td>22–26%</td><td>2.0–3.5%</td><td>Shoots (food), construction, bioenergy</td><td><span class="badge b-r">NE ONLY</span></td><td class="score-cell score-3">★★★</td><td><span class="badge b-g">High</span></td><td><span class="badge b-r">No</span></td><td><span class="badge b-a">Moderate</span></td><td>22–27%</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="s-label" style="margin-top:32px">Quality Grading System</div>
+  <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;margin-bottom:20px">AGE-BASED GRADING MATRIX</h3>
+
+  <div class="age-matrix">
+    <div class="am-head" style="background:var(--dk)">Property</div>
+    <div class="am-head">Year 1</div><div class="am-head">Year 2</div>
+    <div class="am-head" style="background:var(--g);color:#fff">Year 3 ★</div>
+    <div class="am-head">Year 4</div><div class="am-head">Year 5</div><div class="am-head">Year 6+</div>
+
+    <div class="am-lbl">Lignin %</div>
+    <div class="am-cell bad">14–19%</div><div class="am-cell warn">20–24%</div>
+    <div class="am-cell best">24–30% ↑ PEAK</div>
+    <div class="am-cell ok">24–28%</div><div class="am-cell warn">22–26%</div><div class="am-cell bad">↓ degraded</div>
+
+    <div class="am-lbl">Cellulose %</div>
+    <div class="am-cell warn">44–48%</div><div class="am-cell ok">46–50%</div>
+    <div class="am-cell best">49–55% ↑ PEAK</div>
+    <div class="am-cell ok">47–52%</div><div class="am-cell warn">44–50%</div><div class="am-cell bad">↓ declining</div>
+
+    <div class="am-lbl">GCV (kcal/kg)</div>
+    <div class="am-cell warn">~4,100</div><div class="am-cell ok">~4,300</div>
+    <div class="am-cell best">4,500–4,685 ↑</div>
+    <div class="am-cell ok">~4,450</div><div class="am-cell warn">~4,350</div><div class="am-cell bad">↓ declining</div>
+
+    <div class="am-lbl">Ash %</div>
+    <div class="am-cell bad">1.5–3.5%</div><div class="am-cell warn">1.3–2.5%</div>
+    <div class="am-cell best">1.2–2.2% ↓ LOWEST</div>
+    <div class="am-cell ok">1.3–2.8%</div><div class="am-cell warn">1.5–3.0%</div><div class="am-cell bad">↑ rising</div>
+
+    <div class="am-lbl">Silica in Ash %</div>
+    <div class="am-cell warn">18–25%</div><div class="am-cell ok">14–20%</div>
+    <div class="am-cell best">10–15% ↓ LOWEST</div>
+    <div class="am-cell ok">12–17%</div><div class="am-cell warn">15–22%</div><div class="am-cell bad">↑ high wear</div>
+
+    <div class="am-lbl">Pellet Durability</div>
+    <div class="am-cell bad">&lt;95% FAIL</div><div class="am-cell warn">95–96%</div>
+    <div class="am-cell best">96–98% ✓</div>
+    <div class="am-cell ok">95–97%</div><div class="am-cell warn">94–96%</div><div class="am-cell bad">&lt;94%</div>
+
+    <div class="am-lbl">Die Jam Risk</div>
+    <div class="am-cell bad">VERY HIGH</div><div class="am-cell warn">MEDIUM</div>
+    <div class="am-cell best">LOW ✓</div>
+    <div class="am-cell ok">LOW–MED</div><div class="am-cell warn">MEDIUM</div><div class="am-cell bad">HIGH–silica</div>
+
+    <div class="am-lbl">Biochar Yield</div>
+    <div class="am-cell warn">20–24%</div><div class="am-cell ok">22–26%</div>
+    <div class="am-cell best">25–33%</div>
+    <div class="am-cell ok">24–30%</div><div class="am-cell warn">22–28%</div><div class="am-cell bad">22–26%</div>
+
+    <div class="am-lbl">Market Grade</div>
+    <div class="am-cell bad">REJECT</div><div class="am-cell warn">C Grade</div>
+    <div class="am-cell best">A Grade ★</div>
+    <div class="am-cell ok">A/B Grade</div><div class="am-cell warn">B Grade</div><div class="am-cell bad">REJECT/C</div>
+  </div>
+
+  <div class="g2">
+    <div class="cc"><h3>Species comparison — GCV vs lignin (bioenergy fitness)</h3><canvas id="specScatterC"></canvas></div>
+    <div class="cc"><h3>Biochar yield by species % of dry input</h3><canvas id="bioYieldC"></canvas></div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: USES -->
+<div id="tab-uses" class="tab-content">
+<section>
+  <div class="s-label">03 / Commercial Uses & Pricing</div>
+  <h2 class="s-h">COMMERCIAL USES,<br>VOLUME & PRICING</h2>
+
+  <table class="price-tbl">
+    <thead>
+      <tr><th>Use Category</th><th>Primary Species</th><th>Volume (India)</th><th>Raw Bamboo Price (farm gate)</th><th>Processed Price</th><th>Key States</th><th>Key Industry Players</th><th>Growth Trajectory</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Agarbatti (incense) sticks</td><td>D. strictus (primary)</td><td>60,000–72,000 t/month needed; imports 5,000–6,000 t/month from China/Vietnam</td><td>₹2,500–4,500/MT</td><td>₹8,000–18,000/MT (processed sticks)</td><td>Karnataka, AP, TN, MP, MH</td><td>Cycle Pure Agarbathi, Padmini Products, MDH (Bhosle), Prabhat</td><td><span class="badge b-g">HIGH</span> — domestic industry ₹6,000 Cr; 25% import duty reinstated 2020; massive import substitution opportunity</td></tr>
+      <tr><td>Construction & scaffolding</td><td>D. strictus, B. bambos, D. asper</td><td>~6–8 MT/yr; scaffolding dominant use</td><td>₹2,500–4,000/MT</td><td>₹80–150/running metre (pole); ₹4,000–8,000/MT treated</td><td>MH, UP, Bihar, WB, Delhi NCR</td><td>Regional contractors; no national players; Bamboocraftsman, Bamboology</td><td><span class="badge b-a">STABLE</span> — metal scaffold replacing; engineered bamboo construction growing slowly</td></tr>
+      <tr><td>Paper & pulp</td><td>B. tulda, M. baccifera, D. strictus</td><td>~2–3 MT/yr; declining as paper mills switch to eucalyptus</td><td>₹1,800–2,800/MT</td><td>Mill gate price; ₹2,200–3,500/MT</td><td>Assam, WB, Odisha, AP</td><td>Hindustan Paper Corp, Century Paper (Birla), ITC Bhadrachalam, Tamil Nadu Newsprint</td><td><span class="badge b-r">DECLINING</span> — paper mills shifting to faster-growing eucalyptus; only speciality paper remains bamboo</td></tr>
+      <tr><td>Furniture & handicrafts</td><td>B. bambos, B. vulgaris, M. baccifera</td><td>~500,000 artisan units; ₹1,200–1,600 Cr market</td><td>₹3,000–6,000/MT</td><td>₹12,000–35,000/MT (finished); retail ₹3,000–80,000/piece</td><td>Assam, Manipur, WB, Rajasthan, Kerala</td><td>Fabindia, Tramboo, The Bamboo House India, Kerala State Bamboo Corp</td><td><span class="badge b-g">GROWING</span> — eco-design trend; export market growing (EU, USA); premium segment fastest</td></tr>
+      <tr><td>Flooring & engineered panels</td><td>Moso (limited India), B. balcooa (developing)</td><td>Nascent — &lt;50,000 sq.m.; mostly imported from China</td><td>₹6,000–10,000/MT (raw)</td><td>₹180–600/sq.ft (finished flooring)</td><td>MH, Delhi, Bangalore (urban premium)</td><td>MOSO India, EcoBirds, Tramboo, Century Ply (emerging)</td><td><span class="badge b-g">HIGH GROWTH</span> — replacing teak and imported wood; 20–25% CAGR; green building standards driving</td></tr>
+      <tr><td>Food (bamboo shoots)</td><td>D. hamiltonii, B. nutans, D. asper</td><td>~100,000 MT/yr fresh shoots; growing canning/processing</td><td>₹8–25/kg fresh</td><td>₹60–250/kg processed; ₹120–500/kg canned export</td><td>Assam, Manipur, Arunachal, Meghalaya, Sikkim</td><td>HUL (Kissan), Bamboo India, Bamboo Shoot Industry (Assam govt), Manipur Fresh</td><td><span class="badge b-g">GROWING</span> — NE India major market; exports to SE Asia, Japan; urban retail growing; GI tag for Manipur</td></tr>
+      <tr><td>Bioenergy (pellets, briquettes)</td><td>B. balcooa, B. nutans, D. strictus</td><td>&lt;500,000 MT processed; mostly agro-residue blend; small bamboo fraction</td><td>₹1,800–2,500/MT (green); ₹3,000–4,500/MT (dry)</td><td>₹7,000–11,000/MT pellet (SAMARTH); ₹8,000–13,000 (industrial)</td><td>MH, GJ, MP, CG, Assam</td><td>PRESPL, Biofuels Junction, Rajaram Bio Energy, Beema Bamboo Pvt Ltd (energy crop promoter)</td><td><span class="badge b-g">VERY HIGH</span> — SAMARTH mandate; Japan/Korea export demand; bamboo bioenergy nascent but fastest growing sub-sector</td></tr>
+      <tr><td>Textiles (bamboo fibre)</td><td>Any soft tissue variety; B. vulgaris, B. textilis</td><td>~₹200 Cr market; mostly imports blended with domestic</td><td>N/A — fibre extraction needed</td><td>₹1,500–3,500/kg yarn; ₹600–2,500/m fabric</td><td>Tamil Nadu, MH, Gujarat (textile clusters)</td><td>Grasim (Aditya Birla), Bombay Rayon, specialty mills</td><td><span class="badge b-a">MODERATE</span> — viscose-bamboo blend market; authentic bamboo fibre expensive; greenwashing scrutiny increasing</td></tr>
+      <tr><td>Bamboo charcoal (artisanal)</td><td>Any species; D. strictus dominant</td><td>~50,000–80,000 MT/yr; BBQ, water filters, activated carbon precursor</td><td>₹2,000–3,000/MT raw</td><td>₹15,000–40,000/MT (charcoal); ₹80,000–2,50,000/MT (activated carbon)</td><td>MH, GJ, Assam, UP</td><td>Artisanal: regional producers; activated carbon: Cabot, Haycarb (Ceylon Graphite), TERI</td><td><span class="badge b-g">GROWING</span> — BBQ export growing; activated carbon industrial demand high; biochar carbon credit premium emerging</td></tr>
+      <tr><td>Mat weaving & boards</td><td>M. baccifera, B. vulgaris, local</td><td>Large cottage industry; Tripura, Assam dominant; ₹800 Cr market</td><td>₹1,500–2,500/MT</td><td>₹8,000–20,000/MT board; ₹100–300/sq.ft mat</td><td>Tripura, Assam, Manipur, WB, Odisha</td><td>NBHC, Tripura Bamboo Mission, HUL (rural supply chain)</td><td><span class="badge b-a">STABLE</span> — stable cottage industry; some shift to composite boards</td></tr>
+    </tbody>
+  </table>
+
+  <div class="g2">
+    <div class="cc"><h3>Bamboo use revenue split — 2024 est. (₹ Crore)</h3><canvas id="useRevC"></canvas></div>
+    <div class="cc"><h3>Farm-gate price by use (₹/MT)</h3><canvas id="fgPriceC"></canvas></div>
+  </div>
+
+  <div class="insight" style="margin-top:8px">
+    <span class="i-lbl">Critical gap — Bombay Bioenergy</span>
+    <strong>The agarbatti opportunity is significantly underappreciated.</strong> India imports 5,000–6,000 t/month of D. strictus (male bamboo) sticks from China and Vietnam. A 25% import duty was reinstated in 2020. The domestic industry is ₹6,000 crore and growing — and it specifically needs <em>D. strictus</em>, which is the most abundant natural bamboo in Maharashtra (Gadchiroli, Chandrapur). A high-precision stick manufacturing line alongside bioenergy production could serve two completely different markets from the same feedstock, with agarbatti sticks commanding ₹8,000–18,000/MT vs ₹7,500–11,000/MT for SAMARTH pellets.
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: PLAYERS -->
+<div id="tab-players" class="tab-content">
+<section>
+  <div class="s-label">04 / Players, Aggregators & Traders</div>
+  <h2 class="s-h">WHO'S WHO IN<br>THE BAMBOO ECOSYSTEM</h2>
+
+  <div class="player-grid">
+    <div class="pc g-top"><div class="pc-name">Beema Bamboo Pvt. Ltd.</div><div class="pc-role">Tissue Culture Producer / Energy Crop Developer</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Hosur, TN + pan-India</span></div><div class="pc-row"><span class="pk">Species</span><span class="pv">B. balcooa (Beema clone)</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">Largest TC bamboo nursery in India</span></div><div class="pc-row"><span class="pk">Revenue model</span><span class="pv">Sells planting material; advisory</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">beemabamboo.com</span></div></div>
+
+    <div class="pc g-top"><div class="pc-name">PRESPL</div><div class="pc-role">Biomass Supply Chain / Aggregator</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Navi Mumbai + pan-India</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">1,000 MT/day supply capacity</span></div><div class="pc-row"><span class="pk">Feedstock</span><span class="pv">Paddy straw, cotton stalk, biomass (incl. bamboo)</span></div><div class="pc-row"><span class="pk">Backing</span><span class="pv">Mitsui; DFC credit $10M</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">prespl.com</span></div></div>
+
+    <div class="pc g-top"><div class="pc-name">BiofuelCircle</div><div class="pc-role">Digital Biomass Marketplace</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Pune, MH (10 states)</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">250,000 MT/yr; 35 warehouses; 70,000 farmers</span></div><div class="pc-row"><span class="pk">Feedstock</span><span class="pv">Agri-residue, biomass (no bamboo-specific)</span></div><div class="pc-row"><span class="pk">Funding</span><span class="pv">$20.5M Series B</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">biofuelcircle.com</span></div></div>
+
+    <div class="pc a-top"><div class="pc-name">Kerala State Bamboo Corporation</div><div class="pc-role">State Enterprise / Trading</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Thrissur, Kerala</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">State monopoly for Kerala bamboo</span></div><div class="pc-row"><span class="pk">Products</span><span class="pv">Poles, boards, mat, furniture</span></div><div class="pc-row"><span class="pk">Annual turnover</span><span class="pv">~₹80–100 Cr</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">keralabamboo.com</span></div></div>
+
+    <div class="pc a-top"><div class="pc-name">NBHC (National Bulk Handling Corp)</div><div class="pc-role">Storage & Handling / Aggregator (State-linked)</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Pan-India; 700+ locations</span></div><div class="pc-row"><span class="pk">Bamboo role</span><span class="pv">Storage, grading for FCI, state govts</span></div><div class="pc-row"><span class="pk">Note</span><span class="pv">Not specialist but infrastructure exists</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">nbhc.in</span></div></div>
+
+    <div class="pc a-top"><div class="pc-name">Tripura Bamboo Mission / TBIDC</div><div class="pc-role">State Enterprise / Aggregator</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Agartala, Tripura</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">Tripura has 51% forest cover; 6 lakh MT bamboo/yr</span></div><div class="pc-row"><span class="pk">Products</span><span class="pv">Mats, agarbatti, composite boards, charcoal</span></div><div class="pc-row"><span class="pk">Key link</span><span class="pv">TBIDC for tender bamboo to buyers</span></div></div>
+
+    <div class="pc t-top"><div class="pc-name">Varaha</div><div class="pc-role">Carbon CDR Developer / Biochar Aggregator</div><div class="pc-row"><span class="pk">Location</span><span class="pv">New Delhi + MH, GJ, AP operations</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">2M+ tonnes CO₂ removal targeted; 20 projects</span></div><div class="pc-row"><span class="pk">Deals</span><span class="pv">Google 100K t, Microsoft 100K+ t CDR by 2030</span></div><div class="pc-row"><span class="pk">Funding</span><span class="pv">$30M (WestBridge); $8.7M Series A prior</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">varaha.earth</span></div></div>
+
+    <div class="pc t-top"><div class="pc-name">Assam Agro Industries Dev. Corp (APFDC)</div><div class="pc-role">State Aggregator / Forest Produce Trader</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Guwahati, Assam</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">Manages forest bamboo auction in Assam</span></div><div class="pc-row"><span class="pk">Volume</span><span class="pv">~2–3 MT/yr bamboo auction lots</span></div><div class="pc-row"><span class="pk">Note</span><span class="pv">Primary entry point for Assam bamboo procurement</span></div></div>
+
+    <div class="pc t-top"><div class="pc-name">Mutha Industries</div><div class="pc-role">Bamboo Products Manufacturer / Trader</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Pune, MH</span></div><div class="pc-row"><span class="pk">Products</span><span class="pv">Bamboo mats, boards, composite panels</span></div><div class="pc-row"><span class="pk">Revenue</span><span class="pv">~₹50–80 Cr</span></div><div class="pc-row"><span class="pk">Note</span><span class="pv">One of few organised MH bamboo processors</span></div></div>
+
+    <div class="pc p-top"><div class="pc-name">INBAR India</div><div class="pc-role">Research / Policy / Standards</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Beijing HQ; India liaison office</span></div><div class="pc-row"><span class="pk">Role</span><span class="pv">Standards, species data, government advisory</span></div><div class="pc-row"><span class="pk">Key resource</span><span class="pv">Bamboo species database; market studies</span></div><div class="pc-row"><span class="pk">Contact</span><span class="pv">inbar.int</span></div></div>
+
+    <div class="pc p-top"><div class="pc-name">ICBR / NFRA</div><div class="pc-role">Research Institution</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Pune (ICBR); Dehradun (ICFRE)</span></div><div class="pc-row"><span class="pk">Role</span><span class="pv">Species research, bamboo properties testing, NBM support</span></div><div class="pc-row"><span class="pk">Key resource</span><span class="pv">Lab testing, species data, cultivation protocols</span></div></div>
+
+    <div class="pc p-top"><div class="pc-name">Maa Sharda Bamboo / Jungle Agroos (Assam)</div><div class="pc-role">Trader / Aggregator</div><div class="pc-row"><span class="pk">Location</span><span class="pv">Guwahati, Assam</span></div><div class="pc-row"><span class="pk">Scale</span><span class="pv">Mid-size; supplies bamboo poles pan-India</span></div><div class="pc-row"><span class="pk">Products</span><span class="pv">Raw poles; agarbatti-grade sorted sticks</span></div><div class="pc-row"><span class="pk">Reach</span><span class="pv">IndiaMart; direct to agarbatti clusters</span></div></div>
+  </div>
+
+  <div class="cc" style="max-width:100%">
+    <h3>Bamboo value chain — who sits where</h3>
+    <canvas id="valueChainC" style="max-height:200px"></canvas>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: BIOCHAR -->
+<div id="tab-biochar" class="tab-content">
+<section>
+  <div class="s-label">05 / Biochar Deep Dive</div>
+  <h2 class="s-h">BIOCHAR:<br>TYPES, MARKETS & GROWTH</h2>
+
+  <table class="price-tbl">
+    <thead>
+      <tr><th>Biochar Type</th><th>Process</th><th>Carbon %</th><th>India Volume (2024)</th><th>India Price</th><th>Export Price</th><th>Key Buyers (India)</th><th>Certification</th><th>Growth</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Agricultural / Soil amendment</td><td>Slow pyrolysis 350–550°C</td><td>60–80%</td><td>~30,000–40,000 MT est.</td><td>₹8,000–18,000/MT</td><td>$150–300/MT (SE Asia, EU)</td><td>Organic farmers, fertiliser co., NABARD FPOs, state govts (Nuziveedu Seeds distributed 200 MT to Erravelli village 2024)</td><td>IBI (Intl Biochar Initiative); EBC (European Biochar Certificate); BIS standard nascent in India</td><td><span class="badge b-g">+18–22% CAGR</span></td></tr>
+      <tr><td>Carbon Removal Credit (BCR)</td><td>Any pyrolysis; certified MRV required</td><td>70–88%</td><td>~50,000–80,000 tCO₂ credits est. (Varaha dominant)</td><td>₹15,000–35,000/MT (carbon credit value embedded)</td><td>$200–600/tCO₂ (Puro.Earth, Gold Standard)</td><td>Google, Microsoft (via Varaha); international voluntary carbon buyers; MITCON, Varaha, ArSta Eco</td><td>Puro.Earth CORC; Gold Standard; Verra (developing BCR methodology); CCTS India compliance (emerging)</td><td><span class="badge b-g">+131% CAGR global; India nascent but Varaha deals signal explosive growth</span></td></tr>
+      <tr><td>Steel PCI / Industrial</td><td>Pyrolysis / torrefaction 450–700°C; high-FC grade</td><td>80–92%</td><td>~30,000 MT replaced in Tata Steel Jamshedpur (trial)</td><td>₹12,000–20,000/MT</td><td>$250–450/MT (Japan, EU)</td><td>Tata Steel (30,000 MT replaced to date), JSW (trial), SAIL (exploring); India steel task force active 2024</td><td>No specific cert for PCI yet; ResponsibleSteel accreditation at Tata Steel; in-house specs</td><td><span class="badge b-g">HIGH</span> — India govt task force on steel biochar; potential for massive scale if SAIL adopts</td></tr>
+      <tr><td>Activated Carbon (premium)</td><td>Physical activation (steam/CO₂) at 800–1000°C post-pyrolysis; OR Chemical activation (ZnCl₂, H₃PO₄)</td><td>88–98%</td><td>~15,000–20,000 MT (India production); large import volumes</td><td>₹80,000–2,50,000/MT (food/pharma grade)</td><td>$1,500–8,000/MT (food/pharma grade export)</td><td>Water treatment (Suez, Veolia India), pharmaceuticals (Sun, Cipla), food processing, military</td><td>IS 877 (Indian Standard); AWWA B600 (water); USP grade (pharma); Cabot, Haycarb certify their own</td><td><span class="badge b-a">+12% CAGR</span> — India is net importer of activated carbon; domestic production opportunity</td></tr>
+      <tr><td>Horticultural / Potting mix</td><td>Slow pyrolysis 300–400°C; coarser particles</td><td>55–70%</td><td>Small but growing; urban gardening market</td><td>₹6,000–12,000/MT retail; ₹3,000–5,000 wholesale</td><td>$80–150/MT (consumer pack)</td><td>Nurseries, urban farms, balcony garden retail (Amazon, BigBasket); Ugaoo, Ugreenics</td><td>No specific cert required; IBI guidelines voluntary</td><td><span class="badge b-a">GROWING</span> — urban gardening trend; small volumes but premium per-kg retail</td></tr>
+      <tr><td>Wastewater / Filter media</td><td>Pyrolysis 400–600°C; high surface area required</td><td>65–80%</td><td>~5,000–10,000 MT est. (early stage)</td><td>₹15,000–40,000/MT</td><td>$300–800/MT</td><td>Municipal water utilities (India Jal Mission — ₹5 trillion spend); industrial effluent plants; Govt endorsed biochar for wastewater in 2024</td><td>BIS; WHO water quality standards; IS 7231; individual utility specifications</td><td><span class="badge b-g">HIGH</span> — India govt endorsed for wastewater; Jal Jeevan Mission spending creates demand</td></tr>
+    </tbody>
+  </table>
+
+  <div class="g3">
+    <div class="cc"><h3>India biochar market — $M 2019–2033</h3><canvas id="bioGrowthC"></canvas></div>
+    <div class="cc"><h3>Biochar price by grade (₹/MT)</h3><canvas id="bioPriceC"></canvas></div>
+    <div class="cc"><h3>BCR (carbon removal) contracted volume — MT</h3><canvas id="bcrVolC"></canvas></div>
+  </div>
+
+  <div class="insight purple">
+    <span class="i-lbl">Bombay Bioenergy — Carbon Credit Opportunity</span>
+    <strong>Varaha's Google deal (100,000 tonnes CDR by 2030) and Microsoft deal (100,000+ tonnes) are the most important data points for Bamboo Bioenergy.</strong> Both are from Maharashtra and Gujarat — Bombay Bioenergy's home states. Both use agricultural residue (cotton waste). Bamboo biochar from Maharashtra would have the same or better carbon sequestration credentials. The pathway: produce biochar → certify with Puro.Earth (Varaha is the only listed India entity currently) → sell CDR credits at $200–600/tCO₂ while also selling the physical biochar to Tata Steel or agricultural buyers. This is a genuine two-revenue-stream play. Varaha is a potential partner, not just a reference point.
+  </div>
+
+  <div class="insight">
+    <span class="i-lbl">Tata Steel Precedent</span>
+    <strong>Tata Steel Jamshedpur replaced 30,000 tonnes of fossil fuel with biochar (November 2024)</strong> — the first such use in India. Potential: 50,000+ tonnes CO₂ reduction annually. India government has a steel-biochar task force active since March 2024. JSW, SAIL in exploratory discussions. At Bombay Bioenergy's scale, a dedicated high-fixed-carbon biochar line for steel PCI would find a buyer before construction is complete. Price: ₹12,000–20,000/MT — significantly above SAMARTH pellet pricing.
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: BYPRODUCTS -->
+<div id="tab-byproducts" class="tab-content">
+<section>
+  <div class="s-label">06 / Pyrolysis Byproducts</div>
+  <h2 class="s-h">BIOCHAR BYPRODUCTS:<br>SYNGAS, BIO-OIL, WOOD VINEGAR</h2>
+
+  <p>Every pyrolysis or gasification reactor running bamboo produces three product streams simultaneously. The split depends on temperature and process type — but all three have commercial value. Most Indian operators currently flare or waste two of them.</p>
+
+  <table class="price-tbl">
+    <thead>
+      <tr><th>Byproduct</th><th>Process</th><th>Yield (per tonne dry bamboo)</th><th>Composition</th><th>India Price</th><th>Global Price</th><th>End Industries</th><th>Buyers in India</th><th>Certification</th><th>Market Trajectory</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Syngas</strong> (Producer Gas)</td><td>Gasification 800–1,600°C; or partial combustion in pyrolysis</td><td>300–500 Nm³/t; 918 kg combustible gas/t (Elpitiya study)</td><td>CO 20–25%, H₂ 10–15%, CH₄ 4–8%, CO₂ 8–12%, N₂ balance; CV 4–6 MJ/Nm³</td><td>Used internally to self-fuel reactor; saves ₹2,000–4,000/MT fuel cost vs external heat</td><td>$0.08–0.15/kWh equivalent; power grid sale at India rates ₹3–6/kWh if converted</td><td>Self-fuel (reactor heat); power generation via gas engine; industrial heat; green hydrogen precursor (future)</td><td>Primarily captive use; excess to grid requires net-metering; Ankur Scientific, All Power Labs sell syngas systems</td><td>CE marking for gas engines; IS 1391; CPCB norms for emissions</td><td><span class="badge b-g">CAPTIVE VALUE</span> — makes pyrolysis energy-neutral; power surplus sellable; green H₂ pathway long-term</td></tr>
+      <tr><td><strong>Bio-oil</strong> (Pyrolysis Oil / Pyroligneous Acid)</td><td>Fast pyrolysis 400–600°C; condensation of vapours</td><td>100–300 kg/t bamboo (varies widely by process); Elpitiya study: 538 kg/t at 250–300°C</td><td>Complex mixture: acetic acid, methanol, formic acid, phenols, furfural, water (15–30%); GCV 16–20 MJ/kg</td><td>₹8,000–18,000/MT as fuel; ₹25,000–60,000/MT for fractionated chemicals</td><td>$100–600/MT crude; $800–3,000/MT refined fractions</td><td>Boiler fuel (substitute for furnace oil); phenolic resins; adhesives; preservatives; flavoring (liquid smoke)</td><td>Crude: local industrial boilers; fractionated: specialty chemical companies (LANXESS India, SI Group); No major domestic bio-oil market yet</td><td>No specific India std; ASTM D7544 for crude bio-oil; FDA-approved food applications in USA</td><td><span class="badge b-a">EMERGING</span> — crude bio-oil unstable (acidic, water-absorbing); upgrading needed for transport fuel; chemical fractions most valuable; India bio-oil market very nascent</td></tr>
+      <tr><td><strong>Wood Vinegar</strong> (Pyroligneous Acid — dilute fraction)</td><td>Slow pyrolysis 200–400°C; lighter condensate fraction collected separately</td><td>80–200 kg/t bamboo; bamboo-specific: 100–150 kg/t typical</td><td>Acetic acid 3–8%; methanol 2–4%; ketones; phenols; organic acids; pH 2.5–3.5</td><td>₹15,000–50,000/MT crude; ₹80,000–2,00,000/MT refined for agriculture</td><td>$50–300/MT crude; $300–2,000/MT agricultural grade; Japan pays premium</td><td>Bio-pesticide (nematicide, fungicide); plant growth promoter; soil acidifier; livestock feed supplement; Japan: traditional "mokusaku" in agriculture and cosmetics</td><td>India: ArSta Eco, organic farming cooperatives, TERI; Japan: major market — traditional use; BAIF/UGAM (potential FPO offtake); no major domestic commercial market established</td><td>No India std for wood vinegar; Japan JIS K 1401 standard; organic farming certification (NPOP) may accept</td><td><span class="badge b-g">HIGH POTENTIAL</span> — Japan is largest market; organic farming in India growing fast; bio-pesticide regulation improving; small volumes but very high value per litre</td></tr>
+      <tr><td><strong>Tar / Pitch</strong></td><td>High-temp condensate from gasification or pyrolysis; collected separately or with bio-oil</td><td>20–80 kg/t (process-dependent; often unavoidable contaminant)</td><td>Heavy polycyclic aromatics; phenols; PAH compounds; GCV 35–40 MJ/kg</td><td>₹5,000–8,000/MT as fuel; limited markets</td><td>$80–200/MT</td><td>Boiler fuel (co-combustion); wood preservative (creosote substitute, restricted in EU); road construction (limited)</td><td>Very limited India market; often treated as waste; some use as boiler fuel supplement</td><td>Restricted use in EU (PAH concerns); India no specific regulation but CPCB may classify as hazardous if PAH-high</td><td><span class="badge b-r">LOW VALUE</span> — treat as unavoidable cost; co-combust as boiler fuel; not a revenue stream at scale</td></tr>
+      <tr><td><strong>Biochar fines / dust</strong></td><td>Sub-6mm fraction from biochar screening</td><td>5–15% of biochar output</td><td>Same as biochar but finer particle; high surface area</td><td>₹6,000–12,000/MT (discount to lump biochar)</td><td>$80–200/MT</td><td>Soil amendment (can be incorporated easily); feedstock for activated carbon; compaction into pellets/briquettes</td><td>Organic farmers; pellet briquette manufacturers; small activated carbon producers</td><td>Same as biochar</td><td><span class="badge b-a">SECONDARY</span> — blend with lump biochar for soil amendment; or re-pelletise for premium presentation</td></tr>
+    </tbody>
+  </table>
+
+  <div class="g2">
+    <div class="cc"><h3>Product yield per tonne dry bamboo — slow pyrolysis</h3><canvas id="yieldSplitC"></canvas></div>
+    <div class="cc"><h3>Value realised per tonne — by product stream (₹/MT input)</h3><canvas id="valueStreamC"></canvas></div>
+  </div>
+
+  <div class="insight warn">
+    <span class="i-lbl">Wood Vinegar — Japan Export Opportunity</span>
+    Japan uses "mokusaku" (wood vinegar) extensively in organic agriculture and cosmetics. India currently has no significant commercial wood vinegar producer. The Japan market pays $300–2,000/MT. If Bombay Bioenergy's pyrolysis system collects wood vinegar separately — an equipment modification costing ₹5–15 lakh per reactor — it adds a high-value export product stream with zero additional feedstock cost. 150 kg/tonne bamboo × ₹40,000/MT = ₹6,000 additional revenue per tonne bamboo processed. Compounding on 10,000 MT/yr scale: ₹6 Cr additional annual revenue from material currently being wasted.
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: ECONOMICS -->
+<div id="tab-economics" class="tab-content">
+<section>
+  <div class="s-label">07 / Economics & Unit Models</div>
+  <h2 class="s-h">UNIT ECONOMICS:<br>ALL BAMBOO USECASES</h2>
+
+  <div class="econ-grid">
+    <div class="econ-col" style="border-top:4px solid var(--g)">
+      <div class="econ-h">White Pellet Plant</div>
+      <div class="econ-sub">10 TPH · Indian mill · SAMARTH + Private Industry</div>
+      <div class="econ-row"><span class="ek">CAPEX (Indian mill)</span><span class="ev a">₹4–6 Cr</span></div>
+      <div class="econ-row"><span class="ek">CAPEX (European mill)</span><span class="ev a">₹15–22 Cr</span></div>
+      <div class="econ-row"><span class="ek">Feedstock cost (bamboo 3yr)</span><span class="ev">₹2,000–3,500/MT fresh</span></div>
+      <div class="econ-row"><span class="ek">Conversion ratio</span><span class="ev">2:1 fresh → 1 MT pellet</span></div>
+      <div class="econ-row"><span class="ek">Feedstock cost per MT pellet</span><span class="ev a">₹4,000–7,000</span></div>
+      <div class="econ-row"><span class="ek">Processing cost (drying+grinding+pelleting)</span><span class="ev a">₹2,500–4,000/MT pellet</span></div>
+      <div class="econ-row"><span class="ek">Total OPEX per MT pellet</span><span class="ev a">₹6,500–11,000</span></div>
+      <div class="econ-row"><span class="ek">SAMARTH revenue</span><span class="ev g">₹7,500–11,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Private industry revenue</span><span class="ev g">₹8,000–13,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Gross margin (SAMARTH)</span><span class="ev g">5–30% (variable)</span></div>
+      <div class="econ-row"><span class="ek">Gross margin (Private Ind.)</span><span class="ev g">15–40%</span></div>
+      <div class="econ-row"><span class="ek">Annual output (80% util.)</span><span class="ev">~70,000 MT</span></div>
+      <div class="econ-row"><span class="ek">Annual revenue (private)</span><span class="ev g">~₹56–91 Cr</span></div>
+      <div class="econ-row"><span class="ek">Payback period</span><span class="ev g">3–5 years (Indian mill)</span></div>
+    </div>
+
+    <div class="econ-col" style="border-top:4px solid var(--am)">
+      <div class="econ-h">Biochar Plant</div>
+      <div class="econ-sub">2 TPH bamboo input · Slow pyrolysis · Multi-stream</div>
+      <div class="econ-row"><span class="ek">CAPEX (small 500 kg/hr)</span><span class="ev a">₹80L–2 Cr</span></div>
+      <div class="econ-row"><span class="ek">CAPEX (2 t/hr commercial)</span><span class="ev a">₹4–8 Cr</span></div>
+      <div class="econ-row"><span class="ek">Feedstock cost (bamboo)</span><span class="ev">₹2,000–3,500/MT fresh</span></div>
+      <div class="econ-row"><span class="ek">Biochar yield (3yr bamboo)</span><span class="ev">28–33% of dry input</span></div>
+      <div class="econ-row"><span class="ek">Biochar from 1 t fresh bamboo</span><span class="ev">~140–165 kg</span></div>
+      <div class="econ-row"><span class="ek">Wood vinegar yield</span><span class="ev">~80–120 kg/t fresh</span></div>
+      <div class="econ-row"><span class="ek">Revenue: biochar (soil)</span><span class="ev g">₹1,120–2,970/t fresh (₹8–18k/t biochar)</span></div>
+      <div class="econ-row"><span class="ek">Revenue: biochar (carbon credit)</span><span class="ev g">+₹2,000–5,250/t fresh additional</span></div>
+      <div class="econ-row"><span class="ek">Revenue: wood vinegar</span><span class="ev g">₹1,200–6,000/t fresh (₹15–50k/t)</span></div>
+      <div class="econ-row"><span class="ek">Revenue: syngas (fuel saving)</span><span class="ev g">₹2,000–4,000/t fresh (self-fuel)</span></div>
+      <div class="econ-row"><span class="ek">Total revenue potential</span><span class="ev g">₹6,320–18,220/t fresh bamboo</span></div>
+      <div class="econ-row"><span class="ek">OPEX (ex-feedstock)</span><span class="ev a">₹1,500–3,000/t fresh</span></div>
+      <div class="econ-row"><span class="ek">Net margin (soil-grade)</span><span class="ev g">25–40%</span></div>
+      <div class="econ-row"><span class="ek">Net margin (with carbon credits)</span><span class="ev g">40–65%</span></div>
+    </div>
+
+    <div class="econ-col" style="border-top:4px solid var(--tl)">
+      <div class="econ-h">Torrefied / Black Pellet Plant</div>
+      <div class="econ-sub">10 TPH input · Torrefaction reactor add-on</div>
+      <div class="econ-row"><span class="ek">Torrefaction CAPEX (add-on)</span><span class="ev a">₹15–25 Cr</span></div>
+      <div class="econ-row"><span class="ek">Feedstock: same as white pellet</span><span class="ev">₹2,000–3,500/MT fresh</span></div>
+      <div class="econ-row"><span class="ek">Mass yield (torrefied vs fresh)</span><span class="ev">~50% (vs 50% for white pellet)</span></div>
+      <div class="econ-row"><span class="ek">Energy density gain</span><span class="ev g">20–22 MJ/kg vs 18.5–19.6</span></div>
+      <div class="econ-row"><span class="ek">India price (torrefied)</span><span class="ev g">₹15,000–22,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Export price Japan FOB</span><span class="ev g">$220–270/MT (~₹18,500–22,500)</span></div>
+      <div class="econ-row"><span class="ek">Premium vs white pellet</span><span class="ev g">+60–90% per MT</span></div>
+      <div class="econ-row"><span class="ek">Annual output (10 TPH, 80%)</span><span class="ev">~35,000 MT torrefied</span></div>
+      <div class="econ-row"><span class="ek">Annual revenue (Japan export)</span><span class="ev g">~₹65–79 Cr</span></div>
+      <div class="econ-row"><span class="ek">OPEX (incl. torrefaction energy)</span><span class="ev a">₹8,000–12,000/MT torrefied</span></div>
+      <div class="econ-row"><span class="ek">Gross margin</span><span class="ev g">30–50%</span></div>
+      <div class="econ-row"><span class="ek">Payback on reactor</span><span class="ev g">4–6 years (Japan offtake)</span></div>
+    </div>
+  </table>
+
+  <div class="econ-grid" style="margin-top:2px">
+    <div class="econ-col" style="border-top:4px solid var(--pu)">
+      <div class="econ-h">Agarbatti Stick Manufacturing</div>
+      <div class="econ-sub">D. strictus only · Semi-automated · 1,000 MT sticks/yr</div>
+      <div class="econ-row"><span class="ek">CAPEX (splitting + polishing line)</span><span class="ev a">₹50L–2 Cr</span></div>
+      <div class="econ-row"><span class="ek">Feedstock (D. strictus, 3yr)</span><span class="ev">₹2,500–4,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Recovery rate (pole to stick)</span><span class="ev">30–40% by weight</span></div>
+      <div class="econ-row"><span class="ek">Stick price (round, export grade)</span><span class="ev g">₹12,000–22,000/MT sticks</span></div>
+      <div class="econ-row"><span class="ek">Waste (to pellet/biochar)</span><span class="ev g">60–70% residue = feedstock!</span></div>
+      <div class="econ-row"><span class="ek">Residue value at ₹7,500/MT pellet</span><span class="ev g">₹4,500–5,250/MT bamboo input</span></div>
+      <div class="econ-row"><span class="ek">Combined revenue/MT bamboo</span><span class="ev g">₹8,100–12,850</span></div>
+      <div class="econ-row"><span class="ek">vs pellet alone</span><span class="ev">₹3,750–5,500/MT bamboo</span></div>
+      <div class="econ-row"><span class="ek">Uplift from dual use</span><span class="ev g">+60–130% per MT bamboo</span></div>
+      <div class="econ-row"><span class="ek">Key constraint</span><span class="ev a">D. strictus only; solid internodes required</span></div>
+    </div>
+
+    <div class="econ-col" style="border-top:4px solid #8b5500">
+      <div class="econ-h">Activated Carbon Production</div>
+      <div class="econ-sub">From bamboo biochar · Steam activation</div>
+      <div class="econ-row"><span class="ek">CAPEX (activation furnace)</span><span class="ev a">₹2–5 Cr additional</span></div>
+      <div class="econ-row"><span class="ek">Input: biochar</span><span class="ev">₹15,000–25,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Activation yield</span><span class="ev">60–75% of biochar input</span></div>
+      <div class="econ-row"><span class="ek">Output: activated carbon</span><span class="ev g">₹80,000–2,50,000/MT (grade dependent)</span></div>
+      <div class="econ-row"><span class="ek">Food/pharma grade price</span><span class="ev g">₹1,80,000–2,50,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Water treatment grade</span><span class="ev g">₹80,000–1,20,000/MT</span></div>
+      <div class="econ-row"><span class="ek">Value uplift from biochar</span><span class="ev g">5–15× per tonne</span></div>
+      <div class="econ-row"><span class="ek">Annual output (1 t/hr biochar input)</span><span class="ev">~5,500–6,500 MT/yr AC</span></div>
+      <div class="econ-row"><span class="ek">Annual revenue potential</span><span class="ev g">₹44–160 Cr</span></div>
+      <div class="econ-row"><span class="ek">Constraint</span><span class="ev a">Quality certification, consistent purity control</span></div>
+    </div>
+
+    <div class="econ-col" style="border-top:4px solid #5a2a7a">
+      <div class="econ-h">Carbon Credit (BCR) Play</div>
+      <div class="econ-sub">Biochar Carbon Removal via Puro.Earth or Gold Standard</div>
+      <div class="econ-row"><span class="ek">Sequestration per tonne biochar</span><span class="ev g">&gt;2 tCO₂ equivalent</span></div>
+      <div class="econ-row"><span class="ek">BCR credit price (2024–25)</span><span class="ev g">$200–600/tCO₂</span></div>
+      <div class="econ-row"><span class="ek">Revenue per tonne biochar</span><span class="ev g">$400–1,200 (CDR credit)</span></div>
+      <div class="econ-row"><span class="ek">Revenue per tonne bamboo input</span><span class="ev g">$56–198 (15% biochar yield)</span></div>
+      <div class="econ-row"><span class="ek">India BCR price (Varaha reference)</span><span class="ev g">Not disclosed; market $200–600</span></div>
+      <div class="econ-row"><span class="ek">Certification cost (Puro.Earth)</span><span class="ev a">€15,000–30,000/yr + verification</span></div>
+      <div class="econ-row"><span class="ek">Minimum viable project size</span><span class="ev a">~5,000 tCO₂/yr (10,000 t biochar)</span></div>
+      <div class="econ-row"><span class="ek">Carbon revenue on 10,000 t biochar</span><span class="ev g">$4–12M (₹33–100 Cr/yr)</span></div>
+      <div class="econ-row"><span class="ek">Key risk</span><span class="ev a">MRV system development; market price volatility</span></div>
+      <div class="econ-row"><span class="ek">Partner option</span><span class="ev g">Varaha (existing Puro.Earth certification)</span></div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-top:20px">
+    <div class="cc"><h3>Revenue per tonne bamboo by business model (₹)</h3><canvas id="revCompC"></canvas></div>
+    <div class="cc"><h3>CAPEX vs payback comparison by model</h3><canvas id="capexC"></canvas></div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: AC STUDY -->
+<div id="tab-acstudy" class="tab-content">
+<section>
+  <div class="s-label">08 / Peer-Reviewed Research — 2025</div>
+  <h2 class="s-h">ACTIVATED CARBON FROM<br>BAMBOO — RESEARCH INSIGHTS</h2>
+
+  <div style="background:var(--dk);color:#ccc;padding:20px 24px;margin-bottom:28px;border-left:4px solid var(--gl)">
+    <div style="font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gl);margin-bottom:8px">Source — Peer-Reviewed, Open Access</div>
+    <div style="font-size:13px;line-height:1.6;color:#ccc">Divya M.P., Krishnamoorthi S. et al. — <em>"Preparation and characterization of activated carbon from commercially important bamboo species in north eastern India"</em> — <strong style="color:var(--gl)">Advances in Bamboo Science 11 (2025) 100148</strong>, Elsevier. Published 21 March 2025. CAMPA-Tripura funded. H₃PO₄ chemical activation at 500°C, 120 min. 7 species from Tripura forest ranges. All results statistically significant at 95% (Scott-Knott test, SPSS).</div>
+  </div>
+
+  <!-- WHAT THE STUDY DID -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px">
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:12px">Species tested</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;background:var(--gp);border-radius:3px"><strong>Bambusa tulda</strong><span class="badge b-g">★ BEST OVERALL</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;background:var(--tp);border-radius:3px"><strong>Melocanna baccifera</strong><span class="badge b-t">2nd — High BET</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;background:var(--tp);border-radius:3px"><strong>Bambusa polymorpha</strong><span class="badge b-t">3rd — High yield</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:3px;border:1px solid var(--bd)"><strong>Bambusa vulgaris</strong><span class="badge b-dk">4th</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:3px;border:1px solid var(--bd)"><strong>Bambusa balcooa</strong><span class="badge b-a">5th — Low BET ⚠</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:3px;border:1px solid var(--bd)"><strong>Dendrocalamus longispathus</strong><span class="badge b-dk">6th</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 8px;background:var(--rp);border-radius:3px"><strong>Bambusa cacharensis</strong><span class="badge b-r">7th — Fails hardness</span></div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:12px">Activation process — step by step</div>
+      <div style="display:grid;gap:6px;font-size:12.5px">
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;background:var(--g);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</div><div><strong>Prepare feedstock:</strong> Culms dried, chopped, sieved to 10mm particle size</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;background:var(--g);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</div><div><strong>Impregnation:</strong> Mix 1:1 with H₃PO₄; hot air oven 120°C for 12 hours</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;background:var(--am);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</div><div><strong>Activation:</strong> Muffle furnace at <strong>500°C for 120 minutes</strong> → natural cooling</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;background:var(--g);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">4</div><div><strong>Washing:</strong> De-ionised water until leachate pH 6–7</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;background:var(--g);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">5</div><div><strong>Final drying:</strong> Hot air oven 110°C for 8 hours → finished AC</div></div>
+        <div style="margin-top:8px;padding:10px;background:var(--ap);border-left:3px solid var(--am);font-size:12px"><strong>Why H₃PO₄ over other agents?</strong> Enhances porous structure and surface area; cost-effective; environmentally friendly; widely available in India. Produces acidic pH (2.75–3.75) which enhances adsorption of anionic contaminants.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL DATA TABLE -->
+  <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:12px">Complete results — all 7 species, all 10 parameters (verbatim from study tables 1 & 2)</div>
+  <div class="sp-wrap">
+  <table class="sp-tbl" style="min-width:1300px">
+    <thead>
+      <tr>
+        <th>Species</th>
+        <th>AC Yield %</th>
+        <th>Burn-off %</th>
+        <th>Moisture %</th>
+        <th>pH</th>
+        <th>Elec. Cond. (µS/m)</th>
+        <th>Bulk density (g/cm³)</th>
+        <th>Hardness %</th>
+        <th>BET Surface (m²/g)</th>
+        <th>Ash %</th>
+        <th>Volatile %</th>
+        <th>Fixed C %</th>
+        <th>Iodine (mg/g)</th>
+        <th>Methylene Blue (mg/g)</th>
+        <th>Overall Verdict</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:var(--gp)">
+        <td style="font-weight:700;color:var(--g)">B. tulda</td>
+        <td class="score-cell score-5">40.0 ±1.65 ★</td>
+        <td class="score-cell score-5">60.0 ±1.65 ★</td>
+        <td class="score-cell score-5">5.21 ±0.25 ★</td>
+        <td class="score-cell score-5">3.75 ±0.13 ★</td>
+        <td class="score-cell score-5">1.121 ±0.10 ★</td>
+        <td class="score-cell">0.42 ±0.02</td>
+        <td class="score-cell score-5">82.2 ±1.19 ★</td>
+        <td class="score-cell score-5">806 ±68.2 ★</td>
+        <td class="score-cell">5.81 ±0.13</td>
+        <td class="score-cell">14.0 ±0.88</td>
+        <td class="score-cell score-5">75.9 ±1.07 ★</td>
+        <td class="score-cell score-5">1094 ±128 ★</td>
+        <td class="score-cell score-5">411 ±15.0 ★</td>
+        <td><span class="badge b-g">★ Best — All standards met</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:700">M. baccifera</td>
+        <td class="score-cell score-2">33.1 ±0.81</td>
+        <td class="score-cell score-2">66.9 ±0.81</td>
+        <td class="score-cell score-3">6.35 ±0.25</td>
+        <td class="score-cell score-2">2.96 ±0.09</td>
+        <td class="score-cell score-2">0.783 ±0.08</td>
+        <td class="score-cell score-2">0.355 ±0.01</td>
+        <td class="score-cell">78.8 ±1.03</td>
+        <td class="score-cell score-4">776 ±54.3</td>
+        <td class="score-cell score-3">6.78 ±0.19</td>
+        <td class="score-cell score-2">16.2 ±0.34</td>
+        <td class="score-cell score-2">70.6 ±0.72</td>
+        <td class="score-cell score-4">966 ±84.9</td>
+        <td class="score-cell">378 ±7.6</td>
+        <td><span class="badge b-t">2nd — High BET + iodine; low yield</span></td>
+      </tr>
+      <tr style="background:var(--tp)">
+        <td style="font-weight:700">B. polymorpha</td>
+        <td class="score-cell score-4">38.5 ±1.47</td>
+        <td class="score-cell score-4">61.5 ±1.47</td>
+        <td class="score-cell">5.81 ±0.21</td>
+        <td class="score-cell">3.33 ±0.10</td>
+        <td class="score-cell score-4">1.041 ±0.06</td>
+        <td class="score-cell score-5">0.436 ±0.02 ★</td>
+        <td class="score-cell">78.2 ±1.08</td>
+        <td class="score-cell">718 ±66.1</td>
+        <td class="score-cell">6.00 ±0.17</td>
+        <td class="score-cell score-5">12.5 ±0.29 ★</td>
+        <td class="score-cell score-4">75.7 ±0.62</td>
+        <td class="score-cell">712 ±92.2</td>
+        <td class="score-cell">370 ±13.4</td>
+        <td><span class="badge b-t">3rd — Best bulk density; lowest VM</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:700">B. vulgaris</td>
+        <td class="score-cell">36.5 ±1.49</td>
+        <td class="score-cell">63.5 ±1.49</td>
+        <td class="score-cell">5.79 ±0.29</td>
+        <td class="score-cell">3.32 ±0.09</td>
+        <td class="score-cell">0.937 ±0.08</td>
+        <td class="score-cell">0.395 ±0.02</td>
+        <td class="score-cell">79.3 ±1.42</td>
+        <td class="score-cell">661 ±56.4</td>
+        <td class="score-cell score-5">5.27 ±0.30 ★</td>
+        <td class="score-cell">13.0 ±0.53</td>
+        <td class="score-cell">74.9 ±1.20</td>
+        <td class="score-cell">770 ±69.4</td>
+        <td class="score-cell">387 ±15.4</td>
+        <td><span class="badge b-dk">4th — Lowest ash in AC; solid all-rounder</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:700">B. balcooa</td>
+        <td class="score-cell">37.5 ±1.57</td>
+        <td class="score-cell">62.5 ±1.57</td>
+        <td class="score-cell score-3">6.33 ±0.23</td>
+        <td class="score-cell score-2">2.75 ±0.15</td>
+        <td class="score-cell">0.868 ±0.06</td>
+        <td class="score-cell">0.388 ±0.01</td>
+        <td class="score-cell">76.1 ±0.97</td>
+        <td class="score-cell score-2" style="color:var(--rd);font-weight:700">544 ±48.7 ⚠</td>
+        <td class="score-cell score-3">6.78 ±0.14</td>
+        <td class="score-cell">14.5 ±0.65</td>
+        <td class="score-cell">72.4 ±0.93</td>
+        <td class="score-cell score-2" style="color:var(--rd);font-weight:700">416 ±58.9 ⚠</td>
+        <td class="score-cell">367 ±15.8</td>
+        <td><span class="badge b-a">5th — ⚠ FAILS water purification iodine spec. Low BET.</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:700">D. longispathus</td>
+        <td class="score-cell score-2">33.8 ±0.74</td>
+        <td class="score-cell score-2">66.2 ±0.74</td>
+        <td class="score-cell score-3">6.35 ±0.28</td>
+        <td class="score-cell">3.07 ±0.10</td>
+        <td class="score-cell">0.820 ±0.08</td>
+        <td class="score-cell">0.365 ±0.01</td>
+        <td class="score-cell">77.3 ±1.17</td>
+        <td class="score-cell">642 ±80.9</td>
+        <td class="score-cell">5.61 ±0.18</td>
+        <td class="score-cell">15.5 ±0.28</td>
+        <td class="score-cell">72.6 ±0.63</td>
+        <td class="score-cell">685 ±91.2</td>
+        <td class="score-cell">360 ±10.5</td>
+        <td><span class="badge b-dk">6th — Low yield and BET; limited commercial value</span></td>
+      </tr>
+      <tr style="background:var(--rp)">
+        <td style="font-weight:700;color:var(--rd)">B. cacharensis</td>
+        <td class="score-cell score-2">34.3 ±1.09</td>
+        <td class="score-cell score-2">65.7 ±1.09</td>
+        <td class="score-cell score-2">6.39 ±0.21</td>
+        <td class="score-cell">2.96 ±0.16</td>
+        <td class="score-cell score-2">0.783 ±0.08</td>
+        <td class="score-cell">0.371 ±0.01</td>
+        <td class="score-cell score-2" style="color:var(--rd);font-weight:700">73.5 ±0.99 ✗</td>
+        <td class="score-cell score-2" style="color:var(--rd)">486 ±44.9</td>
+        <td class="score-cell">5.97 ±0.19</td>
+        <td class="score-cell score-2" style="color:var(--rd)">17.0 ±0.40</td>
+        <td class="score-cell score-2" style="color:var(--rd)">70.7 ±0.75</td>
+        <td class="score-cell score-2" style="color:var(--rd)">514 ±64.9 ✗</td>
+        <td class="score-cell score-2" style="color:var(--rd)">333 ±13.9</td>
+        <td><span class="badge b-r">Reject — Fails hardness standard (&lt;75.9%). Lowest across most parameters.</span></td>
+      </tr>
+      <tr style="background:var(--lt)">
+        <td style="font-weight:600;font-family:'Fira Mono',monospace;font-size:10px">MEAN</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">36.2 ±0.91</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">63.8 ±0.91</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">6.03 ±0.16</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">3.16 ±0.12</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">0.908 ±0.05</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">0.39 ±0.01</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">77.9 ±0.95</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">662 ±40.95</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">6.03 ±0.20</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">14.7 ±0.58</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">73.3 ±0.79</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">737 ±82.92</td>
+        <td class="score-cell" style="font-family:'Fira Mono',monospace;font-size:10px">372 ±8.38</td>
+        <td style="font-family:'Fira Mono',monospace;font-size:10px;color:var(--mid)">All exceed minimum industrial thresholds</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="g3" style="margin-top:24px">
+    <div class="cc"><h3>BET Surface Area m²/g — higher = better adsorption</h3><canvas id="betC"></canvas></div>
+    <div class="cc"><h3>Iodine adsorption number mg/g — water purification benchmark</h3><canvas id="iodineC"></canvas></div>
+    <div class="cc"><h3>AC yield % — higher = more output per kg bamboo</h3><canvas id="acYieldC"></canvas></div>
+  </div>
+  <div class="g2">
+    <div class="cc"><h3>Fixed carbon vs ash — trade-off matrix</h3><canvas id="fixedCarbonC"></canvas></div>
+    <div class="cc"><h3>Methylene blue adsorption mg/g — mesopore proxy</h3><canvas id="mbC"></canvas></div>
+  </div>
+
+  <!-- KEY INSIGHTS -->
+  <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin:28px 0 14px">Deep-dive insights — what this means for Bombay Bioenergy</div>
+
+  <div class="g2">
+
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px;color:var(--g)">B. tulda wins everything — but it's an Assam species</div>
+      <p style="font-size:13px">B. tulda dominates every single metric: highest AC yield (40%), highest BET surface area (806 m²/g — nearly 50% above the mean of 662), highest iodine adsorption (1,094 mg/g vs mean 737), highest hardness (82.2%), highest fixed carbon (75.9%), lowest moisture (5.21%), lowest burn-off (60%). The study authors' conclusion is unambiguous: B. tulda is commercially superior for activated carbon. The critical implication for Bombay Bioenergy: B. tulda is abundant in Assam (where it is a primary paper pulp bamboo) but not easily available in Maharashtra. This creates a binary choice — either source B. tulda from Assam for an AC plant, or pivot to B. vulgaris (South India availability) or B. balcooa (Maharashtra) accepting lower but still commercially viable AC quality.</p>
+    </div>
+
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px;color:var(--rd)">B. balcooa is surprisingly poor for activated carbon</div>
+      <p style="font-size:13px">This is the most commercially significant and counterintuitive finding. B. balcooa (Beema bamboo) is Bombay Bioenergy's primary species for pelletisation — highest GCV, highest yield. But for activated carbon, it ranks 5th and critically <strong>fails the AWWA water purification iodine standard</strong> (needs 600–1,100 mg/g; B. balcooa delivers only 416 mg/g). BET surface area is also low at 544 m²/g vs B. tulda's 806. The likely cause: B. balcooa has a different cellulose-to-lignin structural ratio than B. tulda. Its higher lignin (which is great for pellet binding) produces a less porous char structure under H₃PO₄ activation. Pelletisation and activated carbon require opposite properties — high lignin for pellets, high cellulose-to-carbon conversion for AC.</p>
+    </div>
+
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px;color:var(--tl)">M. baccifera (Muli) surprises on the upside for AC</div>
+      <p style="font-size:13px">M. baccifera ranks lowest for pelletisation (thin walls, lower lignin) but delivers the <strong>second-highest BET surface area (776 m²/g)</strong> and second-highest iodine adsorption (966 mg/g) for activated carbon. This is a species that is currently near-worthless for Bombay Bioenergy's pellet operation but could be an extremely valuable dedicated AC feedstock — especially if an Assam procurement corridor is established. Muli is the most abundant bamboo in NE India. A model where Muli bamboo becomes a low-cost AC feedstock (purchased at bioenergy-grade prices of ₹1,800–2,500/MT) producing an AC that fetches ₹80,000–2,50,000/MT is commercially compelling.</p>
+    </div>
+
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px;color:var(--am)">The 500°C / 120-minute process is replicable at Indian industrial scale</div>
+      <p style="font-size:13px">The activation conditions in this study — H₃PO₄ at 1:1 ratio, 120°C impregnation, 500°C muffle furnace for 120 minutes — are standard laboratory conditions, but closely match what continuous rotary kilns and tunnel kilns run at industrial scale. Indian manufacturers including Ankur Scientific (Vadodara) and Carbon Terra sell rotary kilns specifically configured for 400–600°C biomass activation. The 40% AC yield from B. tulda is commercially viable: per tonne of dry bamboo input, 400 kg activated carbon at ₹80,000–1,20,000/MT (water treatment grade) = ₹32–48 lakh gross revenue per tonne of bamboo. This is the highest revenue per tonne of any bamboo use case, by a factor of 3–5×.</p>
+    </div>
+
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px;color:var(--pu)">Industrial standards — all species passed minimum thresholds, most exceeded them</div>
+      <p style="font-size:13px">Every species in the study exceeded ICAR's minimum AC yield threshold of 30%. Every species met SNI moisture (&lt;15%), ash (&lt;10%), volatile matter (&lt;25%), bulk density (0.30–0.35 g/cm³), and fixed carbon (&gt;65%) standards. 5 of 7 species met the AWWA iodine adsorption benchmark of 600–1,100 mg/g for water purification — only B. balcooa and B. cacharensis failed. All methylene blue numbers exceeded the SNI minimum of 120 mg/g. The practical conclusion: bamboo-based AC from NE India species is industrially viable across most parameters. B. balcooa's failure on iodine rules it out for water purification specifically but not for other applications (gas adsorption, soil remediation, supercapacitors) that have different porosity requirements.</p>
+    </div>
+
+    <div style="border:1px solid var(--bd);padding:20px;background:var(--paper)">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px;color:var(--g)">BET surface area determines application — understand the gradient</div>
+      <p style="font-size:13px">BET surface area is the single most important determinant of AC application and price: <strong>400–600 m²/g</strong> → industrial gas adsorption, decolourisation, general purpose (B. balcooa, B. cacharensis range); <strong>600–800 m²/g</strong> → water purification, air filtration, industrial effluent (B. vulgaris, D. longispathus, M. baccifera, B. polymorpha range); <strong>800+ m²/g</strong> → pharmaceutical, food-grade, supercapacitor precursor (B. tulda at 806 m²/g enters this premium tier). Commercially, the price differential between 600 m²/g and 800+ m²/g AC can be 3–5× per tonne. B. tulda at 806 m²/g is at the entry level of pharmaceutical/food grade — this is where the ₹1,50,000–2,50,000/MT pricing begins.</p>
+    </div>
+  </div>
+
+  <!-- INDUSTRY STANDARDS COMPLIANCE TABLE -->
+  <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin:28px 0 14px">Compliance matrix — which species for which application</div>
+  <table class="price-tbl">
+    <thead>
+      <tr><th>Application</th><th>Key Standard</th><th>Threshold</th><th>B. tulda</th><th>M. baccifera</th><th>B. polymorpha</th><th>B. vulgaris</th><th>B. balcooa</th><th>B. cacharensis</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Water purification (drinking)</td><td>AWWA iodine standard</td><td>600–1,100 mg/g iodine</td><td><span class="pass">✓ 1094</span></td><td><span class="pass">✓ 966</span></td><td><span class="pass">✓ 712</span></td><td><span class="pass">✓ 770</span></td><td><span class="fail">✗ 416</span></td><td><span class="fail">✗ 514</span></td><td>B. balcooa fails — cannot be used for water purification AC</td></tr>
+      <tr><td>Industrial effluent treatment</td><td>SNI volatile matter</td><td>&lt;25% VM; iodine &gt;400 mg/g</td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td>All species viable — lower iodine threshold for effluent vs drinking water</td></tr>
+      <tr><td>Gas adsorption / air filtration</td><td>BET surface area; fixed carbon</td><td>&gt;600 m²/g; fixed C &gt;65%</td><td><span class="pass">✓ 806m²/g</span></td><td><span class="pass">✓ 776</span></td><td><span class="pass">✓ 718</span></td><td><span class="pass">✓ 661</span></td><td><span class="warn-c">⚠ 544 borderline</span></td><td><span class="fail">✗ 486</span></td><td>B. cacharensis and B. balcooa marginal-to-failing for premium gas adsorption</td></tr>
+      <tr><td>Pharmaceutical / Food grade</td><td>USP; BET &gt;800 m²/g; ash &lt;5%</td><td>BET &gt;800; very low impurities</td><td><span class="pass">✓ 806 (marginal)</span></td><td><span class="warn-c">⚠ 776 — close</span></td><td><span class="fail">✗ 718</span></td><td><span class="fail">✗ 661</span></td><td><span class="fail">✗ 544</span></td><td><span class="fail">✗ 486</span></td><td>Only B. tulda enters pharma-grade territory at this activation; need higher temp or steam activation for others</td></tr>
+      <tr><td>Supercapacitor electrode</td><td>BET &gt;1,000 m²/g; high conductivity</td><td>BET &gt;1,000; EC as high as possible</td><td><span class="warn-c">⚠ 806 — needs optimisation</span></td><td><span class="warn-c">⚠ 776</span></td><td><span class="fail">✗</span></td><td><span class="fail">✗</span></td><td><span class="fail">✗</span></td><td><span class="fail">✗</span></td><td>Higher activation temp (700–900°C) or KOH activation needed to reach 1000+ m²/g for supercapacitor</td></tr>
+      <tr><td>Soil amendment / agriculture</td><td>ICAR biochar protocol; &gt;30% yield</td><td>Yield &gt;30%; fixed C &gt;50%</td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td><span class="pass">✓</span></td><td>All species viable for agricultural biochar (lower spec than industrial AC)</td></tr>
+      <tr><td>Steel PCI (biomass injection)</td><td>Fixed carbon &gt;80%; ash &lt;5%</td><td>Fixed C &gt;80%</td><td><span class="warn-c">⚠ 75.9% — needs upgrade</span></td><td><span class="fail">✗ 70.6%</span></td><td><span class="warn-c">⚠ 75.7%</span></td><td><span class="warn-c">⚠ 74.9%</span></td><td><span class="fail">✗ 72.4%</span></td><td><span class="fail">✗ 70.7%</span></td><td>H₃PO₄ activation at 500°C insufficient for steel-grade fixed carbon — need 700°C+ pyrolysis without acid</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight warn" style="margin-top:20px">
+    <span class="i-lbl">Critical finding for Bombay Bioenergy's species strategy</span>
+    This study reveals a hard trade-off: <strong>the species best for pelletisation (B. balcooa, B. nutans — high lignin) are NOT the best species for activated carbon</strong>. B. balcooa completely fails the water purification iodine standard despite being the top pellet species. B. tulda — the AC champion — is not your pellet species and is an Assam-source species. This means an integrated bamboo biorefinery at Bombay Bioenergy should deliberately source <em>different species for different product lines</em>: B. balcooa/B. nutans for pellets from Maharashtra private farms, and B. tulda or M. baccifera from Assam for a dedicated AC line. The economics justify it — B. tulda AC at 806 m²/g can achieve pharma-grade pricing (₹1,50,000–2,50,000/MT) versus pellet revenue of ₹7,500–13,000/MT.
+  </div>
+
+  <div class="insight purple">
+    <span class="i-lbl">Hypothesis for your validation sprint</span>
+    <strong>H15 — Activation method, not species, can be the differentiator.</strong> The study used H₃PO₄ at 500°C. Steam activation at 800–900°C or KOH activation at 700°C would likely bring B. balcooa's BET surface area above 700 m²/g and iodine number above 600 mg/g — potentially qualifying it for water purification. This would allow a single-species strategy (B. balcooa/Beema for both pellets and AC) rather than sourcing two different species. <strong>Action:</strong> Commission a small trial with TERI or IIT-Bombay — run B. balcooa through KOH activation at 700°C and measure BET. Cost: ₹1–3 lakh for the lab study. If BET exceeds 700 m²/g, a single-species model with dual product lines is viable.
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: HYPOTHESIS -->
+<div id="tab-hypothesis" class="tab-content">
+<section>
+  <div class="s-label">08 / Validation Sprint</div>
+  <h2 class="s-h">6-HOUR VALIDATION<br>SPRINT PLAN</h2>
+  <p style="margin-bottom:28px">You now have a strong information base. The next step is validating hypotheses specific to Bombay Bioenergy's context. Below are 14 testable hypotheses with specific actions you can take in the next 6 hours, this week, and this month.</p>
+
+  <div class="hyp-grid">
+
+    <div class="hyp h-g">
+      <div class="hyp-num">01</div>
+      <div class="hyp-t">Bamboo bioenergy in Maharashtra can be commercially viable without SAMARTH as the primary buyer</div>
+      <div class="hyp-body">SAMARTH provides volume guarantee but poor payment terms (45–90 day credit, tender pricing). Private industry in Maharashtra may offer better economics. Hypothesis: 5+ industrial boiler operators in Solapur-Pune-Nashik belt will pay ₹10,000+/MT and 15-day credit terms for consistent quality bamboo pellet.</div>
+      <div class="hyp-action">ACTION (Today): Call 3 cement/textile/food processing plants in Solapur-Nashik belt. Ask: current boiler fuel, price, pain points. Benchmark 3 quotes against SAMARTH rate. Source list from MSSIA (Maharashtra Small Scale Industries Assn) directory.</div>
+    </div>
+
+    <div class="hyp h-g">
+      <div class="hyp-num">02</div>
+      <div class="hyp-t">D. strictus agarbatti sticks + pellets from residue outperforms pellets-only by 60–130%</div>
+      <div class="hyp-body">The model: sort best-grade D. strictus → split into agarbatti sticks (₹12,000–22,000/MT) → pelletise 60–70% residue (₹7,500–11,000/MT). Combined revenue per MT bamboo input could be ₹8,100–12,850 vs ₹3,750–5,500 for pellet-only.</div>
+      <div class="hyp-action">ACTION (Today): Call Cycle Pure Agarbathi (Bangalore) and Padmini Products purchasing teams. Get current stick specifications, volume requirements, and price. Check if they have spot procurement gaps due to China import restrictions. Validate ₹12,000–22,000/MT range.</div>
+    </div>
+
+    <div class="hyp h-g">
+      <div class="hyp-num">03</div>
+      <div class="hyp-t">3-year B. nutans or B. balcooa sourced from private farms in Solapur district can be procured at ₹2,000–2,500/MT green</div>
+      <div class="hyp-body">Current market data shows ₹2,750/quintal (₹27,500/MT?) from commodity markets — but that's for processed poles. Farm-gate for bioenergy-grade raw bamboo should be substantially lower. Godbole MOU targets ₹1,800/MT.</div>
+      <div class="hyp-action">ACTION (Today): Validate the ₹1,800/MT Godbole MOU rate against 2 other suppliers. Call KVK Solapur for current farm-gate prices on napier/bamboo biomass. Check recent BiofuelCircle platform listings for biomass prices in your region.</div>
+    </div>
+
+    <div class="hyp h-a">
+      <div class="hyp-num">04</div>
+      <div class="hyp-t">Biochar from bamboo can be certified via Puro.Earth and sold at $200+/tCO₂ without needing Varaha as intermediary</div>
+      <div class="hyp-body">Varaha is India's only current Puro.Earth listed entity. But Puro.Earth accepts new project developers directly. The question is whether Bombay Bioenergy's scale (5,000–10,000 tCO₂/yr from a 2 TPH biochar plant) meets minimum viable thresholds for direct certification vs. partnership with Varaha.</div>
+      <div class="hyp-action">ACTION (This Week): Email registrations@puro.earth requesting methodology requirements for bamboo agricultural residue biochar in India. Ask minimum project size, MRV requirements, timeline. In parallel, email Varaha (contact@varaha.earth) for partner model discussion — they may welcome smaller projects under their certification umbrella.</div>
+    </div>
+
+    <div class="hyp h-a">
+      <div class="hyp-num">05</div>
+      <div class="hyp-t">Tata Steel or JSW will sign a preliminary LOI for bamboo biochar PCI within 6 months of first trial delivery</div>
+      <div class="hyp-body">Tata Steel Jamshedpur is India's only current biochar PCI user (30,000 t replaced). India government steel-biochar task force active since March 2024. JSW and SAIL in exploratory discussions. The pathway from "trial" to "contract" could be faster than typical for a first-mover supplier of bamboo biochar meeting their quality spec.</div>
+      <div class="hyp-action">ACTION (This Week): Contact Tata Steel sustainability team (sustainability@tatasteel.com) and JSW procurement. Request specifications for PCI biochar: fixed carbon %, ash %, particle size, moisture. Get the exact spec sheet before investing in high-FC biochar equipment. This validates whether bamboo biochar meets their threshold.</div>
+    </div>
+
+    <div class="hyp h-a">
+      <div class="hyp-num">06</div>
+      <div class="hyp-t">A Japanese trading house (Marubeni, Sumitomo, ITOCHU) will sign an LOI for 10,000 MT/yr trial of Indian bamboo pellets within 12 months if ISCC EU certification is initiated</div>
+      <div class="hyp-body">Japan imports 8.6 MT/yr growing 35% annually; is actively diversifying from Vietnam (deforestation controversy + quality rejections at Korean ports Jan 2025); India agro-residue = zero-deforestation story; ISCC EU residue track takes 12–18 months.</div>
+      <div class="hyp-action">ACTION (This Week): Contact Japan India Chamber of Commerce (jicct.com) for trading house introductions. Email ISCC System (info@iscc-system.org) for residue track application guide. Contact SGS India (biomass division) for ISCC audit cost quote for a bamboo pellet plant at 10 TPH capacity.</div>
+    </div>
+
+    <div class="hyp h-t">
+      <div class="hyp-num">07</div>
+      <div class="hyp-t">Wood vinegar from bamboo pyrolysis can be sold to Indian organic farmers at ₹25,000+/MT without Japan export</div>
+      <div class="hyp-body">India's organic farming market is ₹2,000+ Cr growing at 20%+ annually. Wood vinegar as bio-pesticide and growth promoter is used in Japan and China extensively but virtually unknown in India. BAIF/UGAM FPOs are the exact target customer — they are building organic supply chains already.</div>
+      <div class="hyp-action">ACTION (This Week): Contact BAIF (baif.org.in) and ask if any of their FPOs use wood vinegar or bio-pesticide products. Ask what they pay for organic pest management currently. Send a 2-page technical brief on wood vinegar with trial offer. Validate if any NABARD-supported organic farm cluster in MH would pay ₹25,000/MT.</div>
+    </div>
+
+    <div class="hyp h-t">
+      <div class="hyp-num">08</div>
+      <div class="hyp-t">The agarbatti grade D. strictus in Gadchiroli / Chandrapur forests can be commercially procured through Forest Dept auction at under ₹3,000/MT</div>
+      <div class="hyp-body">Maharashtra forest bamboo (D. strictus dominant in Gadchiroli, Chandrapur, Yavatmal) is available through Forest Dept auction lots. The 2017 Forest Act amendment helps but audit-lot bamboo requires documentation. Key question is whether auction prices are below private farm prices and whether the quality is sortable for agarbatti grade.</div>
+      <div class="hyp-action">ACTION (Today): Call Maharashtra Forest Dept (Nagpur circle) for current bamboo auction schedule and reserve prices. Contact local contractors in Gadchiroli (via KVK Gadchiroli) who supply to existing agarbatti cluster in MP/Karnataka. Get last 3 auction cleared prices.</div>
+    </div>
+
+    <div class="hyp h-t">
+      <div class="hyp-num">09</div>
+      <div class="hyp-t">An Indian biochar plant can be built and become cash-flow positive within 18 months at ₹1.5–2 Cr CAPEX using agro-residue (not necessarily bamboo) as feedstock to validate the process before bamboo scale-up</div>
+      <div class="hyp-body">The bamboo supply chain takes 3+ years to develop (plantation age requirement). But a biochar plant running cotton stalk or sugarcane trash (immediately available in Maharashtra) can generate carbon credits and soil amendment revenue while the bamboo supply chain develops in parallel.</div>
+      <div class="hyp-action">ACTION (This Week): Get quotes from Ankur Scientific (Vadodara) and Carbon Terra for a 500 kg/hr continuous pyrolysis unit. Request: CAPEX, biochar yield rate, syngas output, and MRV system compatibility. Validate cash-flow positive at 30,000 MT/yr agro-residue input × ₹8,000/MT biochar output.</div>
+    </div>
+
+    <div class="hyp h-p">
+      <div class="hyp-num">10</div>
+      <div class="hyp-t">TSPL/Vedanta's existing torrefied pellet plant can be visited as a reference — bamboo torrefaction at Indian scale is proven</div>
+      <div class="hyp-body">TSPL (Vedanta subsidiary) in India has commissioned torrefied biomass production. If this is operational and using bamboo/agro-residue as feedstock, it provides the India proof of concept for Bombay Bioenergy's Phase 2 torrefied pellet business case.</div>
+      <div class="hyp-action">ACTION (This Week): Contact TSPL (Talwandi Sabo Power Ltd, Punjab) sustainability team. Request plant visit or technical information session. Ask: feedstock used, capacity, die specifications, export customers. This validates or invalidates the India torrefaction feasibility without incurring R&D risk.</div>
+    </div>
+
+    <div class="hyp h-p">
+      <div class="hyp-num">11</div>
+      <div class="hyp-t">Bombay Bioenergy can join Assam Bamboo Industrial Park (Jorhat) supply chain as an off-taker for processed bamboo and biochar inputs</div>
+      <div class="hyp-body">Assam is building a dedicated industrial park for bamboo processing. If Bombay Bioenergy can position as an off-taker for semi-processed bamboo chips or biochar from Assam, it solves the Maharashtra supply constraint while Solapur plantation base matures.</div>
+      <div class="hyp-action">ACTION (This Week): Contact Assam Industrial Development Corporation (AIDC) and Assam Bamboo Industrial Park. Request product specifications and pricing for bamboo chips ex-Jorhat. Check rail freight cost Jorhat → Solapur (approx 2,500 km). Validate economics at ₹2,500/MT chips + ₹3,000/MT freight = ₹5,500/MT landed.</div>
+    </div>
+
+    <div class="hyp h-p">
+      <div class="hyp-num">12</div>
+      <div class="hyp-t">Bombay Bioenergy can develop a "poly-generation" unit — biochar + wood vinegar + syngas power — that is cash-flow positive at 1 TPH bamboo input (pilot scale)</div>
+      <div class="hyp-body">The CBRC China model showed 507 kWh electricity + 113.6 kg biochar + liquid extract per tonne bamboo chips. At Indian prices: 507 kWh × ₹5/unit = ₹2,535 power + 113.6 kg biochar × ₹12/kg = ₹1,363 + wood vinegar ₹1,000+ = ₹4,898 gross per tonne chips. Against ₹2,500–3,500 feedstock cost. Possible but margin is tight at pilot scale.</div>
+      <div class="hyp-action">ACTION (This Month): Commission a techno-economic assessment from TERI (teri.res.in) or IIT-Bombay Chemical Engineering on the poly-generation model for bamboo at 1 TPH pilot. Cost: ₹2–5 lakh. This is the most important technical study before any capital commitment on biochar/gasification.</div>
+    </div>
+
+    <div class="hyp h-g">
+      <div class="hyp-num">13</div>
+      <div class="hyp-t">The bamboo flooring market premium (₹180–600/sq.ft) makes small-scale engineered bamboo panel production viable alongside bioenergy from same feedstock</div>
+      <div class="hyp-body">Bamboo flooring and panel uses the outer culm layer (hard, dense). The inner culm — normally discarded — is ideal bioenergy feedstock. A combined flooring + bioenergy operation extracts maximum value: ₹180–600/sq.ft for flooring vs ₹7,500/MT for pellets from the inner culm material.</div>
+      <div class="hyp-action">ACTION (This Month): Visit Mutha Industries (Pune) and The Bamboo House India (Delhi) to understand their raw material sourcing and pricing. Ask: what happens to culm inner material after they process outer shell. Get quotes for processed bamboo panels wholesale.</div>
+    </div>
+
+    <div class="hyp h-a">
+      <div class="hyp-num">14</div>
+      <div class="hyp-t">India's first bamboo biorefinery in Assam (₹7,200 Cr JV, Dec 2025 launch) represents partnership or supply chain opportunity for Bombay Bioenergy, not competition</div>
+      <div class="hyp-body">The Assam biorefinery will process 5 lakh tonnes bamboo/yr into ethanol, furfural, acetic acid, and biochar. It will create biochar as a byproduct — not its primary product. Bombay Bioenergy could: (a) supply bamboo, (b) off-take biochar at wholesale, or (c) benchmark their own economics against this industrial plant's output pricing.</div>
+      <div class="hyp-action">ACTION (This Week): Identify the JV partners behind the Assam biorefinery (search: "Assam bamboo biorefinery ₹7200 crore 2025"). Contact their procurement team for supply chain partnership discussion. Ask: will biochar be available for purchase? At what price and specification?</div>
+    </div>
+
+  </div>
+
+  <div class="insight" style="margin-top:8px">
+    <span class="i-lbl">Sprint Priority — Next 6 Hours</span>
+    Do items 01, 02, 03, 08 today. These are phone calls and emails with no cost that validate the foundational economics before any capital decision. Items 04, 05, 06 this week. Items 09, 12 this month — these require budget but are the most important technical validations before committing to a specific plant configuration.
+  </div>
+</section>
+</div>
+
+<footer>
+  <p>BOMBAY BIOENERGY · BAMBOO & BIOCHAR INDUSTRY DEEP DIVE · COMPILED JUNE 2025</p>
+  <p>SOURCES: IMARC, CDR.fyi, NBM India, Varaha, Tata Steel, CBRC, ISO 17225-6, Puro.Earth, INBAR</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+  // lazy-render charts
+  window.dispatchEvent(new Event('resize'));
+}
+
+const G='#3d7a35',GL='#6aaa5e',AM='#b86800',RD='#aa2222',TL='#1a6060',PU='#5a2a7a',MID='#555';
+const baseOpts={plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}};
+
+// Overview charts
+new Chart('sectorC',{type:'doughnut',data:{labels:['Industrial products','Agarbatti / sticks','Construction & scaffolding','Furniture & handicrafts','Paper & pulp','Food (shoots)','Flooring / engineered','Bioenergy','Other'],datasets:[{data:[37.6,18,14,12,7,5,3,2,1.4],backgroundColor:[G,'#8b3a00',TL,'#b86800','#1a4040','#5e9950','#2d5a8c',GL,MID],borderWidth:0}]},options:{plugins:{legend:{labels:{font:{size:9},boxWidth:8}}}}});
+
+new Chart('bcrC',{type:'bar',data:{labels:['2022','2023','2024','Q1–Q2 2025 (partial)'],datasets:[{label:'$M',data:[14.6,33.9,181.5,150],backgroundColor:[MID,TL,G,GL],borderWidth:0}]},options:{...baseOpts,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'USD Million',font:{size:10}},ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+new Chart('mktC',{type:'line',data:{labels:['2019','2020','2021','2022','2023','2024','2025e','2026e','2027e','2028e','2029e','2030e'],datasets:[{label:'₹ Crore',data:[3500,3800,4200,4800,5200,5836,6300,6800,7400,7900,8500,9100],borderColor:G,backgroundColor:'rgba(61,122,53,0.1)',fill:true,tension:.4,borderWidth:2.5}]},options:{...baseOpts,plugins:{legend:{display:false}}}});
+
+new Chart('bioMktC',{type:'line',data:{labels:['2019','2020','2021','2022','2023','2024','2025e','2027e','2029e','2031e','2033e'],datasets:[{label:'USD Million',data:[32,38,46,54,62,71.9,79.8,99,130,160,184],borderColor:PU,backgroundColor:'rgba(90,42,122,0.1)',fill:true,tension:.4,borderWidth:2.5}]},options:{...baseOpts,plugins:{legend:{display:false}}}});
+
+// Species charts
+new Chart('specScatterC',{type:'scatter',data:{datasets:[
+  {label:'B.balcooa',data:[{x:4685,y:26}],backgroundColor:G,pointRadius:10},{label:'B.nutans (Nutan)',data:[{x:4590,y:29.66}],backgroundColor:TL,pointRadius:12,pointStyle:'star'},
+  {label:'D.strictus',data:[{x:4530,y:25}],backgroundColor:'#5e9950',pointRadius:9},{label:'D.asper',data:[{x:4445,y:24}],backgroundColor:'#3a8c6b',pointRadius:9},
+  {label:'B.bambos',data:[{x:4530,y:23}],backgroundColor:AM,pointRadius:8},{label:'Moso',data:[{x:4700,y:30}],backgroundColor:'#8b3a00',pointRadius:11},
+  {label:'M.baccifera',data:[{x:4300,y:26.5}],backgroundColor:MID,pointRadius:7}
+]},options:{plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{x:{min:4200,title:{display:true,text:'GCV (kcal/kg)',font:{size:10}},ticks:{font:{size:10}}},y:{min:20,title:{display:true,text:'Lignin %',font:{size:10}},ticks:{font:{size:10}}}}}});
+
+new Chart('bioYieldC',{type:'bar',data:{labels:['Moso','B.nutans','B.balcooa','D.asper','D.strictus','B.bambos','B.tulda','M.baccifera'],datasets:[{data:[34,30.5,29.5,27,27.5,24.5,25,22.5],backgroundColor:[G,TL,'#5e9950','#3a8c6b','#8b3a00',AM,'#3a5e8c',MID],borderWidth:0}]},options:{...baseOpts,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'% of dry input',font:{size:10}},ticks:{font:{size:10}}}}}});
+
+// Uses charts
+new Chart('useRevC',{type:'bar',data:{labels:['Industrial','Agarbatti','Construction','Furniture','Paper','Food','Flooring','Bioenergy','Charcoal'],datasets:[{data:[2194,1050,816,700,408,292,175,117,84],backgroundColor:[G,'#8b3a00',TL,AM,'#1a4040','#5e9950','#2d5a8c',GL,PU],borderWidth:0}]},options:{...baseOpts,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'₹ Crore est.',font:{size:10}},ticks:{font:{size:10}}}}}});
+
+new Chart('fgPriceC',{type:'bar',data:{labels:['Food shoots','Furniture poles','Agarbatti grade','Construction','Bioenergy','Paper pulp'],datasets:[{data:[18000,6000,4000,3500,3000,2300],backgroundColor:[G,TL,AM,'#5e9950','#8b3a00',MID],borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'₹/MT',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+// Biochar charts
+new Chart('bioGrowthC',{type:'line',data:{labels:['2019','2020','2021','2022','2023','2024','2025e','2027e','2029e','2031e','2033e'],datasets:[
+  {label:'India biochar $M',data:[32,38,46,54,62,71.9,79.8,99,130,160,184],borderColor:G,backgroundColor:'rgba(61,122,53,0.08)',fill:true,tension:.4,borderWidth:2.5},
+  {label:'Global BCR $M',data:[2,5,12,14.6,33.9,181.5,400,900,1800,2500,3200],borderColor:PU,backgroundColor:'transparent',tension:.4,borderWidth:2,borderDash:[5,3]}
+]},options:{...baseOpts}});
+
+new Chart('bioPriceC',{type:'bar',data:{labels:['Agricultural soil','Carbon credit (embedded)','Steel PCI','Filter media','Activated carbon (water)','Activated carbon (food/pharma)'],datasets:[{data:[13000,25000,16000,27500,100000,215000],backgroundColor:[G,PU,TL,AM,'#1a4040','#8b3a00'],borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'₹/MT',font:{size:10}},ticks:{font:{size:10},callback:v=>v>=1000?'₹'+(v/1000).toFixed(0)+'k':'₹'+v}},y:{ticks:{font:{size:9}}}}}});
+
+new Chart('bcrVolC',{type:'bar',data:{labels:['2022','2023','2024','2025 H1 (record)'],datasets:[{label:'MT contracted globally',data:[50000,150000,500000,1600000],backgroundColor:[MID,TL,G,GL],borderWidth:0}]},options:{...baseOpts,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'tonnes CDR contracted',font:{size:10}},ticks:{font:{size:10},callback:v=>v>=1000000?v/1000000+'M':v>=1000?v/1000+'K':v}},x:{ticks:{font:{size:10}}}}}});
+
+// Byproduct charts
+new Chart('yieldSplitC',{type:'doughnut',data:{labels:['Biochar (solid)','Bio-oil / wood vinegar','Syngas (combustible)','Water vapour / losses'],datasets:[{data:[30,16,30,24],backgroundColor:[G,AM,TL,MID],borderWidth:0}]},options:{plugins:{legend:{labels:{font:{size:10},boxWidth:10}}}}});
+
+new Chart('valueStreamC',{type:'bar',data:{labels:['Biochar (soil)','Wood vinegar','Syngas (fuel saved)','Carbon credit add-on','Activated carbon upgrade'],datasets:[{label:'₹ per tonne bamboo input',data:[2100,4500,3000,3850,18000],backgroundColor:[G,AM,TL,PU,'#8b3a00'],borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'₹ per tonne bamboo input',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:9}}}}}});
+
+// Economics charts
+new Chart('revCompC',{type:'bar',data:{labels:['SAMARTH Pellet','Private Industry Pellet','Japan Export Pellet','Torrefied Japan','Agarbatti + residue pellet','Biochar (soil only)','Biochar + carbon credit','Activated carbon (from biochar)'],datasets:[{data:[4800,7500,11000,16000,10500,7000,12000,38000],backgroundColor:[MID,'#5e9950',AM,AM,PU,G,TL,'#8b3a00'],borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'₹ per tonne bamboo input',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:9}}}}}});
+
+new Chart('capexC',{type:'scatter',data:{datasets:[
+  {label:'Indian pellet mill',data:[{x:5,y:4}],backgroundColor:G,pointRadius:14},{label:'European pellet mill',data:[{x:3.5,y:18}],backgroundColor:AM,pointRadius:14},
+  {label:'Biochar (small)',data:[{x:2,y:1.5}],backgroundColor:TL,pointRadius:10},{label:'Biochar (commercial)',data:[{x:2.5,y:6}],backgroundColor:PU,pointRadius:12},
+  {label:'Torrefaction add-on',data:[{x:4.5,y:20}],backgroundColor:'#8b3a00',pointRadius:13},{label:'Activated carbon',data:[{x:2,y:3.5}],backgroundColor:'#1a4040',pointRadius:10}
+]},options:{plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{x:{title:{display:true,text:'Payback years',font:{size:10}},ticks:{font:{size:10}},min:0,max:7},y:{title:{display:true,text:'CAPEX ₹ Crore',font:{size:10}},ticks:{font:{size:10}},min:0}}}});
+
+// Placeholder for value chain
+new Chart('valueChainC',{type:'bar',data:{labels:['Forest/farm harvester','Aggregator/FPO','Trader/processor','Pellet/biochar manufacturer','End buyer (B2B)','Export (Japan/Korea)'],datasets:[{label:'Typical margin %',data:[5,8,10,25,35,45],backgroundColor:[MID,'#8b3a00',AM,G,TL,PU],borderWidth:0}]},options:{...baseOpts,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'Indicative margin % at each stage',font:{size:10}},ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+// AC Study charts
+const acSpecies=['B.tulda','M.baccifera','B.polymorpha','B.vulgaris','B.balcooa','D.longispathus','B.cacharensis'];
+const acColors=[G,TL,'#3a8c6b','#5e9950',AM,MID,RD];
+
+new Chart('betC',{type:'bar',data:{labels:acSpecies,datasets:[{data:[806,776,718,661,544,642,486],backgroundColor:acColors,borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false},annotation:{annotations:{line1:{type:'line',xMin:600,xMax:600,borderColor:'rgba(180,60,60,0.5)',borderWidth:1.5,label:{content:'Water purif. min',display:true,position:'start',font:{size:8}}}}}},scales:{x:{min:400,title:{display:true,text:'m²/g',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+new Chart('iodineC',{type:'bar',data:{labels:acSpecies,datasets:[{data:[1094,966,712,770,416,685,514],backgroundColor:acColors,borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{min:300,title:{display:true,text:'mg/g (AWWA water purif. range: 600–1100)',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+new Chart('acYieldC',{type:'bar',data:{labels:acSpecies,datasets:[{data:[40.0,33.1,38.5,36.5,37.5,33.8,34.3],backgroundColor:acColors,borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{min:30,title:{display:true,text:'% AC yield from dry bamboo',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+new Chart('fixedCarbonC',{type:'scatter',data:{datasets:[
+  {label:'B.tulda',data:[{x:5.81,y:75.9}],backgroundColor:G,pointRadius:12},
+  {label:'M.baccifera',data:[{x:6.78,y:70.6}],backgroundColor:TL,pointRadius:10},
+  {label:'B.polymorpha',data:[{x:6.00,y:75.7}],backgroundColor:'#3a8c6b',pointRadius:10},
+  {label:'B.vulgaris',data:[{x:5.27,y:74.9}],backgroundColor:'#5e9950',pointRadius:10},
+  {label:'B.balcooa',data:[{x:6.78,y:72.4}],backgroundColor:AM,pointRadius:10},
+  {label:'D.longispathus',data:[{x:5.61,y:72.6}],backgroundColor:MID,pointRadius:8},
+  {label:'B.cacharensis',data:[{x:5.97,y:70.7}],backgroundColor:RD,pointRadius:10}
+]},options:{plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{x:{title:{display:true,text:'Ash content %',font:{size:10}},ticks:{font:{size:10}},reverse:true},y:{title:{display:true,text:'Fixed carbon %',font:{size:10}},ticks:{font:{size:10}},min:68}}}});
+
+new Chart('mbC',{type:'bar',data:{labels:acSpecies,datasets:[{data:[411,378,370,387,367,360,333],backgroundColor:acColors,borderWidth:0}]},options:{indexAxis:'y',...baseOpts,plugins:{legend:{display:false}},scales:{x:{min:280,title:{display:true,text:'mg/g (SNI min: 120 mg/g — all pass)',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}})
+</script>
+</body>
+</html>

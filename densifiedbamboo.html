@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bamboo Pelletisation Guide — Bombay Bioenergy</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --ink: #111;
+  --paper: #f7f4ee;
+  --g: #3d7a35;
+  --gl: #6aaa5e;
+  --gp: #d8ead4;
+  --am: #b86800;
+  --ap: #fdf0d5;
+  --rd: #aa2222;
+  --rp: #fce8e8;
+  --tl: #1a6060;
+  --tp: #d4eaea;
+  --mid: #555;
+  --lt: #e6e0d4;
+  --bd: #c0b8a8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;font-size:15px;line-height:1.5}
+
+/* ── TYPOGRAPHY SYSTEM ── */
+.mono{font-family:'Fira Mono',monospace}
+.h-display{font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:0.5px;line-height:1}
+.eyebrow{font-family:'Fira Mono',monospace;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gl);margin-bottom:14px}
+.section-num{font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:10px}
+.section-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(38px,4.5vw,58px);line-height:1.05;letter-spacing:0.5px;margin-bottom:40px}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--ink);display:grid;grid-template-columns:1.1fr 0.9fr;overflow:hidden;position:relative}
+.hero-l{padding:80px 64px;display:flex;flex-direction:column;justify-content:center;z-index:2}
+.hero-brand{font-family:'Fira Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#555;margin-bottom:28px;display:flex;align-items:center;gap:10px}
+.hero-brand::before{content:'';width:32px;height:1px;background:#444}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(52px,6.5vw,92px);line-height:0.95;color:#f0ece4;letter-spacing:1px;margin-bottom:28px}
+.hero-title em{color:var(--gl);font-style:normal;display:block}
+.hero-desc{font-size:15px;line-height:1.65;color:#888;max-width:400px;margin-bottom:44px}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:420px}
+.kpi{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:18px 16px}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:34px;color:var(--gl);line-height:1}
+.kpi-lbl{font-family:'Fira Mono',monospace;font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:5px}
+.hero-r{position:relative;display:flex;align-items:center;justify-content:center;padding:40px}
+.culm-row{display:flex;gap:14px;align-items:flex-end;height:480px}
+.culm{border-radius:20px 20px 6px 6px;position:relative;animation:riseUp 1s ease-out forwards;transform-origin:bottom center;opacity:0}
+.culm::after{content:'';position:absolute;height:3px;left:10px;right:10px;background:rgba(0,0,0,0.22);border-radius:2px}
+@keyframes riseUp{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
+.cv{width:40px}.c1{background:#2a4525;height:200px;animation-delay:.1s}.c1::after{bottom:52px}
+.c2{background:#375e30;height:290px;animation-delay:.2s}.c2::after{bottom:75px}
+.c3{background:#4a7c3f;height:400px;animation-delay:.3s}.c3::after{bottom:105px}
+.c4{background:#5ca84e;height:460px;animation-delay:.4s;border:3px solid var(--gl);box-shadow:0 0 28px rgba(106,170,94,0.3)}.c4::after{bottom:122px}
+.c5{background:#4a7c3f;height:360px;animation-delay:.5s}.c5::after{bottom:96px}
+.c6{background:#375e30;height:250px;animation-delay:.6s}.c6::after{bottom:66px}
+.c7{background:#2a4525;height:160px;animation-delay:.7s;opacity:0.35!important}.c7::after{bottom:42px}
+.culm-tag{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);font-family:'Fira Mono',monospace;font-size:9px;color:#555;white-space:nowrap}
+.best-tag{color:var(--gl);font-weight:500}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;background:#1a1a1a;z-index:100;display:flex;align-items:stretch;padding:0 48px;border-bottom:2px solid var(--g)}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;color:var(--gl);padding:14px 0;margin-right:auto;letter-spacing:0.5px}
+.nav-a{font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase;color:#bbb;padding:16px 14px;text-decoration:none;transition:all .2s;white-space:nowrap;border-bottom:3px solid transparent;border-top:3px solid transparent}
+.nav-a:hover{color:#fff;border-bottom-color:var(--gl);background:rgba(106,170,94,0.08)}
+
+/* ── LAYOUT ── */
+section{padding:72px 64px}
+section:nth-child(even){background:var(--lt)}
+
+/* ── CARDS / CHIPS ── */
+.badge{display:inline-block;padding:3px 9px;border-radius:3px;font-family:'Fira Mono',monospace;font-size:10px;font-weight:500}
+.b-g{background:var(--gp);color:var(--g)}
+.b-t{background:var(--tp);color:var(--tl)}
+.b-a{background:var(--ap);color:var(--am)}
+.b-r{background:var(--rp);color:var(--rd)}
+.b-dk{background:#e4e0d8;color:var(--mid)}
+
+.insight{border-left:4px solid var(--g);background:var(--gp);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.65}
+.insight.warn{border-color:var(--am);background:var(--ap)}
+.insight.danger{border-color:var(--rd);background:var(--rp)}
+.insight-lbl{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:5px;display:block}
+.insight.warn .insight-lbl{color:var(--am)}
+.insight.danger .insight-lbl{color:var(--rd)}
+
+/* ── TABLES ── */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;text-align:left;padding:12px 14px;background:var(--ink);color:#888;border:1px solid #222}
+td{padding:12px 14px;border:1px solid var(--bd);background:var(--paper);vertical-align:middle}
+tr:hover td{background:#fffff2}
+td:first-child{font-weight:600;font-size:13px}
+.pass{color:var(--g);font-weight:700}
+.fail{color:var(--rd);font-weight:700}
+.warn-c{color:var(--am);font-weight:700}
+
+/* ── SPECIES TABLE ── */
+.sp-grid{display:grid;gap:2px;background:var(--bd);border:1px solid var(--bd)}
+.sp-hdr{display:grid;grid-template-columns:190px 1fr 1fr 1fr 1fr 1fr 76px;background:var(--ink);gap:1px}
+.sp-hdr-c{font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:#777;padding:11px 13px;background:var(--ink)}
+.sp-row{display:grid;grid-template-columns:190px 1fr 1fr 1fr 1fr 1fr 76px;gap:1px;cursor:pointer}
+.sp-row:hover .sc{background:#fffff2}
+.sc{padding:13px;background:var(--paper);font-size:13px;line-height:1.4;transition:background .15s}
+.sp-name{font-weight:700;color:var(--g);font-size:14px}
+.sp-sci{font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid);font-style:italic}
+.bar-w{display:flex;align-items:center;gap:8px}
+.mbar{height:7px;border-radius:4px;min-width:4px}
+.bv{font-family:'Fira Mono',monospace;font-size:10.5px;color:var(--mid);white-space:nowrap}
+
+/* ── AGE TIMELINE ── */
+.age-tl{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;background:var(--bd);margin-bottom:28px}
+.age-c{background:var(--paper);padding:20px 16px;text-align:center}
+.age-c.opt{background:var(--gp)}
+.age-c.bad{background:var(--rp)}
+.age-c.caut{background:var(--ap)}
+.age-yr{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:48px;color:var(--g);line-height:1}
+.age-c.bad .age-yr{color:var(--rd)}
+.age-c.caut .age-yr{color:var(--am)}
+.age-lbl{font-family:'Fira Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--mid);margin-bottom:12px}
+.age-props{font-size:12.5px;line-height:1.7;text-align:left}
+.age-props strong{font-weight:700}
+
+/* ── PROCESS STEPS ── */
+.proc-wrap{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;background:var(--bd);margin-bottom:36px}
+.proc-step{background:var(--paper);padding:18px 10px;text-align:center}
+.proc-step.hl{background:var(--gp)}
+.proc-step.wn{background:var(--ap)}
+.proc-step.cr{background:var(--rp)}
+.ps-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:32px;color:var(--g);line-height:1}
+.proc-step.wn .ps-num{color:var(--am)}
+.proc-step.cr .ps-num{color:var(--rd)}
+.ps-name{font-family:'Fira Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--mid);margin:5px 0 6px}
+.ps-note{font-size:10.5px;line-height:1.4;color:var(--ink)}
+
+/* ── DOS DONTS ── */
+.dd-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--bd)}
+.dos,.dnt{padding:36px 40px;background:var(--paper)}
+.dos{border-left:5px solid var(--g)}
+.dnt{border-left:5px solid var(--rd)}
+.dd-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:46px;letter-spacing:0.5px;margin-bottom:24px}
+.dos .dd-h{color:var(--g)}
+.dnt .dd-h{color:var(--rd)}
+.ddi{display:flex;gap:13px;margin-bottom:16px;align-items:flex-start}
+.ddi-ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;font-weight:700}
+.do-ic{background:var(--gp);color:var(--g)}
+.dn-ic{background:var(--rp);color:var(--rd)}
+.ddi-txt{font-size:13.5px;line-height:1.6}
+.ddi-txt strong{font-weight:700}
+
+/* ── PROBLEMS GRID ── */
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.prob{border:1px solid var(--bd);padding:18px;background:var(--paper);border-top:3px solid var(--bd)}
+.prob.hi{border-top-color:var(--rd)}
+.prob.md{border-top-color:var(--am)}
+.prob.lo{border-top-color:var(--g)}
+.prob-sev{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+.prob.hi .prob-sev{color:var(--rd)}
+.prob.md .prob-sev{color:var(--am)}
+.prob.lo .prob-sev{color:var(--g)}
+.prob-t{font-weight:700;font-size:13.5px;margin-bottom:7px}
+.prob-d{font-size:12px;line-height:1.55;color:var(--mid)}
+
+/* ── HARVEST CALENDAR ── */
+.cal{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;background:var(--bd);margin-bottom:14px}
+.mon{padding:14px 6px;text-align:center;font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:0.8px;text-transform:uppercase}
+.mon.hv{background:var(--gp);color:var(--g)}
+.mon.pk{background:var(--g);color:#fff}
+.mon.av{background:var(--rp);color:var(--rd)}
+.mon-ic{font-size:15px;margin-bottom:3px}
+.mon-st{font-size:8px;margin-top:2px;opacity:.8}
+
+/* ── CHART GRIDS ── */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px}
+.cgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.cc{background:var(--paper);border:1px solid var(--bd);padding:22px}
+.cc h3{font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+.cc canvas{max-height:250px}
+
+/* ── MACHINERY VISUAL ── */
+.mach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bd);margin-bottom:28px}
+.mach-col{background:var(--paper);padding:24px}
+.mach-flag{display:inline-block;padding:3px 10px;font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;border-radius:2px;font-weight:500}
+.flag-cn{background:#ffeecc;color:#8b5500}
+.flag-eu{background:#e8eeff;color:#1a3a8c}
+.flag-in{background:var(--gp);color:var(--g)}
+.mach-brand{font-weight:700;font-size:15px;margin-bottom:5px}
+.mach-model{font-family:'Fira Mono',monospace;font-size:11px;color:var(--mid);margin-bottom:14px}
+.mach-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12.5px}
+.mach-row:last-child{border:none}
+.mach-key{color:var(--mid)}
+.mach-val{font-weight:600;font-family:'Fira Mono',monospace;font-size:11.5px}
+.mach-prob{margin-top:14px;padding:12px;background:var(--rp);border-left:3px solid var(--rd);font-size:12px;line-height:1.55}
+.mach-prob-t{font-weight:700;color:var(--rd);margin-bottom:4px;font-size:12.5px}
+.mach-ok{margin-top:14px;padding:12px;background:var(--gp);border-left:3px solid var(--g);font-size:12px;line-height:1.55}
+.mach-ok-t{font-weight:700;color:var(--g);margin-bottom:4px;font-size:12.5px}
+
+/* ── FAILURE DIAGRAM ── */
+.failure-wrap{position:relative;background:var(--ink);padding:40px;border-radius:0;margin-bottom:28px;overflow:hidden}
+.failure-wrap::before{content:'CRITICAL FAILURE MAP';position:absolute;top:18px;left:40px;font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:3px;color:#333;text-transform:uppercase}
+.fail-flow{display:flex;align-items:center;gap:0;margin-top:24px;overflow-x:auto}
+.fail-node{background:#1a1a1a;border:1px solid #2a2a2a;padding:16px 14px;text-align:center;min-width:100px;flex-shrink:0;position:relative}
+.fail-node.active{border-color:var(--rd);background:#1f0a0a}
+.fail-node.warn-n{border-color:var(--am);background:#1f1200}
+.fail-node.safe{border-color:var(--g);background:#0a1a0a}
+.fn-step{font-family:'Fira Mono',monospace;font-size:8px;color:#444;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.fn-name{font-size:12px;font-weight:600;color:#ccc;margin-bottom:6px}
+.fn-risk{font-family:'Fira Mono',monospace;font-size:8.5px;font-weight:700}
+.fail-node.active .fn-risk{color:var(--rd)}
+.fail-node.warn-n .fn-risk{color:#f0a030}
+.fail-node.safe .fn-risk{color:var(--gl)}
+.fail-arrow{color:#333;font-size:18px;flex-shrink:0;padding:0 2px;align-self:center}
+.fail-node.active .fail-arrow{color:var(--rd)}
+.fail-legends{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.fail-leg{background:#1a1a1a;border:1px solid;padding:16px}
+.fail-leg.fl-r{border-color:var(--rd)}
+.fail-leg.fl-a{border-color:var(--am)}
+.fail-leg.fl-g{border-color:var(--g)}
+.fl-title{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.fl-r .fl-title{color:var(--rd)}
+.fl-a .fl-title{color:#f0a030}
+.fl-g .fl-title{color:var(--gl)}
+.fl-item{display:flex;gap:10px;margin-bottom:8px;font-size:12px;color:#aaa;line-height:1.45}
+.fl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.fl-r .fl-dot{background:var(--rd)}
+.fl-a .fl-dot{background:var(--am)}
+.fl-g .fl-dot{background:var(--gl)}
+
+/* ── MARKET DEEPDIVE ── */
+.market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bd);margin-bottom:28px}
+.mkt-col{background:var(--paper);padding:28px 24px}
+.mkt-head{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;letter-spacing:0.5px;margin-bottom:4px}
+.mkt-sub{font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--mid);margin-bottom:18px}
+.mkt-row{display:flex;flex-direction:column;margin-bottom:13px;padding-bottom:13px;border-bottom:1px solid var(--bd)}
+.mkt-row:last-child{border:none;margin:0;padding:0}
+.mkt-lbl{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:3px}
+.mkt-val{font-size:13.5px;line-height:1.5;font-weight:500}
+
+/* ── SPEC TABLE ── */
+.spec-t{width:100%;border-collapse:collapse;font-size:13px}
+.spec-t th{font-family:'Fira Mono',monospace;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;text-align:left;padding:12px 14px;background:var(--ink);color:#888;border:1px solid #222}
+.spec-t td{padding:12px 14px;border:1px solid var(--bd);background:var(--paper);vertical-align:middle;font-size:13px}
+.spec-t tr:hover td{background:#fffff2}
+.spec-t td:first-child{font-weight:600}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:36px 64px;display:flex;align-items:center;justify-content:space-between}
+footer p{font-family:'Fira Mono',monospace;font-size:10px;color:#444;letter-spacing:1px}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}.hero-r{display:none}
+  section{padding:52px 24px}
+  nav{padding:0 24px;overflow-x:auto}
+  .cgrid,.cgrid3,.dd-wrap,.market-grid,.mach-grid{grid-template-columns:1fr}
+  .sp-hdr,.sp-row{grid-template-columns:1fr}
+  .proc-wrap{grid-template-columns:repeat(5,1fr)}
+  .prob-grid{grid-template-columns:1fr 1fr}
+  .age-tl{grid-template-columns:repeat(3,1fr)}
+  .cal{grid-template-columns:repeat(6,1fr)}
+  .fail-flow{flex-direction:column;align-items:stretch}
+  .fail-legends{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-brand">Bombay Bioenergy &mdash; Operational Intelligence</div>
+    <h1 class="hero-title">BAMBOO<br><em>PELLETISATION</em><br>GUIDE</h1>
+    <p class="hero-desc">Complete field & operations reference for bamboo pellet production — species selection, age science, process parameters, machinery trade-offs, and market specifications. India-specific.</p>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">4,685</div><div class="kpi-lbl">Max GCV kcal/kg</div></div>
+      <div class="kpi"><div class="kpi-val">1.28%</div><div class="kpi-lbl">Min ash (B. nutans)</div></div>
+      <div class="kpi"><div class="kpi-val">3 yr</div><div class="kpi-lbl">Optimal harvest age</div></div>
+      <div class="kpi"><div class="kpi-val">81%</div><div class="kpi-lbl">Combustion efficiency</div></div>
+      <div class="kpi"><div class="kpi-val">2:1</div><div class="kpi-lbl">Fresh → pellet ratio</div></div>
+      <div class="kpi"><div class="kpi-val">14–16%</div><div class="kpi-lbl">Optimal inlet MC</div></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="culm-row">
+      <div class="culm cv c1"><div class="culm-tag">1 yr</div></div>
+      <div class="culm cv c2"><div class="culm-tag">2 yr</div></div>
+      <div class="culm cv c3"><div class="culm-tag">3 yr</div></div>
+      <div class="culm cv c4"><div class="culm-tag best-tag">★ BEST</div></div>
+      <div class="culm cv c5"><div class="culm-tag">4 yr</div></div>
+      <div class="culm cv c6"><div class="culm-tag">5 yr</div></div>
+      <div class="culm cv c7"><div class="culm-tag">6 yr+</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Bombay Bioenergy · Bamboo Guide</div>
+  <a class="nav-a" href="#species">Species</a>
+  <a class="nav-a" href="#age">Age</a>
+  <a class="nav-a" href="#process">Process</a>
+  <a class="nav-a" href="#machinery">Machinery</a>
+  <a class="nav-a" href="#failures">Failure Map</a>
+  <a class="nav-a" href="#markets">Markets</a>
+  <a class="nav-a" href="#products">Pellet vs Torrefied vs Biochar</a>
+  <a class="nav-a" href="#harvesting">Harvesting</a>
+  <a class="nav-a" href="#dosdont">Dos &amp; Don'ts</a>
+</nav>
+
+<!-- 01 SPECIES -->
+<section id="species">
+  <div class="section-num">01 / Species Intelligence — Maharashtra Focus</div>
+  <h2 class="section-h">10 SPECIES FOR<br>MAHARASHTRA & ASSAM</h2>
+
+  <div class="sp-grid">
+    <div class="sp-hdr">
+      <div class="sp-hdr-c">Species</div>
+      <div class="sp-hdr-c">GCV (kcal/kg)</div>
+      <div class="sp-hdr-c">Ash %</div>
+      <div class="sp-hdr-c">Lignin %</div>
+      <div class="sp-hdr-c">Silica Risk</div>
+      <div class="sp-hdr-c">MH Availability</div>
+      <div class="sp-hdr-c">Rank</div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Beema Bamboo</div><div class="sp-sci">Bambusa balcooa</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:92%;background:var(--g)"></div><span class="bv">4,685</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:20%;background:var(--g)"></div><span class="bv">1.4–2.2%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:88%;background:var(--tl)"></div><span class="bv">24–28%</span></div></div>
+      <div class="sc"><span class="badge b-g">LOW</span></div>
+      <div class="sc"><span class="badge b-g">VERY HIGH</span></div>
+      <div class="sc"><span class="badge b-g">★ #1</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Nutan</div><div class="sp-sci">Bambusa nutans</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:90%;background:var(--g)"></div><span class="bv">4,590</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:13%;background:var(--g)"></div><span class="bv">1.28%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:100%;background:var(--tl)"></div><span class="bv">29.66%</span></div></div>
+      <div class="sc"><span class="badge b-g">LOWEST</span></div>
+      <div class="sc"><span class="badge b-t">MED-HIGH</span></div>
+      <div class="sc"><span class="badge b-g">★ #1</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Male Bamboo</div><div class="sp-sci">Dendrocalamus strictus</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:87%;background:var(--g)"></div><span class="bv">4,530</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:26%;background:var(--am)"></div><span class="bv">1.5–3.0%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:85%;background:var(--tl)"></div><span class="bv">24–26%</span></div></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-g">HIGHEST</span></div>
+      <div class="sc"><span class="badge b-t">#2</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">God Bamboo</div><div class="sp-sci">Dendrocalamus asper</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:84%;background:var(--g)"></div><span class="bv">4,445</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:22%;background:var(--g)"></div><span class="bv">1.5–2.5%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:80%;background:var(--tl)"></div><span class="bv">22–26%</span></div></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-t">#3</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Giant Thorny</div><div class="sp-sci">Bambusa bambos</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:86%;background:var(--g)"></div><span class="bv">4,530</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:28%;background:var(--am)"></div><span class="bv">1.8–3.0%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:74%;background:var(--tl)"></div><span class="bv">22–26%</span></div></div>
+      <div class="sc"><span class="badge b-a">MED-HIGH</span></div>
+      <div class="sc"><span class="badge b-g">VERY HIGH</span></div>
+      <div class="sc"><span class="badge b-a">#4</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Bulka Bamboo</div><div class="sp-sci">Dendrocalamus brandisii</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:84%;background:var(--g)"></div><span class="bv">4,480</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:25%;background:var(--am)"></div><span class="bv">1.8–2.8%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:82%;background:var(--tl)"></div><span class="bv">24–28%</span></div></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-a">#5</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Stocks Bamboo</div><div class="sp-sci">Dendrocalamus stocksii</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:86%;background:var(--g)"></div><span class="bv">4,530</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:22%;background:var(--g)"></div><span class="bv">1.5–2.5%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:83%;background:var(--tl)"></div><span class="bv">24–28%</span></div></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-a">W.GHATS ONLY</span></div>
+      <div class="sc"><span class="badge b-a">#6</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Indian Timber</div><div class="sp-sci">Bambusa tulda</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:85%;background:var(--g)"></div><span class="bv">4,490</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:36%;background:var(--am)"></div><span class="bv">1.8–4.3%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:72%;background:var(--tl)"></div><span class="bv">22–25%</span></div></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-dk">ASSAM ONLY</span></div>
+      <div class="sc"><span class="badge b-dk">#7</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Muli Bamboo</div><div class="sp-sci">Melocanna baccifera</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:76%;background:var(--am)"></div><span class="bv">4,300</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:30%;background:var(--am)"></div><span class="bv">1.8–3.5%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:68%;background:var(--tl)"></div><span class="bv">25–28%</span></div></div>
+      <div class="sc"><span class="badge b-a">MEDIUM</span></div>
+      <div class="sc"><span class="badge b-dk">ASSAM ONLY</span></div>
+      <div class="sc"><span class="badge b-dk">#9</span></div>
+    </div>
+    <div class="sp-row">
+      <div class="sc"><div class="sp-name">Pecha Bamboo</div><div class="sp-sci">Dendrocalamus hamiltonii</div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:78%;background:var(--am)"></div><span class="bv">4,460</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:33%;background:var(--rd)"></div><span class="bv">2.0–3.5%</span></div></div>
+      <div class="sc"><div class="bar-w"><div class="mbar" style="width:70%;background:var(--tl)"></div><span class="bv">22–26%</span></div></div>
+      <div class="sc"><span class="badge b-a">MED-HIGH</span></div>
+      <div class="sc"><span class="badge b-dk">ASSAM ONLY</span></div>
+      <div class="sc"><span class="badge b-dk">#10</span></div>
+    </div>
+  </div>
+
+  <div class="insight" style="margin-top:22px">
+    <span class="insight-lbl">Key insight — Bombay Bioenergy</span>
+    <strong>B. nutans (Nutan)</strong> wins on lignin (29.66% — highest of any Indian bamboo) = best self-binding, lowest die wear, best pellet durability without additives. <strong>B. balcooa (Beema clone)</strong> wins on yield (100–125 t/ha/yr) and GCV. <strong>Test both as primary species.</strong> D. strictus is your cheapest and most abundant Maharashtra volume feedstock — use as blending base.
+  </div>
+
+  <div class="cgrid" style="margin-top:28px">
+    <div class="cc"><h3>GCV by species — kcal/kg dry</h3><canvas id="gcvC"></canvas></div>
+    <div class="cc"><h3>Ash content % — lower = better</h3><canvas id="ashC"></canvas></div>
+    <div class="cc"><h3>Lignin % — higher = better binding</h3><canvas id="ligC"></canvas></div>
+    <div class="cc"><h3>Maharashtra availability score /10</h3><canvas id="avC"></canvas></div>
+  </div>
+</section>
+
+<!-- 02 AGE -->
+<section id="age">
+  <div class="section-num">02 / Age Science</div>
+  <h2 class="section-h">AGE vs PELLET<br>QUALITY</h2>
+
+  <div class="age-tl">
+    <div class="age-c caut">
+      <div class="age-yr">1</div><div class="age-lbl">Year</div>
+      <span class="badge b-r" style="margin-bottom:12px;display:inline-block">REJECT</span>
+      <div class="age-props"><strong>Lignin:</strong> 14–19% — immature<br><strong>Free sugars:</strong> Very high<br><strong>Die risk:</strong> JAMS IN 30 MIN<br><strong>Durability:</strong> &lt;95%<br><strong>Ash:</strong> 1.5–3.5%</div>
+    </div>
+    <div class="age-c caut">
+      <div class="age-yr">2</div><div class="age-lbl">Years</div>
+      <span class="badge b-a" style="margin-bottom:12px;display:inline-block">CAUTION</span>
+      <div class="age-props"><strong>Lignin:</strong> 20–24%<br><strong>Sugars:</strong> Still high<br><strong>Die risk:</strong> Moderate jams<br><strong>Durability:</strong> 95–96%<br><strong>Ash:</strong> 1.3–2.5%</div>
+    </div>
+    <div class="age-c opt">
+      <div class="age-yr">3</div><div class="age-lbl">Years</div>
+      <span class="badge b-g" style="margin-bottom:12px;display:inline-block">★ OPTIMAL</span>
+      <div class="age-props"><strong>Lignin:</strong> 24–30% — PEAK<br><strong>Cellulose:</strong> 49–55% — PEAK<br><strong>Ash:</strong> 1.2–2.2% — LOWEST<br><strong>Silica:</strong> LOWEST<br><strong>Durability:</strong> 96–98%</div>
+    </div>
+    <div class="age-c opt">
+      <div class="age-yr">4</div><div class="age-lbl">Years</div>
+      <span class="badge b-t" style="margin-bottom:12px;display:inline-block">GOOD</span>
+      <div class="age-props"><strong>Lignin:</strong> 24–28% — plateau<br><strong>Cellulose:</strong> 47–52%<br><strong>Ash:</strong> 1.3–2.8%<br><strong>Durability:</strong> 95–97%<br><strong>Die risk:</strong> LOW–MED</div>
+    </div>
+    <div class="age-c caut">
+      <div class="age-yr">5</div><div class="age-lbl">Years</div>
+      <span class="badge b-a" style="margin-bottom:12px;display:inline-block">INSPECT</span>
+      <div class="age-props"><strong>Lignin:</strong> 22–26% falling<br><strong>Silica:</strong> Rising<br><strong>Fungal risk:</strong> Growing<br><strong>Durability:</strong> 94–96%<br><strong>Die risk:</strong> MEDIUM</div>
+    </div>
+    <div class="age-c bad">
+      <div class="age-yr">6+</div><div class="age-lbl">Years</div>
+      <span class="badge b-r" style="margin-bottom:12px;display:inline-block">REJECT</span>
+      <div class="age-props"><strong>Lignin:</strong> Degraded bonds<br><strong>Silica:</strong> HIGH<br><strong>Hollow sections:</strong> Common<br><strong>Fungal:</strong> Active<br><strong>Die wear:</strong> RAPID</div>
+    </div>
+  </div>
+
+  <div class="cgrid">
+    <div class="cc"><h3>Property curves by age (normalised index)</h3><canvas id="ageC"></canvas></div>
+    <div class="cc"><h3>Pellet durability % by age — ENplus ≥97.5% threshold shown</h3><canvas id="durC"></canvas></div>
+  </div>
+
+  <div class="insight warn" style="margin-top:22px">
+    <span class="insight-lbl">Why young bamboo destroys your die</span>
+    Young bamboo contains high free carbohydrates (starch, simple sugars). At die temperatures of 130–160°C these caramelise and harden — creating a cement-like blockage that stalls rollers, fractures spindles (₹4 lakh replacement) and burns out motors. This is exactly what destroyed multiple machines in the documented CBRC China study. Lignin by contrast plasticises at this temperature and re-polymerises as the binder. <strong>Minimum age: 3 years. No exceptions.</strong>
+  </div>
+</section>
+
+<!-- 03 PROCESS -->
+<section id="process">
+  <div class="section-num">03 / Process Flow</div>
+  <h2 class="section-h">BAMBOO → PELLET:<br>10-STEP PROCESS</h2>
+
+  <div class="proc-wrap">
+    <div class="proc-step"><div class="ps-num">01</div><div class="ps-name">Harvest</div><div class="ps-note">3–4 yr only. Oct–May. 15–30 kg/culm fresh.</div></div>
+    <div class="proc-step"><div class="ps-num">02</div><div class="ps-name">Field Cure</div><div class="ps-note">Stand cut culm 2–4 weeks to reduce starch &amp; MC.</div></div>
+    <div class="proc-step hl"><div class="ps-num">03</div><div class="ps-name">Chipping</div><div class="ps-note">Drum chipper. Bruks DH 365. 50–100mm chips.</div></div>
+    <div class="proc-step"><div class="ps-num">04</div><div class="ps-name">Pre-Screen</div><div class="ps-note">Remove soil, stones before dryer. 5mm minimum.</div></div>
+    <div class="proc-step wn"><div class="ps-num">05</div><div class="ps-name">Drying</div><div class="ps-note">45–55% → 10–14% MC. Büttner drum dryer.</div></div>
+    <div class="proc-step hl"><div class="ps-num">06</div><div class="ps-name">Grinding</div><div class="ps-note">Hammer mill. 3–5mm screen. ANDRITZ Multimill.</div></div>
+    <div class="proc-step wn"><div class="ps-num">07</div><div class="ps-name">Steam Cond.</div><div class="ps-note">3–6 bar, 60–90°C, ≥30s. Critical for bamboo.</div></div>
+    <div class="proc-step cr"><div class="ps-num">08</div><div class="ps-name">Pelleting</div><div class="ps-note">Inlet 14–16% MC. 130–160°C die. 42CrMo die mandatory.</div></div>
+    <div class="proc-step"><div class="ps-num">09</div><div class="ps-name">Cooling</div><div class="ps-note">Counter-flow. ≤ ambient+5°C. MC ≤ 1%.</div></div>
+    <div class="proc-step"><div class="ps-num">10</div><div class="ps-name">Screen + Store</div><div class="ps-note">Fines &lt;1%. Covered, dry storage — bamboo is hygroscopic.</div></div>
+  </div>
+
+  <div class="cgrid3">
+    <div class="cc"><h3>Mass balance — per 100t fresh bamboo</h3><canvas id="massC"></canvas></div>
+    <div class="cc"><h3>Energy by process step (kWh/tonne pellet)</h3><canvas id="enC"></canvas></div>
+    <div class="cc"><h3>Die temp °C vs durability &amp; jam risk</h3><canvas id="tmpC"></canvas></div>
+  </div>
+</section>
+
+<!-- 04 MACHINERY -->
+<section id="machinery">
+  <div class="section-num">04 / Machinery Intelligence</div>
+  <h2 class="section-h">CHINESE vs EUROPEAN<br>vs INDIAN MACHINERY</h2>
+
+  <div class="mach-grid">
+    <!-- CHINESE -->
+    <div class="mach-col">
+      <span class="mach-flag flag-cn">🇨🇳 Chinese</span>
+      <div class="mach-brand">Ring-Die Pellet Mills</div>
+      <div class="mach-model">MUZL-series / Gemco / Famsun / MUYANG</div>
+      <div class="mach-row"><span class="mach-key">Capacity (typical)</span><span class="mach-val">1–8 t/h</span></div>
+      <div class="mach-row"><span class="mach-key">Drive type</span><span class="mach-val">Belt (standard)</span></div>
+      <div class="mach-row"><span class="mach-key">Motor kW</span><span class="mach-val">75–355 kW</span></div>
+      <div class="mach-row"><span class="mach-key">Die material offered</span><span class="mach-val">Carbon steel standard; SS option</span></div>
+      <div class="mach-row"><span class="mach-key">Steam conditioning</span><span class="mach-val">Basic; often manual</span></div>
+      <div class="mach-row"><span class="mach-key">PLC / automation</span><span class="mach-val">Basic or none</span></div>
+      <div class="mach-row"><span class="mach-key">CAPEX (10 TPH line)</span><span class="mach-val">₹80–180 lakh</span></div>
+      <div class="mach-row"><span class="mach-key">Warranty / support</span><span class="mach-val">Limited; spares delayed</span></div>
+      <div class="mach-prob">
+        <div class="mach-prob-t">⚠ Critical Problems for Bamboo</div>
+        Carbon steel dies fail within 200–300 hrs on bamboo silica. Datasheets frequently overstate kW-to-throughput. Basic steam conditioning is inadequate for lignin activation in fibrous bamboo — durability drops below 95%. Gearbox torque specs often unverifiable. After-sales support from India is slow (3–6 week spares lead time from China).
+      </div>
+    </div>
+
+    <!-- EUROPEAN -->
+    <div class="mach-col">
+      <span class="mach-flag flag-eu">🇪🇺 European</span>
+      <div class="mach-brand">KAHL 65-1500 / ANDRITZ PM30-6 / CPM 7900</div>
+      <div class="mach-model">Germany / Austria / Netherlands</div>
+      <div class="mach-row"><span class="mach-key">Capacity (typical)</span><span class="mach-val">8–15 t/h</span></div>
+      <div class="mach-row"><span class="mach-key">Drive type</span><span class="mach-val">KAHL: flat-die; ANDRITZ: gear drive</span></div>
+      <div class="mach-row"><span class="mach-key">Motor kW</span><span class="mach-val">315–800 kW</span></div>
+      <div class="mach-row"><span class="mach-key">Die material</span><span class="mach-val">42CrMo alloy standard</span></div>
+      <div class="mach-row"><span class="mach-key">Steam conditioning</span><span class="mach-val">Full PLC-controlled dual conditioner</span></div>
+      <div class="mach-row"><span class="mach-key">PLC / automation</span><span class="mach-val">Full Industry 4.0 capable</span></div>
+      <div class="mach-row"><span class="mach-key">CAPEX (10 TPH line)</span><span class="mach-val">₹8–14 Cr (mill alone)</span></div>
+      <div class="mach-row"><span class="mach-key">Warranty / support</span><span class="mach-val">24-month; India service partners</span></div>
+      <div class="mach-ok">
+        <div class="mach-ok-t">✓ Why European for Bamboo</div>
+        KAHL flat-die specifically handles low-bulk-density fibrous bamboo (large pelleting chamber, gravity feed, low roller speed 2.5 m/s). 42CrMo dies standard. Proven on miscanthus, agro-residue, bamboo in EU. ANDRITZ PM30-6 is the global co-firing plant standard with 98% uptime guarantee. Higher CAPEX but vastly lower downtime and spare parts cost.
+      </div>
+    </div>
+
+    <!-- INDIAN / HYBRID -->
+    <div class="mach-col">
+      <span class="mach-flag flag-in">🇮🇳 Indian / Hybrid</span>
+      <div class="mach-brand">CPM India / Bepex / Local fabricators</div>
+      <div class="mach-model">Maharashtra / Gujarat fabricators + Chinese core</div>
+      <div class="mach-row"><span class="mach-key">Capacity (typical)</span><span class="mach-val">2–10 t/h (SAMARTH rated)</span></div>
+      <div class="mach-row"><span class="mach-key">Drive type</span><span class="mach-val">Belt drive (Indian standard)</span></div>
+      <div class="mach-row"><span class="mach-key">Motor kW</span><span class="mach-val">110–250 kW typical</span></div>
+      <div class="mach-row"><span class="mach-key">Die material</span><span class="mach-val">Carbon steel standard; 42CrMo optional</span></div>
+      <div class="mach-row"><span class="mach-key">Steam conditioning</span><span class="mach-val">Usually absent or basic</span></div>
+      <div class="mach-row"><span class="mach-key">PLC / automation</span><span class="mach-val">Basic relay logic usually</span></div>
+      <div class="mach-row"><span class="mach-key">CAPEX (10 TPH line)</span><span class="mach-val">₹2–5 Cr</span></div>
+      <div class="mach-row"><span class="mach-key">Warranty / support</span><span class="mach-val">Local; fast spares; variable quality</span></div>
+      <div class="mach-prob">
+        <div class="mach-prob-t">⚠ Problems for Bamboo + Export</div>
+        Belt-drive acts as mechanical fuse — appropriate for contaminated Indian agro-residue but limits consistent bamboo throughput. Absent steam conditioning is a hard barrier for export-grade durability. Most Indian pellet mills not capable of sustained export-spec production. <strong>Use for SAMARTH/domestic only. Do NOT use for export-grade bamboo pellets.</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <span class="insight-lbl">Bombay Bioenergy machinery strategy</span>
+    <strong>Phase 1 (SAMARTH + domestic industrial):</strong> Indian/hybrid mill with 42CrMo die upgrade + add steam conditioning — total ₹3–6 Cr. Sufficient for SAMARTH, private industry boilers (ISO 17225-6 Class B). <strong>Phase 2 (export-grade Japan/Korea):</strong> European mill (KAHL flat-die or ANDRITZ PM30-6) with full PLC conditioning — ₹8–14 Cr mill only. Export market premium ($130–270/MT CIF) justifies capital investment within 3–4 years at 10 TPH utilisation.
+  </div>
+</section>
+
+<!-- 05 FAILURE MAP -->
+<section id="failures">
+  <div class="section-num">05 / Critical Failure Points</div>
+  <h2 class="section-h">PROCESS FAILURE<br>MAP</h2>
+
+  <div class="failure-wrap">
+    <div class="fail-flow">
+      <div class="fail-node safe">
+        <div class="fn-step">01</div>
+        <div class="fn-name">Harvest</div>
+        <div class="fn-risk">LOW RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node warn-n">
+        <div class="fn-step">02</div>
+        <div class="fn-name">Age Sort</div>
+        <div class="fn-risk">⚡ AGE ERROR</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node safe">
+        <div class="fn-step">03</div>
+        <div class="fn-name">Chipping</div>
+        <div class="fn-risk">LOW RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node warn-n">
+        <div class="fn-step">04</div>
+        <div class="fn-name">Pre-Screen</div>
+        <div class="fn-risk">⚡ STONE RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node active">
+        <div class="fn-step">05</div>
+        <div class="fn-name">Drying</div>
+        <div class="fn-risk">🔥 FIRE RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node warn-n">
+        <div class="fn-step">06</div>
+        <div class="fn-name">Grinding</div>
+        <div class="fn-risk">⚡ WEAR RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node warn-n">
+        <div class="fn-step">07</div>
+        <div class="fn-name">Steam Cond.</div>
+        <div class="fn-risk">⚡ IF SKIPPED</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node active">
+        <div class="fn-step">08</div>
+        <div class="fn-name">Die / Mill</div>
+        <div class="fn-risk">🔥 MAX RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node safe">
+        <div class="fn-step">09</div>
+        <div class="fn-name">Cooling</div>
+        <div class="fn-risk">LOW RISK</div>
+      </div>
+      <div class="fail-arrow">→</div>
+      <div class="fail-node warn-n">
+        <div class="fn-step">10</div>
+        <div class="fn-name">Storage</div>
+        <div class="fn-risk">⚡ MOISTURE</div>
+      </div>
+    </div>
+
+    <div class="fail-legends">
+      <div class="fail-leg fl-r">
+        <div class="fl-title">🔥 Critical Failures</div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Die jamming / spindle fracture:</strong> Wrong-age bamboo (year 1–2) or wrong MC. Repair: ₹2–13 lakh. Prevention: strict age verification + moisture sensor on mill inlet.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Dryer fire:</strong> Bamboo dust is combustible. Overloaded drum + blocked airflow = ignition. Prevention: ATEX-rated dust collector, rotary spark detector, CO sensor, emergency water spray.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Motor burnout:</strong> High-torque demand from wrong-age bamboo or over-dry feed. Prevention: MC control, current overload relay, thermal protection on all motors &gt;30 kW.</div></div>
+      </div>
+      <div class="fail-leg fl-a">
+        <div class="fl-title">⚡ Quality Failures</div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Age sorting error:</strong> Mixed 1–2yr culms cause low durability (&lt;95%), inconsistent GCV, and die wear spikes. Prevention: paint-tagging at clump, visual training for yard staff, reject grey-surface culms on sight.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Stone ingress (pre-screen skipped):</strong> Stones destroy hammer mill screens and enter die, causing metal contamination in pellet — automatic NTPC/export rejection. Prevention: vibrating screen before dryer, mandatory.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Steam conditioning skipped:</strong> Durability drops to 92–95%. Pellets fail export spec and may fail SAMARTH. Prevention: never bypass steam conditioner; add inline durability spot-check every 2 hours.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div><strong>Die face overtemperature (&gt;180°C):</strong> Scorched pellets, colour non-conformance, potential fire. Prevention: thermocouple on die face with auto feed-rate reduction above 165°C.</div></div>
+      </div>
+      <div class="fail-leg fl-g">
+        <div class="fl-title">✓ Prevention Summary</div>
+        <div class="fl-item"><div class="fl-dot"></div><div>Use only 3–4 year culms. Visual reject: grey surface, hollow knock, sheath still attached.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div>42CrMo die mandatory. Standard carbon steel fails in 200–300 hrs on bamboo silica.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div>Steam conditioning: 3–6 bar, 60–90°C, minimum 30 seconds, always.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div>Inlet MC: 14–16%. Install inline NIR moisture sensor at hammer mill outlet.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div>ATEX dust extraction + CO detection on dryer and mill — bamboo dust is explosive.</div></div>
+        <div class="fl-item"><div class="fl-dot"></div><div>Pre-screen before dryer. Inspect hammer mill screen every 150 hours for bamboo runs.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 MARKETS -->
+<section id="markets">
+  <div class="section-num">06 / Market Deepdive</div>
+  <h2 class="section-h">SAMARTH vs PRIVATE<br>INDUSTRY vs EXPORT</h2>
+
+  <div class="market-grid">
+    <!-- SAMARTH -->
+    <div class="mkt-col" style="border-left:4px solid var(--g)">
+      <div class="mkt-head" style="color:var(--g)">SAMARTH</div>
+      <div class="mkt-sub">Co-firing mandate · NTPC / State utilities · Domestic</div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Volume opportunity</div>
+        <div class="mkt-val">5% co-firing mandatory since 2023; rising to 7–10% by 2025. NTPC alone = 25–35 MT/yr pellet demand when fully enforced. <strong>Largest single demand driver in India.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Price range</div>
+        <div class="mkt-val"><strong>₹7,500–11,000/MT</strong> (varies by tender, region, and CV specification). Quarterly indexed against coal prices.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Pellet spec required</div>
+        <div class="mkt-val">GCV ≥3,400 kcal/kg · Ash ≤10% · MC ≤12% · Size 6–12mm · Durability ≥90%. <strong>Bamboo easily meets all parameters.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Certification needed</div>
+        <div class="mkt-val">SAMARTH vendor registration. BIS-registered lab test certificate per lot. No international cert required.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Payment terms</div>
+        <div class="mkt-val">45–90 day credit (NTPC standard). Letter of Credit for large orders. State utility terms vary — can be slower.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Key risks</div>
+        <div class="mkt-val">Enforcement inconsistency (mandate on paper, offtake variable). Tender pricing pressure. Long receivables cycle. Seasonal supply mismatch.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Machinery needed</div>
+        <div class="mkt-val">Indian/hybrid mill adequate. 42CrMo die + steam conditioning recommended for bamboo. No export-grade equipment required.</div>
+      </div>
+    </div>
+
+    <!-- PRIVATE INDUSTRY -->
+    <div class="mkt-col" style="border-left:4px solid var(--tl)">
+      <div class="mkt-head" style="color:var(--tl)">PRIVATE INDUSTRY</div>
+      <div class="mkt-sub">Industrial boilers · Cement · Textiles · Paper · Food processing</div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Volume opportunity</div>
+        <div class="mkt-val">India has 1.5 lakh+ registered industrial boilers. Carbon tax trajectory and coal price volatility driving accelerated switch. <strong>Maharashtra alone: 12,000+ industrial boilers.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Price range</div>
+        <div class="mkt-val"><strong>₹8,000–13,000/MT</strong> — premium over SAMARTH due to direct sale, no tender, shorter payment. Cement and textile highest payers.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Pellet spec required</div>
+        <div class="mkt-val">GCV ≥4,000 kcal/kg (most want higher than SAMARTH) · Ash ≤5% · Low chlorine · Consistent size 6–10mm. ISO 17225-6 Class A target. <strong>Bamboo meets this comfortably.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Certification needed</div>
+        <div class="mkt-val">Lab test report (NABL) per consignment. ISO 17225-6 declaration. No formal certification body required for domestic sale.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Payment terms</div>
+        <div class="mkt-val"><strong>Best payment in India</strong> — 15–30 day credit standard for established relationships. Advance possible. No government procurement delays.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Key risks</div>
+        <div class="mkt-val">Price negotiation intensity. Customer needs boiler modification for pellets (some resistance). Single-buyer concentration risk if few large customers. Spot price sensitive to coal prices.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Machinery needed</div>
+        <div class="mkt-val">Indian/hybrid mill with 42CrMo die + proper steam conditioning. Quality control lab (NABL tests per lot). Same plant serves SAMARTH and private industry.</div>
+      </div>
+    </div>
+
+    <!-- EXPORT -->
+    <div class="mkt-col" style="border-left:4px solid var(--am)">
+      <div class="mkt-head" style="color:var(--am)">EXPORT</div>
+      <div class="mkt-sub">Japan · South Korea · South Africa · Bangladesh · EU (long-term)</div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Volume opportunity</div>
+        <div class="mkt-val">Japan: 8.6 MT/yr growing 35%/yr. Korea: 5.4 MT/yr. India currently &lt;0.3% of global trade. <strong>Massive upside — Vietnam deforestation scandal is India's opening.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Price range</div>
+        <div class="mkt-val"><strong>$130–150/MT FOB</strong> white pellet (Japan/Korea). <strong>$220–270/MT FOB</strong> torrefied/black pellet (Japan). 40–80% premium over domestic pricing.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Pellet spec required</div>
+        <div class="mkt-val">Japan FIT: GCV ≥15 GJ/ton · MC ≤10% · Ash &lt;3%. Korea RPS: GCV ≥14.7 GJ/ton · KEMCO registered. ISO 17225-6 Class A mandatory. <strong>3yr bamboo meets Japan/Korea spec.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Certification needed</div>
+        <div class="mkt-val"><strong>ISCC EU</strong> (residue track, ₹15–25 lakh/yr) — opens EU + Japan + Korea. SGEC for Japan wood component. KEMCO registration for Korea. SGS/BV third-party lab test every shipment. <strong>This is the main barrier.</strong></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Payment terms</div>
+        <div class="mkt-val">LC at sight standard for first 2–3 shipments. 30–60 day LC thereafter. USD denomination protects against INR depreciation. Offtake contract 1–3 years for volume.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Key risks</div>
+        <div class="mkt-val">Certification cost + 12–18 month lead time. Japan FIT policy changes. Port infrastructure (Mundra/Kandla). Minimum shipment size (5,000 MT+). Quality rejection risk at destination port.</div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-lbl">Machinery needed</div>
+        <div class="mkt-val"><strong>European mill required</strong> for consistent export-grade quality. KAHL flat-die or ANDRITZ PM30-6. Full PLC steam conditioning. Online moisture control. Durability tester in-house.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cgrid">
+    <div class="cc"><h3>Revenue potential per tonne — by market (INR)</h3><canvas id="revC"></canvas></div>
+    <div class="cc"><h3>Pellet spec comparison — bamboo vs market requirements</h3><canvas id="specC"></canvas></div>
+  </div>
+
+  <table class="spec-t" style="margin-top:28px">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>SAMARTH / NTPC</th>
+        <th>Private Industry (ISO 17225-6 A)</th>
+        <th>Japan FIT Grade</th>
+        <th>Korea RPS Grade</th>
+        <th>Bamboo 3yr (Typical)</th>
+        <th>Match?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>GCV</td><td>≥3,400 kcal/kg</td><td>≥14.5 MJ/kg</td><td>≥15.0 GJ/ton</td><td>≥14.7 GJ/ton</td><td>18.5–19.6 MJ/kg</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Ash %</td><td>≤10%</td><td>≤6.0%</td><td>&lt;3.0%</td><td>&lt;3.0%</td><td>1.2–2.2% (B. nutans)</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Moisture (delivered)</td><td>≤12%</td><td>≤12%</td><td>≤10%</td><td>≤10%</td><td>8–10%</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Durability</td><td>≥90%</td><td>≥96%</td><td>≥95%</td><td>≥95%</td><td>96–98% (steam conditioned)</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Bulk density</td><td>≥500 kg/m³</td><td>Not specified</td><td>≥550 kg/m³</td><td>≥500 kg/m³</td><td>620–680 kg/m³</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Chlorine</td><td>≤0.1%</td><td>≤0.3%</td><td>≤0.1%</td><td>≤0.1%</td><td>0.01–0.03%</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Sulphur</td><td>≤0.2%</td><td>≤0.3%</td><td>≤0.1%</td><td>≤0.1%</td><td>0.02–0.05%</td><td><span class="pass">✓ All markets</span></td></tr>
+      <tr><td>Certification</td><td>BIS lab cert</td><td>NABL lab cert</td><td>ISCC EU + SGEC</td><td>ISCC EU + KEMCO</td><td>None currently</td><td><span class="warn-c">⚠ Export needs ISCC EU</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight" style="margin-top:22px">
+    <span class="insight-lbl">Bombay Bioenergy priority sequence</span>
+    <strong>Immediate:</strong> SAMARTH registration + private industry (Maharashtra industrial boilers) — same plant, same spec, faster cash flow, no certification cost. <strong>12–18 months:</strong> Initiate ISCC EU certification (residue track) + approach Japanese trading house (Marubeni, Sumitomo) for 10,000 MT trial. <strong>Year 3:</strong> Scale export with European mill; target Japan white pellet at $140/MT FOB Mundra.
+  </div>
+</section>
+
+<!-- 07 HARVESTING -->
+<section id="harvesting">
+  <div class="section-num">07 / Harvesting Intelligence</div>
+  <h2 class="section-h">HARVESTING PROBLEMS<br>& FIXES</h2>
+
+  <div style="margin-bottom:28px">
+    <div class="section-num" style="margin-bottom:8px">Maharashtra Harvest Calendar</div>
+    <div class="cal">
+      <div class="mon av"><div class="mon-ic">🌧</div><strong>JUN</strong><div class="mon-st">AVOID</div></div>
+      <div class="mon av"><div class="mon-ic">🌧</div><strong>JUL</strong><div class="mon-st">AVOID</div></div>
+      <div class="mon av"><div class="mon-ic">🌧</div><strong>AUG</strong><div class="mon-st">AVOID</div></div>
+      <div class="mon av"><div class="mon-ic">🌧</div><strong>SEP</strong><div class="mon-st">AVOID</div></div>
+      <div class="mon pk"><div class="mon-ic">✓</div><strong>OCT</strong><div class="mon-st">PEAK</div></div>
+      <div class="mon pk"><div class="mon-ic">✓</div><strong>NOV</strong><div class="mon-st">PEAK</div></div>
+      <div class="mon pk"><div class="mon-ic">✓</div><strong>DEC</strong><div class="mon-st">PEAK</div></div>
+      <div class="mon pk"><div class="mon-ic">✓</div><strong>JAN</strong><div class="mon-st">PEAK</div></div>
+      <div class="mon pk"><div class="mon-ic">✓</div><strong>FEB</strong><div class="mon-st">PEAK</div></div>
+      <div class="mon hv"><div class="mon-ic">✓</div><strong>MAR</strong><div class="mon-st">GOOD</div></div>
+      <div class="mon hv"><div class="mon-ic">✓</div><strong>APR</strong><div class="mon-st">GOOD</div></div>
+      <div class="mon hv"><div class="mon-ic">◑</div><strong>MAY</strong><div class="mon-st">TAPER</div></div>
+    </div>
+  </div>
+
+  <div class="prob-grid">
+    <div class="prob hi"><div class="prob-sev">HIGH SEVERITY</div><div class="prob-t">Dense Clump Access</div><div class="prob-d">3yr culms are at clump centre; outer ring always young. Manual extraction expensive. No mechanised solution in India. Build harvesting labour cost (₹300–600/t) into feedstock budget.</div></div>
+    <div class="prob hi"><div class="prob-sev">HIGH SEVERITY</div><div class="prob-t">Monsoon Blackout</div><div class="prob-d">Jun–Sep completely off-limits — damages new shoots, infects stumps. Plan 4–5 months of covered storage at plant before monsoon season.</div></div>
+    <div class="prob hi"><div class="prob-sev">HIGH SEVERITY</div><div class="prob-t">Clump Productivity Collapse</div><div class="prob-d">Random harvesting → young culms removed, old blocked. Clump drops from 8–10 to 3–4 harvestable culms/yr in 3 seasons. Mandate clump management in all supplier MOUs.</div></div>
+    <div class="prob md"><div class="prob-sev">MEDIUM</div><div class="prob-t">Age Identification Failure</div><div class="prob-d">Contractors cannot reliably distinguish 3yr from 2yr. Paint-tagging system at culm emergence (colour per year) is the only reliable solution. Requires your involvement from plantation year 1.</div></div>
+    <div class="prob md"><div class="prob-sev">MEDIUM</div><div class="prob-t">State Transit Rules</div><div class="prob-d">2017 Amendment exempts non-forest bamboo from permits — but state transit rules persist. Maharashtra better than most. Ensure Form 8 / land records with every procurement lot.</div></div>
+    <div class="prob md"><div class="prob-sev">MEDIUM</div><div class="prob-t">Post-Harvest Starch Fermentation</div><div class="prob-d">Fresh-cut bamboo ferments within days at Indian temperatures. Field-cure 2–4 weeks (culm standing) or deliver to dryer within 48 hours. High starch = die jamming.</div></div>
+    <div class="prob md"><div class="prob-sev">MEDIUM</div><div class="prob-t">Long Culm Transport</div><div class="prob-d">8–25m culms require oversized load permits. Either chip at source or cut to 3–4m lengths before loading — both add cost. Factor into landed feedstock price.</div></div>
+    <div class="prob lo"><div class="prob-sev">LOW</div><div class="prob-t">Forest Bamboo Locked</div><div class="prob-d">Gadchiroli/Chandrapur forest bamboo needs Forest Dept auction — delays and paperwork. Prioritise private plantation sources for simpler, faster procurement.</div></div>
+  </div>
+</section>
+
+<!-- 08 DOS & DONTS -->
+<section id="dosdont">
+  <div class="section-num">08 / Operational Rules</div>
+  <h2 class="section-h">DOS &<br>DON'TS</h2>
+
+  <div class="dd-wrap">
+    <div class="dos">
+      <div class="dd-h">DO</div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Harvest only 3–4 year culms.</strong> Visual: no culm sheaths, full branching, olive-green to dark colour, waxy bloom gone. Reject anything bright green or grey-powdery.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Run steam conditioning always.</strong> 3–6 bar, 60–90°C, minimum 30 seconds. Bamboo lignin requires it. Durability drops below 95% without steam — export spec failure guaranteed.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Use hardened 42CrMo alloy die.</strong> Standard carbon steel fails within 300 hours on bamboo silica. 42CrMo extends die life to 800–1,200 hours. Non-negotiable regardless of origin country.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Set inlet MC at 14–16%.</strong> Not 10% (too dry — friction rises), not 18%+ (binding fails). Install inline moisture sensor at hammer mill outlet. Bamboo is less forgiving than agro-residue.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Prefer flat-die mill for bamboo.</strong> KAHL 65-1500 flat-die handles bamboo's low bulk density (80–130 kg/m³ as chips) with its large pelleting chamber and gravity feed. Ring-die works but needs finer 3mm grinding.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Blend 30–40% D. strictus or dense wood fines</strong> if bulk density falls below 600 kg/m³. Pure bamboo sometimes produces 540–580 kg/m³ pellets — below Japan/Korea import minimum.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Build 4–5 months covered storage.</strong> Jun–Sep monsoon = zero harvest. Pre-stock Oct–May surplus. Bamboo pellets are hygroscopic — covered dry storage mandatory or quality degrades.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Mandate clump management in supplier MOUs.</strong> Supplier harvests only 3–4yr culms, does not remove &lt;2yr culms, thins congested clumps annually. Without this, supply collapses in 3 seasons.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Monitor die face temperature.</strong> Optimal: 130–160°C. Install thermocouple on die face. Auto-reduce feed rate above 165°C. Above 180°C: risk of jam, scorching, fire.</div></div>
+      <div class="ddi"><div class="ddi-ic do-ic">✓</div><div class="ddi-txt"><strong>Initiate ISCC EU certification (residue track) now</strong> if export is a 3-year target. The 12–18 month process clock starts from application — delay costs a full year of export opportunity.</div></div>
+    </div>
+
+    <div class="dnt">
+      <div class="dd-h">DON'T</div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Never use bamboo below 2 years old.</strong> High free carbohydrates caramelise in the die at 130°C, creating cement-like blockages. This caused catastrophic machine failures: spindle fracture ₹4 lakh, bearing failure ₹13 lakh.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Never run standard carbon steel dies on bamboo.</strong> Bamboo SiO₂ is abrasive — 8–20% of ash. Carbon steel dies fail in 200–300 hours. Confirm die supplier grade as 42CrMo in writing before every order.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't skip the pre-screen before the dryer.</strong> Bamboo from farms carries soil, stones, gravel. Stones destroy drum dryer flights, enter the hammer mill, and cause metal contamination — automatic export batch rejection.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't harvest during monsoon (Jun–Sep).</strong> Damages emerging shoots = destroys next year's culm production. Wet bamboo at 55–60% MC is 40% more expensive to dry and prone to fungal infection in stockpile.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't accept bamboo with grey powdery surface.</strong> Grey powder = advanced silica migration + likely fungal colonisation. Train yard staff to reject on sight. No XRF test needed — visual inspection is sufficient.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't store pellets in open or humid conditions.</strong> Bamboo pellets re-absorb moisture faster than wood pellets. Above 70% RH: surface degradation, fines increase, durability loss. Covered silo or enclosed shed mandatory.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't grind bamboo with a screen above 6mm.</strong> Bamboo fibres are long. Particles &gt;6mm cause inconsistent die filling, density variation, and durability drop. Use 3–5mm screen for export-grade, 5–6mm for SAMARTH.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't over-dry below 8% MC at pellet mill inlet.</strong> Too-dry bamboo generates more fines and increases die friction. The 14–16% window is wider than wood pellet practice — wetter is correct for bamboo.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't use Indian mill for export-grade bamboo pellets.</strong> Indian/hybrid mills with basic steam conditioning cannot consistently produce ISO 17225-6 Class A durability for export. Use Indian mill for SAMARTH/domestic only.</div></div>
+      <div class="ddi"><div class="ddi-ic dn-ic">✗</div><div class="ddi-txt"><strong>Don't source from unmanaged forest clumps without age verification.</strong> Natural forest clumps have severely mixed ages. Without sorting, 20–40% of each lot will be unusable young culms — you pay for material you cannot use and risk jamming your die.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS COMPARISON -->
+<section id="products">
+  <div class="section-num">09 / Product Comparison</div>
+  <h2 class="section-h">PELLETS vs TORREFIED<br>vs BIOCHAR</h2>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bd);margin-bottom:28px">
+
+    <!-- WHITE PELLETS -->
+    <div style="background:var(--paper);padding:28px 24px;border-top:5px solid var(--g)">
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px">Product 1</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;margin-bottom:4px">White Pellets</div>
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;color:var(--mid);margin-bottom:20px">Standard biomass pellet · ISO 17225-6</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Process</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:18px;border-left:3px solid var(--gp);padding-left:12px">Chip → Dry (50%→10% MC) → Grind (3–5mm) → Steam condition → Pelletise at 130–160°C → Cool → Screen. Temperature stays below 300°C throughout. No chemical transformation — pure mechanical densification.</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Key Specs (Bamboo 3yr)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--bd);margin-bottom:18px;font-size:12px">
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">GCV</div><strong>18.5–19.6 MJ/kg</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Bulk density</div><strong>620–680 kg/m³</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Moisture</div><strong>8–10%</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Ash</div><strong>1.2–2.2%</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Durability</div><strong>96–98%</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Diameter</div><strong>6–10 mm</strong></div>
+      </div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Markets & Buyers</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px">
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-g" style="margin-right:8px">India</span> NTPC/SAMARTH (₹7,500–11,000/MT), Maharashtra industrial boilers (₹8,000–13,000/MT)</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-t" style="margin-right:8px">Japan</span> FIT-registered power plants via trading houses (Marubeni, Sumitomo) — $130–150/MT FOB</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-a" style="margin-right:8px">Korea</span> RPS-obligated utilities (KEPCO, Korea Midland Power) — $104–130/MT FOB</div>
+        <div style="padding:6px 0"><span class="badge b-dk" style="margin-right:8px">S. Asia</span> Bangladesh textile boilers, Sri Lanka CEB — $100–130/MT FOB, no cert</div>
+      </div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">CAPEX</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px">Indian mill: ₹3–6 Cr (SAMARTH grade). European mill: ₹12–22 Cr for export-grade 10 TPH line.</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Certification for export</div>
+      <div style="font-size:13px;line-height:1.6">ISCC EU (residue track) + SGEC (Japan) or KEMCO (Korea). Cost: ₹15–25 lakh/yr. Timeline: 12–18 months.</div>
+    </div>
+
+    <!-- TORREFIED / BLACK PELLETS -->
+    <div style="background:var(--paper);padding:28px 24px;border-top:5px solid var(--am)">
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--am);margin-bottom:6px">Product 2</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;margin-bottom:4px">Torrefied / Black Pellets</div>
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;color:var(--mid);margin-bottom:20px">Thermally upgraded biomass · Coal substitute</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Process</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:18px;border-left:3px solid var(--ap);padding-left:12px">Chip → Dry → <strong>Torrefaction reactor (220–300°C, inert atmosphere, 30–60 min)</strong> → Cool → Grind → Pelletise → Cool. Hemicellulose decomposes; lignin/cellulose partially transformed. Mass loss 20–30% but energy density increases sharply. Bamboo GCV climbs to 20–22 MJ/kg.</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Key Specs (Bamboo torrefied)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--bd);margin-bottom:18px;font-size:12px">
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">GCV</div><strong>20–22 MJ/kg</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Bulk density</div><strong>750–850 kg/m³</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Moisture</div><strong>≤5% (hydrophobic)</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Ash</div><strong>2.5–4.5%</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Fixed carbon</div><strong>55–70%</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Japan FIT threshold</div><strong>≥18 GJ/t ✓</strong></div>
+      </div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Markets & Buyers</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px">
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-g" style="margin-right:8px">India</span> TSPL Vedanta (already producing); NTPC co-firing trials; steel PCI (Tata, JSW) — ₹15,000–22,000/MT</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-t" style="margin-right:8px">Japan</span> JERA, Kyushu Electric FIT co-firing (highest value market) — $220–270/MT FOB, growing 3× annually</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-a" style="margin-right:8px">Korea</span> RPS coal co-firing (direct drop-in, no boiler modification needed) — $250–280/MT FOB</div>
+        <div style="padding:6px 0"><span class="badge b-dk" style="margin-right:8px">EU</span> BECCS-compatible plants (Denmark Ørsted, UK Drax trials) — $280–350 CIF, very high cert bar</div>
+      </div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">CAPEX (torrefaction add-on)</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px">Torrefaction reactor line: ₹15–25 Cr additional. Proven technology: Blackwood Technology (NL), BioEndev (SE), Torr-Coal (NL). TSPL (India) has commissioned units — domestic proof of concept exists.</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Why bamboo specifically</div>
+      <div style="font-size:13px;line-height:1.6">Bamboo torrefies exceptionally well — its cellulose/lignin ratio produces a clean, hard black pellet with GCV approaching sub-bituminous coal (20–22 vs 22–26 MJ/kg). Lower silica migration vs agro-residue. TSPL's India proof validates the process at commercial scale.</div>
+    </div>
+
+    <!-- BIOCHAR -->
+    <div style="background:var(--paper);padding:28px 24px;border-top:5px solid var(--tl)">
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tl);margin-bottom:6px">Product 3</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;margin-bottom:4px">Biochar</div>
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;color:var(--mid);margin-bottom:20px">Pyrolysis product · Soil amendment · Carbon credit</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Process</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:18px;border-left:3px solid var(--tp);padding-left:12px">Chip → Dry → <strong>Pyrolysis reactor (400–700°C, zero oxygen, 20–60 min)</strong> → Biochar + syngas + bio-oil. Three product streams. Bamboo biochar yield: 25–35% of dry input mass (higher than wood at 20–25%). Syngas used to self-fuel the reactor — energy positive. CBRC study: 113.6 kg biochar per tonne bamboo chips.</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Key Specs (Bamboo biochar)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--bd);margin-bottom:18px;font-size:12px">
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Carbon content</div><strong>70–88%</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">GCV (fuel use)</div><strong>28–32 MJ/kg</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">pH</div><strong>8.5–10.5 (alkaline)</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Surface area (BET)</div><strong>150–400 m²/g</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">Moisture hold</div><strong>5× vs bare soil</strong></div>
+        <div style="background:var(--paper);padding:8px 10px"><div style="font-family:'Fira Mono',monospace;font-size:9px;color:var(--mid)">CO₂ sequestered</div><strong>&gt;2 t CO₂/t biochar</strong></div>
+      </div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Markets & Buyers</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px">
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-g" style="margin-right:8px">India</span> Soil amendment (organic farming — premium 30–40% yield boost documented); NABARD-funded FPOs — ₹8,000–18,000/MT</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-t" style="margin-right:8px">Japan</span> Soil amendment market; carbon credit buyers under J-Credit scheme — $200–600/MT depending on grade</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-a" style="margin-right:8px">EU</span> Carbon removal credit market (Puro.earth, Carbonfuture) — €200–400/t CO₂ equivalent; European steel PCI trials</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)"><span class="badge b-dk" style="margin-right:8px">Activated C</span> Upgrade to activated carbon (steam/CO₂ activation): food/pharma/water treatment grade — ₹80,000–2,50,000/MT</div>
+        <div style="padding:6px 0"><span class="badge b-g" style="margin-right:8px">Steel PCI</span> Bamboo biochar as PCI (pulverised coal injection) substitute in blast furnaces — Tata Steel, JSW active trials</div>
+      </div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">CAPEX</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px">Small pyrolysis unit (500 kg/hr): ₹80 lakh–2 Cr. Commercial scale (2 t/hr): ₹4–8 Cr. Self-fuelled by syngas — operating cost low. Indian manufacturers: Ankur Scientific (Vadodara), Carbon Terra, All Power Labs (agents in India).</div>
+
+      <div style="font-weight:700;font-size:12px;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Why bamboo specifically</div>
+      <div style="font-size:13px;line-height:1.6">Bamboo biochar has exceptionally high surface area (150–400 m²/g vs wood at 100–250) due to bamboo's natural internal vascular channel structure. Higher carbon content (80–88%) than most agricultural biochar (50–70%). Rice field trials in Guangdong: heavy metal uptake by rice reduced &gt;50%; yield up 13%. This is the highest-value per-tonne product in the bamboo value chain.</div>
+    </div>
+  </div>
+
+  <!-- Comparison chart -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px">
+    <div class="cc"><h3>Revenue per tonne by product — indicative INR</h3><canvas id="prodRevC" style="max-height:240px"></canvas></div>
+    <div class="cc"><h3>Energy density comparison — MJ/kg</h3><canvas id="prodEnC" style="max-height:240px"></canvas></div>
+  </div>
+
+  <div class="insight">
+    <span class="insight-lbl">Bombay Bioenergy product strategy</span>
+    Start with white pellets (lowest CAPEX, immediate SAMARTH + private industry revenue). Add torrefied pellet line when export revenue justifies ₹15–25 Cr reactor CAPEX — Japan market alone paying $220–270/MT makes this viable at ~50,000 MT/yr. Biochar is a complementary product from any pyrolysis-based system, or a standalone small-scale venture for high-value activated carbon. The holy grail is the <strong>poly-generation gasification model</strong> (electricity + biochar + liquid extract) pioneered by CBRC — but this requires further R&D investment.
+  </div>
+
+  <table class="spec-t" style="margin-top:28px">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>White Pellet</th>
+        <th>Torrefied / Black Pellet</th>
+        <th>Biochar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Process temperature</td><td>130–160°C (die)</td><td>220–300°C (torrefaction)</td><td>400–700°C (pyrolysis)</td></tr>
+      <tr><td>Mass yield from dry bamboo</td><td>~95% (densification only)</td><td>70–80% (hemicellulose loss)</td><td>25–35% (char fraction)</td></tr>
+      <tr><td>GCV (MJ/kg)</td><td>18.5–19.6</td><td>20–22</td><td>28–32</td></tr>
+      <tr><td>Moisture (product)</td><td>8–10% (hygroscopic)</td><td>≤5% (hydrophobic)</td><td>1–5% (stable)</td></tr>
+      <tr><td>Bulk density</td><td>620–680 kg/m³</td><td>750–850 kg/m³</td><td>250–400 kg/m³ (loose)</td></tr>
+      <tr><td>India price (indicative)</td><td>₹7,500–13,000/MT</td><td>₹15,000–22,000/MT</td><td>₹8,000–2,50,000/MT (grade)</td></tr>
+      <tr><td>Export price (FOB)</td><td>$130–150/MT (Japan/Korea)</td><td>$220–270/MT (Japan FIT)</td><td>$200–600/MT (soil/carbon credit)</td></tr>
+      <tr><td>CAPEX add-on</td><td>Base plant</td><td>+₹15–25 Cr reactor</td><td>+₹80L–8 Cr reactor</td></tr>
+      <tr><td>Cert required for export</td><td>ISCC EU + SGEC/KEMCO</td><td>ISCC EU + FIT registration</td><td>IBI/EBC standard for premium; carbon credit registry</td></tr>
+      <tr><td>Grindability (coal co-firing)</td><td>Poor — needs dedicated mill</td><td>Good — approaches coal HGI</td><td>Excellent — fine powder</td></tr>
+      <tr><td>Hydrophobicity (storage)</td><td>Low — needs covered storage</td><td>High — outdoor storage possible</td><td>High — stable for years</td></tr>
+      <tr><td>Best fit for India Phase 1</td><td class="pass">✓ Yes — lowest barrier</td><td><span class="warn-c">Phase 2 — export justified</span></td><td><span class="warn-c">Parallel small unit viable</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <p>BOMBAY BIOENERGY · BAMBOO PELLETISATION GUIDE · SOLAPUR, MAHARASHTRA</p>
+  <p>COMPILED 2025 · DATA: ISO 17225-6, INBAR, CBRC, TAPPI T222, SAMARTH MoP</p>
+</footer>
+
+<script>
+const G='#3d7a35',GL='#6aaa5e',AM='#b86800',RD='#aa2222',TL='#1a6060',MID='#555';
+const sp10=['B.balcooa','B.nutans','D.strictus','D.asper','B.bambos','D.brandisii','D.stocksii','B.tulda','M.baccifera','D.hamiltonii'];
+const clr10=[G,TL,'#5e9950','#3a8c6b','#2d6b2d',AM,'#6b8c3a','#3a5e8c','#8c5e3a','#6b3a5e'];
+const opts={plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}};
+const optsH={...opts,indexAxis:'y'};
+
+new Chart('gcvC',{type:'bar',data:{labels:sp10,datasets:[{data:[4685,4590,4530,4445,4530,4480,4530,4490,4300,4460],backgroundColor:clr10,borderWidth:0}]},options:{...optsH,scales:{x:{min:4200,ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+new Chart('ashC',{type:'bar',data:{labels:sp10,datasets:[{data:[1.8,1.28,2.25,2.0,2.4,2.3,2.0,3.05,2.65,2.75],backgroundColor:[G,TL,AM,GL,AM,AM,GL,RD,AM,RD],borderWidth:0}]},options:{...optsH,scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+new Chart('ligC',{type:'bar',data:{labels:sp10,datasets:[{data:[26,29.66,25,24,24,26,26,23.5,26.5,24],backgroundColor:clr10,borderWidth:0}]},options:{...optsH,scales:{x:{min:20,ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+new Chart('avC',{type:'bar',data:{labels:sp10,datasets:[{data:[9,7,10,6,10,6,5,3,0,0],backgroundColor:[G,TL,G,GL,G,GL,AM,RD,MID,MID],borderWidth:0}]},options:{...optsH,scales:{x:{max:10,ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+new Chart('ageC',{type:'line',data:{labels:['1yr','2yr','3yr','4yr','5yr','6yr'],datasets:[
+  {label:'Lignin %',data:[16,22,27,26,24,21],borderColor:G,backgroundColor:'transparent',tension:.4,borderWidth:2.5},
+  {label:'Cellulose %',data:[44,48,52,50,47,44],borderColor:TL,backgroundColor:'transparent',tension:.4,borderWidth:2.5},
+  {label:'Ash %',data:[2.8,2.2,1.7,2.0,2.4,3.2],borderColor:RD,backgroundColor:'transparent',tension:.4,borderWidth:2.5},
+  {label:'Silica in ash %',data:[20,16,12,14,18,25],borderColor:AM,backgroundColor:'transparent',tension:.4,borderWidth:2,borderDash:[5,3]}
+]},options:{plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+new Chart('durC',{type:'bar',data:{labels:['1yr','2yr','3yr','4yr','5yr','6yr+'],datasets:[{label:'Durability %',data:[92,95.5,97.5,96.5,95,93],backgroundColor:[RD,AM,G,GL,AM,RD],borderWidth:0}]},options:{plugins:{legend:{display:false},annotation:{annotations:{line:{type:'line',yMin:97.5,yMax:97.5,borderColor:'rgba(61,122,53,0.5)',borderWidth:1.5,label:{content:'ENplus min',enabled:true}}}}},scales:{y:{min:88,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+new Chart('massC',{type:'doughnut',data:{labels:['Pellet output','Water evaporated','Process losses'],datasets:[{data:[50,47,3],backgroundColor:[G,'#ddd',RD],borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}});
+
+new Chart('enC',{type:'bar',data:{labels:['Chipping','Drying','Grinding','Steam','Pelleting','Cooling'],datasets:[{data:[8,320,95,15,110,12],backgroundColor:[GL,RD,TL,AM,G,GL],borderWidth:0}]},options:{plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'kWh/tonne',font:{size:10}},ticks:{font:{size:10}}},x:{ticks:{font:{size:9},maxRotation:20}}}}});
+
+new Chart('tmpC',{type:'line',data:{labels:['100','110','120','130','140','150','160','170','180','190'],datasets:[
+  {label:'Durability %',data:[88,91,93,96,97.5,97.8,97,95,91,85],borderColor:G,backgroundColor:'rgba(61,122,53,0.08)',fill:true,tension:.4,borderWidth:2.5},
+  {label:'Jam risk (0–100)',data:[5,5,8,10,10,12,20,45,75,95],borderColor:RD,backgroundColor:'transparent',tension:.4,borderWidth:2,borderDash:[5,3]}
+]},options:{plugins:{legend:{labels:{font:{size:10},boxWidth:10}}},scales:{x:{title:{display:true,text:'Die temp °C',font:{size:10}},ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+
+// Revenue chart
+new Chart('revC',{type:'bar',data:{
+  labels:['SAMARTH/NTPC','Private Industry','Export (Japan white)','Export (Black pellet)'],
+  datasets:[{data:[9250,11000,13500,22500],backgroundColor:[G,TL,AM,RD],borderWidth:0}]
+},options:{plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'₹ per tonne (approx)',font:{size:10}},ticks:{font:{size:10}}},x:{ticks:{font:{size:10},maxRotation:15}}}}});
+
+// Spec radar
+new Chart('specC',{type:'radar',data:{
+  labels:['GCV /5','Low Ash /5','Durability /5','Low Silica /5','Moisture /5','Availability'],
+  datasets:[
+    {label:'3yr B.nutans',data:[5,5,5,5,5,4],borderColor:G,backgroundColor:'rgba(61,122,53,0.12)',borderWidth:2},
+    {label:'3yr B.balcooa',data:[5,4.5,5,4.5,5,5],borderColor:TL,backgroundColor:'rgba(26,96,96,0.08)',borderWidth:2},
+    {label:'D.strictus',data:[4.5,4,4.5,4,4.5,5],borderColor:AM,backgroundColor:'rgba(184,104,0,0.06)',borderWidth:2}
+  ]
+},options:{plugins:{legend:{labels:{font:{size:10},boxWidth:10}}},scales:{r:{ticks:{font:{size:9}},pointLabels:{font:{size:10}}}}}});
+
+new Chart('prodRevC',{type:'bar',data:{
+  labels:['White Pellet\n(SAMARTH)','White Pellet\n(Private Ind.)','White Pellet\n(Japan Export)','Torrefied\n(Japan Export)','Biochar\n(Soil Amend.)','Biochar\n(Activated C)'],
+  datasets:[{data:[9250,11000,13500,22500,13000,165000],
+    backgroundColor:[G,TL,AM,'#8b4a00','#1a4040','#0a2a2a'],borderWidth:0}]
+},options:{plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'₹ per tonne',font:{size:10}},ticks:{font:{size:9}}},x:{ticks:{font:{size:9},maxRotation:25}}}}});
+
+new Chart('prodEnC',{type:'bar',data:{
+  labels:['Coal\n(sub-bituminous)','Bamboo Biochar','Torrefied\nBamboo Pellet','White Bamboo\nPellet','White Wood\nPellet','Agro-residue\nPellet'],
+  datasets:[{data:[22.5,30,21,19,18.5,15],
+    backgroundColor:['#333','#1a6060',AM,G,'#5e9950','#8c5e3a'],borderWidth:0}]
+},options:{plugins:{legend:{display:false}},scales:{y:{min:12,title:{display:true,text:'MJ/kg',font:{size:10}},ticks:{font:{size:9}}},x:{ticks:{font:{size:9},maxRotation:25}}}}});
+</script>
+</body>
+</html>
