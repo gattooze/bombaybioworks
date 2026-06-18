@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hivemind · Bombay Bioworks</title>
+  <meta name="description" content="Collective intelligence & note-taking hub for Bombay Bioworks — log conversations, take rich notes, track relationships." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E" />
+
+  <!-- Tailwind (Play CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { honey: { 50:'#fffaf0',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e',900:'#78350f' } },
+        fontFamily: { sans: ['Inter','system-ui','sans-serif'] }
+      } }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Quill rich-text editor -->
+  <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+
+  <!-- React + Babel (zero build) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Supabase (optional cloud sync) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: #fffdf7; }
+    .hex-bg { background-color:#fffdf7; background-image: radial-gradient(#fde68a33 1px, transparent 1px); background-size: 22px 22px; }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: #fcd34d; border-radius: 10px; }
+    /* Quill tweaks */
+    .ql-toolbar.ql-snow, .ql-container.ql-snow { border-color:#cbd5e1; }
+    .ql-toolbar.ql-snow { border-top-left-radius:.5rem; border-top-right-radius:.5rem; background:#fffdf7; position:sticky; top:0; z-index:5; }
+    .ql-container.ql-snow { border-bottom-left-radius:.5rem; border-bottom-right-radius:.5rem; font-family:Inter,sans-serif; font-size:14px; }
+    .ql-editor { min-height: 200px; }
+    /* read-only rendered notes */
+    .note-render .ql-editor { min-height:0; padding:0; }
+    .note-render.ql-snow { border:none; }
+  </style>
+</head>
+<body class="hex-bg text-slate-800">
+  <div id="root" class="p-10 text-center text-honey-600">Loading Hivemind…</div>
+  <script>
+    // Compile the JSX app with the CLASSIC runtime (uses the UMD React global, no ES imports).
+    (async () => {
+      try {
+        const src = await (await fetch('app.jsx?v=' + Date.now())).text();
+        const { code } = Babel.transform(src, { presets: [['react', { runtime: 'classic' }]] });
+        const s = document.createElement('script');
+        s.textContent = code;
+        document.body.appendChild(s);
+      } catch (e) {
+        document.getElementById('root').innerHTML =
+          '<div style="color:#b45309;padding:2rem">Failed to load Hivemind: ' + e.message + '</div>';
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>
