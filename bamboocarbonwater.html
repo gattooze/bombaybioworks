@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bamboo Activated Carbon for Water &amp; Effluent Treatment</title>
+<style>
+  :root{
+    --bg:#0d0f0c; --panel:#14170f; --panel2:#1b1f14; --ink:#eef1e6; --muted:#9aa488;
+    --line:#2b3320; --acc:#a6d049; --acc2:#6fae3a; --gold:#d9b23a; --red:#e0655a;
+    --blue:#5aa9e0; --amber:#e0a94a; --purple:#b489e0; --teal:#4fb8a8;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;font-size:16px}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  a{color:var(--acc)}
+  h1,h2,h3,h4{line-height:1.15;letter-spacing:-.02em}
+  h2{font-size:1.7rem;margin:0 0 6px} h3{font-size:1.12rem;margin:22px 0 8px} h4{margin:0 0 4px}
+  p{color:#d7dccb} .muted{color:var(--muted)} .lead{font-size:1.12rem;color:#e6ead9}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin:0 0 10px}
+
+  .mast{position:sticky;top:0;z-index:50;background:rgba(13,15,12,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .mast .row{display:flex;align-items:center;gap:14px;padding:12px 22px;max-width:1160px;margin:0 auto;flex-wrap:wrap}
+  .brand{font-size:.98rem;font-weight:700;letter-spacing:-.01em;color:#fff;white-space:nowrap}
+  .brand .dot{color:var(--blue)}
+  .brand small{display:block;font-weight:500;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .tabs{display:flex;gap:5px;overflow-x:auto;padding:0 22px 10px;max-width:1160px;margin:0 auto;scrollbar-width:thin}
+  .tabs button{flex:none;font-family:var(--sans);font-size:.82rem;color:var(--muted);background:transparent;border:1px solid var(--line);
+    padding:7px 13px;border-radius:9px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .tabs button:hover{color:var(--ink);border-color:#3c4a2b}
+  .tabs button.on{color:#0d0f0c;background:var(--blue);border-color:var(--blue);font-weight:600}
+  .tabnum{font-family:var(--mono);font-size:.7rem;opacity:.6;margin-right:5px}
+
+  .panel{display:none;padding:38px 0 70px;animation:fade .25s ease}
+  .panel.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{margin-top:0}
+  .stat{font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+  .stat.sm{font-size:1.45rem}
+  .stat .u{font-size:.82rem;color:var(--muted);font-weight:500}
+  .klabel{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+  .call{border-radius:12px;padding:16px 18px;border:1px solid var(--line);margin:15px 0}
+  .call.good{background:rgba(111,174,58,.10);border-color:rgba(111,174,58,.4)}
+  .call.warn{background:rgba(224,169,74,.09);border-color:rgba(224,169,74,.38)}
+  .call.bad{background:rgba(224,101,90,.09);border-color:rgba(224,101,90,.38)}
+  .call.key{background:rgba(90,169,224,.08);border-color:rgba(90,169,224,.34)}
+  .call b{color:#fff}
+  .call .h{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;display:block}
+  .good .h{color:var(--acc)} .warn .h{color:var(--amber)} .bad .h{color:var(--red)} .key .h{color:var(--blue)}
+
+  table{width:100%;border-collapse:collapse;font-size:.86rem;margin:8px 0}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  tbody tr:hover{background:rgba(255,255,255,.015)}
+  .num{font-family:var(--mono);white-space:nowrap}
+  .win{color:var(--acc);font-weight:600} .lose{color:var(--red);font-weight:600} .mid{color:var(--amber);font-weight:600}
+  .scroll{overflow-x:auto}
+
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0}
+  .bar .nm{width:180px;font-size:.84rem;color:#d7dccb;flex:none}
+  .bar .track{flex:1;height:22px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3d7fa8,var(--blue));display:flex;align-items:center;justify-content:flex-end;padding-right:7px;font-family:var(--mono);font-size:.7rem;color:#0d0f0c;font-weight:700}
+  .bar .val{width:120px;text-align:right;font-family:var(--mono);font-size:.77rem;color:var(--muted);flex:none}
+
+  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 12px;position:relative}
+  .step .n{font-family:var(--mono);font-size:.64rem;color:var(--blue);letter-spacing:.1em}
+  .step h4{margin:6px 0 4px;font-size:.92rem}
+  .step p{font-size:.76rem;margin:0;color:var(--muted);line-height:1.45}
+
+  .pill{display:inline-block;font-family:var(--mono);font-size:.62rem;padding:2px 7px;border-radius:5px;margin:2px 4px 2px 0}
+  .p-fit{background:rgba(111,174,58,.16);color:var(--acc)} .p-mid{background:rgba(224,169,74,.15);color:var(--amber)} .p-no{background:rgba(224,101,90,.14);color:var(--red)}
+  .mi{background:rgba(90,169,224,.15);color:var(--blue)} .me{background:rgba(180,137,224,.15);color:var(--purple)}
+
+  .verdict{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin:18px 0;position:relative;overflow:hidden}
+  .verdict::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--blue),var(--teal))}
+  .verdict .big{font-size:1.2rem;color:#fff;font-weight:600;margin:0 0 10px}
+  .disc{font-size:.76rem;color:var(--muted);font-style:italic}
+  .srcs{font-size:.79rem;color:var(--muted)} .srcs a{color:#b9c7a0}
+  hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
+  ul.clean{padding-left:18px} ul.clean li{margin:5px 0}
+  @media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.bar .nm{width:130px}}
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="row">
+    <div class="brand">Bamboo Carbon <span class="dot">·</span> Water &amp; Effluent<small>Drinking water · industrial effluent · the complete deep dive</small></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="on" data-t="thesis"><span class="tabnum">00</span>Expert Thesis</button>
+    <button data-t="demand"><span class="tabnum">01</span>Demand &amp; Volume</button>
+    <button data-t="twomarkets"><span class="tabnum">02</span>Two Water Markets</button>
+    <button data-t="process"><span class="tabnum">03</span>Activation Process</button>
+    <button data-t="specs"><span class="tabnum">04</span>Specifications</button>
+    <button data-t="performance"><span class="tabnum">05</span>Bamboo Performance</button>
+    <button data-t="pricing"><span class="tabnum">06</span>Pricing &amp; Quantities</button>
+    <button data-t="opportunity"><span class="tabnum">07</span>The Opportunity</button>
+    <button data-t="sources"><span class="tabnum">08</span>Sources</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- 00 THESIS -->
+<section class="panel on" id="thesis">
+  <p class="eyebrow">The expert's opening position</p>
+  <h2>Water is the one market where bamboo's weakness doesn't bite — and its strengths do.</h2>
+  <p class="lead">Across every application in the carbon world, water treatment is the largest by volume, the most forgiving on the hardness spec bamboo struggles with, and the one where bamboo's tunable mesoporosity is a genuine advantage for colour and COD. If bamboo activated carbon becomes a real industry, <b>this is where it starts</b> — not gold, not nuclear. This report is the complete operator's view: how much is used, how it's made, what it must hit, what it sells for, and exactly where a bamboo producer wins.</p>
+
+  <div class="grid g4" style="margin:20px 0">
+    <div class="card"><div class="stat">1.5<span class="u"> Mt+</span></div><div class="klabel">Global AC used in water treatment /yr</div></div>
+    <div class="card"><div class="stat">~40–51<span class="u">%</span></div><div class="klabel">Water's share of the whole AC market</div></div>
+    <div class="card"><div class="stat" style="color:var(--red)">~0<span class="u">%</span></div><div class="klabel">Share currently met by <b>bamboo</b> AC</div></div>
+    <div class="card"><div class="stat" style="color:var(--acc)">₹120–200<span class="u">/kg</span></div><div class="klabel">Water-grade GAC bulk price</div></div>
+  </div>
+
+  <div class="verdict">
+    <p class="big">The single most important fact: water treatment consumes 1.5+ million tonnes of activated carbon a year — and virtually none of it is bamboo. That gap is not a warning. It is the whitespace.</p>
+    <p style="margin:0">Water carbon is bought on <b>iodine number, particle size, ash and price</b> — not on the 97–99% hardness that locks bamboo out of gold. Bamboo comfortably makes water-grade carbon by simple steam activation, and for <b>industrial effluent</b> (dyes, colour, COD) its mesoporous character actually outperforms tight microporous coconut carbon. Two sub-markets, one feedstock, both wide open.</p>
+  </div>
+
+  <div class="grid g3">
+    <div class="call good" style="margin:0"><span class="h">Why bamboo fits</span>Hardness-forgiving; steam activation is enough; tunable pores suit both potable polishing (micro) and dye/COD removal (meso). Low feedstock cost and a clean ESG story that Western water buyers now actively want.</div>
+    <div class="call key" style="margin:0"><span class="h">Two doors</span><b>Drinking water</b> (municipal + point-of-use, PFAS-driven, certification-gated, export-relevant) and <b>industrial effluent</b> (ETP/CETP/ZLD, India-domestic, colour/COD, forgiving). Different specs, different buyers, both large.</div>
+    <div class="call warn" style="margin:0"><span class="h">The honest catch</span>Water is the <i>lowest-price</i> segment. It gives you tonnage and a reference base, not fat margins. Treat it as the beachhead that funds the climb into premium grades — not the profit engine by itself.</div>
+  </div>
+
+  <p class="disc" style="margin-top:18px">Navigate with the tabs. Sources under the final tab. FX ~₹87/US$. Prices/specs are indicative industry ranges — validate against buyer datasheets and live quotes.</p>
+</section>
+
+<!-- 01 DEMAND -->
+<section class="panel" id="demand">
+  <p class="eyebrow">01 — How much is actually used</p>
+  <h2>The demand, quantified — and where bamboo stands (nowhere, yet)</h2>
+  <p class="lead">Two numbers you must hold together: water treatment is the biggest carbon market in the world by volume, and bamboo's share of it is a rounding error. Everything strategic follows from that contrast.</p>
+
+  <div class="grid g2" style="margin:20px 0">
+    <div class="card">
+      <h3>Global water-treatment AC demand</h3>
+      <table>
+        <tr><td>Volume consumed (2022)</td><td class="num win">1.5 Mt+</td></tr>
+        <tr><td>Standalone market value (2025→26)</td><td class="num">$903 M → $957 M*</td></tr>
+        <tr><td>Water's share of total AC (value)</td><td class="num">~40–51%</td></tr>
+        <tr><td>Water's share of total AC (volume)</td><td class="num">~26%+</td></tr>
+        <tr><td>Growth driver</td><td class="num">PFAS, reuse, ZLD</td></tr>
+      </table>
+      <p class="disc">*The narrow "$903 M water AC" figure and the "40–51% of a ~$6 bn market" figure use different scopes (municipal-only vs all water incl. industrial). Both are cited; the <b>volume number (1.5 Mt)</b> is the most reliable planning anchor.</p>
+    </div>
+    <div class="card">
+      <h3>India water-treatment AC demand</h3>
+      <table>
+        <tr><td>India total AC consumption</td><td class="num">283,000 t/yr</td></tr>
+        <tr><td>India production capacity</td><td class="num">436,000 t/yr</td></tr>
+        <tr><td>Water = largest &amp; most mature segment</td><td class="num win">~40%+ of use</td></tr>
+        <tr><td>→ Implied AC into Indian water</td><td class="num">~110–130k t/yr</td></tr>
+        <tr><td>Industrial wastewater treatment mkt</td><td class="num">$2.08 bn (2025), 9.7% CAGR</td></tr>
+      </table>
+      <p class="disc">India produces ~150k t more than it consumes — the surplus is exported. So the Indian water opportunity is domestic demand <b>plus</b> a large export channel.</p>
+    </div>
+  </div>
+
+  <div class="call bad">
+    <span class="h">How much BAMBOO AC is used in water? — the honest answer</span>
+    <b>Effectively none, at commercial scale, anywhere — and there is no market-size figure because the market barely exists.</b> Global water carbon is coconut- and coal-dominated; bamboo appears almost entirely in (a) Chinese consumer/point-of-use products and (b) hundreds of academic studies proving it <i>works</i>. No major water utility or ETP today specifies "bamboo GAC." That is precisely the opening: the science is settled (bamboo removes dyes, metals and organics at published capacities that match or beat coconut — see the Performance tab), but nobody has built the supply chain to deliver it at spec, at scale, with certification. First credible mover takes a defensible position.
+  </div>
+
+  <div class="card">
+    <h3>The structural demand tailwinds (why this grows, not just persists)</h3>
+    <div class="bar"><span class="nm">US PFAS regulation</span><span class="track"><span class="fill" style="width:100%">200+ utilities on GAC; thousands of systems by ~2029</span></span><span class="val">export pull</span></div>
+    <div class="bar"><span class="nm">India ZLD mandates</span><span class="track"><span class="fill" style="width:78%">textile, tannery, sugar, distillery, pulp</span></span><span class="val">domestic</span></div>
+    <div class="bar"><span class="nm">India sewage gap</span><span class="track"><span class="fill" style="width:70%">72,368 MLD generated · only ~44% capacity</span></span><span class="val">domestic</span></div>
+    <div class="bar"><span class="nm">Namami Gange / AMRUT</span><span class="track"><span class="fill" style="width:60%">₹31,344 cr · 7,000 MLD STP by 2026</span></span><span class="val">domestic</span></div>
+    <div class="bar"><span class="nm">Water reuse / circular</span><span class="track"><span class="fill" style="width:52%">tertiary polishing before reuse</span></span><span class="val">both</span></div>
+  </div>
+</section>
+
+<!-- 02 TWO MARKETS -->
+<section class="panel" id="twomarkets">
+  <p class="eyebrow">02 — Not one market, two</p>
+  <h2>Drinking water vs industrial effluent — treat them as separate businesses</h2>
+  <p class="lead">The biggest mistake a new entrant makes is calling this "water treatment" as if it's one customer. It's two, with different specs, buyers, sales cycles and margins. Bamboo fits both — but you sell to them completely differently.</p>
+
+  <div class="grid g2" style="margin:18px 0">
+    <div class="card">
+      <h3 style="color:var(--blue)">💧 Drinking / potable water</h3>
+      <p><b>What the carbon does:</b> removes chlorine/chloramine, taste &amp; odour (geosmin/MIB), natural organic matter, pesticides, and now <b>PFAS</b> — the demand supernova.</p>
+      <ul class="clean" style="font-size:.9rem">
+        <li><b>Buyers:</b> municipal utilities, POU/POE filter OEMs (Kent, Pureit, Aquaguard, Western brands), packaged water.</li>
+        <li><b>Form:</b> GAC beds (8×30, 12×40), carbon block, some PAC.</li>
+        <li><b>The gate:</b> <b>NSF/ANSI 61 &amp; 42</b> certification, AWWA B604, low soluble ash &amp; heavy metals — food-contact purity.</li>
+        <li><b>Character:</b> micropore-led (iodine 900–1050). Stable, spec-driven, <b>export-relevant</b> (US/EU PFAS).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--teal)">🏭 Industrial effluent / wastewater</h3>
+      <p><b>What the carbon does:</b> strips <b>colour, COD, dyes, phenols, API residues, heavy metals</b> as tertiary polishing before discharge or ZLD/reuse.</p>
+      <ul class="clean" style="font-size:.9rem">
+        <li><b>Buyers:</b> textile (Tirupur, Surat, Panipat), tanneries, pharma (Gujarat, Maharashtra), distilleries, pulp &amp; paper, CETP operators, EPC/ZLD integrators.</li>
+        <li><b>Form:</b> GAC columns, PAC dosing.</li>
+        <li><b>The gate:</b> performance on colour/COD, price. <b>No food-contact cert needed</b> — far more forgiving.</li>
+        <li><b>Character:</b> <b>mesopore-valued</b> (big dye molecules) — where bamboo's structure genuinely wins. India-domestic, ZLD-driven, fast-growing.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="call good">
+    <span class="h">The strategic read</span>
+    <b>Start with industrial effluent.</b> It's the friendliest possible entry: no NSF certification wall, forgiving on hardness and purity, values exactly the mesoporosity bamboo delivers, and it's booming domestically on ZLD mandates you don't have to wait years to qualify for. Use effluent to build production maturity and cash flow, <i>then</i> pursue the NSF-certified drinking-water and PFAS-export tier, which is higher-value but slower to unlock. Two doors, sequenced — effluent first, potable second.
+  </div>
+
+  <div class="call key">
+    <span class="h">A word on reactivation — it's both threat and opportunity</span>
+    Municipal drinking-water GAC is <b>reactivated</b> (thermally cleaned and reused) 30–60% cheaper than buying virgin, with 50–70% lower emissions — economical above ~5 t/yr usage. This <i>reduces</i> virgin-carbon demand per plant, but it opens a <b>reactivation-service business</b> that's stickier and higher-margin than selling virgin carbon. Effluent carbon, by contrast, is often spent (loaded with toxics) and landfilled/incinerated, so it stays a virgin-sales market. Factor reactivation into any drinking-water volume model — don't assume every tonne installed is a tonne sold every year.
+  </div>
+</section>
+
+<!-- 03 PROCESS -->
+<section class="panel" id="process">
+  <p class="eyebrow">03 — Making water-grade carbon from bamboo</p>
+  <h2>The activation process, water-specific</h2>
+  <p class="lead">Water grade is the <i>easiest</i> grade to make — which is exactly why it's the beachhead. Simple steam activation on clean bamboo hits the spec. Here's the operator's process, and how you tune it for potable vs effluent.</p>
+
+  <div class="flow">
+    <div class="step"><div class="n">STEP 1</div><h4>Prep</h4><p>Chip internodes (divert nodes), dry &lt;15% moisture. Uniform sizing = uniform activation.</p></div>
+    <div class="step"><div class="n">STEP 2</div><h4>Carbonise</h4><p>Pyrolysis 400–600 °C, low O₂ → char (~28–30%), fixed carbon 75–81%. Capture syngas to fire the kiln.</p></div>
+    <div class="step"><div class="n">STEP 3</div><h4>Steam activate</h4><p>850–950 °C with steam to iodine 900–1000, micropore-led. Control burn-off for the iodine/yield balance.</p></div>
+    <div class="step"><div class="n">STEP 4</div><h4>Wash</h4><p>Water/dilute-acid + lime wash to strip silica, cut ash ≤8%, bring pH to neutral. Critical for potable.</p></div>
+    <div class="step"><div class="n">STEP 5</div><h4>Size &amp; QC</h4><p>Screen to 8×30 / 12×40 GAC, or grind to PAC. Full test panel; certify for the target sub-market.</p></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3><span class="pill mi">MICRO</span>Tuning for drinking water</h3>
+      <ul class="clean" style="font-size:.9rem">
+        <li><b>Route:</b> steam activation — clean, no chemical effluent, easiest to certify.</li>
+        <li><b>Target:</b> iodine 900–1050, tight microporosity for chlorine/taste/odour/small organics.</li>
+        <li><b>Purity:</b> thorough wash for low soluble ash &amp; heavy metals → NSF/ANSI 61 eligibility.</li>
+        <li><b>Form:</b> hard-screened GAC (8×30) with minimal fines; PAC for utilities dosing.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="pill me">MESO</span>Tuning for industrial effluent</h3>
+      <ul class="clean" style="font-size:.9rem">
+        <li><b>Route:</b> steam at higher burn-off, or add <b>H₃PO₄</b> for a mesoporous grade that eats big dye molecules.</li>
+        <li><b>Target:</b> high methylene-blue &amp; molasses number (colour/COD), iodine secondary.</li>
+        <li><b>Purity:</b> relaxed — no food-contact cert; wash mainly for performance, not certification.</li>
+        <li><b>Form:</b> GAC columns for polishing; PAC for shock dosing in upset conditions.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="call good">
+    <span class="h">Why water is the easy grade</span>
+    Gold needs pelletisation for hardness; nuclear needs impregnation; energy needs KOH and ppm-purity. <b>Water needs none of that.</b> A single steam-activation line — the cheapest, most permit-friendly setup — produces sellable water carbon from day one. You differentiate potable vs effluent mostly by <b>burn-off, wash intensity and screening</b>, not by building separate plants. That low process bar is why water is where you prove the bamboo supply chain works.
+  </div>
+</section>
+
+<!-- 04 SPECS -->
+<section class="panel" id="specs">
+  <p class="eyebrow">04 — What it must hit</p>
+  <h2>Specifications &amp; standards for water carbon</h2>
+  <p class="lead">The buyable spec for water carbon is narrower and lower than gold or energy — but the certification wall for <i>drinking</i> water is real. Know exactly what each sub-market demands.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Parameter</th><th>Drinking water GAC</th><th>Industrial effluent GAC</th><th>Bamboo readiness</th></tr></thead>
+    <tbody>
+      <tr><td>Iodine number</td><td class="num">900–1,050 mg/g</td><td class="num">700–1,000 mg/g</td><td class="win">Meets easily</td></tr>
+      <tr><td>Methylene blue / molasses</td><td class="num">moderate</td><td class="num win">high (colour/COD)</td><td class="win">Strong (mesopore)</td></tr>
+      <tr><td>Mesh / particle size</td><td class="num">8×30, 12×40</td><td class="num">8×30, 12×40, PAC</td><td class="win">Screen to spec</td></tr>
+      <tr><td>Ball-pan hardness</td><td class="num">≥90% (abrasion ≥70–80)</td><td class="num">≥85%</td><td class="mid">~82% raw — the one to watch</td></tr>
+      <tr><td>Ash content</td><td class="num">≤8% (≤12% max)</td><td class="num">≤12%</td><td class="mid">Wash silica out</td></tr>
+      <tr><td>Apparent density</td><td class="num">0.40–0.50 g/cc</td><td class="num">0.38–0.50</td><td class="win">In range</td></tr>
+      <tr><td>Moisture</td><td class="num">≤5%</td><td class="num">≤5%</td><td class="win">Dry to spec</td></tr>
+      <tr><td>pH of extract</td><td class="num">near-neutral 6–8</td><td class="num">flexible</td><td class="win">Wash to target</td></tr>
+      <tr><td>Certification</td><td class="lose">NSF/ANSI 61 &amp; 42, AWWA B604/B600</td><td class="win">none required</td><td class="mid">Effort + audit, not a materials limit</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>The standards that gate drinking water</h3>
+      <ul class="clean" style="font-size:.9rem">
+        <li><b>NSF/ANSI 61</b> — drinking-water system components (health effects). The core wall.</li>
+        <li><b>NSF/ANSI 42</b> — aesthetic effects (taste, odour, chlorine).</li>
+        <li><b>AWWA B604</b> — GAC standard (iodine, density, particle size as grade params).</li>
+        <li><b>AWWA B600</b> — carbon for drinking water.</li>
+        <li><b>EN 12915</b> (Europe), <b>IS 15626 / BIS</b> (India) for equivalents.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Where bamboo needs attention</h3>
+      <ul class="clean" style="font-size:.9rem">
+        <li><b>Hardness</b> (~82% raw vs ≥90% target): the only spec bamboo strains at. For beds it's manageable; tighten via dense species + controlled burn-off. Effluent is more forgiving.</li>
+        <li><b>Ash/silica</b>: bamboo 5–10% ash — wash to ≤8% for potable. Nodes make it worse, so feed clean internodes.</li>
+        <li><b>Certification clock</b>: NSF is time + money, not a bamboo-specific barrier. Effluent needs none, which is why you enter there first.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="call key">
+    <span class="h">The one-line spec takeaway</span>
+    For <b>effluent</b>, bamboo carbon is essentially plug-and-play on spec today. For <b>drinking water</b>, the material meets the numbers; the work is <b>washing to purity and clearing NSF certification</b> — a process-discipline and paperwork task, not a materials-science one.
+  </div>
+</section>
+
+<!-- 05 PERFORMANCE -->
+<section class="panel" id="performance">
+  <p class="eyebrow">05 — Does bamboo actually clean water</p>
+  <h2>The performance evidence — bamboo is proven, on paper</h2>
+  <p class="lead">Hundreds of peer-reviewed studies have already established that bamboo activated carbon removes the exact contaminants water and effluent carbon exists to remove — often matching or beating coconut. The science is not the risk; the supply chain is.</p>
+
+  <div class="grid g3" style="margin:20px 0">
+    <div class="card"><div class="stat">374<span class="u"> mg/g</span></div><div class="klabel">Methylene-blue capacity (H₃PO₄ bamboo, 1354 m²/g)</div></div>
+    <div class="card"><div class="stat">&gt;99.2<span class="u">%</span></div><div class="klabel">Cu, Zn &amp; dye removal efficiency</div></div>
+    <div class="card"><div class="stat">1354<span class="u"> m²/g</span></div><div class="klabel">BET of the dye-grade bamboo carbon</div></div>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Contaminant class</th><th>Bamboo AC result (published)</th><th>Relevance</th></tr></thead>
+    <tbody>
+      <tr><td><b>Dyes (methylene blue)</b></td><td class="num">up to 374.75 mg/g (Langmuir)</td><td>Textile effluent, colour</td></tr>
+      <tr><td><b>Disperse / reactive dyes</b></td><td>high removal, favourable kinetics</td><td>Textile ZLD</td></tr>
+      <tr><td><b>Heavy metals (Cu, Zn, Pb, Cr)</b></td><td class="num">&gt;99.2% removal</td><td>Tannery, plating, mixed effluent</td></tr>
+      <tr><td><b>Colour + COD (ink/industrial)</b></td><td>strong COD &amp; colour reduction</td><td>Tertiary polishing before discharge/ZLD</td></tr>
+      <tr><td><b>Organics / phenols</b></td><td>effective (micro+meso)</td><td>Pharma, chemical effluent</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call good">
+    <span class="h">The expert's interpretation</span>
+    Multiple review papers now single out <b>bamboo-based activated carbon as superior to wood, coconut and agri-residue carbons for dye removal</b>, precisely because its structure carries the mesoporosity large colour molecules need. That's not marketing — it's the recurring finding across the literature. For <b>industrial effluent</b>, you are not asking a buyer to accept a compromise material; you're offering one that is arguably <i>better suited</i> to their colour/COD problem than the coconut carbon they use today, at a lower and more stable feedstock cost.
+  </div>
+
+  <div class="call warn">
+    <span class="h">The gap between lab and tonnes</span>
+    Every number above is a <b>lab result on a small batch</b>. The commercial questions the literature doesn't answer: batch-to-batch consistency from variable field bamboo, column performance and lifetime under real flow, regeneration behaviour, and cost at tonne scale. Closing that lab-to-plant gap — with your own pilot data on real effluent — is the actual work, and the thing that converts "proven in principle" into a purchase order.
+  </div>
+</section>
+
+<!-- 06 PRICING -->
+<section class="panel" id="pricing">
+  <p class="eyebrow">06 — Price &amp; quantity, from the bamboo view</p>
+  <h2>What it sells for, and how much moves — domestic &amp; export</h2>
+  <p class="lead">Water is the volume floor of the carbon business and the price basement. Understanding exactly where water carbon sits in the price stack tells you why it's the beachhead and not the destination.</p>
+
+  <div class="grid g2" style="margin:18px 0">
+    <div class="card">
+      <h3>Water-grade price stack (India, bulk)</h3>
+      <table>
+        <tr><td>PAC (powder, effluent dosing)</td><td class="num">₹80–150/kg</td></tr>
+        <tr><td>Effluent GAC (colour/COD)</td><td class="num">₹120–190/kg</td></tr>
+        <tr><td>Drinking-water GAC (bulk)</td><td class="num">₹140–220/kg</td></tr>
+        <tr><td>NSF-certified / branded potable</td><td class="num win">₹250–450/kg</td></tr>
+        <tr><td>Reactivated GAC (service)</td><td class="num">30–60% below virgin</td></tr>
+        <tr><td><b>India export average (all grades)</b></td><td class="num">₹159/kg</td></tr>
+      </table>
+      <p class="disc">Certification and branding (Axis 1 &amp; 3 in the market report) roughly double realisation vs bulk effluent carbon — the reason to climb from effluent into certified potable.</p>
+    </div>
+    <div class="card">
+      <h3>Quantities — the scale of the flows</h3>
+      <table>
+        <tr><td>Global water AC volume</td><td class="num win">1.5 Mt+/yr</td></tr>
+        <tr><td>Indian AC into water (est.)</td><td class="num">~110–130k t/yr</td></tr>
+        <tr><td>India total AC consumption</td><td class="num">283k t/yr</td></tr>
+        <tr><td>India exportable surplus</td><td class="num">~150k t/yr</td></tr>
+        <tr><td>India AC exports (FY25)</td><td class="num">1,76,435 t / ₹2,799 cr</td></tr>
+        <tr><td>Bamboo's current share</td><td class="num lose">~0</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="call key">
+    <span class="h">Domestic vs export — read them differently</span>
+    <b>Domestic effluent</b> is your fastest revenue: ZLD-driven, no certification wall, sold to CETPs/textile/pharma clusters at ₹120–190/kg — but it's price-competitive and India-cyclical. <b>Export drinking-water</b> (US/EU PFAS, Japan, Middle East) pays more and rewards the bamboo supply-security + ESG story, but demands NSF certification and long qualification. The sequencing writes itself: <b>domestic effluent for cash and reference plants → certified export potable for margin and scale.</b>
+  </div>
+
+  <div class="call warn">
+    <span class="h">The margin truth about water carbon</span>
+    At ₹120–200/kg against a cash cost of ₹80–140/kg (see main report economics), water carbon runs on <b>thin, volume-dependent margins</b>. A pure water-carbon business is a commodity grind competing with coconut and Chinese coal carbon. Its role in your plan is <b>strategic, not financial</b>: it's the high-volume, low-barrier segment that proves your bamboo supply chain, builds reference customers, and funds the climb into food/pharma/energy grades where the money actually is. Enter water to earn the right to leave the bottom of the price stack — not to camp there.
+  </div>
+</section>
+
+<!-- 07 OPPORTUNITY -->
+<section class="panel" id="opportunity">
+  <p class="eyebrow">07 — What to actually do</p>
+  <h2>The bamboo water play, sequenced</h2>
+  <p class="lead">If water is the beachhead, here is how a bamboo producer actually takes it — the moves, in order, with the honest gating risks.</p>
+
+  <div class="grid g2" style="margin:18px 0">
+    <div class="card">
+      <h3>The winning sequence</h3>
+      <ul class="clean">
+        <li><b>1 · Enter via industrial effluent</b> — textile/pharma CETP clusters (Tirupur, Surat, Gujarat). No NSF wall, forgiving specs, bamboo's mesopore advantage is real, ZLD demand is booming.</li>
+        <li><b>2 · Build reference plants &amp; pilot data</b> — real column performance on real effluent is your sales asset; the literature isn't enough.</li>
+        <li><b>3 · Climb to NSF-certified drinking water</b> — POU/POE OEMs first (faster than municipal), then utilities.</li>
+        <li><b>4 · Open the export channel</b> — US/EU PFAS demand, sold on supply-security + ESG traceability bamboo uniquely offers.</li>
+        <li><b>5 · Add a reactivation service</b> — stickier, higher-margin annuity alongside virgin sales.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why this beats leading with drinking water</h3>
+      <ul class="clean">
+        <li><b>Speed:</b> effluent needs no certification — revenue in months, not years.</li>
+        <li><b>Fit:</b> bamboo's mesoporosity is a genuine edge in dyes/COD, so you sell an advantage, not a compromise.</li>
+        <li><b>Forgiveness:</b> relaxed hardness &amp; purity mask bamboo's weak spots while you mature the process.</li>
+        <li><b>Cash to climb:</b> effluent volume funds the NSF certification and premium build-out.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <p class="big">Water treatment is bamboo activated carbon's natural first market: the largest by volume, the most forgiving on hardness, scientifically proven, and — crucially — served by essentially no bamboo carbon today. Enter through industrial effluent, prove the supply chain, then climb into certified drinking water and PFAS export.</p>
+    <p style="margin:0">But be clear-eyed: water is the <b>foundation, not the fortune</b>. Its thin margins buy you three things you can't get elsewhere — tonnage, reference customers, and a working bamboo supply chain. Those are what let you climb into the food, pharma and energy grades where bamboo actually makes money. Win water to earn the rest.</p>
+  </div>
+
+  <div class="call warn">
+    <span class="h">The real gate — same as always</span>
+    Not demand, not spec, not chemistry. It's <b>feedstock aggregation</b>: reliably sourcing clean, low-ash bamboo internodes at ₹3–5k/t, at the tonnage a water plant consumes, from a supply base nobody has organised. Solve bamboo supply and water is the easiest carbon market to enter. Don't, and the 1.5-million-tonne opportunity stays on paper.
+  </div>
+</section>
+
+<!-- 08 SOURCES -->
+<section class="panel" id="sources">
+  <p class="eyebrow">08 — Provenance</p>
+  <h2>Sources &amp; how to read the numbers</h2>
+  <p class="lead">Volume and trade figures are the load-bearing numbers and are drawn from market-research and trade sources; performance figures are from peer-reviewed studies; prices are indicative industry ranges, not quotes. Where value-share figures differ across publishers (scope differences), ranges are shown.</p>
+
+  <p class="srcs" style="margin-top:14px">
+    • Water-treatment AC demand &amp; volume (1.5 Mt; $903→957 M): <a href="https://www.globalgrowthinsights.com/market-reports/activated-carbon-for-water-treatment-market-105984">AC for Water Treatment market</a> · <a href="https://bisresearch.com/industry-report/activated-carbon-market-for-water-treatment.html">BIS Research — water AC</a> · <a href="https://www.fortunebusinessinsights.com/activated-carbon-market-102175">Fortune (water = largest segment)</a><br>
+    • India AC consumption/production (283k / 436k t): <a href="https://www.indexbox.io/store/india-activated-carbon-market-analysis-forecast-size-trends-and-insights/">IndexBox India AC</a> · <a href="https://gtaic.ai/market-reports/activated-carbon-market-india-forecast-in-2026">India AC trade &amp; prices</a> · <a href="https://carpediemias.com/current-affairs/article/activated-carbon-drives-india-s-coconut-product-exports-fy25">India AC exports FY25</a><br>
+    • Water-grade specs &amp; standards (iodine, mesh, ash, AWWA/NSF): <a href="https://wqa.org/wp-content/uploads/2022/09/2016_GAC.pdf">WQA GAC fact sheet</a> · <a href="https://cnchiwatec.com/activated-carbon-quality-specifications.html">AC quality specifications</a> · <a href="https://hydronixwater.com/granular-activated-carbon-fact-sheet/">GAC fact sheet</a><br>
+    • Bamboo water/effluent performance: <a href="https://www.sciencedirect.com/science/article/pii/S1944398625005612">Dye adsorption by bamboo AC (Taguchi)</a> · <a href="https://doi.org/10.3390/w17030454">Bamboo adsorbents for heavy-metal removal (review)</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/26803031/">Bamboo chars/AC for colour &amp; COD (ink wastewater)</a> · <a href="https://doi.org/10.3390/catal16010018">Bamboo AC for dye wastewater (review)</a><br>
+    • Effluent / ZLD / municipal context: <a href="https://cpcb.nic.in/openpdffile.php?id=UmVwb3J0RmlsZXMvODQ4XzE1NTU0MDc4MjFfbWVkaWFwaG90bzMxNDQwLnBkZg%3D%3D">CPCB — CETP status</a> · <a href="https://optimawater.co.in/blog/zero-liquid-discharge-zld-plant-india/">ZLD in India</a> · <a href="https://pib.gov.in/PressReleaseIframePage.aspx?PRID=1986271">Namami Gange 7,000 MLD target</a> · <a href="https://www.indiaspend.com/pollution/why-india-needs-to-urgently-rehaul-sewage-treatment-plans-954097">India sewage gap (72,368 MLD)</a><br>
+    • PFAS &amp; reactivation: <a href="https://allcarbontech.com/granular-activated-carbon-pfas/">GAC &amp; PFAS (200+ utilities)</a> · <a href="https://www.grandviewresearch.com/industry-analysis/pfas-treatment-market-report">PFAS treatment market</a> · <a href="https://www.peltonenv.com/blog/carbon-reactivation-lifecycle-of-granular-activated-carbon-gac">GAC reactivation lifecycle</a> · <a href="https://generalcarbon.com/reactivated-carbon/">Reactivated carbon economics</a>
+  </p>
+  <p class="disc" style="margin-top:16px">Companion to the main technical report (<a href="bamboocarbonreport.html">bamboocarbonreport.html</a>) and the market deep-dive (<a href="bamboocarbonmarket.html">bamboocarbonmarket.html</a>). Prepared as an expert briefing · indicative ranges · verify against buyer datasheets, NSF/BIS standards and live quotes before committing capital.</p>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var tabs=document.getElementById('tabs');
+  var btns=tabs.querySelectorAll('button');
+  var panels=document.querySelectorAll('.panel');
+  function show(id){
+    panels.forEach(function(p){p.classList.toggle('on', p.id===id);});
+    btns.forEach(function(b){b.classList.toggle('on', b.dataset.t===id);});
+    window.scrollTo({top:0,behavior:'instant'});
+    if(history.replaceState) history.replaceState(null,'','#'+id);
+  }
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return; show(b.dataset.t);
+  });
+  var h=(location.hash||'').replace('#',''); if(h && document.getElementById(h)) show(h);
+})();
+</script>
+</body>
+</html>
