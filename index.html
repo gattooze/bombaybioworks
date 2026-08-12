@@ -3,1000 +3,696 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bombay Bioworks Corp</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>Bombay Bioworks — We work in carbon</title>
+<link rel="stylesheet" href="style.css">
 <style>
-  :root {
-    --black:    #0A0C0A;
-    --deep:     #0F1410;
-    --forest:   #1A2419;
-    --sage:     #2E4A35;
-    --moss:     #3D6B4F;
-    --amber:    #C8941A;
-    --gold:     #E8B84B;
-    --stone:    #9E9B8A;
-    --ash:      #C8C5B4;
-    --cream:    #F0EDE0;
-    --white:    #FAFAF7;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--ash);
-    font-family: 'Barlow', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: default;
-  }
-
-  /* ── NOISE TEXTURE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.4;
-    pointer-events: none;
-    z-index: 1000;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 48px;
-    background: linear-gradient(to bottom, rgba(10,12,10,0.95) 0%, transparent 100%);
-    backdrop-filter: blur(2px);
-  }
-
-  .nav-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.2em;
-    color: var(--cream);
-    text-transform: uppercase;
-  }
-
-  .nav-logo span {
-    color: var(--amber);
-  }
-
-  .nav-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--stone);
-    text-transform: uppercase;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 120px 64px 80px 64px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 28px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.2s;
-  }
-
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(56px, 6vw, 92px);
-    line-height: 1.0;
-    color: var(--white);
-    letter-spacing: -0.01em;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.4s;
-  }
-
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-desc {
-    font-size: 15px;
-    line-height: 1.75;
-    color: var(--stone);
-    max-width: 420px;
-    margin-bottom: 48px;
-    font-weight: 300;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.6s;
-  }
-
-  .hero-stat-row {
-    display: flex;
-    gap: 48px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.8s;
-  }
-
-  .hero-stat {
-    border-top: 1px solid var(--sage);
-    padding-top: 16px;
-  }
-
-  .hero-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    font-size: 36px;
-    color: var(--amber);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .hero-stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--stone);
-    text-transform: uppercase;
-  }
-
-  /* ── HERO RIGHT: Visual ── */
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-visual {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 60% 40%, rgba(61,107,79,0.25) 0%, transparent 60%),
-      radial-gradient(ellipse at 30% 70%, rgba(200,148,26,0.12) 0%, transparent 50%),
-      linear-gradient(135deg, var(--deep) 0%, var(--black) 100%);
-  }
-
-  /* SVG botanical / bamboo illustration */
-  .hero-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    animation: fadeIn 1.5s ease forwards 1s;
-  }
-
-  /* ── SECTION BASE ── */
-  section {
-    position: relative;
-  }
-
-  .section-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 64px;
-  }
-
-  /* ── INTRO BAND ── */
-  .intro-band {
-    padding: 80px 0;
-    border-top: 1px solid rgba(61,107,79,0.3);
-    background: var(--deep);
-  }
-
-  .intro-band .section-inner {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .intro-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--amber);
-    text-transform: uppercase;
-  }
-
-  .intro-body {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 2.2vw, 30px);
-    font-weight: 300;
-    line-height: 1.6;
-    color: var(--cream);
-    font-style: italic;
-  }
-
-  .intro-body strong {
-    font-style: normal;
-    color: var(--gold);
-    font-weight: 600;
-  }
-
-  /* ── FOCUS AREAS ── */
-  .focus-section {
-    padding: 120px 0;
-    background: var(--black);
-  }
-
-  .focus-header {
-    margin-bottom: 80px;
-  }
-
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(36px, 4vw, 56px);
-    color: var(--white);
-    line-height: 1.1;
-  }
-
-  .focus-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: rgba(61,107,79,0.15);
-  }
-
-  .focus-card {
-    background: var(--deep);
-    padding: 64px 56px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.4s ease;
-  }
-
-  .focus-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--amber), transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-
-  .focus-card:hover::before { transform: scaleX(1); }
-  .focus-card:hover { background: var(--forest); }
-
-  .focus-card-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 72px;
-    font-weight: 300;
-    color: rgba(200,148,26,0.12);
-    line-height: 1;
-    position: absolute;
-    top: 32px; right: 40px;
-    font-style: italic;
-  }
-
-  .focus-card-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .focus-card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 28px;
-    letter-spacing: 0.05em;
-    color: var(--white);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    line-height: 1.1;
-  }
-
-  .focus-card-body {
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--stone);
-    margin-bottom: 40px;
-  }
-
-  .focus-pillars {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .pillar {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    font-size: 13px;
-    color: var(--ash);
-    line-height: 1.5;
-  }
-
-  .pillar-dot {
-    width: 4px;
-    height: 4px;
-    background: var(--amber);
-    border-radius: 50%;
-    margin-top: 7px;
-    flex-shrink: 0;
-  }
-
-  /* ── COMMITMENT BAND ── */
-  .commitment-band {
-    background: var(--forest);
-    padding: 80px 0;
-    border-top: 1px solid rgba(200,148,26,0.2);
-    border-bottom: 1px solid rgba(200,148,26,0.2);
-  }
-
-  .commitment-band .section-inner {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-
-  .commit-item {
-    padding: 40px 48px;
-    background: rgba(10,12,10,0.3);
-    text-align: center;
-  }
-
-  .commit-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    font-size: 52px;
-    color: var(--amber);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .commit-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--stone);
-    text-transform: uppercase;
-    line-height: 1.6;
-  }
-
-  /* ── FOUNDERS ── */
-  .founders-section {
-    padding: 120px 0;
-    background: var(--deep);
-  }
-
-  .founders-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    margin-top: 64px;
-    background: rgba(61,107,79,0.1);
-  }
-
-  .founder-card {
-    background: var(--deep);
-    padding: 48px 40px;
-    position: relative;
-    transition: background 0.3s ease;
-  }
-
-  .founder-card:hover { background: var(--forest); }
-
-  .founder-avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: var(--sage);
-    margin-bottom: 28px;
-    overflow: hidden;
-    border: 1px solid rgba(200,148,26,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  .founder-avatar svg {
-    width: 40px;
-    height: 40px;
-    opacity: 0.5;
-  }
-
-  .founder-initials {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--amber);
-  }
-
-  .founder-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 20px;
-    letter-spacing: 0.05em;
-    color: var(--white);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .founder-role {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .founder-bio {
-    font-size: 13px;
-    line-height: 1.75;
-    color: var(--stone);
-    margin-bottom: 24px;
-  }
-
-  .founder-link {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--moss);
-    text-decoration: none;
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(61,107,79,0.4);
-    padding-bottom: 2px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-
-  .founder-link:hover {
-    color: var(--amber);
-    border-color: var(--amber);
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 48px 64px;
-    background: var(--black);
-    border-top: 1px solid rgba(61,107,79,0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0.2em;
-    color: var(--stone);
-    text-transform: uppercase;
-  }
-
-  .footer-logo span { color: var(--amber); }
-
-  .footer-note {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: rgba(158,155,138,0.4);
-    text-transform: uppercase;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  /* Scroll reveal */
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-
-  /* ── MOBILE ── */
-  @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-tag { display: none; }
-
-    .hero {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-    .hero-left {
-      padding: 100px 24px 60px;
-      justify-content: flex-start;
-    }
-    .hero-right { display: none; }
-    .hero-stat-row { gap: 28px; }
-
-    .section-inner { padding: 0 24px; }
-
-    .intro-band .section-inner {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-    .intro-band { padding: 56px 0; }
-
-    .focus-section { padding: 80px 0; }
-    .focus-grid { grid-template-columns: 1fr; }
-    .focus-card { padding: 48px 28px; }
-
-    .commitment-band .section-inner {
-      grid-template-columns: 1fr;
-    }
-    .commit-item { padding: 32px 24px; }
-
-    .founders-section { padding: 80px 0; }
-    .founders-grid { grid-template-columns: 1fr; }
-    .founder-card { padding: 40px 28px; }
-
-    footer {
-      padding: 32px 24px;
-      flex-direction: column;
-      gap: 12px;
-      text-align: center;
-    }
-  }
-
-  /* ── ESG SECTION ── */
-  .esg-section {
-    padding: 120px 0;
-    background: var(--deep);
-    border-top: 1px solid rgba(61,107,79,0.3);
-  }
-
-  .esg-intro {
-    font-size: 16px;
-    line-height: 1.8;
-    color: var(--stone);
-    max-width: 640px;
-    margin-top: 24px;
-    font-weight: 300;
-  }
-
-  .esg-pillars {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: rgba(61,107,79,0.15);
-    margin-top: 64px;
-    margin-bottom: 56px;
-  }
-
-  .esg-pillar {
-    background: var(--black);
-    padding: 56px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .esg-pillar::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--amber), transparent);
-  }
-
-  .esg-pillar-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .esg-pillar-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 22px;
-    letter-spacing: 0.05em;
-    color: var(--white);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    line-height: 1.2;
-  }
-
-  .esg-pillar-body {
-    font-size: 14px;
-    line-height: 1.85;
-    color: var(--stone);
-  }
-
-  .esg-closing {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(18px, 2vw, 24px);
-    font-style: italic;
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.65;
-    max-width: 820px;
-    border-left: 2px solid var(--amber);
-    padding-left: 32px;
-  }
-
-  @media (max-width: 768px) {
-    .esg-section { padding: 80px 0; }
-    .esg-pillars { grid-template-columns: 1fr; }
-    .esg-pillar { padding: 40px 28px; }
-    .esg-closing { font-size: 18px; padding-left: 20px; }
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .hero-left { padding: 100px 40px 60px; }
-    .focus-card { padding: 48px 36px; }
-    .founders-grid { grid-template-columns: 1fr; gap: 2px; }
-    .commitment-band .section-inner { grid-template-columns: 1fr; }
-  }
+/* ── HOME-SPECIFIC ── */
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--bg);
+}
+#particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: calc(var(--nav-h) + 64px) var(--pad) 80px;
+  max-width: var(--max);
+  margin: 0 auto;
+  width: 100%;
+}
+.hero-title {
+  font-size: clamp(72px, 9vw, 148px);
+  margin-bottom: 40px;
+  max-width: 14ch;
+}
+.hero-title em { color: var(--amber); }
+.hero-body {
+  font-size: clamp(16px, 1.5vw, 19px);
+  color: var(--ink-2);
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: var(--pad);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 2;
+}
+.hero-scroll span {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: var(--ink-3);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--amber);
+  animation: scanline 2s ease-in-out infinite;
+}
+@keyframes scanline {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+/* MANIFESTO */
+.manifesto {
+  background: var(--carbon);
+  padding: 120px 0;
+}
+.manifesto-inner {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 80px;
+  align-items: center;
+}
+.manifesto-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+  opacity: 0.9;
+}
+.manifesto-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 3vw, 44px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(253,252,248,0.85);
+  letter-spacing: -0.01em;
+}
+.manifesto-text strong {
+  font-style: normal;
+  color: var(--white);
+  font-weight: 400;
+}
+
+/* PILLARS */
+.pillars-section { padding: 140px 0; }
+.pillars-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 80px;
+}
+.pillars-h2 { font-size: clamp(48px, 5.5vw, 88px); }
+.pillars-intro {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 400px;
+  align-self: end;
+  padding-bottom: 8px;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--rule);
+}
+.pillar-card {
+  background: var(--bg);
+  padding: 56px 44px 52px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s ease;
+}
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+.pillar-card:hover::before { transform: scaleX(1); }
+.pillar-card:hover { background: var(--white); }
+
+.pillar-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px;
+  font-weight: 300;
+  color: var(--rule);
+  line-height: 1;
+  position: absolute;
+  top: 24px; right: 32px;
+  font-style: italic;
+  transition: color 0.4s;
+}
+.pillar-card:hover .pillar-num { color: var(--amber-lt); }
+
+.pillar-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 28px;
+}
+.pillar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 20px;
+  flex: 1;
+}
+.pillar-body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  margin-bottom: 36px;
+}
+.pillar-arrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: gap 0.3s, color 0.3s;
+}
+.pillar-card:hover .pillar-arrow { gap: 18px; color: var(--amber); }
+
+/* EARTH / FIRE / WATER tint accents */
+.pillar-card.earth .pillar-label { color: var(--green); }
+.pillar-card.earth::before { background: var(--green); }
+.pillar-card.fire .pillar-label { color: var(--amber); }
+.pillar-card.water .pillar-label { color: #4A7A8A; }
+.pillar-card.water::before { background: #4A7A8A; }
+
+/* COUNTER */
+.counter-band {
+  background: var(--carbon);
+  padding: 100px 0;
+}
+.counter-inner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.counter-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(80px, 10vw, 160px);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.counter-num .unit {
+  font-size: 0.4em;
+  color: var(--amber);
+  font-style: italic;
+  margin-left: 6px;
+}
+.counter-right {}
+.counter-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(253,252,248,0.35);
+  margin-bottom: 16px;
+}
+.counter-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(253,252,248,0.7);
+  line-height: 1.5;
+  max-width: 420px;
+  margin-bottom: 32px;
+}
+.counter-pills {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(253,252,248,0.4);
+  border: 1px solid rgba(253,252,248,0.12);
+  padding: 8px 16px;
+  border-radius: 2px;
+}
+
+/* TRACKING TEASER */
+.tracking-section { padding: 140px 0; }
+.tracking-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+}
+.tracking-h2 { font-size: clamp(40px, 4.5vw, 72px); margin-bottom: 28px; }
+.tracking-body {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+.tracking-visual {
+  position: relative;
+  height: 400px;
+}
+.track-diagram {
+  width: 100%;
+  height: 100%;
+}
+
+/* PROCESS STRIP */
+.process-strip {
+  background: var(--bg-warm);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 80px 0;
+}
+.process-strip-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--rule);
+}
+.process-item {
+  background: var(--bg-warm);
+  padding: 40px 36px;
+}
+.process-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+  margin-bottom: 16px;
+}
+.process-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.process-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ink-2);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .manifesto-inner { grid-template-columns: 1fr 2fr; gap: 48px; }
+  .pillars-header { grid-template-columns: 1fr; gap: 24px; }
+  .counter-inner { grid-template-columns: 1fr; gap: 40px; }
+  .tracking-inner { grid-template-columns: 1fr; gap: 48px; }
+  .process-strip-inner { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .hero-title { font-size: clamp(56px, 14vw, 80px); }
+  .manifesto-inner { grid-template-columns: 1fr; gap: 28px; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .tracking-visual { display: none; }
+  .process-strip-inner { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Bombay <span>Bioworks</span> Corp</div>
-  <div class="nav-tag">Greenfield · India</div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
+  <ul class="nav-links">
+    <li><a href="carbon.html">Carbon</a></li>
+    <li><a href="applications.html">Applications</a></li>
+    <li><a href="technology.html">Technology</a></li>
+    <li><a href="company.html">Company</a></li>
+  </ul>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-left">
-    <div class="hero-eyebrow">India's Sustainable Economy</div>
-    <h1 class="hero-title">
-      Bamboo.<br><em>Fully realised.</em>
+  <canvas id="particles"></canvas>
+  <div class="hero-content">
+    <span class="eyebrow reveal">Carbon Removal · India</span>
+    <h1 class="display hero-title reveal r1">
+      We work<br><em>in carbon.</em>
     </h1>
-    <p class="hero-desc">
-      A vertically integrated venture at the forefront of India's sustainable transition — building the cultivation systems, supply chains, and biomass fuel infrastructure that unlock bamboo's full commercial and environmental potential.
+    <p class="hero-body reveal r2">
+      Converting biological material into fixed carbon — permanently removed from the atmosphere and put to work across energy, agriculture, and industry.
     </p>
-    <div class="hero-stat-row">
-      <div class="hero-stat">
-        <div class="hero-stat-num">$10M+</div>
-        <div class="hero-stat-label">Committed Capital</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">2</div>
-        <div class="hero-stat-label">Core Verticals</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">50+</div>
-        <div class="hero-stat-label">Combined Yrs Experience</div>
-      </div>
-    </div>
+    <a href="carbon.html" class="arrow-link reveal r3">Our approach <span>→</span></a>
   </div>
-
-  <div class="hero-right">
-    <div class="hero-visual"></div>
-    <!-- Botanical SVG illustration -->
-    <svg class="hero-svg" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="glow" cx="50%" cy="40%" r="50%">
-          <stop offset="0%" stop-color="#3D6B4F" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#0A0C0A" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="stalkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#2E4A35"/>
-          <stop offset="50%" stop-color="#3D6B4F"/>
-          <stop offset="100%" stop-color="#2E4A35"/>
-        </linearGradient>
-      </defs>
-      <rect width="600" height="800" fill="url(#glow)"/>
-
-      <!-- Bamboo stalks -->
-      <g opacity="0.7">
-        <!-- Stalk 1 -->
-        <rect x="180" y="100" width="22" height="680" rx="11" fill="url(#stalkGrad)" opacity="0.6"/>
-        <rect x="180" y="200" width="22" height="4" rx="2" fill="#C8941A" opacity="0.4"/>
-        <rect x="180" y="320" width="22" height="4" rx="2" fill="#C8941A" opacity="0.4"/>
-        <rect x="180" y="440" width="22" height="4" rx="2" fill="#C8941A" opacity="0.4"/>
-        <rect x="180" y="560" width="22" height="4" rx="2" fill="#C8941A" opacity="0.4"/>
-        <rect x="180" y="680" width="22" height="4" rx="2" fill="#C8941A" opacity="0.4"/>
-        <!-- Leaves stalk 1 -->
-        <ellipse cx="155" cy="220" rx="60" ry="8" fill="#3D6B4F" opacity="0.5" transform="rotate(-30 155 220)"/>
-        <ellipse cx="215" cy="340" rx="55" ry="7" fill="#3D6B4F" opacity="0.4" transform="rotate(25 215 340)"/>
-        <ellipse cx="150" cy="460" rx="65" ry="8" fill="#2E4A35" opacity="0.5" transform="rotate(-20 150 460)"/>
-
-        <!-- Stalk 2 -->
-        <rect x="310" y="0" width="18" height="750" rx="9" fill="url(#stalkGrad)" opacity="0.4"/>
-        <rect x="310" y="150" width="18" height="3" rx="1.5" fill="#C8941A" opacity="0.3"/>
-        <rect x="310" y="290" width="18" height="3" rx="1.5" fill="#C8941A" opacity="0.3"/>
-        <rect x="310" y="430" width="18" height="3" rx="1.5" fill="#C8941A" opacity="0.3"/>
-        <rect x="310" y="570" width="18" height="3" rx="1.5" fill="#C8941A" opacity="0.3"/>
-        <!-- Leaves stalk 2 -->
-        <ellipse cx="345" cy="170" rx="70" ry="8" fill="#3D6B4F" opacity="0.35" transform="rotate(35 345 170)"/>
-        <ellipse cx="285" cy="310" rx="60" ry="7" fill="#2E4A35" opacity="0.4" transform="rotate(-28 285 310)"/>
-        <ellipse cx="350" cy="450" rx="68" ry="8" fill="#3D6B4F" opacity="0.35" transform="rotate(22 350 450)"/>
-
-        <!-- Stalk 3 -->
-        <rect x="430" y="180" width="14" height="620" rx="7" fill="url(#stalkGrad)" opacity="0.3"/>
-        <rect x="430" y="300" width="14" height="3" rx="1.5" fill="#C8941A" opacity="0.25"/>
-        <rect x="430" y="440" width="14" height="3" rx="1.5" fill="#C8941A" opacity="0.25"/>
-        <rect x="430" y="580" width="14" height="3" rx="1.5" fill="#C8941A" opacity="0.25"/>
-        <!-- Leaves stalk 3 -->
-        <ellipse cx="405" cy="320" rx="55" ry="6" fill="#3D6B4F" opacity="0.3" transform="rotate(-25 405 320)"/>
-        <ellipse cx="458" cy="460" rx="50" ry="6" fill="#2E4A35" opacity="0.3" transform="rotate(30 458 460)"/>
-      </g>
-
-      <!-- Pellet circles (biomass dots) -->
-      <g opacity="0.5">
-        <circle cx="120" cy="680" r="6" fill="#C8941A" opacity="0.4"/>
-        <circle cx="140" cy="695" r="4" fill="#C8941A" opacity="0.3"/>
-        <circle cx="108" cy="700" r="5" fill="#E8B84B" opacity="0.25"/>
-        <circle cx="480" cy="700" r="5" fill="#C8941A" opacity="0.3"/>
-        <circle cx="495" cy="715" r="4" fill="#C8941A" opacity="0.2"/>
-      </g>
-
-      <!-- Subtle grid lines -->
-      <g stroke="#3D6B4F" stroke-width="0.5" opacity="0.15">
-        <line x1="0" y1="200" x2="600" y2="200"/>
-        <line x1="0" y1="400" x2="600" y2="400"/>
-        <line x1="0" y1="600" x2="600" y2="600"/>
-        <line x1="150" y1="0" x2="150" y2="800"/>
-        <line x1="300" y1="0" x2="300" y2="800"/>
-        <line x1="450" y1="0" x2="450" y2="800"/>
-      </g>
-    </svg>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- INTRO BAND -->
-<div class="intro-band">
-  <div class="section-inner">
-    <div class="intro-label">Our Thesis</div>
-    <p class="intro-body reveal">
-      Bamboo is one of the fastest-growing, most versatile plants on earth — yet India's bamboo economy remains deeply underdeveloped. We are building the <strong>full-stack infrastructure</strong> to change that: sustainable cultivation systems that empower farmers, and downstream applications that make every part of the plant commercially valuable — unlocking bamboo's true economic potential from the ground up.
-    </p>
-  </div>
-</div>
-
-<!-- FOCUS AREAS -->
-<section class="focus-section">
-  <div class="section-inner">
-    <div class="focus-header reveal">
-      <span class="section-label">What We Are Building</span>
-      <h2 class="section-title">Two Verticals.<br>One Mission.</h2>
-    </div>
-
-    <div class="focus-grid">
-
-      <!-- ECOSYSTEM DEVELOPMENT -->
-      <div class="focus-card reveal reveal-delay-1">
-        <div class="focus-card-number">01</div>
-        <div class="focus-card-tag">Vertical One</div>
-        <div class="focus-card-title">Ecosystem Development</div>
-        <p class="focus-card-body">
-          Bamboo's commercial potential starts in the ground. We are building the upstream infrastructure that doesn't yet exist in India — sustainable cultivation systems, farmer empowerment tools, and traceable supply chains that establish bamboo as a serious, high-value commercial crop.
-        </p>
-        <div class="focus-pillars">
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Commercial Plantation Development</strong> — end-to-end support for bamboo plantation establishment and commercial farming across suitable geographies in India</span>
-          </div>
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Sustainable Harvesting Systems</strong> — species-specific protocols, age grading, and species recognition tools ensuring optimal 3-year harvest cycles and consistent quality</span>
-          </div>
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">GI-Mapped & Fair Trade Bamboo</strong> — geographic indication mapping for full traceability and fair trade premium pricing that rewards farming communities at source</span>
-          </div>
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Farmer Empowerment</strong> — tools, equipment, and knowledge systems for harvest management, quality grading, and supply chain participation at the village level</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- FUTURE FUELS -->
-      <div class="focus-card reveal reveal-delay-2">
-        <div class="focus-card-number">02</div>
-        <div class="focus-card-tag">Vertical Two</div>
-        <div class="focus-card-title">Future Fuels</div>
-        <p class="focus-card-body">
-          What makes bamboo cultivation economically compelling at scale is the ability to derive value from every part of the plant — including harvest residue and processing waste. Our fuels vertical converts this material into high-value industrial products, making the entire bamboo economy more viable.
-        </p>
-        <div class="focus-pillars">
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Biomass Pellets & Briquettes</strong> — high-specification solid fuels from bamboo and agri-residue for industrial boilers, co-firing applications, and process heat — domestic and export markets</span>
-          </div>
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Advanced Fuels — Biochar & Black Pellets</strong> — torrefied, high energy-density products for steel PCI markets and premium export applications in Japan, South Korea, and beyond</span>
-          </div>
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Activated Carbon</strong> — bamboo-derived activated carbon for water filtration, specialty chemicals, and industrial purification</span>
-          </div>
-          <div class="pillar">
-            <div class="pillar-dot"></div>
-            <span><strong style="color:var(--ash)">Bio-fertiliser</strong> — returning nutrients to the soil and closing the agricultural cycle, making bamboo cultivation regenerative by design</span>
-          </div>
-        </div>
-      </div>
-
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div class="wrap">
+    <div class="manifesto-inner">
+      <span class="manifesto-label reveal">What we believe</span>
+      <p class="manifesto-text reveal r1">
+        The carbon accumulating in our atmosphere came from the ground.<br>
+        <strong>We're putting it back</strong> — in forms that last centuries, in places that need it, doing work that matters along the way.
+      </p>
     </div>
   </div>
 </section>
 
-<!-- ESG SECTION -->
-<section class="esg-section">
-  <div class="section-inner">
-    <div class="reveal">
-      <span class="section-label">The Bigger Picture</span>
-      <h2 class="section-title">Built for India's<br>ESG Economy</h2>
-      <p class="esg-intro">
-        Both of our verticals are sustainability plays — not as a positioning strategy, but as their fundamental thesis. Together, they address two of the most material dimensions of India's resource and energy transition.
+<!-- THREE PILLARS -->
+<section class="pillars-section">
+  <div class="wrap">
+    <div class="pillars-header">
+      <div class="reveal">
+        <span class="label">What we do with carbon</span>
+        <h2 class="display pillars-h2">Three uses.<br><em>One source.</em></h2>
+      </div>
+      <p class="pillars-intro reveal r2">
+        Every form of carbon we produce serves a defined purpose. Nothing is wasted. Everything is measured.
       </p>
     </div>
 
-    <div class="esg-pillars">
-      <div class="esg-pillar reveal reveal-delay-1">
-        <div class="esg-pillar-tag">Sustainable Materials</div>
-        <div class="esg-pillar-title">Bamboo as a Resource Alternative</div>
-        <p class="esg-pillar-body">
-          Bamboo sequesters carbon faster than almost any other plant, matures in 3–5 years versus 30+ for timber, and can substitute wood, plastic, and resource-intensive materials across construction, textiles, and packaging. Building India's bamboo economy reduces pressure on forests, supports rural livelihoods, and positions India as a credible global supplier of traceable, certified sustainable raw materials.
-        </p>
-      </div>
-      <div class="esg-pillar reveal reveal-delay-2">
-        <div class="esg-pillar-tag">Sustainable Energy</div>
-        <div class="esg-pillar-title">Future Fuels as a Fossil Replacement</div>
-        <p class="esg-pillar-body">
-          India's industrial sector remains heavily dependent on fossil fuels for process heat and co-firing. Bamboo and agri-residue biomass — converted into pellets, biochar, and black pellets — provides a verified, carbon-neutral alternative at industrial scale. These are the fuels that help India's manufacturers decarbonise without disrupting production, serving both domestic demand and export markets in Japan, South Korea, and Europe.
-        </p>
-      </div>
+    <div class="pillars-grid">
+      <a href="applications.html#earth" class="pillar-card earth reveal r1">
+        <div class="pillar-num">01</div>
+        <span class="pillar-label">Earth</span>
+        <div class="pillar-title">Returned to soil.<br>Locked for centuries.</div>
+        <p class="pillar-body">Carbon as permanent soil amendment — improving yield, reducing chemical inputs, and sequestering carbon in the ground for hundreds of years.</p>
+        <span class="pillar-arrow">Explore <span>→</span></span>
+      </a>
+      <a href="applications.html#fire" class="pillar-card fire reveal r2">
+        <div class="pillar-num">02</div>
+        <span class="pillar-label">Fire</span>
+        <div class="pillar-title">The same energy.<br>A different origin.</div>
+        <p class="pillar-body">Carbon displacing fossil fuels across industrial processes — equivalent performance, radically different footprint, trackable origin.</p>
+        <span class="pillar-arrow">Explore <span>→</span></span>
+      </a>
+      <a href="applications.html#water" class="pillar-card water reveal r3">
+        <div class="pillar-num">03</div>
+        <span class="pillar-label">Water</span>
+        <div class="pillar-title">What passes through it<br>comes out clean.</div>
+        <p class="pillar-body">Activated carbon purifying water, air, and industrial streams — across filtration, personal care, specialty chemistry, and metal refining.</p>
+        <span class="pillar-arrow">Explore <span>→</span></span>
+      </a>
     </div>
-
-    <p class="esg-closing reveal reveal-delay-3">
-      India's NDC commitments, SEBI's ESG disclosure mandates, and the growing appetite of global buyers for traceable, certified sustainable supply chains are creating structural demand for exactly what we are building.
-    </p>
   </div>
 </section>
 
-<!-- COMMITMENT BAND -->
-<div class="commitment-band">
-  <div class="section-inner">
-    <div class="commit-item reveal">
-      <div class="commit-num">$10M+</div>
-      <div class="commit-label">Capital<br>Committed</div>
+<!-- COUNTER BAND -->
+<section class="counter-band">
+  <div class="wrap">
+    <div class="counter-inner">
+      <div class="counter-num reveal" id="counter-num">0<span class="unit">t</span></div>
+      <div class="counter-right">
+        <div class="counter-label reveal r1">CO₂ equivalent removed</div>
+        <p class="counter-desc reveal r2">"Every kilogram of carbon we fix is tracked from conversion to permanence."</p>
+        <div class="counter-pills reveal r3">
+          <span class="pill">Tracked</span>
+          <span class="pill">Verified</span>
+          <span class="pill">Permanent</span>
+        </div>
+        <a href="carbon.html" class="arrow-link arrow-link-light reveal r4" style="margin-top:36px;">Our carbon methodology <span>→</span></a>
+      </div>
     </div>
-    <div class="commit-item reveal reveal-delay-1">
-      <div class="commit-num">Greenfield</div>
-      <div class="commit-label">Ground-up<br>Infrastructure Build</div>
+  </div>
+</section>
+
+<!-- TRACKING TEASER -->
+<section class="tracking-section">
+  <div class="wrap">
+    <div class="tracking-inner">
+      <div>
+        <span class="label reveal">Carbon intelligence</span>
+        <h2 class="display tracking-h2 reveal r1">We know where<br><em>every tonne went.</em></h2>
+        <p class="tracking-body reveal r2">Every kilogram of carbon we remove is measured, attributed, and traced from biological source to final application. Not estimated. Not offset. Accounted for.</p>
+        <p class="tracking-body reveal r3">Our tracking system records the complete chain — feedstock origin, conversion yield, carbon grade, end-use application, and permanence class.</p>
+        <a href="carbon.html" class="arrow-link reveal r4">See the methodology <span>→</span></a>
+      </div>
+      <div class="tracking-visual reveal r2">
+        <svg class="track-diagram" viewBox="0 0 460 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,1 L6,4 L0,7 Z" fill="#C07818" opacity="0.6"/>
+            </marker>
+          </defs>
+          <!-- Atmosphere → Biomass → Carbon → End use flow -->
+          <!-- Node 1: Atmosphere -->
+          <circle cx="80" cy="80" r="36" fill="none" stroke="#E4E0D4" stroke-width="1.5"/>
+          <text x="80" y="76" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#AEAC9C" letter-spacing="2">ATM</text>
+          <text x="80" y="88" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#AEAC9C" letter-spacing="1">CO₂</text>
+
+          <!-- Node 2: Biomass -->
+          <circle cx="230" cy="80" r="36" fill="none" stroke="#2B4730" stroke-width="1.5" opacity="0.5"/>
+          <text x="230" y="76" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2B4730" letter-spacing="1" opacity="0.8">BIO</text>
+          <text x="230" y="88" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2B4730" letter-spacing="1" opacity="0.8">MASS</text>
+
+          <!-- Node 3: Conversion -->
+          <rect x="344" y="44" width="72" height="72" fill="none" stroke="#C07818" stroke-width="1.5" opacity="0.6"/>
+          <text x="380" y="76" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" letter-spacing="1" opacity="0.9">CONVER</text>
+          <text x="380" y="88" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" letter-spacing="1" opacity="0.9">SION</text>
+
+          <!-- Connectors row 1 -->
+          <line x1="117" y1="80" x2="192" y2="80" stroke="#C07818" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
+          <line x1="267" y1="80" x2="342" y2="80" stroke="#C07818" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
+
+          <!-- Down from conversion -->
+          <line x1="380" y1="117" x2="380" y2="175" stroke="#C07818" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
+
+          <!-- Node 4: Fixed Carbon -->
+          <circle cx="380" cy="220" r="44" fill="var(--carbon)" stroke="#C07818" stroke-width="1.5" opacity="0.9"/>
+          <text x="380" y="215" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" letter-spacing="1.5">FIXED</text>
+          <text x="380" y="228" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="rgba(253,252,248,0.6)" letter-spacing="1">CARBON</text>
+
+          <!-- Three output lines -->
+          <line x1="348" y1="248" x2="240" y2="310" stroke="#2B4730" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" marker-end="url(#arr)"/>
+          <line x1="380" y1="264" x2="380" y2="316" stroke="#C07818" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" marker-end="url(#arr)"/>
+          <line x1="412" y1="248" x2="440" y2="310" stroke="#4A7A8A" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" marker-end="url(#arr)"/>
+
+          <!-- Output nodes -->
+          <circle cx="220" cy="340" r="22" fill="none" stroke="#2B4730" stroke-width="1.5" opacity="0.7"/>
+          <text x="220" y="337" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#2B4730" letter-spacing="1" opacity="0.9">EARTH</text>
+          <text x="220" y="348" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#2B4730" opacity="0.7">soil</text>
+
+          <circle cx="380" cy="346" r="22" fill="none" stroke="#C07818" stroke-width="1.5" opacity="0.7"/>
+          <text x="380" y="343" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#C07818" letter-spacing="1.5" opacity="0.9">FIRE</text>
+          <text x="380" y="354" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#C07818" opacity="0.7">energy</text>
+
+          <circle cx="450" cy="340" r="22" fill="none" stroke="#4A7A8A" stroke-width="1.5" opacity="0.7"/>
+          <text x="450" y="337" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#4A7A8A" letter-spacing="0.5" opacity="0.9">WATER</text>
+          <text x="450" y="348" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#4A7A8A" opacity="0.7">pure</text>
+
+          <!-- Measurement tag -->
+          <rect x="10" y="190" width="100" height="28" fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="60" y="207" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#AEAC9C" letter-spacing="1.5">TRACKED</text>
+          <line x1="110" y1="204" x2="335" y2="204" stroke="var(--rule)" stroke-width="0.5" stroke-dasharray="2 3"/>
+        </svg>
+      </div>
     </div>
-    <div class="commit-item reveal reveal-delay-2">
-      <div class="commit-num">India</div>
-      <div class="commit-label">Rooted in Maharashtra.<br>Built for Global Markets.</div>
+  </div>
+</section>
+
+<!-- PROCESS STRIP -->
+<div class="process-strip">
+  <div class="wrap">
+    <div class="process-strip-inner">
+      <div class="process-item reveal">
+        <div class="process-num">01 — Source</div>
+        <div class="process-name">Biological<br>feedstock</div>
+        <p class="process-desc">Carefully selected and quality-graded biological material, sourced from land and agriculture.</p>
+      </div>
+      <div class="process-item reveal r1">
+        <div class="process-num">02 — Convert</div>
+        <div class="process-name">Thermochemical<br>conversion</div>
+        <p class="process-desc">A precisely controlled process that stabilises biological carbon into permanent, high-grade forms.</p>
+      </div>
+      <div class="process-item reveal r2">
+        <div class="process-num">03 — Grade</div>
+        <div class="process-name">Three carbon<br>streams</div>
+        <p class="process-desc">Each output calibrated for its application — soil, energy, or purification — at the appropriate specification.</p>
+      </div>
+      <div class="process-item reveal r3">
+        <div class="process-num">04 — Track</div>
+        <div class="process-name">Measurement<br>and attribution</div>
+        <p class="process-desc">Every kilogram measured, attributed, and recorded. From feedstock origin to final application.</p>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- FOUNDERS -->
-<section class="founders-section">
-  <div class="section-inner">
-    <div class="reveal">
-      <span class="section-label">The Team</span>
-      <h2 class="section-title">Three domains.<br>One table.</h2>
-      <p style="font-size:15px; color:var(--stone); line-height:1.75; max-width:560px; margin-top:20px; font-weight:300;">
-        Built by operators with decades of ground-level experience in the industries this venture sits at the intersection of — commodities, capital, and technology.
-      </p>
-    </div>
-
-    <div class="founders-grid">
-
-      <div class="founder-card reveal reveal-delay-1">
-        <div class="founder-avatar">
-          <span class="founder-initials">KV</span>
-        </div>
-        <div class="founder-name">Karan Vora</div>
-        <div class="founder-role">Supply Chain & Commodities</div>
-        <p class="founder-bio">
-          Nearly two decades building and scaling supply chains across salt, steel, and wood — commodities that demand sourcing depth, logistics precision, and trader instinct. Brings the operational architecture that turns raw feedstock into reliable, scalable supply.
-        </p>
-      </div>
-
-      <div class="founder-card reveal reveal-delay-2">
-        <div class="founder-avatar">
-          <span class="founder-initials">MK</span>
-        </div>
-        <div class="founder-name">Mukund Khetan</div>
-        <div class="founder-role">Capital & Policy</div>
-        <p class="founder-bio">
-          15+ years across private equity, venture capital, and impact investing. ISB alumnus with advisory roles across government and policy initiatives. Bridges institutional capital and real-economy infrastructure — shaping how this venture is structured, financed, and positioned for long-term impact.
-        </p>
-      </div>
-
-      <div class="founder-card reveal reveal-delay-3">
-        <div class="founder-avatar">
-          <span class="founder-initials">PA</span>
-        </div>
-        <div class="founder-name">Pratik Agarwal</div>
-        <div class="founder-role">Technology & Systems</div>
-        <p class="founder-bio">
-          16+ years across technology and manufacturing sectors. ISB alumnus with experience building systems at institutional scale — including national government programmes. Brings the operational infrastructure, traceability systems, and technology architecture across both verticals.
-        </p>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Bombay <span>Bioworks</span> Corp</div>
-  <div class="footer-note">Greenfield · Foundation Stage · India</div>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <span class="footer-logo">Bombay<span class="dot">·</span>Bioworks</span>
+        <p class="footer-tagline">Converting biological material into fixed carbon.</p>
+      </div>
+      <ul class="footer-nav">
+        <li><a href="carbon.html">Carbon</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="technology.html">Technology</a></li>
+        <li><a href="company.html">Company</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
+      <span class="footer-copy">bombaybioworks.com</span>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('solid', window.scrollY > 40);
+}, { passive: true });
+
+/* ── PARTICLE ANIMATION ── */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+
+class Particle {
+  constructor() { this.init(); }
+  init() {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.35;
+    this.vy = (Math.random() - 0.5) * 0.35;
+    this.r  = Math.random() * 1.8 + 0.6;
+    this.a  = Math.random() * 0.28 + 0.06;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > W) this.vx *= -1;
+    if (this.y < 0 || this.y > H) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(24,24,15,${this.a})`;
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const count = Math.min(Math.floor((W * H) / 14000), 90);
+  for (let i = 0; i < count; i++) particles.push(new Particle());
+}
+
+function drawLines() {
+  const MAX = 130;
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d  = Math.sqrt(dx * dx + dy * dy);
+      if (d < MAX) {
+        const a = (1 - d / MAX) * 0.09;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(24,24,15,${a})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
       }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }
+  }
+}
 
-  reveals.forEach(el => observer.observe(el));
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawLines();
+  requestAnimationFrame(loop);
+}
 
-  // Subtle parallax on hero visual
-  const heroVisual = document.querySelector('.hero-visual');
-  const heroSvg = document.querySelector('.hero-svg');
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (heroVisual) heroVisual.style.transform = `translateY(${y * 0.15}px)`;
-    if (heroSvg) heroSvg.style.transform = `translateY(${y * 0.08}px)`;
-  }, { passive: true });
+window.addEventListener('resize', () => { resize(); initParticles(); }, { passive: true });
+resize(); initParticles(); loop();
+
+/* ── SCROLL REVEALS ── */
+const reveals = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => ro.observe(el));
+
+/* ── COUNTER ── */
+const counterEl = document.getElementById('counter-num');
+const TARGET = 14280;
+let counted = false;
+
+function animateCounter() {
+  if (counted) return;
+  counted = true;
+  const start = performance.now();
+  const dur = 2400;
+  function tick(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    const val = Math.floor(ease * TARGET);
+    counterEl.innerHTML = val.toLocaleString() + '<span class="unit">t</span>';
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const cro = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) animateCounter();
+}, { threshold: 0.3 });
+cro.observe(counterEl);
 </script>
 </body>
 </html>
