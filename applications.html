@@ -3,425 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Applications — Bombay Bioworks</title>
+<title>Products — Bombay Bioworks</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* ── APPLICATIONS PAGE ── */
 
 .page-hero {
-  padding: calc(var(--nav-h) + 80px) 0 80px;
+  padding: calc(var(--nav-h) + 100px) 0 80px;
   border-bottom: 1px solid var(--rule);
 }
-.page-hero-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: end;
-}
-.page-hero h1 { font-size: clamp(52px, 6.5vw, 104px); }
-.page-hero-body {
+.page-hero h1 { font-size: clamp(52px, 7vw, 100px); }
+.page-hero-sub {
   font-size: 17px;
-  line-height: 1.85;
+  line-height: 1.75;
   color: var(--ink-2);
-  padding-bottom: 8px;
+  max-width: 480px;
+  margin-top: 32px;
 }
 
-/* NAV PILLS */
-.app-nav {
+/* PRODUCT NAV */
+.product-nav {
   position: sticky;
   top: var(--nav-h);
   z-index: 90;
-  background: rgba(247,244,238,0.96);
-  backdrop-filter: blur(8px);
+  background: rgba(244,243,238,0.97);
   border-bottom: 1px solid var(--rule);
   padding: 0 var(--pad);
 }
-.app-nav-inner {
+.product-nav-inner {
   max-width: var(--max);
   margin: 0 auto;
   display: flex;
-  gap: 0;
+  align-items: stretch;
 }
-.app-nav-link {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
+.pnav-link {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-3);
   text-decoration: none;
-  padding: 20px 28px;
+  padding: 18px 24px;
   border-bottom: 2px solid transparent;
-  transition: color 0.25s, border-color 0.25s;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  transition: color 0.2s, border-color 0.2s;
 }
-.app-nav-link:hover { color: var(--ink); }
-.app-nav-link.earth:hover, .app-nav-link.earth.act { border-color: var(--green); color: var(--green); }
-.app-nav-link.fire:hover,  .app-nav-link.fire.act  { border-color: var(--amber); color: var(--amber); }
-.app-nav-link.water:hover, .app-nav-link.water.act { border-color: #4A7A8A; color: #4A7A8A; }
-.app-nav-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.earth .app-nav-dot  { background: var(--green); }
-.fire  .app-nav-dot  { background: var(--amber); }
-.water .app-nav-dot  { background: #4A7A8A; }
+.pnav-link:hover { color: var(--ink); }
+.pnav-link.act    { color: var(--ink); border-color: var(--ink); }
 
-/* APPLICATION SECTIONS */
-.app-section {
-  padding: 140px 0;
-  scroll-margin-top: calc(var(--nav-h) + 56px);
+/* PRODUCT SECTIONS */
+.prod-section {
+  padding: 120px 0;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: calc(var(--nav-h) + 54px);
 }
-.app-section + .app-section {
-  border-top: 1px solid var(--rule);
-}
-.app-inner {
+.prod-section:nth-child(even) { background: var(--paper-warm); }
+
+.prod-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 100px;
   align-items: start;
 }
-.app-inner.flip { direction: rtl; }
-.app-inner.flip > * { direction: ltr; }
+.prod-flip { direction: rtl; }
+.prod-flip > * { direction: ltr; }
 
-.app-number {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 180px;
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1;
-  position: absolute;
-  top: -30px;
-  right: -20px;
-  opacity: 0.04;
-  pointer-events: none;
-  color: var(--ink);
-}
-
-.app-label-row {
+.prod-eyebrow {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 32px;
+  gap: 16px;
+  margin-bottom: 28px;
 }
-.app-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.22em;
+.prod-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: 'opsz' 48;
+  font-size: 48px;
+  color: var(--rule);
+  line-height: 1;
+}
+.prod-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 7px 14px;
+  padding: 5px 12px;
   border-radius: 2px;
 }
-.badge-earth  { background: var(--green-lt); color: var(--green); }
-.badge-fire   { background: var(--amber-lt); color: var(--amber); }
-.badge-water  { background: #DDF0F4; color: #4A7A8A; }
+.tag-biochar   { background: #D4E8D4; color: var(--green); }
+.tag-activated { background: #D4E4EC; color: #2A6070; }
+.tag-fuel      { background: var(--amber-lt); color: var(--amber); }
 
-.app-rule { width: 32px; height: 1px; background: var(--rule); }
-
-.app-h2 { font-size: clamp(40px, 4.5vw, 68px); margin-bottom: 28px; }
-.app-body {
-  font-size: 16px;
-  line-height: 1.85;
+.prod-h2 {
+  font-size: clamp(36px, 4vw, 56px);
+  color: var(--ink);
+  margin-bottom: 24px;
+  line-height: 1.05;
+}
+.prod-body {
+  font-size: 15px;
+  line-height: 1.8;
   color: var(--ink-2);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
-.use-cases {
-  margin-top: 48px;
+/* SPEC TABLE */
+.spec-table {
+  margin-top: 40px;
+  border-top: 1px solid var(--rule);
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  gap: 16px;
+}
+.spec-key {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+.spec-val {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 24;
+  font-size: 16px;
+  color: var(--ink);
+  text-align: right;
+}
+
+/* USE LIST */
+.use-list {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 1px;
   background: var(--rule);
 }
-.use-case {
-  background: var(--bg);
-  padding: 20px 24px;
+.use-item {
+  background: var(--paper);
+  padding: 14px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.use-case-name {
-  font-family: 'Barlow', sans-serif;
   font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
+  color: var(--ink-2);
 }
-.use-case-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
+.prod-section:nth-child(even) .use-item { background: var(--paper-warm); }
+.use-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
 
 /* VISUAL PANELS */
-.app-visual {
-  position: relative;
+.prod-visual {
   min-height: 480px;
+  position: relative;
 }
-.visual-panel {
+.prod-panel {
   width: 100%;
   height: 100%;
   min-height: 480px;
-  border-radius: 1px;
-  position: relative;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.panel-biochar {
+  background: linear-gradient(145deg, #C8D8B8 0%, #90B480 40%, #5A8450 80%, #2A5430 100%);
+}
+.panel-activated {
+  background: linear-gradient(145deg, #D0E4EC 0%, #90C0CC 50%, #3A7A8A 100%);
+}
+.panel-fuel {
+  background: linear-gradient(145deg, #F8E8B8 0%, #E8C060 40%, #C07820 80%, #803010 100%);
 }
 
-/* EARTH VISUAL */
-.visual-earth {
-  background: linear-gradient(160deg, #D8E8D0 0%, #B8D4B0 40%, #8AB890 70%, #5A8E6A 100%);
-}
-.earth-layers {
-  position: absolute;
-  inset: 0;
-}
-
-/* FIRE VISUAL */
-.visual-fire {
-  background: linear-gradient(160deg, #FFF0D0 0%, #FFD890 30%, #F0A830 65%, #C87018 100%);
-}
-
-/* WATER VISUAL */
-.visual-water {
-  background: linear-gradient(160deg, #E8F4F8 0%, #C0E0EC 40%, #8AB8CC 70%, #5A8EAA 100%);
-}
-
-/* SVG illustrations inside panels */
-.panel-svg {
-  width: 80%;
-  max-width: 320px;
-  opacity: 0.85;
-}
-
-/* STAT ROW */
-.stat-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: var(--rule);
-  margin-top: 48px;
-}
-.stat-item {
-  background: var(--bg);
-  padding: 28px 24px;
-}
-.stat-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 40px;
-  font-weight: 300;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.stat-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  line-height: 1.5;
-}
-.stat-num.earth-c { color: var(--green); }
-.stat-num.fire-c  { color: var(--amber); }
-.stat-num.water-c { color: #4A7A8A; }
-
-/* BRIDGE SECTION */
-.bridge-section {
+/* BOTTOM STATEMENT */
+.bottom-statement {
   background: var(--carbon);
-  padding: 100px 0;
+  padding: 80px 0;
 }
-.bridge-inner {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 80px;
+.bottom-inner {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: 60px;
 }
-.bridge-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(253,252,248,0.3);
-}
-.bridge-h2 {
-  font-size: clamp(36px, 4vw, 60px);
-  color: var(--white);
-  margin-top: 16px;
-}
-.bridge-body {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(22px, 2.2vw, 30px);
-  font-weight: 300;
+.bottom-text {
+  font-family: 'Fraunces', serif;
   font-style: italic;
-  color: rgba(253,252,248,0.65);
-  line-height: 1.6;
-  max-width: 600px;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 48, 'WONK' 1;
+  font-size: clamp(22px, 2.5vw, 32px);
+  color: rgba(250,250,248,0.7);
+  max-width: 560px;
+  line-height: 1.4;
 }
+.bottom-link {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184,112,16,0.35);
+  padding-bottom: 3px;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.bottom-link:hover { border-color: var(--amber); }
 
 @media (max-width: 1024px) {
-  .page-hero-inner { grid-template-columns: 1fr; gap: 32px; }
-  .app-inner, .app-inner.flip { grid-template-columns: 1fr; direction: ltr; }
-  .app-visual { min-height: 280px; }
-  .visual-panel { min-height: 280px; }
-  .stat-row { grid-template-columns: 1fr; }
-  .bridge-inner { grid-template-columns: 1fr; gap: 32px; }
+  .prod-inner, .prod-flip { grid-template-columns: 1fr; direction: ltr; }
+  .prod-visual { min-height: 280px; }
+  .prod-panel { min-height: 280px; }
+  .bottom-inner { flex-direction: column; align-items: flex-start; }
 }
 @media (max-width: 768px) {
-  .app-nav { padding: 0 var(--pad-sm); overflow-x: auto; }
-  .app-nav-link { padding: 16px 20px; white-space: nowrap; }
+  .product-nav { padding: 0 var(--pad-sm); overflow-x: auto; }
+  .pnav-link { white-space: nowrap; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav" class="solid">
+<nav id="nav" class="on-light">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html">Carbon</a></li>
-    <li><a href="applications.html" class="active">Applications</a></li>
-    <li><a href="technology.html">Technology</a></li>
+    <li><a href="applications.html" class="active">Products</a></li>
+    <li><a href="technology.html">Process</a></li>
     <li><a href="company.html">Company</a></li>
   </ul>
 </nav>
 
-<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="wrap">
-    <div class="page-hero-inner">
-      <div>
-        <span class="eyebrow reveal">What carbon does</span>
-        <h1 class="display reveal r1">Three uses.<br><em>One source.</em></h1>
-      </div>
-      <div class="reveal r2">
-        <p class="page-hero-body">Every carbon stream we produce has a defined application — in the ground, in an industrial process, or in a purification system. The carbon is the same. What it does is not.</p>
-      </div>
-    </div>
+    <span class="label" style="margin-bottom:20px;">What we make</span>
+    <h1 class="f-head page-hero h1">Three products.<br>One element.</h1>
+    <p class="page-hero-sub">Biochar. Activated carbon. Dense carbon fuel. All derived from the same biological source. Each serving a distinct industrial or agricultural purpose.</p>
   </div>
 </section>
 
-<!-- SECTION NAV -->
-<div class="app-nav">
-  <div class="app-nav-inner">
-    <a href="#earth" class="app-nav-link earth">
-      <div class="app-nav-dot"></div> Earth
-    </a>
-    <a href="#fire"  class="app-nav-link fire">
-      <div class="app-nav-dot"></div> Fire
-    </a>
-    <a href="#water" class="app-nav-link water">
-      <div class="app-nav-dot"></div> Water
-    </a>
+<div class="product-nav">
+  <div class="product-nav-inner">
+    <a href="#biochar"   class="pnav-link">Biochar</a>
+    <a href="#activated" class="pnav-link">Activated Carbon</a>
+    <a href="#fuel"      class="pnav-link">Carbon Fuel</a>
   </div>
 </div>
 
-<!-- EARTH -->
-<section class="app-section" id="earth">
+<!-- BIOCHAR -->
+<section class="prod-section" id="biochar">
   <div class="wrap">
-    <div class="app-inner">
+    <div class="prod-inner">
       <div>
-        <div class="app-label-row reveal">
-          <span class="app-badge badge-earth">01 — Earth</span>
-          <div class="app-rule"></div>
+        <div class="prod-eyebrow">
+          <span class="prod-num">01</span>
+          <span class="prod-tag tag-biochar">Biochar</span>
         </div>
-        <h2 class="display app-h2 reveal r1">Returned to soil.<br><em>Locked for centuries.</em></h2>
-        <p class="app-body reveal r2">When stabilised carbon is applied to soil, it does two things simultaneously: it improves the soil and it stays there. Unlike conventional soil amendments that break down within seasons, fixed carbon resists biological decomposition for hundreds of years.</p>
-        <p class="app-body reveal r3">The result is soil that holds more water, supports more microbial life, and retains more nutrients — while keeping carbon out of the atmosphere for centuries. Agriculture and carbon removal become the same act.</p>
+        <h2 class="f-head prod-h2">Applied to soil.<br>Stays for centuries.</h2>
+        <p class="prod-body">Biochar is porous, stable carbon derived from biological material through thermal conversion. When worked into agricultural soil, it does two things at once: it improves the soil — water retention, microbial activity, nutrient cycling — and it stores carbon in a form that resists biological breakdown for hundreds of years.</p>
+        <p class="prod-body">It is not a fertiliser. It does not add nutrients directly. It creates the conditions in which the soil's own biology can do more with less. Used alongside conventional inputs, it typically reduces requirement and improves yield over time.</p>
+        <p class="prod-body">From a carbon accounting perspective, biochar is one of the most durable removal pathways available — verified permanence at scale, with no technological lock-in risk.</p>
 
-        <div class="use-cases reveal r4">
-          <div class="use-case">
-            <span class="use-case-name">Agricultural yield improvement</span>
-            <span class="use-case-tag">Primary</span>
+        <div class="spec-table">
+          <div class="spec-row">
+            <span class="spec-key">Fixed carbon</span>
+            <span class="spec-val">≥ 70%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Soil water retention</span>
-            <span class="use-case-tag">Agricultural</span>
+          <div class="spec-row">
+            <span class="spec-key">pH</span>
+            <span class="spec-val">7.0 – 9.5</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Reduced chemical input requirement</span>
-            <span class="use-case-tag">Agricultural</span>
+          <div class="spec-row">
+            <span class="spec-key">Moisture</span>
+            <span class="spec-val">≤ 12%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Long-term carbon sequestration</span>
-            <span class="use-case-tag">Climate</span>
+          <div class="spec-row">
+            <span class="spec-key">Soil permanence</span>
+            <span class="spec-val">500 – 3,000+ years</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Soil microbiome support</span>
-            <span class="use-case-tag">Ecological</span>
+          <div class="spec-row">
+            <span class="spec-key">CO₂e removed per tonne</span>
+            <span class="spec-val">2.3t</span>
           </div>
         </div>
 
-        <div class="stat-row reveal r5">
-          <div class="stat-item">
-            <div class="stat-num earth-c">500+</div>
-            <div class="stat-label">Years of carbon permanence in soil</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num earth-c">~3×</div>
-            <div class="stat-label">Improvement in soil water retention</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num earth-c">2.3t</div>
-            <div class="stat-label">CO₂e removed per tonne applied</div>
-          </div>
+        <div class="use-list" style="margin-top:32px;">
+          <div class="use-item"><span>Dryland and rain-fed agriculture</span><span class="use-tag">Primary</span></div>
+          <div class="use-item"><span>Horticulture and plantation crops</span><span class="use-tag">High value</span></div>
+          <div class="use-item"><span>Carbon credit market supply</span><span class="use-tag">Climate</span></div>
+          <div class="use-item"><span>Corporate Scope 3 removal claims</span><span class="use-tag">Commercial</span></div>
         </div>
       </div>
 
-      <div class="app-visual reveal r2">
-        <div class="visual-panel visual-earth">
-          <svg class="panel-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-            <!-- Soil cross-section illustration -->
-            <defs>
-              <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#C8E8B8" stop-opacity="0.6"/>
-                <stop offset="100%" stop-color="#A8C890" stop-opacity="0.3"/>
-              </linearGradient>
-              <linearGradient id="soilGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#8B6020"/>
-                <stop offset="100%" stop-color="#5A3810"/>
-              </linearGradient>
-            </defs>
-            <!-- Sky / above ground -->
-            <rect x="0" y="0" width="300" height="130" fill="url(#skyGrad)"/>
-            <!-- Ground line -->
-            <line x1="0" y1="130" x2="300" y2="130" stroke="#5A8E6A" stroke-width="2" opacity="0.6"/>
-            <!-- Soil -->
-            <rect x="0" y="130" width="300" height="170" fill="url(#soilGrad)" opacity="0.7"/>
-            <!-- Soil texture dots -->
-            <circle cx="60" cy="160" r="3" fill="rgba(0,0,0,0.15)"/>
-            <circle cx="120" cy="155" r="2.5" fill="rgba(0,0,0,0.12)"/>
-            <circle cx="180" cy="168" r="3" fill="rgba(0,0,0,0.15)"/>
-            <circle cx="240" cy="150" r="2" fill="rgba(0,0,0,0.1)"/>
-            <circle cx="90" cy="190" r="2.5" fill="rgba(0,0,0,0.12)"/>
-            <circle cx="200" cy="195" r="3" fill="rgba(0,0,0,0.15)"/>
-            <circle cx="150" cy="210" r="2" fill="rgba(0,0,0,0.1)"/>
-            <!-- Carbon particles in soil (black dots) -->
-            <circle cx="80" cy="170" r="5" fill="#1A1A12" opacity="0.7"/>
-            <circle cx="130" cy="185" r="6" fill="#1A1A12" opacity="0.6"/>
-            <circle cx="170" cy="175" r="4" fill="#1A1A12" opacity="0.7"/>
-            <circle cx="220" cy="200" r="5" fill="#1A1A12" opacity="0.65"/>
-            <circle cx="100" cy="210" r="4" fill="#1A1A12" opacity="0.6"/>
-            <circle cx="240" cy="175" r="3.5" fill="#1A1A12" opacity="0.7"/>
-            <!-- Plant stems -->
-            <line x1="110" y1="130" x2="100" y2="60" stroke="#2B4730" stroke-width="2.5" opacity="0.8"/>
-            <line x1="180" y1="130" x2="192" y2="50" stroke="#2B4730" stroke-width="2.5" opacity="0.8"/>
-            <line x1="150" y1="130" x2="148" y2="70" stroke="#3D6B4F" stroke-width="2" opacity="0.7"/>
-            <!-- Leaves -->
-            <ellipse cx="90" cy="70" rx="22" ry="10" fill="#4A8A5A" opacity="0.75" transform="rotate(-30 90 70)"/>
-            <ellipse cx="112" cy="52" rx="20" ry="9" fill="#3D7A4A" opacity="0.75" transform="rotate(15 112 52)"/>
-            <ellipse cx="175" cy="58" rx="18" ry="8" fill="#4A8A5A" opacity="0.7" transform="rotate(-20 175 58)"/>
-            <ellipse cx="200" cy="42" rx="16" ry="7" fill="#3D7A4A" opacity="0.7" transform="rotate(25 200 42)"/>
-            <!-- Root systems -->
-            <line x1="110" y1="130" x2="90" y2="155" stroke="rgba(120,80,30,0.5)" stroke-width="1.5"/>
-            <line x1="110" y1="130" x2="130" y2="160" stroke="rgba(120,80,30,0.5)" stroke-width="1.5"/>
-            <line x1="180" y1="130" x2="160" y2="158" stroke="rgba(120,80,30,0.5)" stroke-width="1.5"/>
-            <line x1="180" y1="130" x2="200" y2="155" stroke="rgba(120,80,30,0.5)" stroke-width="1.5"/>
-            <!-- Carbon label -->
-            <text x="150" y="240" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(253,252,248,0.45)" letter-spacing="2">FIXED CARBON</text>
+      <div class="prod-visual">
+        <div class="prod-panel panel-biochar">
+          <svg viewBox="0 0 320 400" style="width:72%;max-width:260px;opacity:0.85;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cross-section: soil with biochar -->
+            <rect x="0" y="0" width="320" height="180" fill="rgba(180,220,160,0.35)"/>
+            <line x1="0" y1="180" x2="320" y2="180" stroke="rgba(40,90,40,0.5)" stroke-width="2"/>
+            <rect x="0" y="180" width="320" height="220" fill="rgba(80,44,20,0.55)"/>
+            <!-- biochar particles -->
+            <circle cx="80"  cy="215" r="9"  fill="#1A1A12" opacity="0.75"/>
+            <circle cx="130" cy="235" r="11" fill="#141410" opacity="0.8"/>
+            <circle cx="190" cy="220" r="8"  fill="#1A1A12" opacity="0.72"/>
+            <circle cx="245" cy="240" r="10" fill="#141410" opacity="0.78"/>
+            <circle cx="100" cy="260" r="8"  fill="#1A1A12" opacity="0.7"/>
+            <circle cx="165" cy="270" r="12" fill="#141410" opacity="0.8"/>
+            <circle cx="230" cy="265" r="8"  fill="#1A1A12" opacity="0.73"/>
+            <circle cx="70"  cy="295" r="7"  fill="#1A1A12" opacity="0.68"/>
+            <circle cx="140" cy="305" r="9"  fill="#141410" opacity="0.75"/>
+            <circle cx="200" cy="295" r="11" fill="#1A1A12" opacity="0.76"/>
+            <circle cx="268" cy="308" r="7"  fill="#141410" opacity="0.7"/>
+            <!-- plant stems -->
+            <line x1="100" y1="180" x2="88"  y2="90"  stroke="rgba(30,80,30,0.7)" stroke-width="3"/>
+            <line x1="180" y1="180" x2="192" y2="70"  stroke="rgba(30,80,30,0.7)" stroke-width="3"/>
+            <line x1="240" y1="180" x2="248" y2="95"  stroke="rgba(30,80,30,0.6)" stroke-width="2.5"/>
+            <!-- leaves -->
+            <ellipse cx="72" cy="100" rx="24" ry="10" fill="rgba(40,110,40,0.65)" transform="rotate(-25 72 100)"/>
+            <ellipse cx="104" cy="78"  rx="20" ry="9"  fill="rgba(40,110,40,0.65)" transform="rotate(20 104 78)"/>
+            <ellipse cx="178" cy="82"  rx="22" ry="9"  fill="rgba(40,110,40,0.65)" transform="rotate(-15 178 82)"/>
+            <ellipse cx="204" cy="62"  rx="18" ry="8"  fill="rgba(40,110,40,0.6)"  transform="rotate(25 204 62)"/>
+            <ellipse cx="240" cy="78"  rx="16" ry="7"  fill="rgba(40,110,40,0.6)"  transform="rotate(-10 240 78)"/>
+            <!-- label -->
+            <text x="160" y="375" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-size="10" fill="rgba(240,240,235,0.5)" letter-spacing="2" font-weight="500">FIXED IN SOIL</text>
           </svg>
         </div>
       </div>
@@ -429,87 +346,83 @@
   </div>
 </section>
 
-<!-- FIRE -->
-<section class="app-section" id="fire" style="background:var(--bg-warm);">
+<!-- ACTIVATED CARBON -->
+<section class="prod-section" id="activated">
   <div class="wrap">
-    <div class="app-inner flip">
+    <div class="prod-inner prod-flip">
       <div>
-        <div class="app-label-row reveal">
-          <span class="app-badge badge-fire">02 — Fire</span>
-          <div class="app-rule"></div>
+        <div class="prod-eyebrow">
+          <span class="prod-num">02</span>
+          <span class="prod-tag tag-activated">Activated Carbon</span>
         </div>
-        <h2 class="display app-h2 reveal r1">The same energy.<br><em>A different origin.</em></h2>
-        <p class="app-body reveal r2">India's industrial sector runs on combustion. Boilers, kilns, furnaces — they need dense, reliable, consistent fuel. We produce carbon that delivers equivalent or superior energy performance to fossil alternatives, from a biological and traceable source.</p>
-        <p class="app-body reveal r3">The carbon we combust was drawn from the atmosphere by growing plants. When it burns, it returns to the atmosphere — but the net addition over the cycle is close to zero. Unlike fossil carbon, which was locked underground for millions of years and has no modern atmospheric counterpart.</p>
+        <h2 class="f-head prod-h2">What it contacts<br>comes out cleaner.</h2>
+        <p class="prod-body">Activated carbon is biochar taken one step further. A secondary activation process — controlled exposure to steam or CO₂ at high temperature — dramatically expands the internal pore structure, creating surface areas measured in hundreds of square metres per gram.</p>
+        <p class="prod-body">That surface area is where adsorption happens. Contaminants, impurities, dissolved organics, heavy metals — they bind to the carbon's internal surfaces as liquid or gas passes through. The output is cleaner than the input.</p>
+        <p class="prod-body">We produce activated carbon in powder, granular, and pellet form. Surface area, iodine number, and ash content are tested per batch against application requirements.</p>
 
-        <div class="use-cases reveal r4">
-          <div class="use-case">
-            <span class="use-case-name">Industrial boilers and process heat</span>
-            <span class="use-case-tag">Primary</span>
+        <div class="spec-table">
+          <div class="spec-row">
+            <span class="spec-key">Surface area (BET)</span>
+            <span class="spec-val">900 – 1,200 m²/g</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Steel production — PCI substitution</span>
-            <span class="use-case-tag">Heavy industry</span>
+          <div class="spec-row">
+            <span class="spec-key">Iodine number</span>
+            <span class="spec-val">≥ 900 mg/g</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Power utility co-firing</span>
-            <span class="use-case-tag">Energy</span>
+          <div class="spec-row">
+            <span class="spec-key">Ash content</span>
+            <span class="spec-val">≤ 5%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Export markets — Japan, South Korea, Europe</span>
-            <span class="use-case-tag">Export</span>
+          <div class="spec-row">
+            <span class="spec-key">Moisture</span>
+            <span class="spec-val">≤ 10%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">SAMARTH biomass mandate fulfilment</span>
-            <span class="use-case-tag">Policy</span>
+          <div class="spec-row">
+            <span class="spec-key">Forms available</span>
+            <span class="spec-val">Powder · Granular · Pellet</span>
           </div>
         </div>
 
-        <div class="stat-row reveal r5">
-          <div class="stat-item">
-            <div class="stat-num fire-c">4,500+</div>
-            <div class="stat-label">kcal/kg calorific value</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num fire-c">~80%</div>
-            <div class="stat-label">Lower net carbon footprint vs. coal</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num fire-c">3+</div>
-            <div class="stat-label">Active export markets</div>
-          </div>
+        <div class="use-list" style="margin-top:32px;">
+          <div class="use-item"><span>Drinking water and wastewater treatment</span><span class="use-tag">Primary</span></div>
+          <div class="use-item"><span>Air and gas purification</span><span class="use-tag">Industrial</span></div>
+          <div class="use-item"><span>Personal care and cosmetics</span><span class="use-tag">Consumer</span></div>
+          <div class="use-item"><span>Gold and precious metal recovery</span><span class="use-tag">Refining</span></div>
+          <div class="use-item"><span>Pharmaceutical and food processing</span><span class="use-tag">Regulated</span></div>
         </div>
       </div>
 
-      <div class="app-visual reveal r2">
-        <div class="visual-panel visual-fire">
-          <svg class="panel-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="glowFire" cx="50%" cy="60%" r="50%">
-                <stop offset="0%" stop-color="#FFD860" stop-opacity="0.8"/>
-                <stop offset="60%" stop-color="#F08020" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="#C07018" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <!-- Glow -->
-            <ellipse cx="150" cy="180" rx="110" ry="80" fill="url(#glowFire)"/>
-            <!-- Pellets / carbon blocks -->
-            <ellipse cx="110" cy="210" rx="28" ry="16" fill="#2A2520" opacity="0.85"/>
-            <ellipse cx="155" cy="200" rx="30" ry="17" fill="#1E1B16" opacity="0.9"/>
-            <ellipse cx="200" cy="210" rx="26" ry="15" fill="#2A2520" opacity="0.85"/>
-            <ellipse cx="130" cy="225" rx="24" ry="14" fill="#1E1B16" opacity="0.8"/>
-            <ellipse cx="178" cy="222" rx="26" ry="14" fill="#2A2520" opacity="0.82"/>
-            <!-- Heat shimmer lines -->
-            <path d="M130,195 Q128,170 134,145 Q138,125 130,100" stroke="rgba(255,180,30,0.2)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M155,188 Q158,160 152,132 Q148,108 155,80" stroke="rgba(255,200,50,0.25)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M178,192 Q182,165 176,138 Q172,115 180,88" stroke="rgba(255,180,30,0.2)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <!-- Flame shapes -->
-            <path d="M140,200 Q130,175 138,155 Q142,140 135,125 Q148,140 145,158 Q150,142 158,125 Q160,148 154,162 Q158,148 165,138 Q165,160 155,175 Q160,165 168,162 Q162,180 150,192 Q145,197 140,200Z" fill="rgba(255,220,80,0.4)"/>
-            <!-- Smoke rising -->
-            <path d="M148,100 Q144,70 152,45" stroke="rgba(100,80,60,0.15)" stroke-width="8" fill="none" stroke-linecap="round"/>
-            <path d="M158,95 Q165,65 155,38" stroke="rgba(100,80,60,0.1)" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <!-- Origin tag -->
-            <text x="150" y="268" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(100,60,10,0.5)" letter-spacing="2">BIO-CARBON COMBUSTION</text>
+      <div class="prod-visual">
+        <div class="prod-panel panel-activated">
+          <svg viewBox="0 0 300 360" style="width:72%;max-width:240px;opacity:0.88;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Filter column -->
+            <rect x="80" y="60" width="140" height="220" rx="6" fill="rgba(20,24,28,0.82)"/>
+            <!-- Carbon granules -->
+            <circle cx="108" cy="90"  r="8"  fill="#141410"/>
+            <circle cx="132" cy="100" r="9"  fill="#1A1A16"/>
+            <circle cx="160" cy="88"  r="8"  fill="#141410"/>
+            <circle cx="186" cy="98"  r="7"  fill="#1A1A16"/>
+            <circle cx="118" cy="118" r="9"  fill="#1A1A16"/>
+            <circle cx="150" cy="112" r="10" fill="#141410"/>
+            <circle cx="178" cy="120" r="8"  fill="#1A1A16"/>
+            <circle cx="100" cy="140" r="8"  fill="#141410"/>
+            <circle cx="136" cy="148" r="11" fill="#1A1A16"/>
+            <circle cx="168" cy="140" r="8"  fill="#141410"/>
+            <circle cx="196" cy="148" r="7"  fill="#1A1A16"/>
+            <circle cx="112" cy="172" r="9"  fill="#1A1A16"/>
+            <circle cx="148" cy="180" r="10" fill="#141410"/>
+            <circle cx="180" cy="170" r="8"  fill="#1A1A16"/>
+            <circle cx="104" cy="200" r="8"  fill="#141410"/>
+            <circle cx="140" cy="208" r="9"  fill="#1A1A16"/>
+            <circle cx="172" cy="200" r="7"  fill="#141410"/>
+            <circle cx="196" cy="210" r="8"  fill="#1A1A16"/>
+            <!-- water flow in (impure) -->
+            <path d="M150 8 L150 55" stroke="rgba(74,120,138,0.35)" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="146" cy="22" r="3" fill="rgba(160,80,40,0.5)"/>
+            <circle cx="153" cy="38" r="2.5" fill="rgba(180,100,40,0.45)"/>
+            <!-- water flow out (clean) -->
+            <path d="M150 285 L150 340" stroke="rgba(74,130,150,0.7)" stroke-width="16" stroke-linecap="round"/>
+            <text x="150" y="358" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-size="10" fill="rgba(74,130,150,0.55)" letter-spacing="2" font-weight="500">PURIFIED</text>
           </svg>
         </div>
       </div>
@@ -517,105 +430,70 @@
   </div>
 </section>
 
-<!-- WATER -->
-<section class="app-section" id="water">
+<!-- CARBON FUEL -->
+<section class="prod-section" id="fuel">
   <div class="wrap">
-    <div class="app-inner">
+    <div class="prod-inner">
       <div>
-        <div class="app-label-row reveal">
-          <span class="app-badge badge-water">03 — Water</span>
-          <div class="app-rule"></div>
+        <div class="prod-eyebrow">
+          <span class="prod-num">03</span>
+          <span class="prod-tag tag-fuel">Carbon Fuel</span>
         </div>
-        <h2 class="display app-h2 reveal r1">What passes through<br>carbon <em>comes out clean.</em></h2>
-        <p class="app-body reveal r2">Activated carbon — carbon whose internal surface area has been vastly expanded through a secondary process — is one of the most effective purification materials known. A single gram contains surface area measured in hundreds of square metres.</p>
-        <p class="app-body reveal r3">We produce activated carbon from our biological feedstock. Its adsorption capacity, pore structure, and surface chemistry make it suitable for the most demanding purification applications — in water, in air, in cosmetics, and in specialty industrial processes.</p>
+        <h2 class="f-head prod-h2">Burns where coal burns.<br>Costs the atmosphere less.</h2>
+        <p class="prod-body">Dense carbon fuel is what happens when you optimise for energy — high fixed carbon content, low moisture, low ash, consistent calorific value. It fits directly into industrial combustion infrastructure designed for coal: boilers, kilns, furnaces, co-firing systems.</p>
+        <p class="prod-body">The carbon it releases when burned was atmospheric CO₂ a year ago — absorbed by growing biological material, not sequestered underground for three hundred million years. The net atmospheric addition per unit of energy is a fraction of what coal delivers.</p>
+        <p class="prod-body">We supply industrial buyers in India and export markets including Japan and South Korea, where biomass carbon fuel qualifies under national low-carbon procurement mandates.</p>
 
-        <div class="use-cases reveal r4">
-          <div class="use-case">
-            <span class="use-case-name">Water treatment and purification</span>
-            <span class="use-case-tag">Primary</span>
+        <div class="spec-table">
+          <div class="spec-row">
+            <span class="spec-key">Calorific value</span>
+            <span class="spec-val">≥ 4,500 kcal/kg</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Air and gas filtration</span>
-            <span class="use-case-tag">Industrial</span>
+          <div class="spec-row">
+            <span class="spec-key">Fixed carbon</span>
+            <span class="spec-val">≥ 65%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Personal care and cosmetics</span>
-            <span class="use-case-tag">Consumer</span>
+          <div class="spec-row">
+            <span class="spec-key">Moisture</span>
+            <span class="spec-val">≤ 8%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Metal refining and recovery</span>
-            <span class="use-case-tag">Specialty</span>
+          <div class="spec-row">
+            <span class="spec-key">Ash content</span>
+            <span class="spec-val">≤ 10%</span>
           </div>
-          <div class="use-case">
-            <span class="use-case-name">Pharmaceutical and food-grade applications</span>
-            <span class="use-case-tag">Regulated</span>
-          </div>
-          <div class="use-case">
-            <span class="use-case-name">Industrial solvent recovery</span>
-            <span class="use-case-tag">Industrial</span>
+          <div class="spec-row">
+            <span class="spec-key">Active markets</span>
+            <span class="spec-val">India · Japan · South Korea</span>
           </div>
         </div>
 
-        <div class="stat-row reveal r5">
-          <div class="stat-item">
-            <div class="stat-num water-c">900+</div>
-            <div class="stat-label">m² surface area per gram</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num water-c">6+</div>
-            <div class="stat-label">Distinct end-use categories served</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num water-c">All</div>
-            <div class="stat-label">Forms — powder, granular, pellet</div>
-          </div>
+        <div class="use-list" style="margin-top:32px;">
+          <div class="use-item"><span>Industrial boilers and process heat</span><span class="use-tag">Primary</span></div>
+          <div class="use-item"><span>Steel plant PCI substitution</span><span class="use-tag">Heavy industry</span></div>
+          <div class="use-item"><span>Power utility co-firing</span><span class="use-tag">Energy</span></div>
+          <div class="use-item"><span>SAMARTH mandate fulfilment</span><span class="use-tag">Policy</span></div>
+          <div class="use-item"><span>Export under biomass fuel frameworks</span><span class="use-tag">Export</span></div>
         </div>
       </div>
 
-      <div class="app-visual reveal r2">
-        <div class="visual-panel visual-water">
-          <svg class="panel-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#E0F4FC" stop-opacity="0.5"/>
-                <stop offset="100%" stop-color="#8AB8D0" stop-opacity="0.8"/>
-              </linearGradient>
-              <linearGradient id="filterGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#3A3530"/>
-                <stop offset="100%" stop-color="#1A1816"/>
-              </linearGradient>
-            </defs>
-            <!-- Water flow in -->
-            <path d="M150,20 Q148,50 152,80" stroke="rgba(74,122,138,0.4)" stroke-width="18" fill="none" stroke-linecap="round"/>
-            <!-- Impurity dots in input -->
-            <circle cx="148" cy="35" r="3" fill="rgba(180,100,60,0.5)"/>
-            <circle cx="154" cy="55" r="2.5" fill="rgba(160,80,40,0.5)"/>
-            <circle cx="146" cy="70" r="2" fill="rgba(180,100,60,0.45)"/>
-            <!-- Filter vessel -->
-            <rect x="90" y="80" width="120" height="140" rx="4" fill="url(#filterGrad)" opacity="0.85"/>
-            <!-- Carbon granules inside -->
-            <circle cx="115" cy="105" r="7" fill="#2A2520"/>
-            <circle cx="135" cy="115" r="8" fill="#1E1B16"/>
-            <circle cx="160" cy="100" r="7.5" fill="#2A2520"/>
-            <circle cx="180" cy="112" r="7" fill="#1E1B16"/>
-            <circle cx="120" cy="130" r="8" fill="#2A2520"/>
-            <circle cx="148" cy="125" r="9" fill="#1E1B16"/>
-            <circle cx="172" cy="132" r="7.5" fill="#2A2520"/>
-            <circle cx="110" cy="150" r="7" fill="#1E1B16"/>
-            <circle cx="138" cy="155" r="8.5" fill="#2A2520"/>
-            <circle cx="165" cy="148" r="7" fill="#1E1B16"/>
-            <circle cx="185" cy="158" r="6.5" fill="#2A2520"/>
-            <circle cx="125" cy="172" r="7" fill="#1E1B16"/>
-            <circle cx="155" cy="178" r="8" fill="#2A2520"/>
-            <circle cx="178" cy="172" r="6.5" fill="#1E1B16"/>
-            <!-- Filter label -->
-            <text x="150" y="208" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="rgba(253,252,248,0.3)" letter-spacing="1.5">ACTIVATED</text>
-            <text x="150" y="220" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="rgba(253,252,248,0.3)" letter-spacing="1.5">CARBON</text>
-            <!-- Water flow out — clean -->
-            <path d="M150,220 Q148,248 152,275" stroke="rgba(74,122,138,0.65)" stroke-width="18" fill="none" stroke-linecap="round"/>
-            <!-- Clean water label -->
-            <text x="150" y="292" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(74,122,138,0.6)" letter-spacing="2">PURIFIED</text>
+      <div class="prod-visual">
+        <div class="prod-panel panel-fuel">
+          <svg viewBox="0 0 300 360" style="width:72%;max-width:240px;opacity:0.85;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pellet stack -->
+            <ellipse cx="150" cy="290" rx="80" ry="22" fill="rgba(28,22,16,0.7)"/>
+            <ellipse cx="110" cy="272" rx="36" ry="20" fill="#1A1510"/>
+            <ellipse cx="158" cy="260" rx="38" ry="21" fill="#140F0A"/>
+            <ellipse cx="206" cy="270" rx="34" ry="19" fill="#1A1510"/>
+            <ellipse cx="128" cy="248" rx="32" ry="18" fill="#140F0A"/>
+            <ellipse cx="178" cy="240" rx="36" ry="20" fill="#1A1510"/>
+            <ellipse cx="148" cy="228" rx="30" ry="17" fill="#140F0A"/>
+            <!-- heat shimmer -->
+            <path d="M120 220 Q116 185 124 148 Q130 120 118 88" stroke="rgba(255,180,40,0.18)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M150 212 Q154 172 146 132 Q140 100 150 64" stroke="rgba(255,200,60,0.22)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M178 220 Q184 184 174 144 Q168 114 180 78" stroke="rgba(255,180,40,0.18)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- flame -->
+            <path d="M134 218 Q122 188 132 164 Q138 148 128 130 Q144 148 140 168 Q148 148 158 128 Q160 154 152 172 Q158 156 168 146 Q166 168 154 186 Q160 174 170 172 Q162 194 148 210 Z" fill="rgba(255,210,60,0.35)"/>
+            <text x="150" y="340" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-size="10" fill="rgba(200,120,20,0.5)" letter-spacing="2" font-weight="500">CARBON FUEL</text>
           </svg>
         </div>
       </div>
@@ -623,64 +501,46 @@
   </div>
 </section>
 
-<!-- BRIDGE -->
-<section class="bridge-section">
+<!-- BOTTOM STATEMENT -->
+<div class="bottom-statement">
   <div class="wrap">
-    <div class="bridge-inner">
-      <div class="reveal">
-        <span class="bridge-label">One source</span>
-        <h2 class="display bridge-h2">Three uses.<br><em>All tracked.</em></h2>
-      </div>
-      <p class="bridge-body reveal r1">
-        Every output — whether it enters the soil, a furnace, or a filtration column — is traced back to its biological origin. The feedstock, the conversion, the yield, the application. Carbon removal that you can read the ledger of.
-      </p>
+    <div class="bottom-inner">
+      <p class="bottom-text">One biological source. Three products. Every batch tied to its origin, its conversion run, and its verified permanence class.</p>
+      <a href="carbon.html#methodology" class="bottom-link">Our methodology →</a>
     </div>
   </div>
-</section>
+</div>
 
 <footer>
-  <div class="wrap">
-    <div class="footer-top">
+  <div class="footer-inner">
+    <div class="footer-row">
       <div>
-        <span class="footer-logo">Bombay<span class="dot">·</span>Bioworks</span>
-        <p class="footer-tagline">Converting biological material into fixed carbon.</p>
+        <div class="footer-brand">Bombay<span class="dot">·</span>Bioworks</div>
+        <div class="footer-tagline">Fixed carbon. Biological origin.</div>
       </div>
       <ul class="footer-nav">
         <li><a href="carbon.html">Carbon</a></li>
-        <li><a href="applications.html">Applications</a></li>
-        <li><a href="technology.html">Technology</a></li>
+        <li><a href="applications.html">Products</a></li>
+        <li><a href="technology.html">Process</a></li>
         <li><a href="company.html">Company</a></li>
       </ul>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
-      <span class="footer-copy">bombaybioworks.com</span>
+    <div class="footer-copy">
+      <span>© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
+      <span>bombaybioworks.com</span>
     </div>
   </div>
 </footer>
 
 <script>
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('solid', window.scrollY > 40);
-}, { passive: true });
-
-const reveals = document.querySelectorAll('.reveal');
-const ro = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => ro.observe(el));
-
-/* Active section nav highlight */
-const sections = ['earth','fire','water'];
-const links = { earth: document.querySelector('.app-nav-link.earth'), fire: document.querySelector('.app-nav-link.fire'), water: document.querySelector('.app-nav-link.water') };
-
+const sections = ['biochar','activated','fuel'];
+const links = Object.fromEntries(sections.map(id => [id, document.querySelector(`.pnav-link[href="#${id}"]`)]));
 window.addEventListener('scroll', () => {
   sections.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    const rect = el.getBoundingClientRect();
-    if (rect.top <= 140 && rect.bottom > 140) {
+    const r = el.getBoundingClientRect();
+    if (r.top <= 120 && r.bottom > 120) {
       Object.values(links).forEach(l => l && l.classList.remove('act'));
       links[id] && links[id].classList.add('act');
     }

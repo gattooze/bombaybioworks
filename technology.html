@@ -3,682 +3,512 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Technology — Bombay Bioworks</title>
+<title>Process — Bombay Bioworks</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* ── TECHNOLOGY PAGE ── */
 
 .page-hero {
   padding: calc(var(--nav-h) + 100px) 0 100px;
   border-bottom: 1px solid var(--rule);
-  overflow: hidden;
-  position: relative;
 }
-.page-hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.page-hero h1 { font-size: clamp(52px, 6.5vw, 104px); }
-.page-hero-body {
+.page-hero h1 { font-size: clamp(52px, 6.5vw, 96px); }
+.page-hero-sub {
   font-size: 17px;
-  line-height: 1.85;
+  line-height: 1.75;
   color: var(--ink-2);
-}
-.hero-schematic {
-  position: relative;
-  height: 420px;
+  max-width: 480px;
+  margin-top: 32px;
 }
 
-/* PROCESS SECTION */
-.process-section {
-  padding: 140px 0;
-}
-.section-header {
+/* ── STAGES ── */
+.stages-section { padding: 120px 0; border-bottom: 1px solid var(--rule); }
+.stages-head {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
-  align-items: end;
-  margin-bottom: 80px;
-  padding-bottom: 48px;
+  margin-bottom: 72px;
+  padding-bottom: 56px;
   border-bottom: 1px solid var(--rule);
 }
-.section-header h2 { font-size: clamp(40px, 4.5vw, 68px); }
-.section-header p {
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--ink-2);
-}
+.stages-h2 { font-size: clamp(36px, 4vw, 52px); }
+.stages-intro { font-size: 15px; line-height: 1.8; color: var(--ink-2); }
 
-.steps-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  background: var(--rule);
-}
-.step-item {
-  background: var(--bg);
+.stage-list { display: flex; flex-direction: column; }
+.stage-item {
   display: grid;
-  grid-template-columns: 80px 1fr auto;
-  align-items: start;
+  grid-template-columns: 80px 1fr;
   gap: 0;
+  border-bottom: 1px solid var(--rule);
   cursor: pointer;
-  position: relative;
+  overflow: hidden;
 }
-.step-item.open { background: var(--bg-warm); }
-
-.step-num {
-  padding: 36px 24px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--ink-3);
+.stage-item.open { background: var(--paper-warm); }
+.stage-num-col {
+  padding: 32px 24px 32px 0;
   border-right: 1px solid var(--rule);
-  height: 100%;
   display: flex;
   align-items: flex-start;
-  padding-top: 38px;
+  padding-top: 34px;
 }
-.step-content {
-  padding: 36px 40px;
+.stage-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: 'opsz' 36;
+  font-size: 13px;
+  color: var(--ink-3);
 }
-.step-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px;
+.stage-body-col { padding: 32px 0 32px 36px; }
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.stage-title {
+  font-family: 'Fraunces', serif;
+  font-style: normal;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  font-variation-settings: 'opsz' 48;
+  font-size: clamp(18px, 2vw, 24px);
   color: var(--ink);
-  margin-bottom: 0;
   transition: color 0.2s;
 }
-.step-item.open .step-title { color: var(--amber); }
-.step-body {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--ink-2);
+.stage-item.open .stage-title { color: var(--amber); }
+.stage-toggle {
+  font-size: 20px;
+  color: var(--ink-3);
+  transition: transform 0.3s, color 0.2s;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.stage-item.open .stage-toggle { transform: rotate(45deg); color: var(--amber); }
+.stage-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 6px;
+  display: block;
+}
+.stage-expand {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease, opacity 0.4s ease, margin-top 0.4s ease;
+  transition: max-height 0.45s ease, opacity 0.35s ease;
   opacity: 0;
-  margin-top: 0;
 }
-.step-item.open .step-body {
-  max-height: 200px;
-  opacity: 1;
+.stage-item.open .stage-expand { max-height: 220px; opacity: 1; }
+.stage-expand-inner {
   margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 520px;
 }
-.step-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 9.5px;
+
+/* ── SCHEMATIC ── */
+.schematic-section {
+  background: var(--carbon);
+  padding: 100px 0;
+}
+.schematic-label {
+  font-size: 11px;
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-3);
-  padding: 8px 12px;
-  border: 1px solid var(--rule);
-  border-radius: 1px;
-  margin-top: 4px;
-  display: inline-block;
+  color: rgba(250,250,248,0.2);
+  margin-bottom: 16px;
+  display: block;
 }
-.step-icon {
-  padding: 36px 32px;
-  font-family: 'DM Mono', monospace;
-  font-size: 18px;
-  color: var(--ink-3);
-  transition: color 0.3s, transform 0.3s;
-  display: flex;
-  align-items: flex-start;
-  padding-top: 40px;
-}
-.step-item.open .step-icon { color: var(--amber); transform: rotate(45deg); }
-
-/* FLOW ANIMATION */
-.flow-section {
-  background: var(--carbon);
-  padding: 120px 0;
-  overflow: hidden;
-}
-.flow-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(253,252,248,0.25);
-  margin-bottom: 24px;
-}
-.flow-h2 {
-  font-size: clamp(36px, 4vw, 56px);
+.schematic-h2 {
+  font-size: clamp(28px, 3.5vw, 48px);
   color: var(--white);
-  margin-bottom: 80px;
-  max-width: 600px;
+  margin-bottom: 72px;
 }
-.flow-track {
-  position: relative;
+.flow-row {
   display: flex;
   align-items: center;
   gap: 0;
-  overflow: hidden;
+  overflow-x: auto;
+  padding-bottom: 8px;
 }
 .flow-node {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  gap: 14px;
+  min-width: 100px;
 }
-.flow-node.in { opacity: 1; transform: none; }
-.flow-node:nth-child(1) { transition-delay: 0s; }
-.flow-node:nth-child(3) { transition-delay: 0.15s; }
-.flow-node:nth-child(5) { transition-delay: 0.3s; }
-.flow-node:nth-child(7) { transition-delay: 0.45s; }
-.flow-node:nth-child(9) { transition-delay: 0.6s; }
-
-.flow-circle {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.12);
+.flow-box {
+  width: 72px; height: 72px;
+  border: 1px solid rgba(255,255,255,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255,255,255,0.02);
   position: relative;
-  background: rgba(255,255,255,0.03);
 }
-.flow-circle.active {
+.flow-box.highlight {
   border-color: var(--amber);
-  background: rgba(192,120,24,0.08);
-  box-shadow: 0 0 32px rgba(192,120,24,0.15);
+  background: rgba(184,112,16,0.08);
+  box-shadow: 0 0 24px rgba(184,112,16,0.12);
 }
-.flow-circle svg { width: 28px; height: 28px; }
-.flow-name {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.2em;
+.flow-box svg { width: 24px; height: 24px; }
+.flow-node-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(253,252,248,0.35);
+  color: rgba(250,250,248,0.28);
   text-align: center;
-  max-width: 100px;
+  max-width: 88px;
+  line-height: 1.4;
 }
-.flow-circle.active ~ .flow-name { color: rgba(253,252,248,0.7); }
-
-.flow-arrow {
+.flow-box.highlight ~ .flow-node-label { color: rgba(250,250,248,0.65); }
+.flow-connector {
   flex: 1;
   height: 1px;
-  background: linear-gradient(to right, rgba(255,255,255,0.04), rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+  background: rgba(255,255,255,0.07);
+  min-width: 32px;
+  max-width: 80px;
   position: relative;
-  min-width: 40px;
-  max-width: 120px;
-  opacity: 0;
-  transition: opacity 1s ease 0.8s;
+  flex-shrink: 0;
 }
-.flow-arrow.in { opacity: 1; }
-.flow-arrow::after {
+.flow-connector::after {
   content: '';
   position: absolute;
-  right: -1px; top: 50%;
-  transform: translateY(-50%);
+  right: -4px; top: -3px;
   border: 4px solid transparent;
-  border-left-color: rgba(255,255,255,0.15);
+  border-left-color: rgba(255,255,255,0.1);
 }
 
-/* OUTPUT GRADES */
-.grades-section {
-  padding: 140px 0;
-}
-.grades-header {
-  margin-bottom: 64px;
-}
-.grades-header h2 { font-size: clamp(36px, 4vw, 56px); }
+/* ── GRADES ── */
+.grades-section { padding: 120px 0; border-bottom: 1px solid var(--rule); }
+.grades-h2 { font-size: clamp(32px, 3.5vw, 48px); margin-bottom: 16px; }
+.grades-intro { font-size: 15px; line-height: 1.8; color: var(--ink-2); max-width: 560px; margin-bottom: 60px; }
 
-.grades-grid {
+.grades-table {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: var(--rule);
+  gap: 0;
+  border-left: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
 }
-.grade-card {
-  background: var(--bg);
-  padding: 48px 36px;
-  position: relative;
-  overflow: hidden;
+.grade-col {
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
-.grade-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-}
-.grade-card.g-earth::before { background: var(--green); }
-.grade-card.g-fire::before  { background: var(--amber); }
-.grade-card.g-water::before { background: #4A7A8A; }
-
-.grade-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(64px, 7vw, 100px);
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1;
-  opacity: 0.06;
-  position: absolute;
-  bottom: 16px; right: 24px;
-  pointer-events: none;
-}
-.grade-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-.g-earth .grade-label { color: var(--green); }
-.g-fire  .grade-label { color: var(--amber); }
-.g-water .grade-label { color: #4A7A8A; }
-
-.grade-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 16px;
-  letter-spacing: 0.02em;
-}
-.grade-body {
-  font-size: 14px;
-  line-height: 1.75;
-  color: var(--ink-2);
-  margin-bottom: 28px;
-}
-.grade-spec {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.spec-row {
+.grade-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--rule);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--rule);
-  font-size: 13px;
 }
-.spec-key {
-  font-family: 'DM Mono', monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
+.grade-name {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.grade-name.g-soil   { color: var(--green); }
+.grade-name.g-fuel   { color: var(--amber); }
+.grade-name.g-puri   { color: #2A6070; }
+.grade-indicator {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.gi-soil { background: var(--green); }
+.gi-fuel { background: var(--amber); }
+.gi-puri { background: #2A6070; }
+
+.grade-specs { padding: 0; }
+.grade-spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--rule);
+  gap: 12px;
+}
+.grade-spec-row:last-child { border-bottom: none; }
+.gs-key {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.spec-val {
-  font-family: 'Barlow', sans-serif;
-  font-weight: 500;
+.gs-val {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-variation-settings: 'opsz' 24;
+  font-size: 15px;
   color: var(--ink);
+  text-align: right;
 }
 
-/* PROVENANCE */
-.provenance-section {
-  background: var(--bg-warm);
-  padding: 120px 0;
+/* ── PROVENANCE ── */
+.prov-section {
+  background: var(--paper-warm);
+  padding: 100px 0;
   border-top: 1px solid var(--rule);
 }
 .prov-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 100px;
-  align-items: center;
-}
-.prov-h2 { font-size: clamp(36px, 4vw, 56px); }
-.prov-body {
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--ink-2);
-  margin-top: 20px;
-}
-.prov-items {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  background: var(--rule);
-}
-.prov-item {
-  background: var(--bg-warm);
-  padding: 24px 28px;
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  gap: 20px;
   align-items: start;
 }
+.prov-h2 { font-size: clamp(32px, 3.5vw, 48px); margin-bottom: 20px; }
+.prov-body { font-size: 15px; line-height: 1.8; color: var(--ink-2); margin-bottom: 12px; }
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-decoration: none;
+  margin-top: 28px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 4px;
+  transition: border-color 0.25s, color 0.25s, gap 0.25s;
+}
+.text-link:hover { border-color: var(--amber); color: var(--amber); gap: 14px; }
+.prov-list { display: flex; flex-direction: column; gap: 1px; background: var(--rule); }
+.prov-item {
+  background: var(--paper-warm);
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
 .prov-icon {
-  width: 36px; height: 36px;
-  border-radius: 50%;
+  width: 32px; height: 32px;
   border: 1px solid var(--rule);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 .prov-item-title {
-  font-family: 'Barlow', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: var(--ink);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 .prov-item-desc {
   font-size: 13px;
   color: var(--ink-2);
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 @media (max-width: 1024px) {
-  .page-hero-grid { grid-template-columns: 1fr; }
-  .hero-schematic { display: none; }
-  .section-header { grid-template-columns: 1fr; gap: 24px; }
-  .grades-grid { grid-template-columns: 1fr; }
+  .stages-head { grid-template-columns: 1fr; gap: 24px; }
+  .grades-table { grid-template-columns: 1fr; }
   .prov-inner { grid-template-columns: 1fr; gap: 48px; }
-  .flow-track { gap: 12px; overflow-x: auto; padding-bottom: 16px; }
-  .step-item { grid-template-columns: 60px 1fr auto; }
 }
 @media (max-width: 768px) {
-  .flow-circle { width: 60px; height: 60px; }
-  .flow-arrow { min-width: 24px; }
-  .grade-card { padding: 36px 24px; }
+  .stage-item { grid-template-columns: 56px 1fr; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav" class="solid">
+<nav id="nav" class="on-light">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html">Carbon</a></li>
-    <li><a href="applications.html">Applications</a></li>
-    <li><a href="technology.html" class="active">Technology</a></li>
+    <li><a href="applications.html">Products</a></li>
+    <li><a href="technology.html" class="active">Process</a></li>
     <li><a href="company.html">Company</a></li>
   </ul>
 </nav>
 
-<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="wrap">
-    <div class="page-hero-grid">
-      <div>
-        <span class="eyebrow reveal">How we do it</span>
-        <h1 class="display reveal r1">Precision.<br><em>At every stage.</em></h1>
-        <p class="page-hero-body reveal r2" style="margin-top:32px;">The conversion of biological material into graded carbon products is a controlled, measurable process. Every input is assessed. Every output is specified. The conditions in between are the difference between a soil amendment and a fuel.</p>
-      </div>
-      <div class="hero-schematic reveal r3">
-        <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-          <defs>
-            <linearGradient id="hGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#F7F4EE"/>
-              <stop offset="100%" stop-color="#F0ECE2"/>
-            </linearGradient>
-          </defs>
-          <!-- Schematic: stylized reactor cross-section -->
-          <!-- Input -->
-          <rect x="30" y="80" width="80" height="180" rx="3" fill="none" stroke="#E4E0D4" stroke-width="1.5"/>
-          <text x="70" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#AEAC9C" letter-spacing="1.5">INPUT</text>
-          <!-- Input material blocks -->
-          <rect x="44" y="96" width="52" height="8" rx="1" fill="#B8C8A8" opacity="0.7"/>
-          <rect x="44" y="110" width="52" height="8" rx="1" fill="#C8D8B8" opacity="0.6"/>
-          <rect x="44" y="124" width="52" height="8" rx="1" fill="#A8B898" opacity="0.65"/>
-          <rect x="44" y="138" width="52" height="8" rx="1" fill="#B8C8A8" opacity="0.6"/>
-          <rect x="44" y="152" width="52" height="8" rx="1" fill="#C8D8B8" opacity="0.55"/>
-          <rect x="44" y="166" width="52" height="8" rx="1" fill="#A8B898" opacity="0.6"/>
-          <rect x="44" y="180" width="52" height="8" rx="1" fill="#B8C8A8" opacity="0.55"/>
-          <rect x="44" y="194" width="52" height="8" rx="1" fill="#C8D8B8" opacity="0.5"/>
-          <rect x="44" y="208" width="52" height="8" rx="1" fill="#A8B898" opacity="0.55"/>
-          <rect x="44" y="222" width="52" height="8" rx="1" fill="#B8C8A8" opacity="0.5"/>
-          <!-- Arrow -->
-          <line x1="118" y1="170" x2="155" y2="170" stroke="#E4E0D4" stroke-width="1.5" stroke-dasharray="4 3"/>
-          <polygon points="155,165 163,170 155,175" fill="#E4E0D4"/>
-          <!-- Reactor vessel -->
-          <rect x="168" y="60" width="140" height="220" rx="6" fill="none" stroke="#C07818" stroke-width="1.5" opacity="0.5"/>
-          <rect x="172" y="64" width="132" height="212" rx="4" fill="#1A1A12" opacity="0.03"/>
-          <text x="238" y="48" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#C07818" letter-spacing="1.5" opacity="0.7">CONVERSION</text>
-          <!-- Temperature indicator lines -->
-          <line x1="186" y1="90" x2="294" y2="90" stroke="rgba(192,120,24,0.15)" stroke-width="1"/>
-          <line x1="186" y1="120" x2="294" y2="120" stroke="rgba(192,120,24,0.2)" stroke-width="1"/>
-          <line x1="186" y1="150" x2="294" y2="150" stroke="rgba(192,120,24,0.25)" stroke-width="1"/>
-          <line x1="186" y1="180" x2="294" y2="180" stroke="rgba(192,120,24,0.3)" stroke-width="1"/>
-          <line x1="186" y1="210" x2="294" y2="210" stroke="rgba(192,120,24,0.25)" stroke-width="1"/>
-          <line x1="186" y1="240" x2="294" y2="240" stroke="rgba(192,120,24,0.2)" stroke-width="1"/>
-          <!-- Carbon particles forming -->
-          <circle cx="210" cy="100" r="4" fill="#1A1A12" opacity="0.3"/>
-          <circle cx="240" cy="95" r="5" fill="#1A1A12" opacity="0.4"/>
-          <circle cx="270" cy="108" r="3.5" fill="#1A1A12" opacity="0.35"/>
-          <circle cx="220" cy="128" r="5" fill="#1A1A12" opacity="0.45"/>
-          <circle cx="255" cy="135" r="6" fill="#1A1A12" opacity="0.5"/>
-          <circle cx="288" cy="122" r="4" fill="#1A1A12" opacity="0.4"/>
-          <circle cx="198" cy="158" r="4.5" fill="#1A1A12" opacity="0.5"/>
-          <circle cx="235" cy="165" r="7" fill="#1A1A12" opacity="0.6"/>
-          <circle cx="272" cy="155" r="5" fill="#1A1A12" opacity="0.55"/>
-          <circle cx="210" cy="192" r="6" fill="#1A1A12" opacity="0.65"/>
-          <circle cx="248" cy="185" r="8" fill="#1A1A12" opacity="0.7"/>
-          <circle cx="280" cy="198" r="5.5" fill="#1A1A12" opacity="0.65"/>
-          <circle cx="220" cy="220" r="7" fill="#1A1A12" opacity="0.75"/>
-          <circle cx="260" cy="228" r="9" fill="#1A1A12" opacity="0.8"/>
-          <circle cx="292" cy="218" r="6" fill="#1A1A12" opacity="0.72"/>
-          <!-- Temperature label -->
-          <text x="238" y="282" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="rgba(192,120,24,0.5)" letter-spacing="1">400–700 °C</text>
-          <!-- Arrow out -->
-          <line x1="316" y1="170" x2="352" y2="170" stroke="#E4E0D4" stroke-width="1.5" stroke-dasharray="4 3"/>
-          <polygon points="352,165 360,170 352,175" fill="#E4E0D4"/>
-          <!-- Output grading -->
-          <rect x="364" y="88" width="78" height="52" rx="3" fill="none" stroke="#2B4730" stroke-width="1.5" opacity="0.5"/>
-          <text x="403" y="118" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2B4730" opacity="0.7" letter-spacing="1">SOIL</text>
-          <rect x="364" y="148" width="78" height="52" rx="3" fill="none" stroke="#C07818" stroke-width="1.5" opacity="0.5"/>
-          <text x="403" y="178" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" opacity="0.7" letter-spacing="1">FUEL</text>
-          <rect x="364" y="208" width="78" height="52" rx="3" fill="none" stroke="#4A7A8A" stroke-width="1.5" opacity="0.5"/>
-          <text x="403" y="238" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#4A7A8A" opacity="0.7" letter-spacing="1">PURIF.</text>
-          <text x="403" y="310" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#AEAC9C" letter-spacing="1.5">OUTPUT</text>
-        </svg>
-      </div>
-    </div>
+    <span class="label" style="margin-bottom:20px;">How we work</span>
+    <h1 class="f-head">From biomass<br>to fixed carbon.</h1>
+    <p class="page-hero-sub">Four defined stages. Measurable inputs and outputs at each one. The conditions between them determine what you get at the end — and what you can claim about it.</p>
   </div>
 </section>
 
-<!-- PROCESS STEPS -->
-<section class="process-section">
+<!-- STAGES -->
+<section class="stages-section">
   <div class="wrap">
-    <div class="section-header">
+    <div class="stages-head">
       <div>
-        <span class="eyebrow reveal">Process</span>
-        <h2 class="display reveal r1">Four stages.<br><em>Full control.</em></h2>
+        <span class="label" style="margin-bottom:16px;">The four stages</span>
+        <h2 class="f-head stages-h2">Controlled at every step.</h2>
       </div>
-      <p class="reveal r2">Every batch moves through a defined sequence. The conditions at each stage determine the properties of the output. Temperature, residence time, feedstock quality, oxygen environment — each variable is monitored and logged.</p>
+      <p class="stages-intro">Temperature, residence time, oxygen level, feedstock quality — these are not background variables. They determine whether the output is biochar, activated carbon, or fuel. We control them deliberately and log them for every batch.</p>
     </div>
 
-    <div class="steps-list reveal r1">
-      <div class="step-item open" onclick="toggleStep(this)">
-        <div class="step-num">01</div>
-        <div class="step-content">
-          <div class="step-title">Feedstock assessment and preparation</div>
-          <div class="step-body">Incoming biological material is assessed for moisture content, ash level, density, and elemental composition. Only material meeting our input specification is processed. Oversized material is reduced. Moisture is brought within an optimal range before entering the conversion stage.</div>
-          <span class="step-tag">Input quality</span>
+    <div class="stage-list">
+      <div class="stage-item open" onclick="toggle(this)">
+        <div class="stage-num-col"><span class="stage-num">01</span></div>
+        <div class="stage-body-col">
+          <div class="stage-header">
+            <div>
+              <div class="stage-title">Feedstock assessment</div>
+              <span class="stage-tag">Input quality</span>
+            </div>
+            <span class="stage-toggle">+</span>
+          </div>
+          <div class="stage-expand">
+            <p class="stage-expand-inner">Incoming biological material is tested for moisture content, ash level, elemental composition, and physical density before entering the process. Material outside our input specification is rejected or returned. Moisture is adjusted to the correct range. Oversized material is reduced. The conversion stage only sees feedstock that meets our intake criteria.</p>
+          </div>
         </div>
-        <div class="step-icon">+</div>
       </div>
-      <div class="step-item" onclick="toggleStep(this)">
-        <div class="step-num">02</div>
-        <div class="step-content">
-          <div class="step-title">Thermochemical conversion</div>
-          <div class="step-body">Feedstock undergoes controlled thermal decomposition in a limited-oxygen environment. Temperature, residence time, and heating rate are precisely managed throughout the run. The chemical structure of the input material is broken down and reorganised — volatile compounds are driven off; stable carbon structures form in the solid fraction. Process gases are captured and utilised.</div>
-          <span class="step-tag">Core process</span>
+
+      <div class="stage-item" onclick="toggle(this)">
+        <div class="stage-num-col"><span class="stage-num">02</span></div>
+        <div class="stage-body-col">
+          <div class="stage-header">
+            <div>
+              <div class="stage-title">Thermal conversion</div>
+              <span class="stage-tag">Core process</span>
+            </div>
+            <span class="stage-toggle">+</span>
+          </div>
+          <div class="stage-expand">
+            <p class="stage-expand-inner">Feedstock is heated in a low-oxygen environment. Temperature, heating rate, and residence time are set based on the target output — higher temperatures and longer residence times yield higher fixed carbon content and lower volatile matter. Process gases are captured and either used for heat recovery or measured and vented. Solid output is cooled before discharge.</p>
+          </div>
         </div>
-        <div class="step-icon">+</div>
       </div>
-      <div class="step-item" onclick="toggleStep(this)">
-        <div class="step-num">03</div>
-        <div class="step-content">
-          <div class="step-title">Grading and quality testing</div>
-          <div class="step-body">The solid carbon output is sampled at discharge. Key parameters — fixed carbon content, volatile matter, ash, moisture, surface area, and pH — are measured and compared against grade specifications. Batches meeting the soil-grade specification are separated from those meeting fuel-grade or purification-grade thresholds. Off-spec material is re-processed or blended.</div>
-          <span class="step-tag">Quality control</span>
+
+      <div class="stage-item" onclick="toggle(this)">
+        <div class="stage-num-col"><span class="stage-num">03</span></div>
+        <div class="stage-body-col">
+          <div class="stage-header">
+            <div>
+              <div class="stage-title">Grading and quality testing</div>
+              <span class="stage-tag">Quality control</span>
+            </div>
+            <span class="stage-toggle">+</span>
+          </div>
+          <div class="stage-expand">
+            <p class="stage-expand-inner">Solid output is sampled at discharge. Fixed carbon, volatile matter, ash content, moisture, pH, and — for activated carbon — surface area and iodine number are measured and compared against grade thresholds. Batches meeting soil-grade specification are separated from fuel-grade and purification-grade outputs. Off-spec material is reprocessed or blended to the nearest qualifying grade.</p>
+          </div>
         </div>
-        <div class="step-icon">+</div>
       </div>
-      <div class="step-item" onclick="toggleStep(this)">
-        <div class="step-num">04</div>
-        <div class="step-content">
-          <div class="step-title">Tracking, logging, and dispatch</div>
-          <div class="step-body">Every passing batch is assigned a unique identifier linking it to feedstock origin, conversion run parameters, and quality test results. This chain of custody follows the product to the end customer. The data forms the basis for third-party verification of carbon removal claims and customer sustainability reporting.</div>
-          <span class="step-tag">Provenance</span>
+
+      <div class="stage-item" onclick="toggle(this)">
+        <div class="stage-num-col"><span class="stage-num">04</span></div>
+        <div class="stage-body-col">
+          <div class="stage-header">
+            <div>
+              <div class="stage-title">Batch record and dispatch</div>
+              <span class="stage-tag">Provenance</span>
+            </div>
+            <span class="stage-toggle">+</span>
+          </div>
+          <div class="stage-expand">
+            <p class="stage-expand-inner">Each passing batch is assigned a unique identifier linking it to its feedstock intake record, conversion run log, and quality test results. This record accompanies the product to the customer and forms the basis for third-party verification and carbon removal reporting. The identifier does not expire. The record does not change after issue.</p>
+          </div>
         </div>
-        <div class="step-icon">+</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FLOW ANIMATION -->
-<section class="flow-section">
+<!-- SCHEMATIC -->
+<section class="schematic-section">
   <div class="wrap">
-    <p class="flow-label reveal">Material journey</p>
-    <h2 class="display flow-h2 display-light reveal r1">From biological origin<br><em>to verified product.</em></h2>
-
-    <div class="flow-track" id="flowTrack">
+    <span class="schematic-label">Material flow</span>
+    <h2 class="f-head schematic-h2" style="color:var(--white);">Input to output.</h2>
+    <div class="flow-row">
       <div class="flow-node">
-        <div class="flow-circle">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="14" cy="10" r="5" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
-            <line x1="14" y1="15" x2="14" y2="25" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
-            <line x1="8" y1="19" x2="14" y2="23" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
-            <line x1="20" y1="19" x2="14" y2="23" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
-          </svg>
+        <div class="flow-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><path d="M12 2a7 7 0 0 1 0 14M12 2a7 7 0 0 0 0 14M12 16v6M8 20h8"/></svg>
         </div>
-        <span class="flow-name">Biological feedstock</span>
+        <span class="flow-node-label">Biological feedstock</span>
       </div>
-      <div class="flow-arrow"></div>
+      <div class="flow-connector"></div>
       <div class="flow-node">
-        <div class="flow-circle">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="6" width="16" height="16" rx="2" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
-            <line x1="10" y1="6" x2="10" y2="22" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-            <line x1="14" y1="6" x2="14" y2="22" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-            <line x1="18" y1="6" x2="18" y2="22" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-          </svg>
+        <div class="flow-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="8" y1="4" x2="8" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="16" y1="4" x2="16" y2="20"/></svg>
         </div>
-        <span class="flow-name">Pre-processing</span>
+        <span class="flow-node-label">Assessment</span>
       </div>
-      <div class="flow-arrow"></div>
+      <div class="flow-connector"></div>
       <div class="flow-node">
-        <div class="flow-circle active">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="14" cy="14" r="8" stroke="rgba(192,120,24,0.6)" stroke-width="1.5"/>
-            <circle cx="14" cy="14" r="3" fill="rgba(192,120,24,0.5)"/>
-            <line x1="14" y1="3" x2="14" y2="6" stroke="rgba(192,120,24,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="14" y1="22" x2="14" y2="25" stroke="rgba(192,120,24,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="3" y1="14" x2="6" y2="14" stroke="rgba(192,120,24,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="22" y1="14" x2="25" y2="14" stroke="rgba(192,120,24,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+        <div class="flow-box highlight">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(184,112,16,0.8)" stroke-width="1.2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
         </div>
-        <span class="flow-name" style="color:rgba(253,252,248,0.7);">Thermochemical conversion</span>
+        <span class="flow-node-label" style="color:rgba(250,250,248,0.65)">Thermal conversion</span>
       </div>
-      <div class="flow-arrow"></div>
+      <div class="flow-connector"></div>
       <div class="flow-node">
-        <div class="flow-circle">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 20L10 10L14 15L18 8L22 20Z" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linejoin="round"/>
-          </svg>
+        <div class="flow-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
-        <span class="flow-name">Grading</span>
+        <span class="flow-node-label">Grading</span>
       </div>
-      <div class="flow-arrow"></div>
+      <div class="flow-connector"></div>
       <div class="flow-node">
-        <div class="flow-circle">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="14" cy="14" r="8" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
-            <path d="M10 14L13 17L18 11" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <div class="flow-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><polyline points="9 12 11 14 15 10"/></svg>
         </div>
-        <span class="flow-name">Verified dispatch</span>
+        <span class="flow-node-label">Verified dispatch</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- OUTPUT GRADES -->
+<!-- GRADES -->
 <section class="grades-section">
   <div class="wrap">
-    <div class="grades-header">
-      <span class="eyebrow reveal">Output specifications</span>
-      <h2 class="display reveal r1">Three grades.<br><em>Defined by purpose.</em></h2>
-    </div>
+    <span class="label" style="margin-bottom:16px;">Output specifications</span>
+    <h2 class="f-head grades-h2">Three grades. Defined by purpose.</h2>
+    <p class="grades-intro">The same conversion process, run at different conditions, produces outputs with distinct properties and uses. Each grade is defined by its specification — not by what it is called.</p>
 
-    <div class="grades-grid">
-      <div class="grade-card g-earth reveal">
-        <div class="grade-num">01</div>
-        <span class="grade-label">Soil Grade</span>
-        <div class="grade-title">Stable carbon for permanent soil application</div>
-        <p class="grade-body">High fixed-carbon fraction, optimised pore structure, and neutral-alkaline pH. Designed to persist in the soil for centuries while improving water retention and supporting soil biology.</p>
-        <div class="grade-spec">
-          <div class="spec-row">
-            <span class="spec-key">Fixed carbon</span>
-            <span class="spec-val">≥ 70%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">pH range</span>
-            <span class="spec-val">7.0 – 9.5</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Permanence</span>
-            <span class="spec-val">500+ years</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Application</span>
-            <span class="spec-val">Agriculture, sequestration</span>
-          </div>
+    <div class="grades-table">
+      <div class="grade-col">
+        <div class="grade-header">
+          <span class="grade-name g-soil">Biochar — Soil Grade</span>
+          <div class="grade-indicator gi-soil"></div>
+        </div>
+        <div class="grade-specs">
+          <div class="grade-spec-row"><span class="gs-key">Fixed carbon</span><span class="gs-val">≥ 70%</span></div>
+          <div class="grade-spec-row"><span class="gs-key">pH range</span><span class="gs-val">7.0 – 9.5</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Moisture</span><span class="gs-val">≤ 12%</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Permanence</span><span class="gs-val">500+ years</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Application</span><span class="gs-val">Soil, sequestration</span></div>
         </div>
       </div>
-
-      <div class="grade-card g-fire reveal r1">
-        <div class="grade-num">02</div>
-        <span class="grade-label">Fuel Grade</span>
-        <div class="grade-title">Dense, consistent combustion carbon</div>
-        <p class="grade-body">High calorific value, low ash, low moisture. Engineered to perform as a direct substitute for fossil-derived fuel in industrial applications — boilers, kilns, furnaces, and co-firing.</p>
-        <div class="grade-spec">
-          <div class="spec-row">
-            <span class="spec-key">Calorific value</span>
-            <span class="spec-val">4,500+ kcal/kg</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Moisture</span>
-            <span class="spec-val">≤ 8%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Ash content</span>
-            <span class="spec-val">≤ 10%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Application</span>
-            <span class="spec-val">Industry, export, co-firing</span>
-          </div>
+      <div class="grade-col">
+        <div class="grade-header">
+          <span class="grade-name g-fuel">Carbon Fuel — Combustion Grade</span>
+          <div class="grade-indicator gi-fuel"></div>
+        </div>
+        <div class="grade-specs">
+          <div class="grade-spec-row"><span class="gs-key">Calorific value</span><span class="gs-val">≥ 4,500 kcal/kg</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Fixed carbon</span><span class="gs-val">≥ 65%</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Moisture</span><span class="gs-val">≤ 8%</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Ash</span><span class="gs-val">≤ 10%</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Application</span><span class="gs-val">Industrial, export</span></div>
         </div>
       </div>
-
-      <div class="grade-card g-water reveal r2">
-        <div class="grade-num">03</div>
-        <span class="grade-label">Purification Grade</span>
-        <div class="grade-title">Activated carbon for adsorption applications</div>
-        <p class="grade-body">Maximised surface area through controlled activation. The expanded micropore structure enables high adsorption capacity for contaminants, impurities, and target compounds.</p>
-        <div class="grade-spec">
-          <div class="spec-row">
-            <span class="spec-key">Surface area</span>
-            <span class="spec-val">900+ m²/g</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Iodine number</span>
-            <span class="spec-val">900+ mg/g</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Forms</span>
-            <span class="spec-val">Powder, granular, pellet</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Application</span>
-            <span class="spec-val">Water, air, cosmetics, refining</span>
-          </div>
+      <div class="grade-col">
+        <div class="grade-header">
+          <span class="grade-name g-puri">Activated Carbon — Purification Grade</span>
+          <div class="grade-indicator gi-puri"></div>
+        </div>
+        <div class="grade-specs">
+          <div class="grade-spec-row"><span class="gs-key">Surface area</span><span class="gs-val">900+ m²/g</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Iodine number</span><span class="gs-val">≥ 900 mg/g</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Ash content</span><span class="gs-val">≤ 5%</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Forms</span><span class="gs-val">Powder, granular, pellet</span></div>
+          <div class="grade-spec-row"><span class="gs-key">Application</span><span class="gs-val">Water, air, cosmetics</span></div>
         </div>
       </div>
     </div>
@@ -686,77 +516,60 @@
 </section>
 
 <!-- PROVENANCE -->
-<section class="provenance-section">
+<section class="prov-section">
   <div class="wrap">
     <div class="prov-inner">
       <div>
-        <span class="eyebrow reveal">Traceability</span>
-        <h2 class="display prov-h2 reveal r1">Every batch<br><em>has a record.</em></h2>
-        <p class="prov-body reveal r2">From the field of origin to the customer's site, every carbon product we ship carries a data trail. This is not a marketing claim — it's operational infrastructure that underpins the value of the carbon removal we enable.</p>
-        <a href="carbon.html" class="arrow-link reveal r3">Our methodology → </a>
+        <span class="label" style="margin-bottom:16px;">What we track</span>
+        <h2 class="f-head prov-h2">Every batch has a record.</h2>
+        <p class="prov-body">From feedstock origin to delivery, each production batch carries a data trail. This isn't a marketing feature — it's the operational infrastructure behind every carbon removal claim we make or support.</p>
+        <p class="prov-body">The records are the basis for third-party verification. They don't change after issue.</p>
+        <a href="carbon.html#methodology" class="text-link">Our measurement methodology <span>→</span></a>
       </div>
-
-      <div class="prov-items reveal r2">
+      <div class="prov-list">
         <div class="prov-item">
           <div class="prov-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="2" width="12" height="12" rx="1" stroke="#AEAC9C" stroke-width="1.2"/>
-              <line x1="5" y1="8" x2="11" y2="8" stroke="#AEAC9C" stroke-width="1.2"/>
-              <line x1="5" y1="5.5" x2="11" y2="5.5" stroke="#AEAC9C" stroke-width="1.2"/>
-              <line x1="5" y1="10.5" x2="8.5" y2="10.5" stroke="#AEAC9C" stroke-width="1.2"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="0.5" stroke="#AEACA0" stroke-width="1.1"/><line x1="4" y1="7" x2="10" y2="7" stroke="#AEACA0" stroke-width="1.1"/><line x1="4" y1="4.5" x2="10" y2="4.5" stroke="#AEACA0" stroke-width="1.1"/><line x1="4" y1="9.5" x2="7.5" y2="9.5" stroke="#AEACA0" stroke-width="1.1"/></svg>
           </div>
           <div>
             <div class="prov-item-title">Feedstock origin record</div>
-            <div class="prov-item-desc">Source material, supplier, location, and collection period logged at intake.</div>
+            <div class="prov-item-desc">Source material, supplier, location, and intake date logged on arrival.</div>
           </div>
         </div>
         <div class="prov-item">
           <div class="prov-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="8" r="5.5" stroke="#AEAC9C" stroke-width="1.2"/>
-              <polyline points="8,5 8,8.5 10.5,10.5" stroke="#AEAC9C" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#AEACA0" stroke-width="1.1"/><polyline points="7,4 7,7.5 9.5,9.5" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round"/></svg>
           </div>
           <div>
             <div class="prov-item-title">Conversion run log</div>
-            <div class="prov-item-desc">Temperature profile, residence time, and yield ratios recorded for every batch.</div>
+            <div class="prov-item-desc">Temperature profile, residence time, and solid yield recorded per batch.</div>
           </div>
         </div>
         <div class="prov-item">
           <div class="prov-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 11L6 7L9 9.5L12 5" stroke="#AEAC9C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="5" r="1.2" fill="#AEAC9C"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 10L5 6L8 8.5L11 4" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="4" r="1.2" fill="#AEACA0"/></svg>
           </div>
           <div>
             <div class="prov-item-title">Quality test certificate</div>
-            <div class="prov-item-desc">Lab analysis results tied to batch ID, against published grade thresholds.</div>
+            <div class="prov-item-desc">Lab analysis results tied to batch ID against published grade thresholds.</div>
           </div>
         </div>
         <div class="prov-item">
           <div class="prov-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="8" r="5.5" stroke="#AEAC9C" stroke-width="1.2"/>
-              <path d="M5.5 8.5L7 10L10.5 6.5" stroke="#AEAC9C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#AEACA0" stroke-width="1.1"/><path d="M4.5 7.5L6.5 9.5L9.5 5.5" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div>
             <div class="prov-item-title">Third-party verification</div>
-            <div class="prov-item-desc">External audit of mass balance calculations and carbon removal claims.</div>
+            <div class="prov-item-desc">External audit confirms mass balance and carbon removal calculations.</div>
           </div>
         </div>
         <div class="prov-item">
           <div class="prov-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="4" width="12" height="9" rx="1" stroke="#AEAC9C" stroke-width="1.2"/>
-              <polyline points="5,4 8,2 11,4" stroke="#AEAC9C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="0.5" stroke="#AEACA0" stroke-width="1.1"/><polyline points="4,3 7,1 10,3" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div>
             <div class="prov-item-title">Customer carbon report</div>
-            <div class="prov-item-desc">Delivery-level documentation supporting buyer sustainability reporting.</div>
+            <div class="prov-item-desc">Delivery-level documentation for buyer sustainability reporting.</div>
           </div>
         </div>
       </div>
@@ -765,56 +578,30 @@
 </section>
 
 <footer>
-  <div class="wrap">
-    <div class="footer-top">
+  <div class="footer-inner">
+    <div class="footer-row">
       <div>
-        <span class="footer-logo">Bombay<span class="dot">·</span>Bioworks</span>
-        <p class="footer-tagline">Converting biological material into fixed carbon.</p>
+        <div class="footer-brand">Bombay<span class="dot">·</span>Bioworks</div>
+        <div class="footer-tagline">Fixed carbon. Biological origin.</div>
       </div>
       <ul class="footer-nav">
         <li><a href="carbon.html">Carbon</a></li>
-        <li><a href="applications.html">Applications</a></li>
-        <li><a href="technology.html">Technology</a></li>
+        <li><a href="applications.html">Products</a></li>
+        <li><a href="technology.html">Process</a></li>
         <li><a href="company.html">Company</a></li>
       </ul>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
-      <span class="footer-copy">bombaybioworks.com</span>
+    <div class="footer-copy">
+      <span>© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
+      <span>bombaybioworks.com</span>
     </div>
   </div>
 </footer>
 
 <script>
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('solid', window.scrollY > 40);
-}, { passive: true });
-
-const reveals = document.querySelectorAll('.reveal');
-const ro = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => ro.observe(el));
-
-/* Flow track animation */
-const flowNodes = document.querySelectorAll('.flow-node');
-const flowArrows = document.querySelectorAll('.flow-arrow');
-const flowObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      flowNodes.forEach(n => n.classList.add('in'));
-      flowArrows.forEach(a => a.classList.add('in'));
-    }
-  });
-}, { threshold: 0.3 });
-const ft = document.getElementById('flowTrack');
-if (ft) flowObs.observe(ft);
-
-/* Step accordion */
-function toggleStep(el) {
+function toggle(el) {
   const isOpen = el.classList.contains('open');
-  document.querySelectorAll('.step-item').forEach(s => s.classList.remove('open'));
+  document.querySelectorAll('.stage-item').forEach(s => s.classList.remove('open'));
   if (!isOpen) el.classList.add('open');
 }
 </script>

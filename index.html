@@ -3,696 +3,457 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bombay Bioworks — We work in carbon</title>
+<title>Bombay Bioworks — Fixed.</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* ── HOME-SPECIFIC ── */
 
-/* HERO */
+/* ── HERO ── */
 .hero {
-  position: relative;
-  min-height: 100vh;
+  background: var(--carbon);
+  min-height: 100svh;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  position: relative;
   overflow: hidden;
-  background: var(--bg);
 }
-#particles {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.hero-content {
+.hero-word {
+  font-size: clamp(120px, 20vw, 260px);
+  color: var(--white);
+  text-align: center;
   position: relative;
   z-index: 2;
-  padding: calc(var(--nav-h) + 64px) var(--pad) 80px;
-  max-width: var(--max);
-  margin: 0 auto;
-  width: 100%;
+  user-select: none;
 }
-.hero-title {
-  font-size: clamp(72px, 9vw, 148px);
-  margin-bottom: 40px;
-  max-width: 14ch;
-}
-.hero-title em { color: var(--amber); }
-.hero-body {
-  font-size: clamp(16px, 1.5vw, 19px);
-  color: var(--ink-2);
-  max-width: 480px;
-  line-height: 1.8;
-  margin-bottom: 48px;
-  font-weight: 300;
+.hero-sub {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.28);
+  margin-top: 48px;
+  text-align: center;
+  z-index: 2;
 }
 .hero-scroll {
   position: absolute;
-  bottom: 40px;
-  left: var(--pad);
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.2);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   z-index: 2;
 }
-.hero-scroll span {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(250,250,248,0.15), transparent);
+}
+
+/* ── WHAT WE MAKE ── */
+.products-section {
+  padding: 120px 0 100px;
+  border-bottom: 1px solid var(--rule);
+}
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 56px;
+}
+.products-title {
+  font-size: clamp(36px, 4vw, 56px);
+  color: var(--ink);
+}
+.products-count {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: 'opsz' 36;
+  font-size: 14px;
   color: var(--ink-3);
 }
-.scroll-line {
-  width: 40px;
-  height: 1px;
-  background: var(--ink-3);
-  position: relative;
-  overflow: hidden;
-}
-.scroll-line::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--amber);
-  animation: scanline 2s ease-in-out infinite;
-}
-@keyframes scanline {
-  0%   { transform: translateX(-100%); }
-  50%  { transform: translateX(0); }
-  100% { transform: translateX(100%); }
-}
 
-/* MANIFESTO */
-.manifesto {
-  background: var(--carbon);
-  padding: 120px 0;
+.product-table {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
 }
-.manifesto-inner {
+.product-row {
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 80px;
+  grid-template-columns: 48px 1fr 1fr auto;
+  gap: 0 40px;
   align-items: center;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s;
+  cursor: pointer;
+  position: relative;
 }
-.manifesto-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--amber);
-  opacity: 0.9;
+.product-row:hover { background: var(--paper-warm); margin: 0 -80px; padding-left: 80px; padding-right: 80px; }
+
+.product-num {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
 }
-.manifesto-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(26px, 3vw, 44px);
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1.5;
-  color: rgba(253,252,248,0.85);
-  letter-spacing: -0.01em;
-}
-.manifesto-text strong {
+.product-name {
+  font-family: 'Fraunces', serif;
   font-style: normal;
-  color: var(--white);
-  font-weight: 400;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 48;
+  font-size: clamp(22px, 2.8vw, 36px);
+  color: var(--ink);
+  line-height: 1.1;
+}
+.product-desc {
+  font-size: 15px;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.product-arrow {
+  font-size: 18px;
+  color: var(--ink-3);
+  transition: transform 0.25s, color 0.25s;
+  margin-right: 4px;
+}
+.product-row:hover .product-arrow {
+  color: var(--amber);
+  transform: translateX(4px);
 }
 
-/* PILLARS */
-.pillars-section { padding: 140px 0; }
-.pillars-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: end;
-  margin-bottom: 80px;
+/* ── STATEMENT ── */
+.statement-section {
+  padding: 120px 0;
+  border-bottom: 1px solid var(--rule);
 }
-.pillars-h2 { font-size: clamp(48px, 5.5vw, 88px); }
-.pillars-intro {
-  font-size: 16px;
+.statement-inner {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: start;
+}
+.statement-label-col {
+  padding-top: 8px;
+}
+.statement-label-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: 'opsz' 72;
+  font-size: 72px;
+  color: var(--rule);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.statement-text {
+  font-family: 'Fraunces', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-variation-settings: 'opsz' 72, 'WONK' 0;
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.statement-body {
+  margin-top: 32px;
+  font-size: 15px;
   line-height: 1.8;
   color: var(--ink-2);
-  max-width: 400px;
-  align-self: end;
-  padding-bottom: 8px;
+  max-width: 560px;
 }
-.pillars-grid {
+.statement-body + .statement-body { margin-top: 16px; }
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-decoration: none;
+  margin-top: 36px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 4px;
+  transition: border-color 0.25s, color 0.25s, gap 0.25s;
+}
+.text-link:hover { border-color: var(--amber); color: var(--amber); gap: 14px; }
+
+/* ── DATA STRIP ── */
+.data-strip {
+  background: var(--carbon);
+  padding: 80px 0;
+}
+.data-strip-inner {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
-  background: var(--rule);
+  background: rgba(255,255,255,0.04);
 }
-.pillar-card {
-  background: var(--bg);
-  padding: 56px 44px 52px;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.4s ease;
-}
-.pillar-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--amber);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s ease;
-}
-.pillar-card:hover::before { transform: scaleX(1); }
-.pillar-card:hover { background: var(--white); }
-
-.pillar-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 80px;
-  font-weight: 300;
-  color: var(--rule);
-  line-height: 1;
-  position: absolute;
-  top: 24px; right: 32px;
-  font-style: italic;
-  transition: color 0.4s;
-}
-.pillar-card:hover .pillar-num { color: var(--amber-lt); }
-
-.pillar-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-bottom: 28px;
-}
-.pillar-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(24px, 2.2vw, 32px);
-  font-weight: 300;
-  line-height: 1.2;
-  color: var(--ink);
-  margin-bottom: 20px;
-  flex: 1;
-}
-.pillar-body {
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--ink-2);
-  margin-bottom: 36px;
-}
-.pillar-arrow {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: gap 0.3s, color 0.3s;
-}
-.pillar-card:hover .pillar-arrow { gap: 18px; color: var(--amber); }
-
-/* EARTH / FIRE / WATER tint accents */
-.pillar-card.earth .pillar-label { color: var(--green); }
-.pillar-card.earth::before { background: var(--green); }
-.pillar-card.fire .pillar-label { color: var(--amber); }
-.pillar-card.water .pillar-label { color: #4A7A8A; }
-.pillar-card.water::before { background: #4A7A8A; }
-
-/* COUNTER */
-.counter-band {
+.data-item {
   background: var(--carbon);
-  padding: 100px 0;
+  padding: 44px 40px;
 }
-.counter-inner {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.counter-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(80px, 10vw, 160px);
-  font-weight: 300;
-  color: var(--white);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
-.counter-num .unit {
-  font-size: 0.4em;
-  color: var(--amber);
+.data-num {
+  font-family: 'Fraunces', serif;
   font-style: italic;
-  margin-left: 6px;
-}
-.counter-right {}
-.counter-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(253,252,248,0.35);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 72, 'WONK' 1;
+  font-size: clamp(48px, 5.5vw, 80px);
+  line-height: 1;
+  color: var(--white);
+  display: block;
   margin-bottom: 16px;
 }
-.counter-desc {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(22px, 2.2vw, 30px);
-  font-style: italic;
-  font-weight: 300;
-  color: rgba(253,252,248,0.7);
-  line-height: 1.5;
-  max-width: 420px;
-  margin-bottom: 32px;
+.data-unit {
+  font-size: 0.45em;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--amber);
+  vertical-align: super;
+  font-variation-settings: 'opsz' 36, 'WONK' 0;
+  margin-left: 4px;
 }
-.counter-pills {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.pill {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+.data-label {
+  font-size: 11px;
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(253,252,248,0.4);
-  border: 1px solid rgba(253,252,248,0.12);
-  padding: 8px 16px;
-  border-radius: 2px;
+  color: rgba(250,250,248,0.25);
+  display: block;
+  margin-bottom: 6px;
+}
+.data-desc {
+  font-size: 13px;
+  color: rgba(250,250,248,0.35);
+  line-height: 1.6;
 }
 
-/* TRACKING TEASER */
-.tracking-section { padding: 140px 0; }
-.tracking-inner {
+/* ── INTERIOR LINKS ── */
+.interior-section {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.interior-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-left: 1px solid var(--rule);
+}
+.interior-item {
+  padding: 40px 36px;
+  border-right: 1px solid var(--rule);
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+}
+.interior-item:hover { background: var(--paper-warm); }
+.interior-item-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
-.tracking-h2 { font-size: clamp(40px, 4.5vw, 72px); margin-bottom: 28px; }
-.tracking-body {
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--ink-2);
-  margin-bottom: 8px;
+.interior-item-arrow {
+  color: var(--ink-3);
+  transition: transform 0.25s, color 0.25s;
 }
-.tracking-visual {
-  position: relative;
-  height: 400px;
-}
-.track-diagram {
-  width: 100%;
-  height: 100%;
-}
-
-/* PROCESS STRIP */
-.process-strip {
-  background: var(--bg-warm);
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  padding: 80px 0;
-}
-.process-strip-inner {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2px;
-  background: var(--rule);
-}
-.process-item {
-  background: var(--bg-warm);
-  padding: 40px 36px;
-}
-.process-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--amber);
-  margin-bottom: 16px;
-}
-.process-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px;
-  font-weight: 300;
+.interior-item:hover .interior-item-arrow { transform: translateX(4px); color: var(--amber); }
+.interior-item-title {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-variation-settings: 'opsz' 48, 'WONK' 1;
+  font-size: clamp(20px, 2vw, 28px);
   color: var(--ink);
-  margin-bottom: 12px;
-  line-height: 1.15;
-}
-.process-desc {
-  font-size: 13px;
-  line-height: 1.75;
-  color: var(--ink-2);
+  line-height: 1.2;
 }
 
-/* RESPONSIVE */
+/* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-  .manifesto-inner { grid-template-columns: 1fr 2fr; gap: 48px; }
-  .pillars-header { grid-template-columns: 1fr; gap: 24px; }
-  .counter-inner { grid-template-columns: 1fr; gap: 40px; }
-  .tracking-inner { grid-template-columns: 1fr; gap: 48px; }
-  .process-strip-inner { grid-template-columns: repeat(2, 1fr); }
+  .product-row { grid-template-columns: 40px 1fr auto; }
+  .product-desc { display: none; }
+  .statement-inner { grid-template-columns: 1fr; gap: 40px; }
+  .data-strip-inner { grid-template-columns: 1fr; }
+  .interior-grid { grid-template-columns: 1fr; border-left: none; }
+  .interior-item { border: none; border-bottom: 1px solid var(--rule); }
 }
 @media (max-width: 768px) {
-  .hero-title { font-size: clamp(56px, 14vw, 80px); }
-  .manifesto-inner { grid-template-columns: 1fr; gap: 28px; }
-  .pillars-grid { grid-template-columns: 1fr; }
-  .tracking-visual { display: none; }
-  .process-strip-inner { grid-template-columns: 1fr; }
+  .product-row:hover { margin: 0; padding-left: 0; padding-right: 0; }
+  .products-header { flex-direction: column; gap: 12px; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav">
+<nav id="nav" class="on-dark">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html">Carbon</a></li>
-    <li><a href="applications.html">Applications</a></li>
-    <li><a href="technology.html">Technology</a></li>
+    <li><a href="applications.html">Products</a></li>
+    <li><a href="technology.html">Process</a></li>
     <li><a href="company.html">Company</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <canvas id="particles"></canvas>
-  <div class="hero-content">
-    <span class="eyebrow reveal">Carbon Removal · India</span>
-    <h1 class="display hero-title reveal r1">
-      We work<br><em>in carbon.</em>
-    </h1>
-    <p class="hero-body reveal r2">
-      Converting biological material into fixed carbon — permanently removed from the atmosphere and put to work across energy, agriculture, and industry.
-    </p>
-    <a href="carbon.html" class="arrow-link reveal r3">Our approach <span>→</span></a>
-  </div>
+<section class="hero" id="hero">
+  <div class="hero-word f-display">Fixed.</div>
+  <p class="hero-sub">Biochar · Activated Carbon · Carbon Fuel</p>
   <div class="hero-scroll">
     <span>Scroll</span>
-    <div class="scroll-line"></div>
+    <div class="hero-scroll-line"></div>
   </div>
 </section>
 
-<!-- MANIFESTO -->
-<section class="manifesto">
+<!-- WHAT WE MAKE -->
+<section class="products-section" id="products">
   <div class="wrap">
-    <div class="manifesto-inner">
-      <span class="manifesto-label reveal">What we believe</span>
-      <p class="manifesto-text reveal r1">
-        The carbon accumulating in our atmosphere came from the ground.<br>
-        <strong>We're putting it back</strong> — in forms that last centuries, in places that need it, doing work that matters along the way.
-      </p>
+    <div class="products-header">
+      <h2 class="f-head">What we make.</h2>
+      <span class="products-count">Three products — one element</span>
+    </div>
+
+    <div class="product-table">
+      <a href="applications.html#biochar" class="product-row">
+        <span class="product-num">01</span>
+        <span class="product-name">Biochar</span>
+        <span class="product-desc">Applied to agricultural soil. Stays for centuries. Removes carbon from the atmosphere and keeps it there.</span>
+        <span class="product-arrow">→</span>
+      </a>
+      <a href="applications.html#activated" class="product-row">
+        <span class="product-num">02</span>
+        <span class="product-name">Activated Carbon</span>
+        <span class="product-desc">What it contacts comes out cleaner. Water treatment, air filtration, cosmetics, industrial purification.</span>
+        <span class="product-arrow">→</span>
+      </a>
+      <a href="applications.html#fuel" class="product-row">
+        <span class="product-num">03</span>
+        <span class="product-name">Carbon Fuel</span>
+        <span class="product-desc">Burns where coal burns. Boilers, kilns, furnaces. Equivalent energy, traceable biological origin.</span>
+        <span class="product-arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- THREE PILLARS -->
-<section class="pillars-section">
+<!-- STATEMENT -->
+<section class="statement-section">
   <div class="wrap">
-    <div class="pillars-header">
-      <div class="reveal">
-        <span class="label">What we do with carbon</span>
-        <h2 class="display pillars-h2">Three uses.<br><em>One source.</em></h2>
+    <div class="statement-inner">
+      <div class="statement-label-col">
+        <div class="statement-label-num">—</div>
+        <span class="label">What this is</span>
       </div>
-      <p class="pillars-intro reveal r2">
-        Every form of carbon we produce serves a defined purpose. Nothing is wasted. Everything is measured.
-      </p>
-    </div>
-
-    <div class="pillars-grid">
-      <a href="applications.html#earth" class="pillar-card earth reveal r1">
-        <div class="pillar-num">01</div>
-        <span class="pillar-label">Earth</span>
-        <div class="pillar-title">Returned to soil.<br>Locked for centuries.</div>
-        <p class="pillar-body">Carbon as permanent soil amendment — improving yield, reducing chemical inputs, and sequestering carbon in the ground for hundreds of years.</p>
-        <span class="pillar-arrow">Explore <span>→</span></span>
-      </a>
-      <a href="applications.html#fire" class="pillar-card fire reveal r2">
-        <div class="pillar-num">02</div>
-        <span class="pillar-label">Fire</span>
-        <div class="pillar-title">The same energy.<br>A different origin.</div>
-        <p class="pillar-body">Carbon displacing fossil fuels across industrial processes — equivalent performance, radically different footprint, trackable origin.</p>
-        <span class="pillar-arrow">Explore <span>→</span></span>
-      </a>
-      <a href="applications.html#water" class="pillar-card water reveal r3">
-        <div class="pillar-num">03</div>
-        <span class="pillar-label">Water</span>
-        <div class="pillar-title">What passes through it<br>comes out clean.</div>
-        <p class="pillar-body">Activated carbon purifying water, air, and industrial streams — across filtration, personal care, specialty chemistry, and metal refining.</p>
-        <span class="pillar-arrow">Explore <span>→</span></span>
-      </a>
+      <div>
+        <p class="statement-text">Most carbon removal is a spreadsheet. A tonne of biochar in the ground is not.</p>
+        <p class="statement-body">We make physical things — products that can be tested, weighed, applied, and verified. Biochar in soil doesn't drift back into the atmosphere. Activated carbon in a filtration system is doing a job. Dense carbon fuel displacing coal is a displacement that happened.</p>
+        <p class="statement-body">These are not offsets. They're objects. Made from agricultural residue. In India. At industrial scale.</p>
+        <a href="carbon.html" class="text-link">How we account for it <span>→</span></a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- COUNTER BAND -->
-<section class="counter-band">
+<!-- DATA STRIP -->
+<section class="data-strip">
   <div class="wrap">
-    <div class="counter-inner">
-      <div class="counter-num reveal" id="counter-num">0<span class="unit">t</span></div>
-      <div class="counter-right">
-        <div class="counter-label reveal r1">CO₂ equivalent removed</div>
-        <p class="counter-desc reveal r2">"Every kilogram of carbon we fix is tracked from conversion to permanence."</p>
-        <div class="counter-pills reveal r3">
-          <span class="pill">Tracked</span>
-          <span class="pill">Verified</span>
-          <span class="pill">Permanent</span>
+    <div class="data-strip-inner">
+      <div class="data-item">
+        <span class="data-num">500<span class="data-unit">+</span></span>
+        <span class="data-label">Soil permanence</span>
+        <p class="data-desc">Minimum years biochar remains fixed in soil before significant carbon loss.</p>
+      </div>
+      <div class="data-item">
+        <span class="data-num">900<span class="data-unit">m²/g</span></span>
+        <span class="data-label">Activated surface area</span>
+        <p class="data-desc">Internal surface area per gram of activated carbon — where adsorption happens.</p>
+      </div>
+      <div class="data-item">
+        <span class="data-num">4,500<span class="data-unit">kcal</span></span>
+        <span class="data-label">Combustion energy</span>
+        <p class="data-desc">Minimum calorific value per kilogram of our carbon fuel output.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERIOR LINKS -->
+<section class="interior-section">
+  <div class="wrap">
+    <div class="interior-grid">
+      <a href="carbon.html" class="interior-item">
+        <div class="interior-item-label">
+          <span>Carbon</span>
+          <span class="interior-item-arrow">→</span>
         </div>
-        <a href="carbon.html" class="arrow-link arrow-link-light reveal r4" style="margin-top:36px;">Our carbon methodology <span>→</span></a>
-      </div>
+        <div class="interior-item-title">Why fixed carbon is permanent — and how we prove it.</div>
+      </a>
+      <a href="technology.html" class="interior-item">
+        <div class="interior-item-label">
+          <span>Process</span>
+          <span class="interior-item-arrow">→</span>
+        </div>
+        <div class="interior-item-title">How biomass becomes biochar, activated carbon, and fuel.</div>
+      </a>
+      <a href="company.html" class="interior-item">
+        <div class="interior-item-label">
+          <span>Company</span>
+          <span class="interior-item-arrow">→</span>
+        </div>
+        <div class="interior-item-title">Who we are and why we're doing this from India.</div>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- TRACKING TEASER -->
-<section class="tracking-section">
-  <div class="wrap">
-    <div class="tracking-inner">
-      <div>
-        <span class="label reveal">Carbon intelligence</span>
-        <h2 class="display tracking-h2 reveal r1">We know where<br><em>every tonne went.</em></h2>
-        <p class="tracking-body reveal r2">Every kilogram of carbon we remove is measured, attributed, and traced from biological source to final application. Not estimated. Not offset. Accounted for.</p>
-        <p class="tracking-body reveal r3">Our tracking system records the complete chain — feedstock origin, conversion yield, carbon grade, end-use application, and permanence class.</p>
-        <a href="carbon.html" class="arrow-link reveal r4">See the methodology <span>→</span></a>
-      </div>
-      <div class="tracking-visual reveal r2">
-        <svg class="track-diagram" viewBox="0 0 460 400" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-              <path d="M0,1 L6,4 L0,7 Z" fill="#C07818" opacity="0.6"/>
-            </marker>
-          </defs>
-          <!-- Atmosphere → Biomass → Carbon → End use flow -->
-          <!-- Node 1: Atmosphere -->
-          <circle cx="80" cy="80" r="36" fill="none" stroke="#E4E0D4" stroke-width="1.5"/>
-          <text x="80" y="76" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#AEAC9C" letter-spacing="2">ATM</text>
-          <text x="80" y="88" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#AEAC9C" letter-spacing="1">CO₂</text>
-
-          <!-- Node 2: Biomass -->
-          <circle cx="230" cy="80" r="36" fill="none" stroke="#2B4730" stroke-width="1.5" opacity="0.5"/>
-          <text x="230" y="76" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2B4730" letter-spacing="1" opacity="0.8">BIO</text>
-          <text x="230" y="88" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2B4730" letter-spacing="1" opacity="0.8">MASS</text>
-
-          <!-- Node 3: Conversion -->
-          <rect x="344" y="44" width="72" height="72" fill="none" stroke="#C07818" stroke-width="1.5" opacity="0.6"/>
-          <text x="380" y="76" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" letter-spacing="1" opacity="0.9">CONVER</text>
-          <text x="380" y="88" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" letter-spacing="1" opacity="0.9">SION</text>
-
-          <!-- Connectors row 1 -->
-          <line x1="117" y1="80" x2="192" y2="80" stroke="#C07818" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
-          <line x1="267" y1="80" x2="342" y2="80" stroke="#C07818" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
-
-          <!-- Down from conversion -->
-          <line x1="380" y1="117" x2="380" y2="175" stroke="#C07818" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
-
-          <!-- Node 4: Fixed Carbon -->
-          <circle cx="380" cy="220" r="44" fill="var(--carbon)" stroke="#C07818" stroke-width="1.5" opacity="0.9"/>
-          <text x="380" y="215" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#C07818" letter-spacing="1.5">FIXED</text>
-          <text x="380" y="228" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="rgba(253,252,248,0.6)" letter-spacing="1">CARBON</text>
-
-          <!-- Three output lines -->
-          <line x1="348" y1="248" x2="240" y2="310" stroke="#2B4730" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" marker-end="url(#arr)"/>
-          <line x1="380" y1="264" x2="380" y2="316" stroke="#C07818" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" marker-end="url(#arr)"/>
-          <line x1="412" y1="248" x2="440" y2="310" stroke="#4A7A8A" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" marker-end="url(#arr)"/>
-
-          <!-- Output nodes -->
-          <circle cx="220" cy="340" r="22" fill="none" stroke="#2B4730" stroke-width="1.5" opacity="0.7"/>
-          <text x="220" y="337" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#2B4730" letter-spacing="1" opacity="0.9">EARTH</text>
-          <text x="220" y="348" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#2B4730" opacity="0.7">soil</text>
-
-          <circle cx="380" cy="346" r="22" fill="none" stroke="#C07818" stroke-width="1.5" opacity="0.7"/>
-          <text x="380" y="343" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#C07818" letter-spacing="1.5" opacity="0.9">FIRE</text>
-          <text x="380" y="354" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#C07818" opacity="0.7">energy</text>
-
-          <circle cx="450" cy="340" r="22" fill="none" stroke="#4A7A8A" stroke-width="1.5" opacity="0.7"/>
-          <text x="450" y="337" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#4A7A8A" letter-spacing="0.5" opacity="0.9">WATER</text>
-          <text x="450" y="348" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#4A7A8A" opacity="0.7">pure</text>
-
-          <!-- Measurement tag -->
-          <rect x="10" y="190" width="100" height="28" fill="none" stroke="var(--rule)" stroke-width="1"/>
-          <text x="60" y="207" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#AEAC9C" letter-spacing="1.5">TRACKED</text>
-          <line x1="110" y1="204" x2="335" y2="204" stroke="var(--rule)" stroke-width="0.5" stroke-dasharray="2 3"/>
-        </svg>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS STRIP -->
-<div class="process-strip">
-  <div class="wrap">
-    <div class="process-strip-inner">
-      <div class="process-item reveal">
-        <div class="process-num">01 — Source</div>
-        <div class="process-name">Biological<br>feedstock</div>
-        <p class="process-desc">Carefully selected and quality-graded biological material, sourced from land and agriculture.</p>
-      </div>
-      <div class="process-item reveal r1">
-        <div class="process-num">02 — Convert</div>
-        <div class="process-name">Thermochemical<br>conversion</div>
-        <p class="process-desc">A precisely controlled process that stabilises biological carbon into permanent, high-grade forms.</p>
-      </div>
-      <div class="process-item reveal r2">
-        <div class="process-num">03 — Grade</div>
-        <div class="process-name">Three carbon<br>streams</div>
-        <p class="process-desc">Each output calibrated for its application — soil, energy, or purification — at the appropriate specification.</p>
-      </div>
-      <div class="process-item reveal r3">
-        <div class="process-num">04 — Track</div>
-        <div class="process-name">Measurement<br>and attribution</div>
-        <p class="process-desc">Every kilogram measured, attributed, and recorded. From feedstock origin to final application.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
 <footer>
-  <div class="wrap">
-    <div class="footer-top">
+  <div class="footer-inner">
+    <div class="footer-row">
       <div>
-        <span class="footer-logo">Bombay<span class="dot">·</span>Bioworks</span>
-        <p class="footer-tagline">Converting biological material into fixed carbon.</p>
+        <div class="footer-brand">Bombay<span class="dot">·</span>Bioworks</div>
+        <div class="footer-tagline">Fixed carbon. Biological origin.</div>
       </div>
       <ul class="footer-nav">
         <li><a href="carbon.html">Carbon</a></li>
-        <li><a href="applications.html">Applications</a></li>
-        <li><a href="technology.html">Technology</a></li>
+        <li><a href="applications.html">Products</a></li>
+        <li><a href="technology.html">Process</a></li>
         <li><a href="company.html">Company</a></li>
       </ul>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
-      <span class="footer-copy">bombaybioworks.com</span>
+    <div class="footer-copy">
+      <span>© 2025 Bombay Bioworks Corp · Maharashtra, India</span>
+      <span>bombaybioworks.com</span>
     </div>
   </div>
 </footer>
 
 <script>
-/* ── NAV SCROLL ── */
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('solid', window.scrollY > 40);
-}, { passive: true });
-
-/* ── PARTICLE ANIMATION ── */
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let W, H, particles = [];
-
-function resize() {
-  W = canvas.width  = canvas.offsetWidth;
-  H = canvas.height = canvas.offsetHeight;
-}
-
-class Particle {
-  constructor() { this.init(); }
-  init() {
-    this.x  = Math.random() * W;
-    this.y  = Math.random() * H;
-    this.vx = (Math.random() - 0.5) * 0.35;
-    this.vy = (Math.random() - 0.5) * 0.35;
-    this.r  = Math.random() * 1.8 + 0.6;
-    this.a  = Math.random() * 0.28 + 0.06;
-  }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > W) this.vx *= -1;
-    if (this.y < 0 || this.y > H) this.vy *= -1;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(24,24,15,${this.a})`;
-    ctx.fill();
-  }
-}
-
-function initParticles() {
-  particles = [];
-  const count = Math.min(Math.floor((W * H) / 14000), 90);
-  for (let i = 0; i < count; i++) particles.push(new Particle());
-}
-
-function drawLines() {
-  const MAX = 130;
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const d  = Math.sqrt(dx * dx + dy * dy);
-      if (d < MAX) {
-        const a = (1 - d / MAX) * 0.09;
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(24,24,15,${a})`;
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function loop() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => { p.update(); p.draw(); });
-  drawLines();
-  requestAnimationFrame(loop);
-}
-
-window.addEventListener('resize', () => { resize(); initParticles(); }, { passive: true });
-resize(); initParticles(); loop();
-
-/* ── SCROLL REVEALS ── */
-const reveals = document.querySelectorAll('.reveal');
-const ro = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => ro.observe(el));
-
-/* ── COUNTER ── */
-const counterEl = document.getElementById('counter-num');
-const TARGET = 14280;
-let counted = false;
-
-function animateCounter() {
-  if (counted) return;
-  counted = true;
-  const start = performance.now();
-  const dur = 2400;
-  function tick(now) {
-    const t = Math.min((now - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - t, 3);
-    const val = Math.floor(ease * TARGET);
-    counterEl.innerHTML = val.toLocaleString() + '<span class="unit">t</span>';
-    if (t < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-
-const cro = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) animateCounter();
-}, { threshold: 0.3 });
-cro.observe(counterEl);
+const hero = document.getElementById('hero');
+const io = new IntersectionObserver(([e]) => {
+  nav.className = e.isIntersecting ? 'on-dark' : 'on-light';
+}, { threshold: 0.05 });
+io.observe(hero);
 </script>
 </body>
 </html>
