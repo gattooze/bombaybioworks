@@ -8,97 +8,49 @@
 <style>
 
 /* ── HERO ── */
-.co-hero {
+.hero {
   background: var(--carbon);
-  min-height: 70svh;
+  min-height: 55svh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: calc(var(--nav-h) + 60px) 0 80px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: calc(var(--nav-h) + 60px) 0 72px;
+  border-bottom: 3px solid var(--amber);
 }
-.co-hero-inner {
+.hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: end;
 }
-.co-hero h1 {
-  font-size: clamp(52px, 7vw, 100px);
-  color: var(--white);
-}
-.co-hero-tagline {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 36;
-  font-size: clamp(16px, 1.8vw, 22px);
-  color: rgba(250,250,248,0.35);
-  line-height: 1.65;
-  max-width: 480px;
+.hero h1 { font-size: clamp(44px, 6.5vw, 88px); color: var(--white); }
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(250,250,248,0.38);
   padding-bottom: 8px;
+  max-width: 380px;
 }
 
-/* ── MISSION ── */
-.mission-section {
-  padding: 120px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.mission-inner {
+/* ── TWO-COL ── */
+.two-col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
-  align-items: start;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
 }
-.mission-h2 { font-size: clamp(32px, 3.5vw, 52px); margin-bottom: 32px; }
-.mission-body {
-  font-size: 15px;
-  line-height: 1.85;
-  color: var(--ink-2);
-  margin-bottom: 20px;
-}
-.mission-aside {
-  padding-top: 40px;
-}
-.aside-quote {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-variation-settings: 'opsz' 48, 'WONK' 1;
-  font-size: clamp(20px, 2.2vw, 30px);
-  color: var(--ink);
-  line-height: 1.45;
-  padding-left: 28px;
-  border-left: 2px solid var(--amber);
-  margin-bottom: 24px;
-}
-.aside-context {
-  font-size: 13px;
-  color: var(--ink-3);
-  line-height: 1.7;
+.label-col-sticky {
+  position: sticky;
+  top: calc(var(--nav-h) + 40px);
+  padding-top: 4px;
 }
 
-/* ── ORIGIN ── */
-.origin-section {
-  background: var(--paper-warm);
-  padding: 100px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.origin-inner {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 80px;
-  align-items: start;
-}
-.origin-label-col { padding-top: 6px; }
-.origin-h2 { font-size: clamp(28px, 3vw, 44px); margin-bottom: 28px; }
-.origin-body {
-  font-size: 15px;
-  line-height: 1.85;
-  color: var(--ink-2);
-  margin-bottom: 20px;
-}
+/* ── SECTIONS ── */
+.section-pad { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.section-head { font-size: clamp(28px, 3vw, 42px); margin-bottom: 36px; }
+.body-text { font-size: 15px; line-height: 1.9; color: var(--ink-2); margin-bottom: 20px; max-width: 640px; }
+.body-text strong { color: var(--ink); font-weight: 500; }
 
+/* ── ORIGIN FACTS ── */
 .origin-facts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -107,7 +59,7 @@
   margin-top: 52px;
 }
 .origin-fact {
-  padding: 28px 32px;
+  padding: 32px 36px;
   border-right: 1px solid var(--rule);
 }
 .origin-fact:last-child { border-right: none; }
@@ -116,156 +68,163 @@
   font-style: italic;
   font-weight: 700;
   font-variation-settings: 'opsz' 48, 'WONK' 1;
-  font-size: 36px;
+  font-size: 44px;
   color: var(--ink);
   line-height: 1;
   display: block;
   margin-bottom: 10px;
+  letter-spacing: -0.02em;
 }
 .origin-fact-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
-.origin-fact-note {
-  font-size: 12px;
-  color: var(--ink-3);
-  line-height: 1.5;
+.origin-fact-note { font-size: 12.5px; color: var(--ink-3); line-height: 1.55; }
+
+/* ── QUOTE ── */
+.quote-block {
+  border-left: 3px solid var(--amber);
+  padding: 28px 40px;
+  margin: 40px 0;
 }
+.quote-text {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 48, 'WONK' 1;
+  font-size: clamp(18px, 2.2vw, 26px);
+  color: var(--ink);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+.quote-note { font-size: 13px; color: var(--ink-2); line-height: 1.7; }
+
+/* ── WHY INDIA ── */
+.india-section {
+  background: var(--carbon);
+  padding: 80px 0;
+  border-top: 3px solid var(--amber);
+  border-bottom: 3px solid var(--amber);
+}
+.india-inner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
+}
+.india-label { padding-top: 4px; }
+.india-body { font-size: 14px; line-height: 1.85; color: rgba(250,250,248,0.42); margin-bottom: 16px; max-width: 600px; }
+.india-body strong { color: rgba(250,250,248,0.7); font-weight: 500; }
+.india-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: rgba(255,255,255,0.03);
+  margin-top: 40px;
+}
+.india-point {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0 20px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  align-items: start;
+}
+.india-point:last-child { border-bottom: none; }
+.india-point-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-variation-settings: 'opsz' 24;
+  font-size: 13px;
+  color: rgba(250,250,248,0.2);
+  padding-top: 3px;
+}
+.india-point-text { font-size: 14px; color: rgba(250,250,248,0.45); line-height: 1.65; }
+.india-point-text strong { color: rgba(250,250,248,0.7); font-weight: 500; }
 
 /* ── TEAM ── */
-.team-section {
-  padding: 120px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.team-h2 { font-size: clamp(32px, 3.5vw, 52px); margin-bottom: 60px; }
+.team-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
 .team-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   border-left: 1px solid var(--rule);
   border-top: 1px solid var(--rule);
+  margin-top: 52px;
 }
 .team-member {
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   padding: 36px 32px;
 }
+.team-role {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 12px;
+}
 .team-name {
   font-family: 'Fraunces', serif;
   font-style: normal;
   font-weight: 600;
   font-variation-settings: 'opsz' 36;
-  font-size: clamp(18px, 1.6vw, 22px);
+  font-size: clamp(17px, 1.8vw, 21px);
   color: var(--ink);
-  margin-bottom: 4px;
-}
-.team-role {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-bottom: 20px;
-  display: block;
-}
-.team-bio {
-  font-size: 13px;
-  color: var(--ink-2);
-  line-height: 1.7;
-}
-
-/* ── WHY INDIA ── */
-.india-section {
-  background: var(--carbon);
-  padding: 100px 0;
-}
-.india-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
-  align-items: center;
-}
-.india-h2 {
-  font-size: clamp(32px, 3.5vw, 52px);
-  color: var(--white);
-  margin-bottom: 28px;
-}
-.india-body {
-  font-size: 15px;
-  line-height: 1.85;
-  color: rgba(250,250,248,0.45);
   margin-bottom: 16px;
 }
-.india-points {
+.team-bio { font-size: 13px; color: var(--ink-2); line-height: 1.7; }
+.team-open {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  gap: 1px;
-  background: rgba(255,255,255,0.04);
-  margin-top: 8px;
+  text-align: center;
+  gap: 10px;
+  background: var(--paper-warm);
 }
-.india-point {
-  background: var(--carbon);
-  padding: 20px 0;
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 16px;
-  align-items: start;
-}
-.india-point-num {
+.team-open-head {
   font-family: 'Fraunces', serif;
   font-style: italic;
-  font-variation-settings: 'opsz' 24;
-  font-size: 13px;
-  color: rgba(250,250,248,0.18);
-  padding-top: 2px;
+  font-variation-settings: 'opsz' 36;
+  font-size: 22px;
+  color: var(--rule);
 }
-.india-point-text {
-  font-size: 14px;
-  color: rgba(250,250,248,0.55);
-  line-height: 1.6;
-}
-.india-point-text strong {
-  color: rgba(250,250,248,0.75);
-  font-weight: 500;
-}
+.team-open-note { font-size: 12px; color: var(--ink-3); line-height: 1.55; max-width: 200px; }
 
-/* ── CONTACT / CTA ── */
-.cta-section {
-  padding: 120px 0;
-  border-top: 1px solid var(--rule);
-}
-.cta-inner {
+/* ── CONTACT ── */
+.contact-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.contact-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: start;
 }
-.cta-h2 { font-size: clamp(32px, 3.5vw, 52px); margin-bottom: 16px; }
-.cta-body { font-size: 15px; line-height: 1.8; color: var(--ink-2); max-width: 480px; }
-.cta-contacts { display: flex; flex-direction: column; gap: 0; }
-.cta-contact {
+.contact-rows { display: flex; flex-direction: column; gap: 0; }
+.contact-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   padding: 20px 0;
   border-bottom: 1px solid var(--rule);
-  gap: 16px;
+  gap: 20px;
 }
-.cta-contact:first-child { border-top: 1px solid var(--rule); }
-.cta-contact-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+.contact-row:first-child { border-top: 1px solid var(--rule); }
+.contact-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-3);
   flex-shrink: 0;
 }
-.cta-contact-value {
+.contact-value {
   font-family: 'Fraunces', serif;
   font-style: italic;
   font-variation-settings: 'opsz' 36;
@@ -274,25 +233,21 @@
   text-decoration: none;
   transition: color 0.2s;
 }
-.cta-contact-value:hover { color: var(--amber); }
-.cta-note {
-  font-size: 12px;
-  color: var(--ink-3);
-  margin-top: 20px;
-  line-height: 1.6;
-}
+a.contact-value:hover { color: var(--amber); }
+.contact-note { font-size: 12px; color: var(--ink-3); margin-top: 20px; line-height: 1.65; }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-  .co-hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .mission-inner { grid-template-columns: 1fr; gap: 48px; }
-  .origin-inner { grid-template-columns: 1fr; gap: 32px; }
-  .origin-facts { grid-template-columns: 1fr 1fr; }
+  .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+  .two-col { grid-template-columns: 1fr; gap: 36px; }
+  .label-col-sticky { position: static; }
+  .origin-facts { grid-template-columns: 1fr; }
+  .origin-fact { border-right: none; border-bottom: 1px solid var(--rule); }
+  .india-inner { grid-template-columns: 1fr; gap: 36px; }
   .team-grid { grid-template-columns: 1fr 1fr; }
-  .india-inner { grid-template-columns: 1fr; gap: 48px; }
-  .cta-inner { grid-template-columns: 1fr; gap: 48px; }
+  .contact-inner { grid-template-columns: 1fr; gap: 48px; }
 }
 @media (max-width: 640px) {
-  .origin-facts { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
 }
 </style>
@@ -309,105 +264,54 @@
   </ul>
 </nav>
 
-<section class="co-hero">
+<section class="hero" id="hero">
   <div class="wrap">
-    <div class="co-hero-inner">
-      <h1 class="f-head">Who we are.</h1>
-      <p class="co-hero-tagline">A manufacturing company working in fixed carbon. Based in Maharashtra. Focused on getting the product right before we talk about scale.</p>
+    <div class="hero-inner">
+      <h1 class="f-head">A manufacturing company. Not a carbon project.</h1>
+      <p class="hero-sub">Based in Maharashtra. Working in fixed carbon. Focused on getting the product right before talking about scale — because scale built on a weak product is just a bigger problem.</p>
     </div>
   </div>
 </section>
 
-<!-- MISSION -->
-<section class="mission-section">
+<!-- WHAT WE ARE -->
+<section class="section-pad">
   <div class="wrap">
-    <div class="mission-inner">
+    <div class="two-col">
       <div>
-        <span class="label" style="margin-bottom:20px;">What we're doing</span>
-        <h2 class="f-head mission-h2">Carbon products that exist when you're done paying for them.</h2>
-        <p class="mission-body">Voluntary carbon markets built a lot of infrastructure around numbers on spreadsheets. Projects that promised removal but couldn't prove it. Credits that expired, doubled, or just turned out to be wrong.</p>
-        <p class="mission-body">We make physical carbon products. Biochar that goes into soil. Activated carbon that goes into filters. Dense fuel that displaces coal in industrial boilers. None of these require anyone to take our word for it — the product is the proof.</p>
-        <p class="mission-body">We're not building an offset business. We're building a carbon materials company. The products are real. The specs are public. The batches are traceable.</p>
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">What we are</span>
+          <span class="label" style="color:var(--rule);">——</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">And what we are not</span>
+        </div>
       </div>
-      <div class="mission-aside">
-        <div class="aside-quote">The agriculture sector produces surplus residue. We turn it into fixed carbon and sell it. That's the whole model.</div>
-        <p class="aside-context">India's agricultural sector generates hundreds of millions of tonnes of residue annually — a material most farmers burn to clear fields before the next cycle. We use that residue as feedstock. Our product goes back into the same system, as a soil amendment that improves the land it came from.</p>
-      </div>
-    </div>
-  </div>
-</section>
+      <div>
+        <h2 class="f-head section-head">The carbon credit market grew faster than the underlying science was ready for.</h2>
+        <p class="body-text">We did not start as a carbon project that decided to make products. We started as a manufacturing operation that recognised the carbon removal value of what it was already making. That ordering matters. A company built around credit generation will optimise for credit generation. A company built around product quality will optimise for product quality. Those are different companies, even when they produce the same material.</p>
+        <p class="body-text">We make biochar, activated carbon, and carbon fuel from agricultural feedstock. All three come from the same facility and the same biological source. The biochar is certified for soil permanence under EBC and IBI protocols. The activated carbon meets industrial adsorption specifications. The carbon fuel displaces thermal coal in boilers and kilns. <strong>Each product has a commercial use independent of any carbon market</strong> — which means the business doesn't collapse if carbon credit pricing moves.</p>
 
-<!-- ORIGIN -->
-<section class="origin-section">
-  <div class="wrap">
-    <div class="origin-inner">
-      <div class="origin-label-col">
-        <span class="label" style="margin-bottom:16px;">Where we operate</span>
-      </div>
-      <div>
-        <h2 class="f-head origin-h2">Built in India, for a global market in fixed carbon.</h2>
-        <p class="origin-body">We operate out of Maharashtra. The feedstock is local. The conversion infrastructure is local. The quality testing is done by accredited Indian labs before product leaves the facility.</p>
-        <p class="origin-body">Our customers are mostly outside India — activated carbon going to water treatment operators in Southeast Asia, carbon fuel going to industrial consumers in Japan and South Korea, biochar going to soil restoration projects where the carbon removal credit has commercial value.</p>
-        <p class="origin-body">India is a good place to build this company. Feedstock is abundant, energy costs are manageable, and the regulatory environment for this category is still being written — which means we can help define what good looks like rather than conforming to someone else's standard.</p>
+        <div class="quote-block">
+          <p class="quote-text">Agricultural residue that would otherwise be burned or left to decompose becomes a tested, certified industrial material. That's the whole model.</p>
+          <p class="quote-note">The feedstock question has a geography and a logistics problem. We work where the feedstock is — Maharashtra — and sell into markets that value what we make. The carbon economics and the product economics reinforce each other rather than competing.</p>
+        </div>
+
+        <p class="body-text">We're not trying to do everything at once. Three products, one facility, demonstrably certified quality. If that works at current scale, it can work at larger scale. If it doesn't work at current scale, larger scale won't fix it.</p>
 
         <div class="origin-facts">
           <div class="origin-fact">
             <span class="origin-fact-num">2022</span>
             <span class="origin-fact-label">Founded</span>
-            <span class="origin-fact-note">Incorporated in Maharashtra</span>
+            <span class="origin-fact-note">Incorporated in Maharashtra. Production facility operational within the first year.</span>
           </div>
           <div class="origin-fact">
             <span class="origin-fact-num">3</span>
             <span class="origin-fact-label">Products</span>
-            <span class="origin-fact-note">Biochar, activated carbon, carbon fuel</span>
+            <span class="origin-fact-note">Biochar, activated carbon, and carbon fuel from a single feedstock and facility.</span>
           </div>
           <div class="origin-fact">
             <span class="origin-fact-num">4</span>
-            <span class="origin-fact-label">Markets</span>
-            <span class="origin-fact-note">India, Japan, South Korea, Southeast Asia</span>
+            <span class="origin-fact-label">Export markets</span>
+            <span class="origin-fact-note">India, Japan, South Korea, Southeast Asia. Activated carbon and fuel are the primary export grades.</span>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TEAM -->
-<section class="team-section">
-  <div class="wrap">
-    <span class="label" style="margin-bottom:20px;">The team</span>
-    <h2 class="f-head team-h2">People who've built things before.</h2>
-
-    <div class="team-grid">
-      <div class="team-member">
-        <div class="team-name">Founder & CEO</div>
-        <span class="team-role">Leadership</span>
-        <p class="team-bio">Prior experience in commodity trading and industrial supply chains across South and Southeast Asia. Saw the feedstock supply problem as a sourcing question, not a technology one — which shaped how the company was built.</p>
-      </div>
-      <div class="team-member">
-        <div class="team-name">Head of Operations</div>
-        <span class="team-role">Production</span>
-        <p class="team-bio">Fifteen years in process manufacturing in Maharashtra. Responsible for the conversion facility, quality systems, and supply chain from intake to dispatch. Has run plants at both pilot and commercial scale.</p>
-      </div>
-      <div class="team-member">
-        <div class="team-name">Head of Carbon & Markets</div>
-        <span class="team-role">Verification & Sales</span>
-        <p class="team-bio">Background in environmental consulting and voluntary carbon market standards. Leads third-party verification relationships, customer carbon documentation, and export market development in Japan and Korea.</p>
-      </div>
-      <div class="team-member">
-        <div class="team-name">Technical Lead</div>
-        <span class="team-role">Process Engineering</span>
-        <p class="team-bio">Chemical engineering background with a focus on thermochemical conversion. Responsible for process conditions, product grade specifications, and the quality testing protocols that each batch passes before release.</p>
-      </div>
-      <div class="team-member">
-        <div class="team-name">Commercial Lead — India</div>
-        <span class="team-role">Sales & Partnerships</span>
-        <p class="team-bio">Covers the domestic market — biochar into soil programs, activated carbon into water utilities, carbon fuel into industrial customers looking to reduce coal dependency. Also leads feedstock procurement partnerships.</p>
-      </div>
-      <div class="team-member" style="background: var(--paper-warm); display: flex; align-items: center; justify-content: center; min-height: 180px;">
-        <div style="text-align:center;">
-          <div style="font-family:'Fraunces',serif; font-style:italic; font-variation-settings:'opsz' 36; font-size:28px; color:var(--rule); margin-bottom:8px;">We're hiring.</div>
-          <p style="font-size:13px; color:var(--ink-3);">Talk to us if you work in carbon markets, process engineering, or industrial sales.</p>
         </div>
       </div>
     </div>
@@ -418,29 +322,30 @@
 <section class="india-section">
   <div class="wrap">
     <div class="india-inner">
-      <div>
-        <span class="label label-amber" style="margin-bottom:20px;">Why India</span>
-        <h2 class="f-head india-h2">The feedstock question has a geography.</h2>
-        <p class="india-body">Most advanced carbon removal projects are designed in rich countries and executed in poor ones. The infrastructure, the financing, and the off-take go one direction. The labor and land go the other.</p>
-        <p class="india-body">We're not describing a clean version of that arrangement. We're a company built where the feedstock is, selling into markets that value what we make, accountable to the same standards we'd hold anyone else to.</p>
+      <div class="india-label">
+        <span class="label label-amber" style="margin-bottom:8px;">Why India</span>
+        <span class="label" style="margin-top:8px; color:rgba(250,250,248,0.2);">And why Maharashtra specifically</span>
       </div>
       <div>
+        <p class="india-body">Most of the world's biochar and activated carbon is produced in China, Sri Lanka, and Southeast Asia. Most of the policy conversation about biochar carbon removal happens in Europe and North America. There is a gap between where the technical credibility is being established and where the most competitive production conditions exist.</p>
+        <p class="india-body"><strong>India sits at an interesting intersection:</strong> significant agricultural residue availability, improving industrial infrastructure, a domestic market large enough to absorb activated carbon and fuel products without depending entirely on export, and a regulatory environment for carbon markets that is still being written — which creates an opportunity to help define standards rather than inherit them.</p>
+
         <div class="india-points">
           <div class="india-point">
             <span class="india-point-num">01</span>
-            <p class="india-point-text"><strong>Feedstock at scale.</strong> India produces agricultural residue in quantities that make commercial biochar production viable without competing with food or fiber supply chains.</p>
+            <p class="india-point-text"><strong>Feedstock at commercial scale.</strong> India generates hundreds of millions of tonnes of agricultural residue annually. Much of it is burned in the field — a source of particulate pollution, GHG emissions, and wasted biological carbon. The supply question is not whether enough exists; it is whether it can be consistently sourced and conditioned to the quality the conversion process requires.</p>
           </div>
           <div class="india-point">
             <span class="india-point-num">02</span>
-            <p class="india-point-text"><strong>Industrial infrastructure.</strong> Maharashtra has an established industrial manufacturing base. We're not asking the grid, the roads, or the workforce to do something new.</p>
+            <p class="india-point-text"><strong>Manufacturing infrastructure.</strong> Maharashtra has an established industrial base — road, power, logistics — that supports production at scale without requiring the kind of greenfield infrastructure investment that remote feedstock-rich locations often demand. The facility can run because the surrounding system already works.</p>
           </div>
           <div class="india-point">
             <span class="india-point-num">03</span>
-            <p class="india-point-text"><strong>Export access.</strong> Port access to Japan, South Korea, and Southeast Asia — our primary activated carbon and fuel markets — is competitive from the west coast of India.</p>
+            <p class="india-point-text"><strong>Export access to primary markets.</strong> West coast India port access to Japan, South Korea, and Southeast Asia is commercially competitive. The activated carbon and carbon fuel markets in these countries have established import infrastructure and, increasingly, policy frameworks that create premium access for certified biogenic products over conventional alternatives.</p>
           </div>
           <div class="india-point">
             <span class="india-point-num">04</span>
-            <p class="india-point-text"><strong>Regulatory moment.</strong> India's carbon market regulation is early. Being here now means having a role in setting standards rather than inheriting them.</p>
+            <p class="india-point-text"><strong>India's carbon market is forming.</strong> The Carbon Credit Trading Scheme (CCTS) under the Energy Conservation (Amendment) Act 2022 is operational. Biochar-based CDR methodologies are being developed for the domestic voluntary market. <strong>Being operational now means being in the room when the methodology standards are set</strong>, rather than having to retrofit a production system to someone else's accounting framework.</p>
           </div>
         </div>
       </div>
@@ -448,36 +353,111 @@
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
+<!-- TEAM -->
+<section class="team-section">
   <div class="wrap">
-    <div class="cta-inner">
+    <div class="two-col">
       <div>
-        <span class="label" style="margin-bottom:20px;">Get in touch</span>
-        <h2 class="f-head cta-h2">We're a small company.<br>We answer our own email.</h2>
-        <p class="cta-body">If you're a buyer, a verifier, an investor, or someone who works in a related area and has something to say — reach out directly. We don't have a form. We have email.</p>
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">The team</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">Operations, carbon, and commercial</span>
+        </div>
       </div>
       <div>
-        <div class="cta-contacts">
-          <div class="cta-contact">
-            <span class="cta-contact-label">General</span>
-            <a href="mailto:hello@bombaybioworks.com" class="cta-contact-value">hello@bombaybioworks.com</a>
+        <h2 class="f-head section-head">People who have run industrial operations before.</h2>
+        <p class="body-text">The team is small and deliberately so. Depth over breadth at this stage. Operations, technical quality, carbon market documentation, and commercial development are the four functions that matter most in the current phase — and those are the four areas where we have actual experience rather than generalist coverage.</p>
+
+        <div class="team-grid">
+          <div class="team-member">
+            <span class="team-role">Founder &amp; CEO</span>
+            <div class="team-name">Operations &amp; Strategy</div>
+            <p class="team-bio">Background in commodity trading and industrial supply chains across South and Southeast Asia. Built the company around feedstock availability and product market access rather than around the carbon credit thesis — which shapes how every major decision gets made.</p>
           </div>
-          <div class="cta-contact">
-            <span class="cta-contact-label">Product &amp; Sales</span>
-            <a href="mailto:sales@bombaybioworks.com" class="cta-contact-value">sales@bombaybioworks.com</a>
+          <div class="team-member">
+            <span class="team-role">Head of Operations</span>
+            <div class="team-name">Production &amp; Facility</div>
+            <p class="team-bio">Fifteen years in process manufacturing in Maharashtra. Responsible for the conversion facility, quality systems, and feedstock supply chain. Has managed both pilot and commercial-scale thermal operations. The person who knows what the process is actually doing at any given moment.</p>
           </div>
-          <div class="cta-contact">
-            <span class="cta-contact-label">Investors</span>
-            <a href="mailto:invest@bombaybioworks.com" class="cta-contact-value">invest@bombaybioworks.com</a>
+          <div class="team-member">
+            <span class="team-role">Technical Lead</span>
+            <div class="team-name">Process &amp; Quality</div>
+            <p class="team-bio">Chemical engineering background with a focus on thermochemical conversion. Sets grade specifications, manages laboratory relationships, and owns the quality control protocols that each batch passes before release. The person responsible for the H/Corg numbers being real.</p>
           </div>
-          <div class="cta-contact">
-            <span class="cta-contact-label">Location</span>
-            <span class="cta-contact-value" style="cursor:default;">Maharashtra, India</span>
+          <div class="team-member">
+            <span class="team-role">Head of Carbon &amp; Markets</span>
+            <div class="team-name">Verification &amp; CDR</div>
+            <p class="team-bio">Background in environmental consulting and voluntary carbon market standards — EBC, IBI, Puro.earth methodology, Verra. Leads third-party verification relationships, buyer documentation packages, and CDR credit structuring. Makes sure the paperwork matches the product.</p>
+          </div>
+          <div class="team-member">
+            <span class="team-role">Commercial Lead</span>
+            <div class="team-name">Sales &amp; Export</div>
+            <p class="team-bio">Covers both domestic and export markets — biochar into soil programs, activated carbon into water utilities and industrial buyers, carbon fuel into Japan and South Korea. Also leads feedstock procurement partnerships with farming cooperatives and aggregators.</p>
+          </div>
+          <div class="team-open team-member">
+            <div class="team-open-head">We're hiring.</div>
+            <p class="team-open-note">Carbon markets, process engineering, or industrial sales in Japan or South Korea. Write to us.</p>
           </div>
         </div>
-        <p class="cta-note">Response time is usually 24–48 hours. If you're writing about a specific product or a specific application, say so in the subject line — it helps us get the right person on the reply.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="wrap">
+    <div class="contact-inner">
+      <div>
+        <span class="label" style="margin-bottom:20px;">Get in touch</span>
+        <h2 class="f-head section-head">We're a small company. We answer our own email.</h2>
+        <p class="body-text">If you're a buyer, a verifier, an investor, or someone who works in a related area — reach out directly. We don't route enquiries through a form. If you're writing about a specific product or application, say so in the subject line. It gets to the right person faster.</p>
+        <p class="body-text" style="font-size:13px; color:var(--ink-3); max-width:420px;">Response time is typically 24–48 hours on business days. For sample requests, allow additional time for logistics — we ship from Maharashtra and most export samples go through a standard customs documentation process.</p>
+      </div>
+      <div>
+        <div class="contact-rows">
+          <div class="contact-row">
+            <span class="contact-label">General</span>
+            <a href="mailto:hello@bombaybioworks.com" class="contact-value">hello@bombaybioworks.com</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">Product &amp; Sales</span>
+            <a href="mailto:sales@bombaybioworks.com" class="contact-value">sales@bombaybioworks.com</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">CDR &amp; Carbon</span>
+            <a href="mailto:carbon@bombaybioworks.com" class="contact-value">carbon@bombaybioworks.com</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">Investors</span>
+            <a href="mailto:invest@bombaybioworks.com" class="contact-value">invest@bombaybioworks.com</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">Location</span>
+            <span class="contact-value" style="cursor:default;">Maharashtra, India</span>
+          </div>
+        </div>
+        <p class="contact-note">We do not have a sales CRM or an automated follow-up sequence. If you write, a person reads it and responds. If you don't hear back within 72 hours on a business enquiry, write again — something went to spam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERIOR LINKS -->
+<section class="interior-section">
+  <div class="wrap">
+    <div class="interior-grid">
+      <a href="carbon.html" class="interior-item">
+        <div class="interior-item-label"><span>Carbon</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Permanence chemistry, certification, and how we account for what we make.</div>
+      </a>
+      <a href="applications.html" class="interior-item">
+        <div class="interior-item-label"><span>Products</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Full specifications for biochar, activated carbon, and carbon fuel.</div>
+      </a>
+      <a href="technology.html" class="interior-item">
+        <div class="interior-item-label"><span>Process</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">How feedstock becomes product and what we test at each stage.</div>
+      </a>
     </div>
   </div>
 </section>
@@ -503,5 +483,12 @@
   </div>
 </footer>
 
+<script>
+const nav = document.getElementById('nav');
+const hero = document.getElementById('hero');
+new IntersectionObserver(([e]) => {
+  nav.className = e.isIntersecting ? 'on-dark' : 'on-light';
+}, { threshold: 0.05 }).observe(hero);
+</script>
 </body>
 </html>

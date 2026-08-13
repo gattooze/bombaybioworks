@@ -7,323 +7,261 @@
 <link rel="stylesheet" href="style.css">
 <style>
 
-.page-hero {
-  padding: calc(var(--nav-h) + 100px) 0 100px;
-  border-bottom: 1px solid var(--rule);
+/* ── HERO ── */
+.hero {
+  background: var(--carbon);
+  min-height: 55svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 60px) 0 72px;
+  border-bottom: 3px solid var(--amber);
 }
-.page-hero h1 { font-size: clamp(52px, 6.5vw, 96px); }
-.page-hero-sub {
-  font-size: 17px;
-  line-height: 1.75;
-  color: var(--ink-2);
-  max-width: 480px;
-  margin-top: 32px;
-}
-
-/* ── STAGES ── */
-.stages-section { padding: 120px 0; border-bottom: 1px solid var(--rule); }
-.stages-head {
+.hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
-  margin-bottom: 72px;
-  padding-bottom: 56px;
-  border-bottom: 1px solid var(--rule);
+  align-items: end;
 }
-.stages-h2 { font-size: clamp(36px, 4vw, 52px); }
-.stages-intro { font-size: 15px; line-height: 1.8; color: var(--ink-2); }
+.hero h1 { font-size: clamp(44px, 6.5vw, 88px); color: var(--white); }
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(250,250,248,0.38);
+  padding-bottom: 8px;
+  max-width: 380px;
+}
 
-.stage-list { display: flex; flex-direction: column; }
-.stage-item {
+/* ── TWO-COL ── */
+.two-col {
   display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 0;
-  border-bottom: 1px solid var(--rule);
-  cursor: pointer;
-  overflow: hidden;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
 }
-.stage-item.open { background: var(--paper-warm); }
-.stage-num-col {
-  padding: 32px 24px 32px 0;
-  border-right: 1px solid var(--rule);
+.label-col-sticky {
+  position: sticky;
+  top: calc(var(--nav-h) + 40px);
+  padding-top: 4px;
+}
+
+/* ── SECTIONS ── */
+.section-pad { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.section-head { font-size: clamp(28px, 3vw, 42px); margin-bottom: 36px; }
+.body-text { font-size: 15px; line-height: 1.9; color: var(--ink-2); margin-bottom: 20px; max-width: 640px; }
+.body-text strong { color: var(--ink); font-weight: 500; }
+
+/* ── CONVERSION STAGES ── */
+.stages {
   display: flex;
-  align-items: flex-start;
-  padding-top: 34px;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 52px;
+  border-top: 1px solid var(--rule);
+}
+.stage {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 0 32px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
 }
 .stage-num {
   font-family: 'Fraunces', serif;
   font-style: italic;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 36;
-  font-size: 13px;
-  color: var(--ink-3);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 48, 'WONK' 1;
+  font-size: 32px;
+  color: var(--rule);
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
-.stage-body-col { padding: 32px 0 32px 36px; }
-.stage-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.stage-title {
+.stage-content { }
+.stage-head {
   font-family: 'Fraunces', serif;
   font-style: normal;
   font-weight: 600;
-  font-variation-settings: 'opsz' 48;
-  font-size: clamp(18px, 2vw, 24px);
+  font-variation-settings: 'opsz' 36;
+  font-size: clamp(17px, 1.8vw, 22px);
   color: var(--ink);
-  transition: color 0.2s;
+  margin-bottom: 12px;
 }
-.stage-item.open .stage-title { color: var(--amber); }
-.stage-toggle {
-  font-size: 20px;
-  color: var(--ink-3);
-  transition: transform 0.3s, color 0.2s;
-  margin-right: 4px;
-  flex-shrink: 0;
+.stage-body { font-size: 14px; line-height: 1.8; color: var(--ink-2); max-width: 520px; }
+.stage-body strong { color: var(--ink); font-weight: 500; }
+.stage-test {
+  text-align: right;
+  padding-top: 4px;
 }
-.stage-item.open .stage-toggle { transform: rotate(45deg); color: var(--amber); }
-.stage-tag {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+.stage-test-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-top: 6px;
+  display: block;
+  margin-bottom: 6px;
+}
+.stage-test-value {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-variation-settings: 'opsz' 36;
+  font-size: 13px;
+  color: var(--amber);
   display: block;
 }
-.stage-expand {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.45s ease, opacity 0.35s ease;
-  opacity: 0;
-}
-.stage-item.open .stage-expand { max-height: 220px; opacity: 1; }
-.stage-expand-inner {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--rule);
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--ink-2);
-  max-width: 520px;
-}
 
-/* ── SCHEMATIC ── */
-.schematic-section {
+/* ── GRADE SPLIT ── */
+.grade-section {
   background: var(--carbon);
-  padding: 100px 0;
+  padding: 80px 0;
+  border-top: 3px solid var(--amber);
+  border-bottom: 3px solid var(--amber);
 }
-.schematic-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.2);
-  margin-bottom: 16px;
-  display: block;
+.grade-inner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
 }
-.schematic-h2 {
-  font-size: clamp(28px, 3.5vw, 48px);
-  color: var(--white);
-  margin-bottom: 72px;
-}
-.flow-row {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  padding-bottom: 8px;
-}
-.flow-node {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  min-width: 100px;
-}
-.flow-box {
-  width: 72px; height: 72px;
-  border: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.02);
-  position: relative;
-}
-.flow-box.highlight {
-  border-color: var(--amber);
-  background: rgba(184,112,16,0.08);
-  box-shadow: 0 0 24px rgba(184,112,16,0.12);
-}
-.flow-box svg { width: 24px; height: 24px; }
-.flow-node-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.28);
-  text-align: center;
-  max-width: 88px;
-  line-height: 1.4;
-}
-.flow-box.highlight ~ .flow-node-label { color: rgba(250,250,248,0.65); }
-.flow-connector {
-  flex: 1;
-  height: 1px;
-  background: rgba(255,255,255,0.07);
-  min-width: 32px;
-  max-width: 80px;
-  position: relative;
-  flex-shrink: 0;
-}
-.flow-connector::after {
-  content: '';
-  position: absolute;
-  right: -4px; top: -3px;
-  border: 4px solid transparent;
-  border-left-color: rgba(255,255,255,0.1);
-}
-
-/* ── GRADES ── */
-.grades-section { padding: 120px 0; border-bottom: 1px solid var(--rule); }
-.grades-h2 { font-size: clamp(32px, 3.5vw, 48px); margin-bottom: 16px; }
-.grades-intro { font-size: 15px; line-height: 1.8; color: var(--ink-2); max-width: 560px; margin-bottom: 60px; }
-
-.grades-table {
+.grade-label { padding-top: 4px; }
+.grade-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.04);
+}
+.grade-item { background: var(--carbon); padding: 40px 36px; }
+.grade-name {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 48, 'WONK' 1;
+  font-size: clamp(22px, 2.5vw, 32px);
+  color: var(--white);
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.grade-target {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 20px;
+}
+.grade-params { display: flex; flex-direction: column; gap: 8px; }
+.grade-param {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.grade-param:last-child { border-bottom: none; }
+.grade-param-k { color: rgba(250,250,248,0.35); }
+.grade-param-v { color: rgba(250,250,248,0.65); font-family: 'Fraunces', serif; font-style: italic; font-variation-settings: 'opsz' 24; }
+
+/* ── QC CHAIN ── */
+.qc-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.qc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
   border-left: 1px solid var(--rule);
   border-top: 1px solid var(--rule);
+  margin-top: 52px;
 }
-.grade-col {
+.qc-item {
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
+  padding: 32px 28px;
 }
-.grade-header {
-  padding: 24px 28px;
-  border-bottom: 1px solid var(--rule);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.grade-name {
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 12px;
+.qc-step {
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 16px;
 }
-.grade-name.g-soil   { color: var(--green); }
-.grade-name.g-fuel   { color: var(--amber); }
-.grade-name.g-puri   { color: #2A6070; }
-.grade-indicator {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.gi-soil { background: var(--green); }
-.gi-fuel { background: var(--amber); }
-.gi-puri { background: #2A6070; }
-
-.grade-specs { padding: 0; }
-.grade-spec-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 14px 28px;
-  border-bottom: 1px solid var(--rule);
-  gap: 12px;
-}
-.grade-spec-row:last-child { border-bottom: none; }
-.gs-key {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.gs-val {
+.qc-head {
   font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-variation-settings: 'opsz' 24;
-  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 36;
+  font-size: clamp(15px, 1.5vw, 18px);
   color: var(--ink);
-  text-align: right;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.qc-body { font-size: 12.5px; line-height: 1.7; color: var(--ink-2); }
+.qc-tests {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.qc-test {
+  font-size: 11px;
+  color: var(--ink-3);
+  padding-left: 12px;
+  position: relative;
+}
+.qc-test::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--amber);
+  font-size: 9px;
 }
 
 /* ── PROVENANCE ── */
-.prov-section {
-  background: var(--paper-warm);
-  padding: 100px 0;
-  border-top: 1px solid var(--rule);
-}
+.prov-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
 .prov-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
-  align-items: start;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
 }
-.prov-h2 { font-size: clamp(32px, 3.5vw, 48px); margin-bottom: 20px; }
-.prov-body { font-size: 15px; line-height: 1.8; color: var(--ink-2); margin-bottom: 12px; }
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--ink);
-  text-decoration: none;
-  margin-top: 28px;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 4px;
-  transition: border-color 0.25s, color 0.25s, gap 0.25s;
-}
-.text-link:hover { border-color: var(--amber); color: var(--amber); gap: 14px; }
-.prov-list { display: flex; flex-direction: column; gap: 1px; background: var(--rule); }
-.prov-item {
+.prov-callout {
   background: var(--paper-warm);
-  padding: 20px 24px;
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
+  border-left: 3px solid var(--amber);
+  padding: 32px 40px;
+  margin-top: 36px;
 }
-.prov-icon {
-  width: 32px; height: 32px;
-  border: 1px solid var(--rule);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.prov-item-title {
-  font-size: 14px;
-  font-weight: 500;
+.prov-callout-text {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 48, 'WONK' 1;
+  font-size: clamp(18px, 2vw, 24px);
   color: var(--ink);
-  margin-bottom: 3px;
+  line-height: 1.45;
+  margin-bottom: 16px;
 }
-.prov-item-desc {
-  font-size: 13px;
-  color: var(--ink-2);
-  line-height: 1.55;
-}
+.prov-callout-note { font-size: 13px; color: var(--ink-2); line-height: 1.7; }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-  .stages-head { grid-template-columns: 1fr; gap: 24px; }
-  .grades-table { grid-template-columns: 1fr; }
-  .prov-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+  .two-col { grid-template-columns: 1fr; gap: 36px; }
+  .label-col-sticky { position: static; }
+  .grade-inner { grid-template-columns: 1fr; gap: 36px; }
+  .grade-grid { grid-template-columns: 1fr; }
+  .qc-grid { grid-template-columns: 1fr 1fr; }
+  .prov-inner { grid-template-columns: 1fr; gap: 36px; }
+  .stage { grid-template-columns: 48px 1fr; }
+  .stage-test { display: none; }
 }
-@media (max-width: 768px) {
-  .stage-item { grid-template-columns: 56px 1fr; }
+@media (max-width: 640px) {
+  .qc-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav" class="on-light">
+<nav id="nav" class="on-dark">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html">Carbon</a></li>
@@ -333,86 +271,134 @@
   </ul>
 </nav>
 
-<section class="page-hero">
+<section class="hero" id="hero">
   <div class="wrap">
-    <span class="label" style="margin-bottom:20px;">How we work</span>
-    <h1 class="f-head">From biomass<br>to fixed carbon.</h1>
-    <p class="page-hero-sub">Four defined stages. Measurable inputs and outputs at each one. The conditions between them determine what you get at the end — and what you can claim about it.</p>
+    <div class="hero-inner">
+      <h1 class="f-head">What we do to the carbon. Not how.</h1>
+      <p class="hero-sub">The conversion conditions that determine product grade, the quality controls that govern every batch, and why the output specification is decided before production begins — not after.</p>
+    </div>
   </div>
 </section>
 
-<!-- STAGES -->
-<section class="stages-section">
+<!-- HOW PRODUCT GRADE IS SET -->
+<section class="section-pad">
   <div class="wrap">
-    <div class="stages-head">
+    <div class="two-col">
       <div>
-        <span class="label" style="margin-bottom:16px;">The four stages</span>
-        <h2 class="f-head stages-h2">Controlled at every step.</h2>
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">Conversion</span>
+          <span class="label" style="color:var(--rule);">——</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">How conditions become specs</span>
+        </div>
       </div>
-      <p class="stages-intro">Temperature, residence time, oxygen level, feedstock quality — these are not background variables. They determine whether the output is biochar, activated carbon, or fuel. We control them deliberately and log them for every batch.</p>
+      <div>
+        <h2 class="f-head section-head">The product grade is a decision, not a result.</h2>
+        <p class="body-text">Most agricultural residue has a roughly predictable elemental composition — a known carbon-to-hydrogen ratio, a known ash content, a moisture range. What determines whether the output is biochar, activated carbon feedstock, or carbon fuel is not a single technical variable. It is a set of controlled conditions — temperature, atmosphere, residence time, and subsequent treatment — that are deliberately configured before each production run depending on the grade target for that batch.</p>
+        <p class="body-text"><strong>Conversion temperature has the strongest influence on H/Corg ratio.</strong> Higher temperatures drive off more hydrogen and oxygen, producing a more aromatic, more stable carbon structure. The tradeoff is yield: higher temperature means less total mass output per unit of feedstock. A biochar run optimised for permanence (H/Corg &lt; 0.35) will produce less mass per tonne of feedstock than a carbon fuel run where energy density matters more than structural stability.</p>
+        <p class="body-text">Activated carbon requires an additional step after initial conversion: activation. This opens the micropore structure — creates the surface area where adsorption happens. The activation conditions determine pore size distribution, which in turn determines which contaminants the carbon will be effective against. A micropore-dominant material is better for small molecules (chlorine, VOCs, pharmaceuticals). A more mesopore-rich material handles larger molecules (humic acids, dyes, some PFAS compounds). We target a micropore-dominant distribution optimised for the most common water treatment applications.</p>
+
+        <div class="stages">
+          <div class="stage">
+            <div class="stage-num">01</div>
+            <div class="stage-content">
+              <div class="stage-head">Feedstock intake and conditioning</div>
+              <p class="stage-body">Incoming agricultural residue is weighed, moisture-tested, and assessed for consistency before entering the production system. <strong>Moisture above 30% is managed by pre-conditioning before conversion</strong> — high-moisture feedstock lowers conversion efficiency and makes product quality control harder. Batch number is assigned at intake. All downstream records trace back to this point.</p>
+            </div>
+            <div class="stage-test">
+              <span class="stage-test-label">Measured at intake</span>
+              <span class="stage-test-value">Mass · Moisture%</span>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-num">02</div>
+            <div class="stage-content">
+              <div class="stage-head">Conversion — grade conditions set</div>
+              <p class="stage-body">The production run is configured for a target grade before it begins. Temperature profile, atmosphere, and residence time are set to deliver the intended output specification. Continuous process monitoring logs these parameters throughout the run. <strong>Deviation outside defined control limits triggers a hold and review</strong> before product is released for the next stage.</p>
+            </div>
+            <div class="stage-test">
+              <span class="stage-test-label">Logged throughout</span>
+              <span class="stage-test-value">Temp · Time · Yield%</span>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-num">03</div>
+            <div class="stage-content">
+              <div class="stage-head">Activation (activated carbon only)</div>
+              <p class="stage-body">Carbon destined for the activated carbon product line undergoes a controlled activation step that develops the internal pore structure. The activation conditions — agent, temperature, and duration — are calibrated to the target iodine number and BET surface area for that production batch. <strong>Activation yield is lower than conversion yield</strong>; this is factored into grade pricing.</p>
+            </div>
+            <div class="stage-test">
+              <span class="stage-test-label">Target parameter</span>
+              <span class="stage-test-value">BET m²/g · Iodine no.</span>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-num">04</div>
+            <div class="stage-content">
+              <div class="stage-head">Sizing and preparation</div>
+              <p class="stage-body">Output is sized to specification: biochar is screened to particle size range; activated carbon is milled to GAC mesh size or PAC fineness; carbon fuel is densified into briquette or pellet form to a specified bulk density. <strong>Form factor affects handling, storage, and application logistics</strong> as much as it affects the product's end-use performance.</p>
+            </div>
+            <div class="stage-test">
+              <span class="stage-test-label">Confirmed</span>
+              <span class="stage-test-value">Particle size dist.</span>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-num">05</div>
+            <div class="stage-content">
+              <div class="stage-head">Laboratory analysis and release</div>
+              <p class="stage-body">Every batch is sampled before release. Samples go to an accredited third-party laboratory. Results are reviewed against grade specification. <strong>Product is not released until laboratory results are confirmed.</strong> For biochar batches, H/Corg and heavy metal results must both clear before the batch is eligible for CDR credit documentation. For activated carbon, iodine number and surface area are the release gates.</p>
+            </div>
+            <div class="stage-test">
+              <span class="stage-test-label">Release gate</span>
+              <span class="stage-test-value">Lab cert required</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="stage-list">
-      <div class="stage-item open" onclick="toggle(this)">
-        <div class="stage-num-col"><span class="stage-num">01</span></div>
-        <div class="stage-body-col">
-          <div class="stage-header">
-            <div>
-              <div class="stage-title">Feedstock assessment</div>
-              <span class="stage-tag">Input quality</span>
-            </div>
-            <span class="stage-toggle">+</span>
-          </div>
-          <div class="stage-expand">
-            <p class="stage-expand-inner">Incoming biological material is tested for moisture content, ash level, elemental composition, and physical density before entering the process. Material outside our input specification is rejected or returned. Moisture is adjusted to the correct range. Oversized material is reduced. The conversion stage only sees feedstock that meets our intake criteria.</p>
+<!-- GRADE OUTPUTS -->
+<section class="grade-section">
+  <div class="wrap">
+    <div class="grade-inner">
+      <div class="grade-label">
+        <span class="label label-amber" style="margin-bottom:8px;">Three grade outputs</span>
+        <span class="label" style="margin-top:8px; color:rgba(250,250,248,0.2);">Same feedstock. Different conditions.</span>
+      </div>
+      <div class="grade-grid">
+        <div class="grade-item">
+          <span class="grade-name">Soil-grade Biochar</span>
+          <span class="grade-target">EBC-Agro · IBI Class 1</span>
+          <div class="grade-params">
+            <div class="grade-param"><span class="grade-param-k">Fixed carbon</span><span class="grade-param-v">≥ 70%</span></div>
+            <div class="grade-param"><span class="grade-param-k">H/Corg ratio</span><span class="grade-param-v">≤ 0.35</span></div>
+            <div class="grade-param"><span class="grade-param-k">pH range</span><span class="grade-param-v">7.5 – 9.5</span></div>
+            <div class="grade-param"><span class="grade-param-k">Mean residence time</span><span class="grade-param-v">500 – 3,000+ yr</span></div>
+            <div class="grade-param"><span class="grade-param-k">CDR eligible</span><span class="grade-param-v">Yes — per batch</span></div>
           </div>
         </div>
-      </div>
-
-      <div class="stage-item" onclick="toggle(this)">
-        <div class="stage-num-col"><span class="stage-num">02</span></div>
-        <div class="stage-body-col">
-          <div class="stage-header">
-            <div>
-              <div class="stage-title">Thermal conversion</div>
-              <span class="stage-tag">Core process</span>
-            </div>
-            <span class="stage-toggle">+</span>
-          </div>
-          <div class="stage-expand">
-            <p class="stage-expand-inner">Feedstock is heated in a low-oxygen environment. Temperature, heating rate, and residence time are set based on the target output — higher temperatures and longer residence times yield higher fixed carbon content and lower volatile matter. Process gases are captured and either used for heat recovery or measured and vented. Solid output is cooled before discharge.</p>
+        <div class="grade-item">
+          <span class="grade-name">Activated Carbon</span>
+          <span class="grade-target">GAC · PAC · Pelletized</span>
+          <div class="grade-params">
+            <div class="grade-param"><span class="grade-param-k">BET surface area</span><span class="grade-param-v">900–1,200 m²/g</span></div>
+            <div class="grade-param"><span class="grade-param-k">Iodine number</span><span class="grade-param-v">≥ 900 mg/g</span></div>
+            <div class="grade-param"><span class="grade-param-k">Pore distribution</span><span class="grade-param-v">Micropore dominant</span></div>
+            <div class="grade-param"><span class="grade-param-k">Ash content</span><span class="grade-param-v">≤ 10%</span></div>
+            <div class="grade-param"><span class="grade-param-k">Primary market</span><span class="grade-param-v">Water · Industrial</span></div>
           </div>
         </div>
-      </div>
-
-      <div class="stage-item" onclick="toggle(this)">
-        <div class="stage-num-col"><span class="stage-num">03</span></div>
-        <div class="stage-body-col">
-          <div class="stage-header">
-            <div>
-              <div class="stage-title">Grading and quality testing</div>
-              <span class="stage-tag">Quality control</span>
-            </div>
-            <span class="stage-toggle">+</span>
-          </div>
-          <div class="stage-expand">
-            <p class="stage-expand-inner">Solid output is sampled at discharge. Fixed carbon, volatile matter, ash content, moisture, pH, and — for activated carbon — surface area and iodine number are measured and compared against grade thresholds. Batches meeting soil-grade specification are separated from fuel-grade and purification-grade outputs. Off-spec material is reprocessed or blended to the nearest qualifying grade.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="stage-item" onclick="toggle(this)">
-        <div class="stage-num-col"><span class="stage-num">04</span></div>
-        <div class="stage-body-col">
-          <div class="stage-header">
-            <div>
-              <div class="stage-title">Batch record and dispatch</div>
-              <span class="stage-tag">Provenance</span>
-            </div>
-            <span class="stage-toggle">+</span>
-          </div>
-          <div class="stage-expand">
-            <p class="stage-expand-inner">Each passing batch is assigned a unique identifier linking it to its feedstock intake record, conversion run log, and quality test results. This record accompanies the product to the customer and forms the basis for third-party verification and carbon removal reporting. The identifier does not expire. The record does not change after issue.</p>
+        <div class="grade-item">
+          <span class="grade-name">Carbon Fuel</span>
+          <span class="grade-target">Industrial · Export Grade</span>
+          <div class="grade-params">
+            <div class="grade-param"><span class="grade-param-k">Calorific value</span><span class="grade-param-v">≥ 4,500 kcal/kg</span></div>
+            <div class="grade-param"><span class="grade-param-k">Fixed carbon</span><span class="grade-param-v">≥ 65%</span></div>
+            <div class="grade-param"><span class="grade-param-k">Sulfur content</span><span class="grade-param-v">≤ 0.5%</span></div>
+            <div class="grade-param"><span class="grade-param-k">Ash content</span><span class="grade-param-v">≤ 8%</span></div>
+            <div class="grade-param"><span class="grade-param-k">Primary market</span><span class="grade-param-v">Japan · Korea · India</span></div>
           </div>
         </div>
       </div>
@@ -420,95 +406,63 @@
   </div>
 </section>
 
-<!-- SCHEMATIC -->
-<section class="schematic-section">
+<!-- QC CHAIN -->
+<section class="qc-section">
   <div class="wrap">
-    <span class="schematic-label">Material flow</span>
-    <h2 class="f-head schematic-h2" style="color:var(--white);">Input to output.</h2>
-    <div class="flow-row">
-      <div class="flow-node">
-        <div class="flow-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><path d="M12 2a7 7 0 0 1 0 14M12 2a7 7 0 0 0 0 14M12 16v6M8 20h8"/></svg>
-        </div>
-        <span class="flow-node-label">Biological feedstock</span>
-      </div>
-      <div class="flow-connector"></div>
-      <div class="flow-node">
-        <div class="flow-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="8" y1="4" x2="8" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="16" y1="4" x2="16" y2="20"/></svg>
-        </div>
-        <span class="flow-node-label">Assessment</span>
-      </div>
-      <div class="flow-connector"></div>
-      <div class="flow-node">
-        <div class="flow-box highlight">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(184,112,16,0.8)" stroke-width="1.2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
-        </div>
-        <span class="flow-node-label" style="color:rgba(250,250,248,0.65)">Thermal conversion</span>
-      </div>
-      <div class="flow-connector"></div>
-      <div class="flow-node">
-        <div class="flow-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <span class="flow-node-label">Grading</span>
-      </div>
-      <div class="flow-connector"></div>
-      <div class="flow-node">
-        <div class="flow-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><polyline points="9 12 11 14 15 10"/></svg>
-        </div>
-        <span class="flow-node-label">Verified dispatch</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- GRADES -->
-<section class="grades-section">
-  <div class="wrap">
-    <span class="label" style="margin-bottom:16px;">Output specifications</span>
-    <h2 class="f-head grades-h2">Three grades. Defined by purpose.</h2>
-    <p class="grades-intro">The same conversion process, run at different conditions, produces outputs with distinct properties and uses. Each grade is defined by its specification — not by what it is called.</p>
-
-    <div class="grades-table">
-      <div class="grade-col">
-        <div class="grade-header">
-          <span class="grade-name g-soil">Biochar — Soil Grade</span>
-          <div class="grade-indicator gi-soil"></div>
-        </div>
-        <div class="grade-specs">
-          <div class="grade-spec-row"><span class="gs-key">Fixed carbon</span><span class="gs-val">≥ 70%</span></div>
-          <div class="grade-spec-row"><span class="gs-key">pH range</span><span class="gs-val">7.0 – 9.5</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Moisture</span><span class="gs-val">≤ 12%</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Permanence</span><span class="gs-val">500+ years</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Application</span><span class="gs-val">Soil, sequestration</span></div>
+    <div class="two-col">
+      <div>
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">Quality control</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">Four checkpoints. Every batch.</span>
         </div>
       </div>
-      <div class="grade-col">
-        <div class="grade-header">
-          <span class="grade-name g-fuel">Carbon Fuel — Combustion Grade</span>
-          <div class="grade-indicator gi-fuel"></div>
-        </div>
-        <div class="grade-specs">
-          <div class="grade-spec-row"><span class="gs-key">Calorific value</span><span class="gs-val">≥ 4,500 kcal/kg</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Fixed carbon</span><span class="gs-val">≥ 65%</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Moisture</span><span class="gs-val">≤ 8%</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Ash</span><span class="gs-val">≤ 10%</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Application</span><span class="gs-val">Industrial, export</span></div>
-        </div>
-      </div>
-      <div class="grade-col">
-        <div class="grade-header">
-          <span class="grade-name g-puri">Activated Carbon — Purification Grade</span>
-          <div class="grade-indicator gi-puri"></div>
-        </div>
-        <div class="grade-specs">
-          <div class="grade-spec-row"><span class="gs-key">Surface area</span><span class="gs-val">900+ m²/g</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Iodine number</span><span class="gs-val">≥ 900 mg/g</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Ash content</span><span class="gs-val">≤ 5%</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Forms</span><span class="gs-val">Powder, granular, pellet</span></div>
-          <div class="grade-spec-row"><span class="gs-key">Application</span><span class="gs-val">Water, air, cosmetics</span></div>
+      <div>
+        <h2 class="f-head section-head">What gets tested, and when.</h2>
+        <p class="body-text">Quality control in specialty carbon materials is not an end-of-line check. It is a chain of documented decisions — at intake, during conversion, at output, and at application — with a third-party laboratory as the final word before product is released.</p>
+        <div class="qc-grid">
+          <div class="qc-item">
+            <span class="qc-step">Stage 01</span>
+            <div class="qc-head">Feedstock screening</div>
+            <p class="qc-body">Before conversion begins, feedstock is assessed for moisture, apparent density, and visual consistency. Batches outside moisture tolerance are pre-conditioned.</p>
+            <div class="qc-tests">
+              <span class="qc-test">Mass (wet and dry)</span>
+              <span class="qc-test">Moisture content %</span>
+              <span class="qc-test">Origin documentation</span>
+            </div>
+          </div>
+          <div class="qc-item">
+            <span class="qc-step">Stage 02</span>
+            <div class="qc-head">In-process monitoring</div>
+            <p class="qc-body">Conversion parameters are logged continuously. Temperature profile, atmosphere readings, and residence time are recorded and compared to grade targets in real time.</p>
+            <div class="qc-tests">
+              <span class="qc-test">Temperature profile</span>
+              <span class="qc-test">Residence time log</span>
+              <span class="qc-test">Yield calculation</span>
+            </div>
+          </div>
+          <div class="qc-item">
+            <span class="qc-step">Stage 03</span>
+            <div class="qc-head">Third-party laboratory</div>
+            <p class="qc-body">Every batch is sampled and sent to an accredited external laboratory before release. Lab results must meet grade specification. The batch certificate is issued only after confirmation.</p>
+            <div class="qc-tests">
+              <span class="qc-test">H/Corg ratio (EBC)</span>
+              <span class="qc-test">Fixed carbon (ASTM D3172)</span>
+              <span class="qc-test">Iodine no. (ASTM D5742)</span>
+              <span class="qc-test">Heavy metals (ICP-MS)</span>
+              <span class="qc-test">Proximate analysis</span>
+            </div>
+          </div>
+          <div class="qc-item">
+            <span class="qc-step">Stage 04</span>
+            <div class="qc-head">Application documentation</div>
+            <p class="qc-body">For soil application and CDR credit generation, GPS coordinates, application rate, date, and operator are recorded. These records form the final link in the MRV chain and are required for credit issuance.</p>
+            <div class="qc-tests">
+              <span class="qc-test">GPS field coordinates</span>
+              <span class="qc-test">Application rate (t/ha)</span>
+              <span class="qc-test">Date and operator ID</span>
+              <span class="qc-test">Photo documentation</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -520,59 +474,44 @@
   <div class="wrap">
     <div class="prov-inner">
       <div>
-        <span class="label" style="margin-bottom:16px;">What we track</span>
-        <h2 class="f-head prov-h2">Every batch has a record.</h2>
-        <p class="prov-body">From feedstock origin to delivery, each production batch carries a data trail. This isn't a marketing feature — it's the operational infrastructure behind every carbon removal claim we make or support.</p>
-        <p class="prov-body">The records are the basis for third-party verification. They don't change after issue.</p>
-        <a href="carbon.html#methodology" class="text-link">Our measurement methodology <span>→</span></a>
-      </div>
-      <div class="prov-list">
-        <div class="prov-item">
-          <div class="prov-icon">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="0.5" stroke="#AEACA0" stroke-width="1.1"/><line x1="4" y1="7" x2="10" y2="7" stroke="#AEACA0" stroke-width="1.1"/><line x1="4" y1="4.5" x2="10" y2="4.5" stroke="#AEACA0" stroke-width="1.1"/><line x1="4" y1="9.5" x2="7.5" y2="9.5" stroke="#AEACA0" stroke-width="1.1"/></svg>
-          </div>
-          <div>
-            <div class="prov-item-title">Feedstock origin record</div>
-            <div class="prov-item-desc">Source material, supplier, location, and intake date logged on arrival.</div>
-          </div>
-        </div>
-        <div class="prov-item">
-          <div class="prov-icon">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#AEACA0" stroke-width="1.1"/><polyline points="7,4 7,7.5 9.5,9.5" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="prov-item-title">Conversion run log</div>
-            <div class="prov-item-desc">Temperature profile, residence time, and solid yield recorded per batch.</div>
-          </div>
-        </div>
-        <div class="prov-item">
-          <div class="prov-icon">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 10L5 6L8 8.5L11 4" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="4" r="1.2" fill="#AEACA0"/></svg>
-          </div>
-          <div>
-            <div class="prov-item-title">Quality test certificate</div>
-            <div class="prov-item-desc">Lab analysis results tied to batch ID against published grade thresholds.</div>
-          </div>
-        </div>
-        <div class="prov-item">
-          <div class="prov-icon">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#AEACA0" stroke-width="1.1"/><path d="M4.5 7.5L6.5 9.5L9.5 5.5" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div class="prov-item-title">Third-party verification</div>
-            <div class="prov-item-desc">External audit confirms mass balance and carbon removal calculations.</div>
-          </div>
-        </div>
-        <div class="prov-item">
-          <div class="prov-icon">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="0.5" stroke="#AEACA0" stroke-width="1.1"/><polyline points="4,3 7,1 10,3" stroke="#AEACA0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div class="prov-item-title">Customer carbon report</div>
-            <div class="prov-item-desc">Delivery-level documentation for buyer sustainability reporting.</div>
-          </div>
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">Traceability</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">From field to buyer</span>
         </div>
       </div>
+      <div>
+        <h2 class="f-head section-head">Every batch has a complete record.</h2>
+        <p class="body-text">A batch certificate from Bombay Bioworks includes: feedstock origin and intake date, production batch number, conversion run parameters, third-party laboratory results (with accreditation number), and product grade against specification. For biochar batches going to soil application, the application record is appended when available.</p>
+        <p class="body-text">This documentation set is what CDR buyers, carbon registries, and regulatory agencies require. It is not produced retroactively — it is generated sequentially as part of normal production practice. The records exist because the process requires them, not because a buyer asked for them after the fact.</p>
+
+        <div class="prov-callout">
+          <p class="prov-callout-text">We don't generate documentation to support a carbon claim. We generate carbon that supports a documentation claim.</p>
+          <p class="prov-callout-note">The distinction matters in audits. A documentation system that works backwards from a desired credit outcome will eventually fail under third-party scrutiny. A production system that generates records as a byproduct of controlled manufacturing practice will not.</p>
+        </div>
+
+        <p class="body-text" style="margin-top:36px;">Buyers who need to understand the provenance record in detail — for registry submission, for ESG reporting, or for due diligence purposes — can request a sample documentation package before placing an order. We don't require a purchase commitment to share how the records are structured.</p>
+        <a href="company.html" class="text-link" style="margin-top:36px;">Contact us for documentation samples →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERIOR LINKS -->
+<section class="interior-section">
+  <div class="wrap">
+    <div class="interior-grid">
+      <a href="carbon.html" class="interior-item">
+        <div class="interior-item-label"><span>Carbon</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Why H/Corg ratio determines permanence and how EBC certifies it.</div>
+      </a>
+      <a href="applications.html" class="interior-item">
+        <div class="interior-item-label"><span>Products</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Full specifications and application guidance for all three grades.</div>
+      </a>
+      <a href="company.html" class="interior-item">
+        <div class="interior-item-label"><span>Company</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Who operates the facility and how to reach us.</div>
+      </a>
     </div>
   </div>
 </section>
@@ -599,11 +538,11 @@
 </footer>
 
 <script>
-function toggle(el) {
-  const isOpen = el.classList.contains('open');
-  document.querySelectorAll('.stage-item').forEach(s => s.classList.remove('open'));
-  if (!isOpen) el.classList.add('open');
-}
+const nav = document.getElementById('nav');
+const hero = document.getElementById('hero');
+new IntersectionObserver(([e]) => {
+  nav.className = e.isIntersecting ? 'on-dark' : 'on-light';
+}, { threshold: 0.05 }).observe(hero);
 </script>
 </body>
 </html>

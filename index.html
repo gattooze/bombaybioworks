@@ -3,309 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bombay Bioworks — Fixed.</title>
+<title>Bombay Bioworks — Carbon Materials</title>
 <link rel="stylesheet" href="style.css">
 <style>
 
-/* ── HERO ── */
-.hero {
-  background: var(--carbon);
+/* ── MASTHEAD ── */
+.masthead {
   min-height: 100svh;
+  padding: calc(var(--nav-h) + 80px) 0 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+  justify-content: space-between;
+  background: var(--paper);
 }
-.hero-word {
-  font-size: clamp(120px, 20vw, 260px);
-  color: var(--white);
-  text-align: center;
-  position: relative;
-  z-index: 2;
-  user-select: none;
-}
-.hero-sub {
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.28);
-  margin-top: 48px;
-  text-align: center;
-  z-index: 2;
-}
-.hero-scroll {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 2;
-}
-.hero-scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, rgba(250,250,248,0.15), transparent);
-}
-
-/* ── WHAT WE MAKE ── */
-.products-section {
-  padding: 120px 0 100px;
-  border-bottom: 1px solid var(--rule);
-}
-.products-header {
+.masthead-top {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 56px;
+  align-items: flex-start;
+  margin-bottom: 80px;
 }
-.products-title {
-  font-size: clamp(36px, 4vw, 56px);
-  color: var(--ink);
-}
-.products-count {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 36;
-  font-size: 14px;
-  color: var(--ink-3);
-}
-
-.product-table {
+.masthead-meta {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--rule);
+  gap: 4px;
 }
-.product-row {
-  display: grid;
-  grid-template-columns: 48px 1fr 1fr auto;
-  gap: 0 40px;
-  align-items: center;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--rule);
-  text-decoration: none;
-  color: inherit;
-  transition: background 0.2s;
-  cursor: pointer;
-  position: relative;
+.masthead-tagline {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  max-width: 280px;
+  text-align: right;
 }
-.product-row:hover { background: var(--paper-warm); margin: 0 -80px; padding-left: 80px; padding-right: 80px; }
-
-.product-num {
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+.masthead-products {
+  padding-bottom: 72px;
+}
+.mast-line {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(64px, 9.5vw, 130px);
+  line-height: 0.97;
+  letter-spacing: -0.025em;
+  display: block;
+}
+.mast-line--a {
+  font-style: italic;
+  font-weight: 200;
+  font-variation-settings: 'opsz' 144;
   color: var(--ink-3);
 }
-.product-name {
+.mast-line--b {
+  font-style: normal;
+  font-weight: 500;
+  font-variation-settings: 'opsz' 72, 'WONK' 0;
+  color: var(--ink-2);
+}
+.mast-line--c {
+  font-style: italic;
+  font-weight: 800;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  color: var(--ink);
+}
+.masthead-rule {
+  height: 3px;
+  background: var(--ink);
+  width: 100%;
+}
+
+/* ── PRODUCT GRID ── */
+.pgrid-section { border-bottom: 1px solid var(--rule); }
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-left: 1px solid var(--rule);
+}
+.pgrid-item {
+  border-right: 1px solid var(--rule);
+  padding: 52px 44px 48px;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+  overflow: hidden;
+}
+.pgrid-item:hover { background: var(--paper-warm); }
+.pgrid-num {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 36px;
+}
+.pgrid-ghost {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 800;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  font-size: clamp(80px, 11vw, 140px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--rule);
+  display: block;
+  margin-bottom: -10px;
+  transition: color 0.25s;
+  user-select: none;
+}
+.pgrid-item:hover .pgrid-ghost { color: var(--paper-warm); }
+.pgrid-name {
   font-family: 'Fraunces', serif;
   font-style: normal;
   font-weight: 600;
   font-variation-settings: 'opsz' 48;
-  font-size: clamp(22px, 2.8vw, 36px);
+  font-size: clamp(22px, 2.4vw, 32px);
   color: var(--ink);
-  line-height: 1.1;
-}
-.product-desc {
-  font-size: 15px;
-  color: var(--ink-2);
-  line-height: 1.6;
-}
-.product-arrow {
-  font-size: 18px;
-  color: var(--ink-3);
-  transition: transform 0.25s, color 0.25s;
-  margin-right: 4px;
-}
-.product-row:hover .product-arrow {
-  color: var(--amber);
-  transform: translateX(4px);
-}
-
-/* ── STATEMENT ── */
-.statement-section {
-  padding: 120px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.statement-inner {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 80px;
-  align-items: start;
-}
-.statement-label-col {
-  padding-top: 8px;
-}
-.statement-label-num {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 72;
-  font-size: 72px;
-  color: var(--rule);
-  line-height: 1;
-  margin-bottom: 16px;
-}
-.statement-text {
-  font-family: 'Fraunces', serif;
-  font-style: normal;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 72, 'WONK' 0;
-  font-size: clamp(24px, 3vw, 40px);
-  line-height: 1.35;
-  color: var(--ink);
-  letter-spacing: -0.02em;
-}
-.statement-body {
-  margin-top: 32px;
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--ink-2);
-  max-width: 560px;
-}
-.statement-body + .statement-body { margin-top: 16px; }
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--ink);
-  text-decoration: none;
-  margin-top: 36px;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 4px;
-  transition: border-color 0.25s, color 0.25s, gap 0.25s;
-}
-.text-link:hover { border-color: var(--amber); color: var(--amber); gap: 14px; }
-
-/* ── DATA STRIP ── */
-.data-strip {
-  background: var(--carbon);
-  padding: 80px 0;
-}
-.data-strip-inner {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: rgba(255,255,255,0.04);
-}
-.data-item {
-  background: var(--carbon);
-  padding: 44px 40px;
-}
-.data-num {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 700;
-  font-variation-settings: 'opsz' 72, 'WONK' 1;
-  font-size: clamp(48px, 5.5vw, 80px);
-  line-height: 1;
-  color: var(--white);
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 5px;
 }
-.data-unit {
-  font-size: 0.45em;
-  font-style: normal;
-  font-weight: 400;
-  color: var(--amber);
-  vertical-align: super;
-  font-variation-settings: 'opsz' 36, 'WONK' 0;
-  margin-left: 4px;
-}
-.data-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.25);
-  display: block;
-  margin-bottom: 6px;
-}
-.data-desc {
-  font-size: 13px;
-  color: rgba(250,250,248,0.35);
-  line-height: 1.6;
-}
-
-/* ── INTERIOR LINKS ── */
-.interior-section {
-  padding: 100px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.interior-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border-left: 1px solid var(--rule);
-}
-.interior-item {
-  padding: 40px 36px;
-  border-right: 1px solid var(--rule);
-  text-decoration: none;
-  display: block;
-  transition: background 0.2s;
-}
-.interior-item:hover { background: var(--paper-warm); }
-.interior-item-label {
-  font-size: 11px;
+.pgrid-spec {
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-bottom: 20px;
+  display: block;
+  margin-bottom: 24px;
+}
+.pgrid-desc {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  margin-bottom: 32px;
+}
+.pgrid-link {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s, gap 0.2s;
+}
+.pgrid-item:hover .pgrid-link { color: var(--amber); gap: 14px; }
+
+/* ── STATEMENT ── */
+.statement-section {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.statement-inner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
+}
+.statement-label-col {
+  padding-top: 6px;
+}
+.statement-content {
+  border-left: 3px solid var(--amber);
+  padding-left: 52px;
+}
+.statement-lead {
+  font-family: 'Fraunces', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-variation-settings: 'opsz' 72;
+  font-size: clamp(24px, 2.8vw, 38px);
+  line-height: 1.3;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 36px;
+}
+.statement-body {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  margin-bottom: 20px;
+  max-width: 640px;
+}
+
+/* ── TECH STRIP ── */
+.tech-strip {
+  background: var(--carbon);
+  border-top: 3px solid var(--amber);
+  border-bottom: 3px solid var(--amber);
+}
+.tech-strip-inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.04);
+}
+.tech-item {
+  background: var(--carbon);
+  padding: 52px 44px;
+}
+.tech-param {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: 'opsz' 48;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 12px;
+}
+.tech-value {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-variation-settings: 'opsz' 72, 'WONK' 1;
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 1;
+  color: var(--white);
+  display: block;
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+.tech-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.2);
+  display: block;
+  margin-bottom: 16px;
+}
+.tech-explain {
+  font-size: 13px;
+  line-height: 1.72;
+  color: rgba(250,250,248,0.35);
+}
+.tech-explain strong {
+  color: rgba(250,250,248,0.55);
+  font-weight: 500;
+}
+
+/* ── APPLICATIONS ── */
+.apps-section {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.apps-header {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
+  margin-bottom: 52px;
+}
+.apps-h2 { font-size: clamp(28px, 3vw, 44px); }
+
+.apps-matrix {
+  display: grid;
+  grid-template-columns: 180px repeat(5, 1fr);
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+.am-cell {
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 20px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.am-cell--head {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 14px;
+  background: var(--paper-warm);
+}
+.am-cell--product {
+  background: var(--paper-warm);
+  display: flex;
   align-items: center;
 }
-.interior-item-arrow {
-  color: var(--ink-3);
-  transition: transform 0.25s, color 0.25s;
-}
-.interior-item:hover .interior-item-arrow { transform: translateX(4px); color: var(--amber); }
-.interior-item-title {
+.am-cell--product span {
   font-family: 'Fraunces', serif;
   font-style: italic;
   font-weight: 500;
-  font-variation-settings: 'opsz' 48, 'WONK' 1;
-  font-size: clamp(20px, 2vw, 28px);
+  font-variation-settings: 'opsz' 36;
+  font-size: 14px;
   color: var(--ink);
-  line-height: 1.2;
 }
+.am-cell--empty {
+  background: var(--paper-warm);
+  opacity: 0.5;
+}
+.am-cell--active { background: var(--paper); }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 1024px) {
-  .product-row { grid-template-columns: 40px 1fr auto; }
-  .product-desc { display: none; }
-  .statement-inner { grid-template-columns: 1fr; gap: 40px; }
-  .data-strip-inner { grid-template-columns: 1fr; }
-  .interior-grid { grid-template-columns: 1fr; border-left: none; }
-  .interior-item { border: none; border-bottom: 1px solid var(--rule); }
+@media (max-width: 1100px) {
+  .pgrid { grid-template-columns: 1fr; border-left: none; }
+  .pgrid-item { border-right: none; border-bottom: 1px solid var(--rule); }
+  .statement-inner { grid-template-columns: 1fr; gap: 36px; }
+  .statement-content { border-left: none; border-top: 3px solid var(--amber); padding-left: 0; padding-top: 36px; }
+  .tech-strip-inner { grid-template-columns: 1fr; }
+  .apps-header { grid-template-columns: 1fr; }
+  .apps-matrix { display: none; }
 }
 @media (max-width: 768px) {
-  .product-row:hover { margin: 0; padding-left: 0; padding-right: 0; }
-  .products-header { flex-direction: column; gap: 12px; }
+  .masthead-meta { display: none; }
+  .masthead-tagline { display: none; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav" class="on-dark">
+<nav id="nav" class="on-light">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html">Carbon</a></li>
@@ -315,44 +325,53 @@
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="hero-word f-display">Fixed.</div>
-  <p class="hero-sub">Biochar · Activated Carbon · Carbon Fuel</p>
-  <div class="hero-scroll">
-    <span>Scroll</span>
-    <div class="hero-scroll-line"></div>
+<!-- MASTHEAD -->
+<section class="masthead">
+  <div class="wrap">
+    <div class="masthead-top">
+      <div class="masthead-meta">
+        <span class="label">Bombay Bioworks</span>
+        <span class="label" style="margin-top:5px; color:var(--ink-3)">Maharashtra, India</span>
+        <span class="label" style="margin-top:5px; color:var(--ink-3)">Carbon Materials Manufacturer</span>
+      </div>
+      <p class="masthead-tagline">Three fixed-carbon products. One facility. Agricultural feedstock converted into material that can be tested, shipped, applied, and verified.</p>
+    </div>
+    <div class="masthead-products">
+      <span class="mast-line mast-line--a">Biochar.</span>
+      <span class="mast-line mast-line--b">Activated Carbon.</span>
+      <span class="mast-line mast-line--c">Carbon Fuel.</span>
+    </div>
   </div>
+  <div class="masthead-rule"></div>
 </section>
 
-<!-- WHAT WE MAKE -->
-<section class="products-section" id="products">
-  <div class="wrap">
-    <div class="products-header">
-      <h2 class="f-head">What we make.</h2>
-      <span class="products-count">Three products — one element</span>
-    </div>
-
-    <div class="product-table">
-      <a href="applications.html#biochar" class="product-row">
-        <span class="product-num">01</span>
-        <span class="product-name">Biochar</span>
-        <span class="product-desc">Applied to agricultural soil. Stays for centuries. Removes carbon from the atmosphere and keeps it there.</span>
-        <span class="product-arrow">→</span>
-      </a>
-      <a href="applications.html#activated" class="product-row">
-        <span class="product-num">02</span>
-        <span class="product-name">Activated Carbon</span>
-        <span class="product-desc">What it contacts comes out cleaner. Water treatment, air filtration, cosmetics, industrial purification.</span>
-        <span class="product-arrow">→</span>
-      </a>
-      <a href="applications.html#fuel" class="product-row">
-        <span class="product-num">03</span>
-        <span class="product-name">Carbon Fuel</span>
-        <span class="product-desc">Burns where coal burns. Boilers, kilns, furnaces. Equivalent energy, traceable biological origin.</span>
-        <span class="product-arrow">→</span>
-      </a>
-    </div>
+<!-- PRODUCT GRID -->
+<section class="pgrid-section">
+  <div class="pgrid">
+    <a href="applications.html#biochar" class="pgrid-item">
+      <span class="pgrid-num">01 — Biochar</span>
+      <span class="pgrid-ghost">≥70%</span>
+      <span class="pgrid-name">Biochar</span>
+      <span class="pgrid-spec">Fixed Carbon · IBI Class 1 · EBC-Agro</span>
+      <p class="pgrid-desc">Applied to agricultural soil at 1–5 t/ha. H/Corg ratio below 0.4 per EBC protocol — the threshold for multi-centennial carbon stability. Measurable CEC improvement on application. Eligible for verified CDR credits.</p>
+      <span class="pgrid-link">Specifications &amp; applications →</span>
+    </a>
+    <a href="applications.html#activated" class="pgrid-item">
+      <span class="pgrid-num">02 — Activated Carbon</span>
+      <span class="pgrid-ghost">900+</span>
+      <span class="pgrid-name">Activated Carbon</span>
+      <span class="pgrid-spec">BET Surface Area m²/g · ASTM D3663</span>
+      <p class="pgrid-desc">Micropore-dominant structure. Iodine number ≥900 mg/g per ASTM D5742. Available in granular (GAC), powdered (PAC), and pelletized forms. Water treatment, gas purification, and industrial adsorption.</p>
+      <span class="pgrid-link">Specifications &amp; applications →</span>
+    </a>
+    <a href="applications.html#fuel" class="pgrid-item">
+      <span class="pgrid-num">03 — Carbon Fuel</span>
+      <span class="pgrid-ghost">4,500</span>
+      <span class="pgrid-name">Carbon Fuel</span>
+      <span class="pgrid-spec">Minimum Calorific Value kcal/kg · ASTM D5865</span>
+      <p class="pgrid-desc">Dense biogenic fuel. Fixed carbon ≥65% per proximate analysis (ASTM D3172). Low sulfur. Drop-in for thermal coal in industrial boilers, kilns, and furnaces. Export markets: Japan, South Korea, Southeast Asia.</p>
+      <span class="pgrid-link">Specifications &amp; applications →</span>
+    </a>
   </div>
 </section>
 
@@ -361,38 +380,82 @@
   <div class="wrap">
     <div class="statement-inner">
       <div class="statement-label-col">
-        <div class="statement-label-num">—</div>
-        <span class="label">What this is</span>
+        <span class="label" style="margin-bottom:8px;">What this is</span>
+        <span class="label" style="color:var(--rule)">——</span>
+        <span class="label" style="margin-top:8px; color:var(--ink-3)">And what it isn't</span>
       </div>
-      <div>
-        <p class="statement-text">Most carbon removal is a spreadsheet. A tonne of biochar in the ground is not.</p>
-        <p class="statement-body">We make physical things — products that can be tested, weighed, applied, and verified. Biochar in soil doesn't drift back into the atmosphere. Activated carbon in a filtration system is doing a job. Dense carbon fuel displacing coal is a displacement that happened.</p>
-        <p class="statement-body">These are not offsets. They're objects. Made from agricultural residue. In India. At industrial scale.</p>
-        <a href="carbon.html" class="text-link">How we account for it <span>→</span></a>
+      <div class="statement-content">
+        <p class="statement-lead">The voluntary carbon market is full of claims. Most of them rely on not being checked too closely.</p>
+        <p class="statement-body">We make physical carbon materials. A tonne of biochar with a fixed carbon content above 70% and an H/Corg ratio below 0.4 is chemically stable across multi-centennial timescales — not because we say so, but because that's what the European Biochar Certificate protocol tests, what the International Biochar Initiative standard specifies, and what independent laboratory analysis confirms on every batch we ship.</p>
+        <p class="statement-body">Activated carbon with a BET surface area above 900 m²/g is doing adsorption work in a filter right now. Carbon fuel displacing thermal coal in an industrial boiler is a displacement that happened. These aren't projections or credits on a ledger. They're materials with specifications, test certificates, and an end use.</p>
+        <p class="statement-body">We don't manufacture offsets. We manufacture carbon. The permanence is in the product, not the paperwork.</p>
+        <a href="carbon.html" class="text-link" style="margin-top:40px;">How we verify and certify →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DATA STRIP -->
-<section class="data-strip">
+<!-- TECHNICAL STRIP -->
+<section class="tech-strip">
   <div class="wrap">
-    <div class="data-strip-inner">
-      <div class="data-item">
-        <span class="data-num">500<span class="data-unit">+</span></span>
-        <span class="data-label">Soil permanence</span>
-        <p class="data-desc">Minimum years biochar remains fixed in soil before significant carbon loss.</p>
+    <div class="tech-strip-inner">
+      <div class="tech-item">
+        <span class="tech-param">H/Corg molar ratio</span>
+        <span class="tech-value">&lt; 0.4</span>
+        <span class="tech-label">EBC Permanence Threshold · 2023</span>
+        <p class="tech-explain">Below this molar ratio, pyrolytic carbon resists biological and chemical oxidation across centuries. The EBC and IBI both use this value as the boundary between stable and unstable biochar. <strong>Our biochar targets H/Corg ≤ 0.35</strong>, measured per EBC accreditation protocol on every production batch.</p>
       </div>
-      <div class="data-item">
-        <span class="data-num">900<span class="data-unit">m²/g</span></span>
-        <span class="data-label">Activated surface area</span>
-        <p class="data-desc">Internal surface area per gram of activated carbon — where adsorption happens.</p>
+      <div class="tech-item">
+        <span class="tech-param">Iodine number</span>
+        <span class="tech-value">≥900</span>
+        <span class="tech-label">mg/g · ASTM D5742</span>
+        <p class="tech-explain">The primary quality indicator for micropore surface area in activated carbon — and the proxy buyers use for adsorption capacity. Higher iodine number means more available surface for contaminant capture. <strong>Premium grades reach 1,100 mg/g</strong>, suited to pharmaceutical-grade water and solvent recovery applications.</p>
       </div>
-      <div class="data-item">
-        <span class="data-num">4,500<span class="data-unit">kcal</span></span>
-        <span class="data-label">Combustion energy</span>
-        <p class="data-desc">Minimum calorific value per kilogram of our carbon fuel output.</p>
+      <div class="tech-item">
+        <span class="tech-param">Fixed carbon</span>
+        <span class="tech-value">≥65%</span>
+        <span class="tech-label">Proximate Analysis · ASTM D3172</span>
+        <p class="tech-explain">Fixed carbon content governs calorific value, combustion behaviour, and ash output in industrial applications. At ≥65% FC, our carbon fuel product meets the specification range for thermal coal substitution in most boiler and kiln configurations. <strong>Ash content is held below 8%</strong> across standard production grades.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATIONS MATRIX -->
+<section class="apps-section">
+  <div class="wrap">
+    <div class="apps-header">
+      <div></div>
+      <h2 class="f-head apps-h2">Where each product goes.</h2>
+    </div>
+    <div class="apps-matrix">
+      <div class="am-cell am-cell--head" style="background:var(--paper);"></div>
+      <div class="am-cell am-cell--head">Agriculture &amp; Soil</div>
+      <div class="am-cell am-cell--head">Water &amp; Air Treatment</div>
+      <div class="am-cell am-cell--head">Food &amp; Beverage</div>
+      <div class="am-cell am-cell--head">Industrial Process</div>
+      <div class="am-cell am-cell--head">Energy &amp; Fuel</div>
+
+      <div class="am-cell am-cell--product"><span>Biochar</span></div>
+      <div class="am-cell am-cell--active">Soil amendment. CEC improvement. CDR credit generation. Typical application: 1–5 t/ha.</div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--empty"></div>
+
+      <div class="am-cell am-cell--product"><span>Activated Carbon</span></div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--active">Potable water treatment. Wastewater polishing. Groundwater remediation. VOC removal.</div>
+      <div class="am-cell am-cell--active">Decolorization. Deodorization. Sugar refining. Edible oil purification.</div>
+      <div class="am-cell am-cell--active">Solvent recovery. Gas treatment. Catalyst support. Effluent polishing.</div>
+      <div class="am-cell am-cell--empty"></div>
+
+      <div class="am-cell am-cell--product"><span>Carbon Fuel</span></div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--empty"></div>
+      <div class="am-cell am-cell--active">Thermal coal displacement. Boilers, kilns, furnaces. Partial coke replacement.</div>
+      <div class="am-cell am-cell--active">Industrial energy supply. Export: Japan, South Korea, Southeast Asia.</div>
     </div>
   </div>
 </section>
@@ -402,25 +465,16 @@
   <div class="wrap">
     <div class="interior-grid">
       <a href="carbon.html" class="interior-item">
-        <div class="interior-item-label">
-          <span>Carbon</span>
-          <span class="interior-item-arrow">→</span>
-        </div>
-        <div class="interior-item-title">Why fixed carbon is permanent — and how we prove it.</div>
+        <div class="interior-item-label"><span>Carbon</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Permanence, verification, and how we account for what we make.</div>
       </a>
       <a href="technology.html" class="interior-item">
-        <div class="interior-item-label">
-          <span>Process</span>
-          <span class="interior-item-arrow">→</span>
-        </div>
-        <div class="interior-item-title">How biomass becomes biochar, activated carbon, and fuel.</div>
+        <div class="interior-item-label"><span>Process</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">From incoming feedstock to outgoing product. What we test and when.</div>
       </a>
       <a href="company.html" class="interior-item">
-        <div class="interior-item-label">
-          <span>Company</span>
-          <span class="interior-item-arrow">→</span>
-        </div>
-        <div class="interior-item-title">Who we are and why we're doing this from India.</div>
+        <div class="interior-item-label"><span>Company</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Who we are and why we built this in Maharashtra.</div>
       </a>
     </div>
   </div>
@@ -447,13 +501,5 @@
   </div>
 </footer>
 
-<script>
-const nav = document.getElementById('nav');
-const hero = document.getElementById('hero');
-const io = new IntersectionObserver(([e]) => {
-  nav.className = e.isIntersecting ? 'on-dark' : 'on-light';
-}, { threshold: 0.05 });
-io.observe(hero);
-</script>
 </body>
 </html>

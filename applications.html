@@ -7,237 +7,218 @@
 <link rel="stylesheet" href="style.css">
 <style>
 
-.page-hero {
-  padding: calc(var(--nav-h) + 100px) 0 80px;
-  border-bottom: 1px solid var(--rule);
+/* ── HERO ── */
+.hero {
+  background: var(--carbon);
+  min-height: 55svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 60px) 0 72px;
+  border-bottom: 3px solid var(--amber);
 }
-.page-hero h1 { font-size: clamp(52px, 7vw, 100px); }
-.page-hero-sub {
-  font-size: 17px;
-  line-height: 1.75;
-  color: var(--ink-2);
-  max-width: 480px;
-  margin-top: 32px;
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+}
+.hero h1 { font-size: clamp(44px, 6.5vw, 88px); color: var(--white); }
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(250,250,248,0.38);
+  padding-bottom: 8px;
+  max-width: 380px;
 }
 
-/* PRODUCT NAV */
-.product-nav {
+/* ── PRODUCT NAV ── */
+.pnav {
   position: sticky;
   top: var(--nav-h);
-  z-index: 90;
+  z-index: 100;
   background: rgba(244,243,238,0.97);
   border-bottom: 1px solid var(--rule);
-  padding: 0 var(--pad);
-}
-.product-nav-inner {
-  max-width: var(--max);
-  margin: 0 auto;
   display: flex;
-  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
 }
 .pnav-link {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
   text-decoration: none;
-  padding: 18px 24px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  padding: 18px 32px;
+  border-right: 1px solid var(--rule);
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
 }
-.pnav-link:hover { color: var(--ink); }
-.pnav-link.act    { color: var(--ink); border-color: var(--ink); }
+.pnav-link:hover { color: var(--ink); background: var(--paper-warm); }
+.pnav-link.act { color: var(--amber); background: var(--paper); }
 
-/* PRODUCT SECTIONS */
+/* ── PRODUCT SECTION ── */
 .prod-section {
-  padding: 120px 0;
+  padding: 100px 0;
   border-bottom: 1px solid var(--rule);
-  scroll-margin-top: calc(var(--nav-h) + 54px);
 }
-.prod-section:nth-child(even) { background: var(--paper-warm); }
+.prod-section--alt { background: var(--paper-warm); }
 
 .prod-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 100px;
+  gap: 80px;
   align-items: start;
 }
-.prod-flip { direction: rtl; }
-.prod-flip > * { direction: ltr; }
 
-.prod-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
-}
-.prod-num {
+.prod-index-num {
   font-family: 'Fraunces', serif;
   font-style: italic;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 48;
-  font-size: 48px;
-  color: var(--rule);
+  font-weight: 800;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  font-size: clamp(80px, 12vw, 160px);
   line-height: 1;
+  color: var(--rule);
+  letter-spacing: -0.04em;
+  display: block;
+  margin-bottom: -16px;
+  user-select: none;
 }
-.prod-tag {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 5px 12px;
-  border-radius: 2px;
-}
-.tag-biochar   { background: #D4E8D4; color: var(--green); }
-.tag-activated { background: #D4E4EC; color: #2A6070; }
-.tag-fuel      { background: var(--amber-lt); color: var(--amber); }
+.prod-section--alt .prod-index-num { color: var(--paper); }
 
-.prod-h2 {
-  font-size: clamp(36px, 4vw, 56px);
+.prod-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  padding: 4px 10px;
+  margin-bottom: 16px;
+}
+
+.prod-name {
+  font-family: 'Fraunces', serif;
+  font-style: normal;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 72, 'WONK' 0;
+  font-size: clamp(36px, 4.5vw, 60px);
   color: var(--ink);
-  margin-bottom: 24px;
-  line-height: 1.05;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
 }
 .prod-body {
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.9;
   color: var(--ink-2);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
+.prod-body strong { color: var(--ink); font-weight: 500; }
 
-/* SPEC TABLE */
+/* ── SPEC TABLE ── */
 .spec-table {
-  margin-top: 40px;
-  border-top: 1px solid var(--rule);
+  width: 100%;
+  border-collapse: collapse;
+  margin: 36px 0;
+  font-size: 13px;
 }
-.spec-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+.spec-table th {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: left;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.spec-table td {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.spec-table td:first-child { color: var(--ink); font-weight: 500; width: 48%; padding-right: 20px; }
+.spec-table td:last-child { color: var(--ink-3); font-size: 11px; padding-left: 12px; }
+.spec-table tr:last-child td { border-bottom: none; }
+
+/* ── USE CASES ── */
+.use-list { list-style: none; margin-top: 32px; }
+.use-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 0 16px;
   padding: 14px 0;
   border-bottom: 1px solid var(--rule);
-  gap: 16px;
-}
-.spec-key {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  flex-shrink: 0;
-}
-.spec-val {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-variation-settings: 'opsz' 24;
-  font-size: 16px;
-  color: var(--ink);
-  text-align: right;
-}
-
-/* USE LIST */
-.use-list {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--rule);
-}
-.use-item {
-  background: var(--paper);
-  padding: 14px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-size: 14px;
+  line-height: 1.6;
   color: var(--ink-2);
 }
-.prod-section:nth-child(even) .use-item { background: var(--paper-warm); }
-.use-tag {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-3);
+.use-item:last-child { border-bottom: none; }
+.use-item::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  margin-top: 7px;
+  justify-self: center;
 }
 
-/* VISUAL PANELS */
-.prod-visual {
-  min-height: 480px;
-  position: relative;
-}
-.prod-panel {
-  width: 100%;
-  height: 100%;
-  min-height: 480px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-.panel-biochar {
-  background: linear-gradient(145deg, #C8D8B8 0%, #90B480 40%, #5A8450 80%, #2A5430 100%);
-}
-.panel-activated {
-  background: linear-gradient(145deg, #D0E4EC 0%, #90C0CC 50%, #3A7A8A 100%);
-}
-.panel-fuel {
-  background: linear-gradient(145deg, #F8E8B8 0%, #E8C060 40%, #C07820 80%, #803010 100%);
-}
-
-/* BOTTOM STATEMENT */
-.bottom-statement {
+/* ── CLOSING BAND ── */
+.closing-band {
   background: var(--carbon);
   padding: 80px 0;
+  border-top: 3px solid var(--amber);
 }
-.bottom-inner {
-  display: flex;
-  justify-content: space-between;
+.closing-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
   align-items: center;
-  gap: 60px;
 }
-.bottom-text {
+.closing-h2 {
+  font-size: clamp(28px, 3vw, 44px);
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.closing-body { font-size: 14px; line-height: 1.8; color: rgba(250,250,248,0.38); }
+.closing-facts { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.04); }
+.closing-fact {
+  background: var(--carbon);
+  padding: 24px 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.closing-fact-label { font-size: 12px; color: rgba(250,250,248,0.35); letter-spacing: 0.04em; }
+.closing-fact-value {
   font-family: 'Fraunces', serif;
   font-style: italic;
-  font-weight: 400;
-  font-variation-settings: 'opsz' 48, 'WONK' 1;
-  font-size: clamp(22px, 2.5vw, 32px);
-  color: rgba(250,250,248,0.7);
-  max-width: 560px;
-  line-height: 1.4;
+  font-weight: 700;
+  font-variation-settings: 'opsz' 48;
+  font-size: 22px;
+  color: var(--white);
+  white-space: nowrap;
 }
-.bottom-link {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--amber);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(184,112,16,0.35);
-  padding-bottom: 3px;
-  flex-shrink: 0;
-  transition: border-color 0.2s;
-}
-.bottom-link:hover { border-color: var(--amber); }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-  .prod-inner, .prod-flip { grid-template-columns: 1fr; direction: ltr; }
-  .prod-visual { min-height: 280px; }
-  .prod-panel { min-height: 280px; }
-  .bottom-inner { flex-direction: column; align-items: flex-start; }
-}
-@media (max-width: 768px) {
-  .product-nav { padding: 0 var(--pad-sm); overflow-x: auto; }
-  .pnav-link { white-space: nowrap; }
+  .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+  .prod-inner { grid-template-columns: 1fr; gap: 48px; }
+  .closing-inner { grid-template-columns: 1fr; gap: 48px; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav" class="on-light">
+<nav id="nav" class="on-dark">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html">Carbon</a></li>
@@ -247,269 +228,215 @@
   </ul>
 </nav>
 
-<section class="page-hero">
+<section class="hero" id="hero">
   <div class="wrap">
-    <span class="label" style="margin-bottom:20px;">What we make</span>
-    <h1 class="f-head page-hero h1">Three products.<br>One element.</h1>
-    <p class="page-hero-sub">Biochar. Activated carbon. Dense carbon fuel. All derived from the same biological source. Each serving a distinct industrial or agricultural purpose.</p>
+    <div class="hero-inner">
+      <h1 class="f-head">Three products.<br>One element.</h1>
+      <p class="hero-sub">Full specifications, application guidance, and grade details for biochar, activated carbon, and carbon fuel — each from the same biological feedstock and facility.</p>
+    </div>
   </div>
 </section>
 
-<div class="product-nav">
-  <div class="product-nav-inner">
-    <a href="#biochar"   class="pnav-link">Biochar</a>
-    <a href="#activated" class="pnav-link">Activated Carbon</a>
-    <a href="#fuel"      class="pnav-link">Carbon Fuel</a>
-  </div>
-</div>
+<nav class="pnav" id="pnav">
+  <a href="#biochar" class="pnav-link act">01 — Biochar</a>
+  <a href="#activated" class="pnav-link">02 — Activated Carbon</a>
+  <a href="#fuel" class="pnav-link">03 — Carbon Fuel</a>
+</nav>
 
-<!-- BIOCHAR -->
+<!-- 01 BIOCHAR -->
 <section class="prod-section" id="biochar">
   <div class="wrap">
     <div class="prod-inner">
       <div>
-        <div class="prod-eyebrow">
-          <span class="prod-num">01</span>
-          <span class="prod-tag tag-biochar">Biochar</span>
-        </div>
-        <h2 class="f-head prod-h2">Applied to soil.<br>Stays for centuries.</h2>
-        <p class="prod-body">Biochar is porous, stable carbon derived from biological material through thermal conversion. When worked into agricultural soil, it does two things at once: it improves the soil — water retention, microbial activity, nutrient cycling — and it stores carbon in a form that resists biological breakdown for hundreds of years.</p>
-        <p class="prod-body">It is not a fertiliser. It does not add nutrients directly. It creates the conditions in which the soil's own biology can do more with less. Used alongside conventional inputs, it typically reduces requirement and improves yield over time.</p>
-        <p class="prod-body">From a carbon accounting perspective, biochar is one of the most durable removal pathways available — verified permanence at scale, with no technological lock-in risk.</p>
+        <span class="prod-index-num">01</span>
+        <span class="prod-badge">EBC-Agro · IBI Class 1</span>
+        <h2 class="prod-name">Biochar</h2>
+        <p class="prod-body">The most stable product we make. Biochar's carbon matrix — turbostratic, aromatic, resistant to microbial attack — remains in soil on timescales relevant to climate intervention. The H/Corg ratio is the gate. Everything above it is commentary.</p>
+        <p class="prod-body">Our standard biochar grade targets H/Corg ≤ 0.35, fixed carbon ≥ 70%, and pH between 7.5 and 9.5 — parameters selected to maximise soil agronomic benefit while meeting the permanence thresholds required for CDR credit issuance under EBC and IBI protocols.</p>
+        <p class="prod-body"><strong>Biochar is not charcoal.</strong> Charcoal is incompletely combusted biomass with variable and often high H/Corg, significant volatile matter, and no quality certification requirement. Biochar is produced under controlled conditions, tested against published standards, and certified per batch. The distinction matters for both soil application outcomes and carbon accounting.</p>
 
-        <div class="spec-table">
-          <div class="spec-row">
-            <span class="spec-key">Fixed carbon</span>
-            <span class="spec-val">≥ 70%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">pH</span>
-            <span class="spec-val">7.0 – 9.5</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Moisture</span>
-            <span class="spec-val">≤ 12%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Soil permanence</span>
-            <span class="spec-val">500 – 3,000+ years</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">CO₂e removed per tonne</span>
-            <span class="spec-val">2.3t</span>
-          </div>
-        </div>
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Fixed carbon content</td><td>≥ 70%</td><td>ASTM D3172 proximate analysis</td></tr>
+            <tr><td>H/Corg molar ratio</td><td>≤ 0.35</td><td>EBC 2023 elemental analysis protocol</td></tr>
+            <tr><td>pH (1:5 H₂O)</td><td>7.5 – 9.5</td><td>EBC 2023 / IBI-STD-2.0</td></tr>
+            <tr><td>Ash content</td><td>&lt; 20%</td><td>ASTM D3174</td></tr>
+            <tr><td>Moisture (as shipped)</td><td>&lt; 15%</td><td>ASTM D3173</td></tr>
+            <tr><td>Bulk density</td><td>200 – 400 kg/m³</td><td>ASTM D7481</td></tr>
+            <tr><td>Particle size</td><td>0.05 – 5 mm</td><td>Sieve analysis, customisable</td></tr>
+            <tr><td>Heavy metals</td><td>Within EBC limits</td><td>ICP-MS per EBC 2023 Annex</td></tr>
+          </tbody>
+        </table>
 
-        <div class="use-list" style="margin-top:32px;">
-          <div class="use-item"><span>Dryland and rain-fed agriculture</span><span class="use-tag">Primary</span></div>
-          <div class="use-item"><span>Horticulture and plantation crops</span><span class="use-tag">High value</span></div>
-          <div class="use-item"><span>Carbon credit market supply</span><span class="use-tag">Climate</span></div>
-          <div class="use-item"><span>Corporate Scope 3 removal claims</span><span class="use-tag">Commercial</span></div>
-        </div>
+        <a href="carbon.html" class="text-link">Permanence and verification in detail →</a>
       </div>
-
-      <div class="prod-visual">
-        <div class="prod-panel panel-biochar">
-          <svg viewBox="0 0 320 400" style="width:72%;max-width:260px;opacity:0.85;" xmlns="http://www.w3.org/2000/svg">
-            <!-- Cross-section: soil with biochar -->
-            <rect x="0" y="0" width="320" height="180" fill="rgba(180,220,160,0.35)"/>
-            <line x1="0" y1="180" x2="320" y2="180" stroke="rgba(40,90,40,0.5)" stroke-width="2"/>
-            <rect x="0" y="180" width="320" height="220" fill="rgba(80,44,20,0.55)"/>
-            <!-- biochar particles -->
-            <circle cx="80"  cy="215" r="9"  fill="#1A1A12" opacity="0.75"/>
-            <circle cx="130" cy="235" r="11" fill="#141410" opacity="0.8"/>
-            <circle cx="190" cy="220" r="8"  fill="#1A1A12" opacity="0.72"/>
-            <circle cx="245" cy="240" r="10" fill="#141410" opacity="0.78"/>
-            <circle cx="100" cy="260" r="8"  fill="#1A1A12" opacity="0.7"/>
-            <circle cx="165" cy="270" r="12" fill="#141410" opacity="0.8"/>
-            <circle cx="230" cy="265" r="8"  fill="#1A1A12" opacity="0.73"/>
-            <circle cx="70"  cy="295" r="7"  fill="#1A1A12" opacity="0.68"/>
-            <circle cx="140" cy="305" r="9"  fill="#141410" opacity="0.75"/>
-            <circle cx="200" cy="295" r="11" fill="#1A1A12" opacity="0.76"/>
-            <circle cx="268" cy="308" r="7"  fill="#141410" opacity="0.7"/>
-            <!-- plant stems -->
-            <line x1="100" y1="180" x2="88"  y2="90"  stroke="rgba(30,80,30,0.7)" stroke-width="3"/>
-            <line x1="180" y1="180" x2="192" y2="70"  stroke="rgba(30,80,30,0.7)" stroke-width="3"/>
-            <line x1="240" y1="180" x2="248" y2="95"  stroke="rgba(30,80,30,0.6)" stroke-width="2.5"/>
-            <!-- leaves -->
-            <ellipse cx="72" cy="100" rx="24" ry="10" fill="rgba(40,110,40,0.65)" transform="rotate(-25 72 100)"/>
-            <ellipse cx="104" cy="78"  rx="20" ry="9"  fill="rgba(40,110,40,0.65)" transform="rotate(20 104 78)"/>
-            <ellipse cx="178" cy="82"  rx="22" ry="9"  fill="rgba(40,110,40,0.65)" transform="rotate(-15 178 82)"/>
-            <ellipse cx="204" cy="62"  rx="18" ry="8"  fill="rgba(40,110,40,0.6)"  transform="rotate(25 204 62)"/>
-            <ellipse cx="240" cy="78"  rx="16" ry="7"  fill="rgba(40,110,40,0.6)"  transform="rotate(-10 240 78)"/>
-            <!-- label -->
-            <text x="160" y="375" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-size="10" fill="rgba(240,240,235,0.5)" letter-spacing="2" font-weight="500">FIXED IN SOIL</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ACTIVATED CARBON -->
-<section class="prod-section" id="activated">
-  <div class="wrap">
-    <div class="prod-inner prod-flip">
       <div>
-        <div class="prod-eyebrow">
-          <span class="prod-num">02</span>
-          <span class="prod-tag tag-activated">Activated Carbon</span>
-        </div>
-        <h2 class="f-head prod-h2">What it contacts<br>comes out cleaner.</h2>
-        <p class="prod-body">Activated carbon is biochar taken one step further. A secondary activation process — controlled exposure to steam or CO₂ at high temperature — dramatically expands the internal pore structure, creating surface areas measured in hundreds of square metres per gram.</p>
-        <p class="prod-body">That surface area is where adsorption happens. Contaminants, impurities, dissolved organics, heavy metals — they bind to the carbon's internal surfaces as liquid or gas passes through. The output is cleaner than the input.</p>
-        <p class="prod-body">We produce activated carbon in powder, granular, and pellet form. Surface area, iodine number, and ash content are tested per batch against application requirements.</p>
-
-        <div class="spec-table">
-          <div class="spec-row">
-            <span class="spec-key">Surface area (BET)</span>
-            <span class="spec-val">900 – 1,200 m²/g</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Iodine number</span>
-            <span class="spec-val">≥ 900 mg/g</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Ash content</span>
-            <span class="spec-val">≤ 5%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Moisture</span>
-            <span class="spec-val">≤ 10%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Forms available</span>
-            <span class="spec-val">Powder · Granular · Pellet</span>
-          </div>
-        </div>
-
-        <div class="use-list" style="margin-top:32px;">
-          <div class="use-item"><span>Drinking water and wastewater treatment</span><span class="use-tag">Primary</span></div>
-          <div class="use-item"><span>Air and gas purification</span><span class="use-tag">Industrial</span></div>
-          <div class="use-item"><span>Personal care and cosmetics</span><span class="use-tag">Consumer</span></div>
-          <div class="use-item"><span>Gold and precious metal recovery</span><span class="use-tag">Refining</span></div>
-          <div class="use-item"><span>Pharmaceutical and food processing</span><span class="use-tag">Regulated</span></div>
-        </div>
-      </div>
-
-      <div class="prod-visual">
-        <div class="prod-panel panel-activated">
-          <svg viewBox="0 0 300 360" style="width:72%;max-width:240px;opacity:0.88;" xmlns="http://www.w3.org/2000/svg">
-            <!-- Filter column -->
-            <rect x="80" y="60" width="140" height="220" rx="6" fill="rgba(20,24,28,0.82)"/>
-            <!-- Carbon granules -->
-            <circle cx="108" cy="90"  r="8"  fill="#141410"/>
-            <circle cx="132" cy="100" r="9"  fill="#1A1A16"/>
-            <circle cx="160" cy="88"  r="8"  fill="#141410"/>
-            <circle cx="186" cy="98"  r="7"  fill="#1A1A16"/>
-            <circle cx="118" cy="118" r="9"  fill="#1A1A16"/>
-            <circle cx="150" cy="112" r="10" fill="#141410"/>
-            <circle cx="178" cy="120" r="8"  fill="#1A1A16"/>
-            <circle cx="100" cy="140" r="8"  fill="#141410"/>
-            <circle cx="136" cy="148" r="11" fill="#1A1A16"/>
-            <circle cx="168" cy="140" r="8"  fill="#141410"/>
-            <circle cx="196" cy="148" r="7"  fill="#1A1A16"/>
-            <circle cx="112" cy="172" r="9"  fill="#1A1A16"/>
-            <circle cx="148" cy="180" r="10" fill="#141410"/>
-            <circle cx="180" cy="170" r="8"  fill="#1A1A16"/>
-            <circle cx="104" cy="200" r="8"  fill="#141410"/>
-            <circle cx="140" cy="208" r="9"  fill="#1A1A16"/>
-            <circle cx="172" cy="200" r="7"  fill="#141410"/>
-            <circle cx="196" cy="210" r="8"  fill="#1A1A16"/>
-            <!-- water flow in (impure) -->
-            <path d="M150 8 L150 55" stroke="rgba(74,120,138,0.35)" stroke-width="16" stroke-linecap="round"/>
-            <circle cx="146" cy="22" r="3" fill="rgba(160,80,40,0.5)"/>
-            <circle cx="153" cy="38" r="2.5" fill="rgba(180,100,40,0.45)"/>
-            <!-- water flow out (clean) -->
-            <path d="M150 285 L150 340" stroke="rgba(74,130,150,0.7)" stroke-width="16" stroke-linecap="round"/>
-            <text x="150" y="358" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-size="10" fill="rgba(74,130,150,0.55)" letter-spacing="2" font-weight="500">PURIFIED</text>
-          </svg>
-        </div>
+        <span class="label" style="margin-bottom:20px;">Applications</span>
+        <ul class="use-list">
+          <li class="use-item"><strong>Agricultural soil amendment.</strong> Applied at 1–5 t/ha depending on soil type and degradation level. Improves CEC (typically +2 to +8 cmol/kg), water retention, and soil structure. Benefits are most pronounced on sandy or heavily degraded soils.</li>
+          <li class="use-item"><strong>Durable carbon removal (CDR) credits.</strong> When applied to soil and documented per EBC or IBI protocol, each tonne of biochar represents 2.0–2.5 t CO₂e of durable removal, net of production emissions. Credits are issued batch by batch with full documentation chain.</li>
+          <li class="use-item"><strong>Compost enhancement.</strong> Biochar added during the composting process reduces nitrogen loss, improves microbial activity, and results in a biochar-compost blend with improved agronomic properties. Application rate in this pathway is typically lower (0.5–1 t/ha equivalent).</li>
+          <li class="use-item"><strong>Soil remediation.</strong> At higher application rates (5–20 t/ha), biochar can adsorb heavy metals and organic contaminants in degraded or polluted soils, reducing bioavailability. This pathway requires site-specific assessment and is generally project-based rather than commercial product supply.</li>
+          <li class="use-item"><strong>Export for CDR buyer offtake.</strong> Buyers seeking verified removal tonnes can source biochar directly from production, apply it through their own network of agricultural partners, and generate credits under their preferred registry methodology. We supply the product and documentation; the application may be third-party managed.</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CARBON FUEL -->
+<!-- 02 ACTIVATED CARBON -->
+<section class="prod-section prod-section--alt" id="activated">
+  <div class="wrap">
+    <div class="prod-inner">
+      <div>
+        <span class="prod-index-num">02</span>
+        <span class="prod-badge">GAC · PAC · Pelletized</span>
+        <h2 class="prod-name">Activated Carbon</h2>
+        <p class="prod-body">Where biochar's value lies in what it holds onto in the long run, activated carbon's value lies in what it adsorbs right now. The internal surface area — developed through controlled activation following initial conversion — is where all the work happens. <strong>900 to 1,200 m²/g is a lot of surface area.</strong> A gram of our activated carbon, unrolled, would cover roughly the floor area of a modest house.</p>
+        <p class="prod-body">Adsorption is the binding of molecules to a surface. It is different from absorption (molecules entering a bulk material). In activated carbon, contaminants are held in the micropore and mesopore network through physical van der Waals forces and, in some cases, chemical bonding. What a given activated carbon adsorbs and how fast depends on pore size distribution, surface chemistry, and the contact conditions of the application.</p>
+        <p class="prod-body">Our activated carbon is available in three physical forms to suit different application configurations: granular (GAC), powdered (PAC), and pelletized. Each form has the same source material and similar surface area; the form factor determines how it's used, how it's handled, and when it needs to be replaced or reactivated.</p>
+
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>BET surface area</td><td>900 – 1,200 m²/g</td><td>ASTM D3663 (N₂ adsorption)</td></tr>
+            <tr><td>Iodine number</td><td>≥ 900 mg/g</td><td>ASTM D5742</td></tr>
+            <tr><td>Methylene blue number</td><td>≥ 200 mg/g</td><td>ASTM D5919</td></tr>
+            <tr><td>Moisture content</td><td>≤ 5%</td><td>ASTM D2867</td></tr>
+            <tr><td>Ash content</td><td>≤ 10%</td><td>ASTM D2866</td></tr>
+            <tr><td>pH (slurry)</td><td>6.0 – 8.0</td><td>ASTM D3838</td></tr>
+            <tr><td>Bulk density (apparent)</td><td>400 – 550 kg/m³</td><td>ASTM D2854</td></tr>
+            <tr><td>GAC particle size</td><td>8×30 or 12×40 mesh</td><td>ASTM D2862</td></tr>
+          </tbody>
+        </table>
+
+        <a href="carbon.html" class="text-link">Carbon accounting methodology →</a>
+      </div>
+      <div>
+        <span class="label" style="margin-bottom:20px;">Applications by sector</span>
+        <ul class="use-list">
+          <li class="use-item"><strong>Potable water treatment.</strong> GAC contactors and PAC slurry dosing for removal of chlorine, chloramines, THMs, taste and odour compounds, and micropollutants including pharmaceuticals. Widely used in municipal water utilities and point-of-entry systems.</li>
+          <li class="use-item"><strong>Industrial wastewater and effluent polishing.</strong> Tertiary treatment of industrial effluent streams — textile, pharmaceutical, petrochemical — for removal of colour, COD, and specific organic compounds ahead of discharge or reuse.</li>
+          <li class="use-item"><strong>Groundwater remediation.</strong> GAC pump-and-treat systems for BTEX, chlorinated solvents, and PFAS (with appropriate surface chemistry). The standard configuration is a series of fixed-bed columns sized to target compound, flow rate, and breakthrough criteria.</li>
+          <li class="use-item"><strong>Food and beverage decolorization.</strong> PAC dosing in sugar refining, edible oil purification, glucose syrup processing, and beverage clarification. Food-grade applications require additional QC on heavy metals and PAH content — available on request.</li>
+          <li class="use-item"><strong>Solvent recovery and gas treatment.</strong> GAC fixed beds for solvent vapour recovery in printing, coating, and pharmaceutical manufacturing. Also used in air emission control systems for VOC capture ahead of destruction or recovery.</li>
+          <li class="use-item"><strong>Pharmaceutical and catalyst applications.</strong> Pelletized form used as catalyst support and in pharmaceutical synthesis purification. These applications require tighter pore size specification and chemical purity documentation — available on request.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 CARBON FUEL -->
 <section class="prod-section" id="fuel">
   <div class="wrap">
     <div class="prod-inner">
       <div>
-        <div class="prod-eyebrow">
-          <span class="prod-num">03</span>
-          <span class="prod-tag tag-fuel">Carbon Fuel</span>
-        </div>
-        <h2 class="f-head prod-h2">Burns where coal burns.<br>Costs the atmosphere less.</h2>
-        <p class="prod-body">Dense carbon fuel is what happens when you optimise for energy — high fixed carbon content, low moisture, low ash, consistent calorific value. It fits directly into industrial combustion infrastructure designed for coal: boilers, kilns, furnaces, co-firing systems.</p>
-        <p class="prod-body">The carbon it releases when burned was atmospheric CO₂ a year ago — absorbed by growing biological material, not sequestered underground for three hundred million years. The net atmospheric addition per unit of energy is a fraction of what coal delivers.</p>
-        <p class="prod-body">We supply industrial buyers in India and export markets including Japan and South Korea, where biomass carbon fuel qualifies under national low-carbon procurement mandates.</p>
+        <span class="prod-index-num">03</span>
+        <span class="prod-badge">Industrial Fuel · Export Grade</span>
+        <h2 class="prod-name">Carbon Fuel</h2>
+        <p class="prod-body">The energy case for biogenic carbon fuel is simple: the calorific value is comparable to thermal coal, the sulfur content is lower, and the carbon in it came from the atmosphere recently rather than from geological reserves over 300 million years. It burns where coal burns — in boilers, kilns, furnaces — without requiring equipment modification in most cases.</p>
+        <p class="prod-body">The economic case depends on the spread between the carbon fuel price and the coal price it replaces, net of any carbon cost applied to the displaced coal in the buyer's regulatory context. In markets with active carbon pricing — Japan's J-Credit scheme, South Korea's ETS, and progressively under India's CCTS — <strong>the economics of biogenic fuel improve with each increment of carbon cost imposed on fossil alternatives.</strong></p>
+        <p class="prod-body">This product does not generate CDR credits — the carbon in it is released on combustion. What it generates is a substitution benefit: the fossil carbon that would otherwise have burned is not burned. That distinction matters for how buyers account for it: it is a Scope 1 or Scope 2 reduction, not a carbon removal purchase.</p>
 
-        <div class="spec-table">
-          <div class="spec-row">
-            <span class="spec-key">Calorific value</span>
-            <span class="spec-val">≥ 4,500 kcal/kg</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Fixed carbon</span>
-            <span class="spec-val">≥ 65%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Moisture</span>
-            <span class="spec-val">≤ 8%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Ash content</span>
-            <span class="spec-val">≤ 10%</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-key">Active markets</span>
-            <span class="spec-val">India · Japan · South Korea</span>
-          </div>
-        </div>
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Gross calorific value</td><td>≥ 4,500 kcal/kg</td><td>ASTM D5865 (bomb calorimetry)</td></tr>
+            <tr><td>Fixed carbon</td><td>≥ 65%</td><td>ASTM D3172 proximate analysis</td></tr>
+            <tr><td>Volatile matter</td><td>≤ 25%</td><td>ASTM D3175</td></tr>
+            <tr><td>Ash content</td><td>≤ 8%</td><td>ASTM D3174</td></tr>
+            <tr><td>Moisture (as shipped)</td><td>≤ 12%</td><td>ASTM D3173</td></tr>
+            <tr><td>Total sulfur</td><td>≤ 0.5%</td><td>ASTM D4239</td></tr>
+            <tr><td>HGI (grindability)</td><td>40 – 80</td><td>ASTM D409</td></tr>
+            <tr><td>Form</td><td>Briquette / pellet / lump</td><td>Per buyer specification</td></tr>
+          </tbody>
+        </table>
 
-        <div class="use-list" style="margin-top:32px;">
-          <div class="use-item"><span>Industrial boilers and process heat</span><span class="use-tag">Primary</span></div>
-          <div class="use-item"><span>Steel plant PCI substitution</span><span class="use-tag">Heavy industry</span></div>
-          <div class="use-item"><span>Power utility co-firing</span><span class="use-tag">Energy</span></div>
-          <div class="use-item"><span>SAMARTH mandate fulfilment</span><span class="use-tag">Policy</span></div>
-          <div class="use-item"><span>Export under biomass fuel frameworks</span><span class="use-tag">Export</span></div>
-        </div>
+        <a href="company.html" class="text-link">Export markets and contacts →</a>
       </div>
+      <div>
+        <span class="label" style="margin-bottom:20px;">Markets and applications</span>
+        <ul class="use-list">
+          <li class="use-item"><strong>Industrial boilers.</strong> Drop-in replacement for thermal coal in industrial steam boilers — textile, paper, chemical processing. Requires no equipment modification at fixed carbon content above 60% and comparable particle size distribution. Most buyers run mixed-fuel trials at 20–30% substitution before full conversion.</li>
+          <li class="use-item"><strong>Cement and lime kilns.</strong> High-temperature rotary kiln fuel. The lower sulfur content relative to coal is an advantage in markets with SOx emission constraints. Ash composition requires review per kiln type to ensure compatibility with clinker chemistry.</li>
+          <li class="use-item"><strong>Partial coke replacement in steel.</strong> At fixed carbon above 70% (our premium fuel grade), biogenic carbon fuel can partially replace metallurgical coke in iron and steel production. This is an emerging application being tested in Japan and South Korea; full replacement is constrained by the structural role of coke in blast furnace burden.</li>
+          <li class="use-item"><strong>Japan and South Korea export.</strong> Both markets have active renewable energy and biofuel certification systems (J-Credit, Korea's REC scheme) that create premium access for certified biogenic fuel displacing coal. We supply with origin documentation and proximate analysis certificates per shipment.</li>
+          <li class="use-item"><strong>India domestic supply.</strong> Small and medium industrial customers in Maharashtra and adjacent states purchasing as a coal alternative, particularly where local air quality regulations are tightening around coal combustion. Delivered in briquette or pellet form, minimum order quantities apply.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <div class="prod-visual">
-        <div class="prod-panel panel-fuel">
-          <svg viewBox="0 0 300 360" style="width:72%;max-width:240px;opacity:0.85;" xmlns="http://www.w3.org/2000/svg">
-            <!-- Pellet stack -->
-            <ellipse cx="150" cy="290" rx="80" ry="22" fill="rgba(28,22,16,0.7)"/>
-            <ellipse cx="110" cy="272" rx="36" ry="20" fill="#1A1510"/>
-            <ellipse cx="158" cy="260" rx="38" ry="21" fill="#140F0A"/>
-            <ellipse cx="206" cy="270" rx="34" ry="19" fill="#1A1510"/>
-            <ellipse cx="128" cy="248" rx="32" ry="18" fill="#140F0A"/>
-            <ellipse cx="178" cy="240" rx="36" ry="20" fill="#1A1510"/>
-            <ellipse cx="148" cy="228" rx="30" ry="17" fill="#140F0A"/>
-            <!-- heat shimmer -->
-            <path d="M120 220 Q116 185 124 148 Q130 120 118 88" stroke="rgba(255,180,40,0.18)" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M150 212 Q154 172 146 132 Q140 100 150 64" stroke="rgba(255,200,60,0.22)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <path d="M178 220 Q184 184 174 144 Q168 114 180 78" stroke="rgba(255,180,40,0.18)" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <!-- flame -->
-            <path d="M134 218 Q122 188 132 164 Q138 148 128 130 Q144 148 140 168 Q148 148 158 128 Q160 154 152 172 Q158 156 168 146 Q166 168 154 186 Q160 174 170 172 Q162 194 148 210 Z" fill="rgba(255,210,60,0.35)"/>
-            <text x="150" y="340" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-size="10" fill="rgba(200,120,20,0.5)" letter-spacing="2" font-weight="500">CARBON FUEL</text>
-          </svg>
+<!-- CLOSING BAND -->
+<section class="closing-band">
+  <div class="wrap">
+    <div class="closing-inner">
+      <div>
+        <h2 class="f-head closing-h2">One biological source. Three products. Every batch tied to its origin.</h2>
+        <p class="closing-body">The same feedstock, controlled through different conversion conditions, produces materials with different physical properties and different end uses. What is consistent across all three is the traceability: feedstock intake date, batch number, production parameters, and laboratory certificate travel with the product from facility to buyer. Contact us for product samples, technical data sheets, or supply discussions.</p>
+      </div>
+      <div class="closing-facts">
+        <div class="closing-fact">
+          <span class="closing-fact-label">Biochar — H/Corg target</span>
+          <span class="closing-fact-value">≤ 0.35</span>
+        </div>
+        <div class="closing-fact">
+          <span class="closing-fact-label">Activated carbon — iodine number</span>
+          <span class="closing-fact-value">≥ 900 mg/g</span>
+        </div>
+        <div class="closing-fact">
+          <span class="closing-fact-label">Carbon fuel — calorific value</span>
+          <span class="closing-fact-value">≥ 4,500 kcal/kg</span>
+        </div>
+        <div class="closing-fact">
+          <span class="closing-fact-label">Lab certification</span>
+          <span class="closing-fact-value">Every batch</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- BOTTOM STATEMENT -->
-<div class="bottom-statement">
+<!-- INTERIOR LINKS -->
+<section class="interior-section">
   <div class="wrap">
-    <div class="bottom-inner">
-      <p class="bottom-text">One biological source. Three products. Every batch tied to its origin, its conversion run, and its verified permanence class.</p>
-      <a href="carbon.html#methodology" class="bottom-link">Our methodology →</a>
+    <div class="interior-grid">
+      <a href="carbon.html" class="interior-item">
+        <div class="interior-item-label"><span>Carbon</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Permanence chemistry, EBC/IBI standards, and verification chain.</div>
+      </a>
+      <a href="technology.html" class="interior-item">
+        <div class="interior-item-label"><span>Process</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">How feedstock becomes product and what we test at each stage.</div>
+      </a>
+      <a href="company.html" class="interior-item">
+        <div class="interior-item-label"><span>Company</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Who we are and how to reach us for samples or supply discussions.</div>
+      </a>
     </div>
   </div>
-</div>
+</section>
 
 <footer>
   <div class="footer-inner">
@@ -533,19 +460,25 @@
 </footer>
 
 <script>
-const sections = ['biochar','activated','fuel'];
-const links = Object.fromEntries(sections.map(id => [id, document.querySelector(`.pnav-link[href="#${id}"]`)]));
-window.addEventListener('scroll', () => {
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    if (r.top <= 120 && r.bottom > 120) {
-      Object.values(links).forEach(l => l && l.classList.remove('act'));
-      links[id] && links[id].classList.add('act');
+const nav = document.getElementById('nav');
+const hero = document.getElementById('hero');
+new IntersectionObserver(([e]) => {
+  nav.className = e.isIntersecting ? 'on-dark' : 'on-light';
+}, { threshold: 0.05 }).observe(hero);
+
+// Product nav active state
+const sections = ['biochar','activated','fuel'].map(id => document.getElementById(id));
+const links = document.querySelectorAll('.pnav-link');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('act'));
+      const i = sections.indexOf(e.target);
+      if (i >= 0) links[i].classList.add('act');
     }
   });
-}, { passive: true });
+}, { rootMargin: '-20% 0px -60% 0px' });
+sections.forEach(s => s && io.observe(s));
 </script>
 </body>
 </html>

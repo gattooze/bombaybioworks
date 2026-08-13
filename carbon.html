@@ -7,305 +7,235 @@
 <link rel="stylesheet" href="style.css">
 <style>
 
-.page-hero {
-  padding: calc(var(--nav-h) + 100px) 0 100px;
-  border-bottom: 1px solid var(--rule);
+/* ── HERO ── */
+.hero {
+  background: var(--carbon);
+  min-height: 65svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 60px) 0 72px;
+  border-bottom: 3px solid var(--amber);
 }
-.page-hero-inner {
+.hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: end;
 }
-.page-hero h1 {
-  font-size: clamp(56px, 7vw, 100px);
-  color: var(--ink);
+.hero h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  color: var(--white);
+  line-height: 1.0;
 }
-.page-hero-body {
-  font-size: 18px;
-  line-height: 1.75;
-  color: var(--ink-2);
-  padding-bottom: 4px;
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(250,250,248,0.38);
+  padding-bottom: 8px;
+  max-width: 380px;
 }
 
-/* ── THE CASE ── */
-.case-section {
-  padding: 120px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.case-inner {
+/* ── TWO-COL LAYOUT ── */
+.two-col {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 100px;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
 }
-.case-left {
+.label-col {
+  padding-top: 4px;
+}
+.label-col-sticky {
   position: sticky;
   top: calc(var(--nav-h) + 40px);
-  height: fit-content;
-}
-.case-left-title {
-  font-size: clamp(28px, 3vw, 40px);
-  color: var(--ink);
-  margin-bottom: 20px;
-  margin-top: 12px;
-}
-.case-left-body {
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--ink-2);
 }
 
+/* ── BODY CONTENT ── */
+.section-pad { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.section-head {
+  font-size: clamp(28px, 3vw, 42px);
+  margin-bottom: 36px;
+  color: var(--ink);
+}
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  margin-bottom: 20px;
+  max-width: 640px;
+}
+.body-text strong { color: var(--ink); font-weight: 500; }
+
+/* ── FACT CALLOUT ── */
 .fact {
-  padding-bottom: 72px;
-  margin-bottom: 72px;
-  border-bottom: 1px solid var(--rule);
-}
-.fact:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
-
-.fact-index {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 144;
-  font-size: 120px;
-  line-height: 1;
-  color: var(--rule);
-  margin-bottom: -12px;
-  display: block;
-}
-.fact-title {
-  font-size: clamp(22px, 2.5vw, 32px);
-  color: var(--ink);
-  margin-bottom: 20px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-.fact-body {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--ink-2);
-  max-width: 540px;
-}
-.fact-body + .fact-body { margin-top: 14px; }
-.fact-callout {
-  margin-top: 24px;
-  padding: 20px 24px;
-  border-left: 2px solid var(--amber);
+  border-left: 3px solid var(--amber);
+  padding: 28px 32px;
   background: var(--paper-warm);
+  margin: 36px 0;
 }
-.fact-callout-num {
+.fact-value {
   font-family: 'Fraunces', serif;
   font-style: italic;
   font-weight: 700;
-  font-variation-settings: 'opsz' 72;
-  font-size: 40px;
+  font-variation-settings: 'opsz' 72, 'WONK' 1;
+  font-size: clamp(40px, 5vw, 64px);
   color: var(--amber);
   line-height: 1;
-  margin-bottom: 4px;
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
 }
-.fact-callout-label {
+.fact-label {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-
-/* ── CHAIN ── */
-.chain-section {
-  background: var(--carbon);
-  padding: 100px 0;
-}
-.chain-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.22);
-  margin-bottom: 16px;
-  display: block;
-}
-.chain-head {
-  font-size: clamp(32px, 4vw, 56px);
-  color: var(--white);
-  margin-bottom: 72px;
-}
-.chain-steps {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-}
-.chain-step {
-  padding: 0 24px 0 0;
-  position: relative;
-}
-.chain-step + .chain-step::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 20px;
-  width: 1px;
-  height: calc(100% - 20px);
-  background: rgba(255,255,255,0.06);
-}
-.chain-step-num {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(250,250,248,0.18);
-  display: block;
-  margin-bottom: 20px;
-}
-.chain-step.active .chain-step-num { color: var(--amber); }
-.chain-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  margin-bottom: 16px;
-}
-.chain-step.active .chain-dot {
-  background: var(--amber);
-  box-shadow: 0 0 12px rgba(184,112,16,0.4);
-}
-.chain-step-title {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-variation-settings: 'opsz' 36;
-  font-size: 18px;
-  color: rgba(250,250,248,0.6);
-  margin-bottom: 10px;
-  line-height: 1.2;
-}
-.chain-step.active .chain-step-title { color: var(--white); }
-.chain-step-body {
-  font-size: 13px;
-  line-height: 1.7;
-  color: rgba(250,250,248,0.28);
-}
-.chain-step.active .chain-step-body { color: rgba(250,250,248,0.5); }
-
-/* ── METHODOLOGY ── */
-.method-section {
-  padding: 120px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.method-head-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: end;
-  margin-bottom: 72px;
-}
-.method-h2 { font-size: clamp(36px, 4vw, 56px); }
-.method-intro {
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--ink-2);
-}
-.method-list {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--rule);
-}
-.method-item {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 60px;
-  padding: 40px 0;
-  border-bottom: 1px solid var(--rule);
-  align-items: start;
-}
-.method-item-name {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 48, 'WONK' 1;
-  font-size: 22px;
-  color: var(--ink);
-  line-height: 1.2;
-}
-.method-item-body {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--ink-2);
-}
-
-/* ── PERMANENCE ── */
-.permanence-section {
-  background: var(--paper-warm);
-  padding: 100px 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.perm-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
-  align-items: start;
-}
-.perm-h2 { font-size: clamp(32px, 3.5vw, 48px); margin-bottom: 24px; }
-.perm-body { font-size: 15px; line-height: 1.8; color: var(--ink-2); margin-bottom: 14px; }
-
-.perm-chart {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 8px;
-}
-.perm-row {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 20px;
-  align-items: center;
-}
-.perm-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-2);
-  text-align: right;
-}
-.perm-bar-wrap {
-  position: relative;
-  height: 8px;
-  background: var(--rule);
-  border-radius: 1px;
-}
-.perm-bar {
-  position: absolute;
-  inset: 0 auto 0 0;
-  border-radius: 1px;
-  width: 0;
-  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.perm-note {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-top: 28px;
+  display: block;
+  margin-bottom: 12px;
+}
+.fact-note {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-2);
 }
 
-@media (max-width: 1024px) {
-  .page-hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .case-inner { grid-template-columns: 1fr; gap: 48px; }
-  .case-left { position: static; }
-  .chain-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
-  .chain-step::before { display: none; }
-  .method-head-row { grid-template-columns: 1fr; gap: 24px; }
-  .method-item { grid-template-columns: 1fr; gap: 12px; }
-  .perm-inner { grid-template-columns: 1fr; gap: 48px; }
+/* ── INDEX SECTIONS ── */
+.index-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.index-items { display: flex; flex-direction: column; gap: 0; }
+.index-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0 40px;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
 }
-@media (max-width: 600px) {
-  .chain-steps { grid-template-columns: 1fr; }
-  .perm-row { grid-template-columns: 100px 1fr; }
+.index-item:last-child { border-bottom: none; }
+.index-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 800;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 1;
+  color: var(--rule);
+  letter-spacing: -0.03em;
+  padding-top: 4px;
+}
+.index-content-head {
+  font-family: 'Fraunces', serif;
+  font-style: normal;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 48;
+  font-size: clamp(20px, 2.2vw, 28px);
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.index-content-body {
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  max-width: 560px;
+}
+.index-content-body strong { color: var(--ink); font-weight: 500; }
+
+/* ── STANDARDS STRIP ── */
+.standards-section {
+  background: var(--carbon);
+  padding: 80px 0;
+  border-top: 3px solid var(--amber);
+}
+.standards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.04);
+}
+.standard-item {
+  background: var(--carbon);
+  padding: 44px 40px;
+}
+.standard-abbr {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-variation-settings: 'opsz' 72, 'WONK' 1;
+  font-size: clamp(32px, 4vw, 52px);
+  color: var(--white);
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.standard-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 16px;
+}
+.standard-body {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(250,250,248,0.38);
+}
+
+/* ── METHODOLOGY ── */
+.method-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.method-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 48px;
+}
+.method-step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+.method-step:last-child { border-bottom: none; }
+.method-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  margin-top: 8px;
+  justify-self: center;
+}
+.method-step-head {
+  font-family: 'Fraunces', serif;
+  font-style: normal;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 36;
+  font-size: 17px;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.method-step-body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+  .two-col { grid-template-columns: 1fr; gap: 36px; }
+  .label-col-sticky { position: static; }
+  .standards-grid { grid-template-columns: 1fr; }
+  .index-item { grid-template-columns: 56px 1fr; gap: 0 24px; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav" class="on-light">
+<nav id="nav" class="on-dark">
   <a href="index.html" class="nav-logo">Bombay<span class="dot">·</span>Bioworks</a>
   <ul class="nav-links">
     <li><a href="carbon.html" class="active">Carbon</a></li>
@@ -315,172 +245,176 @@
   </ul>
 </nav>
 
-<section class="page-hero">
+<section class="hero" id="hero">
   <div class="wrap">
-    <div class="page-hero-inner">
-      <div>
-        <span class="label" style="margin-bottom:20px;">Carbon science</span>
-        <h1 class="f-head">The carbon<br>doesn't go back.</h1>
+    <div class="hero-inner">
+      <h1 class="f-head">The carbon doesn't go back.</h1>
+      <p class="hero-sub">What permanence means in chemistry, how it's measured, and what verification actually requires — not what it promises.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT FIXED CARBON IS -->
+<section class="section-pad">
+  <div class="wrap">
+    <div class="two-col">
+      <div class="label-col">
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">The chemistry</span>
+          <span class="label" style="color:var(--rule);">——</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">Why structure determines stability</span>
+        </div>
       </div>
       <div>
-        <p class="page-hero-body">Not all carbon removal is the same. There is a large difference between carbon that stays fixed for five hundred years and carbon that returns to the atmosphere within a decade. We operate only in the first category — and we can prove it.</p>
+        <h2 class="f-head section-head">Stable carbon is structurally different from ordinary organic matter.</h2>
+        <p class="body-text">When biological material decomposes — whether through burning, rotting, or microbial activity — the carbon bound up in it returns to the atmosphere as CO₂. This is normal. Plant tissue is biologically designed to degrade. The carbon cycle depends on it.</p>
+        <p class="body-text">Biochar is different because its carbon has been structurally transformed. The conversion process rearranges carbon atoms from the disordered, oxygen-rich structures of plant biomass into a turbostratic, graphite-like arrangement — stacked aromatic carbon sheets that are chemically resistant to oxidation and microbial breakdown.</p>
+        <p class="body-text">This is not a permanence claim based on models or projections. It is a material property, measurable in the lab. The ratio of hydrogen to organic carbon (H/Corg) serves as a proxy for the degree of aromaticity and therefore the degree of stability. <strong>The European Biochar Certificate sets the permanence threshold at H/Corg &lt; 0.7 (feedstock-dependent). For Class 1 biochar — our standard production grade — the threshold is H/Corg &lt; 0.4.</strong></p>
+
+        <div class="fact">
+          <span class="fact-value">&lt; 0.4</span>
+          <span class="fact-label">H/Corg molar ratio · EBC permanence threshold</span>
+          <p class="fact-note">Below this ratio, pyrolytic carbon resists biological and chemical degradation across multi-centennial timescales. Our standard biochar targets H/Corg ≤ 0.35, confirmed by accredited laboratory analysis on every batch using methods compliant with EBC 2023 and IBI-STD-2.0.</p>
+        </div>
+
+        <p class="body-text">At H/Corg below 0.4, the mean residence time of biochar carbon in soil has been measured across independent studies at anywhere from 500 to over 3,000 years. The upper bound is genuinely uncertain; the lower bound is not. Any biochar meeting this threshold represents durable carbon removal on a timescale relevant to climate intervention.</p>
+        <p class="body-text">Activated carbon and carbon fuel operate differently. Their carbon is not sequestered — it is used, consumed, or eventually released. The permanence story belongs specifically to the biochar product line. Activated carbon and carbon fuel displace inputs with higher lifecycle emissions; they are substitution plays, not sequestration plays.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- THE CASE -->
-<section class="case-section">
+<!-- THREE FACTS -->
+<section class="index-section">
   <div class="wrap">
-    <div class="case-inner">
-      <div class="case-left">
-        <span class="label" style="margin-bottom:16px;">Why it matters</span>
-        <h2 class="f-head-italic case-left-title">Why fixed carbon is different.</h2>
-        <p class="case-left-body">The atmosphere doesn't care about intentions. It cares about where the carbon actually ends up, and how long it stays there.</p>
-      </div>
-      <div>
-        <div class="fact">
-          <span class="fact-index">01</span>
-          <h3 class="fact-title">Biological carbon is short-cycle by default.</h3>
-          <p class="fact-body">Plants absorb CO₂ as they grow. When they decompose or burn, that carbon goes straight back. The cycle is roughly neutral — but only roughly, only when the biomass is left to complete it naturally. When you harvest and burn, you accelerate the return.</p>
-          <p class="fact-body">The only way to break the cycle is to interrupt decomposition and trap the carbon in a form that resists biological breakdown — for far longer than the plant itself would have survived.</p>
+    <div class="two-col">
+      <div class="label-col">
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">Three facts about fixed carbon</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">That the market tends to elide</span>
         </div>
-
-        <div class="fact">
-          <span class="fact-index">02</span>
-          <h3 class="fact-title">Thermal conversion creates a structure that lasts.</h3>
-          <p class="fact-body">When biological material is heated in a low-oxygen environment, its chemical structure reorganises. Volatile compounds leave as gas. What remains is a carbon-rich solid with a highly stable aromatic structure — one that resists microbial decomposition for centuries.</p>
-          <p class="fact-body">This is not a theoretical claim. The same process, occurring naturally in ancient fires, created carbon deposits still present in soils today — some thousands of years old.</p>
-          <div class="fact-callout">
-            <div class="fact-callout-num">500+</div>
-            <div class="fact-callout-label">Years — minimum soil permanence, biochar</div>
+      </div>
+      <div class="index-items">
+        <div class="index-item">
+          <div class="index-num">01</div>
+          <div>
+            <div class="index-content-head">Not all biochar is stable. Grade determines permanence.</div>
+            <p class="index-content-body">The biochar industry contains a wide quality range. Slow-pyrolysis biochar made at high temperature from dry feedstock can have H/Corg below 0.3. Poorly made biochar from wet feedstock at low temperature can sit at 0.6 or higher, with mean residence times closer to decades than centuries. <strong>The spec sheet matters. "Biochar" without a grade or H/Corg value is not a carbon removal claim; it is a material claim with unspecified durability.</strong> EBC certification requires laboratory-confirmed H/Corg on every production batch before certification is issued.</p>
           </div>
         </div>
-
-        <div class="fact">
-          <span class="fact-index">03</span>
-          <h3 class="fact-title">Permanence is a material property, not a claim.</h3>
-          <p class="fact-body">We produce carbon in three grades, each with defined permanence characteristics. Soil-grade biochar is the most permanent — fixed for centuries in the ground. Combustion-grade carbon displaces fossil fuel, cutting net atmospheric additions this year. Activated carbon stays in filtration systems for years before reclassification.</p>
-          <p class="fact-body">All three are measured, graded, and verified. None of them are offsets.</p>
+        <div class="index-item">
+          <div class="index-num">02</div>
+          <div>
+            <div class="index-content-head">Carbon removal credits require additionality and permanence — both.</div>
+            <p class="index-content-body">A biochar credit has two components: the carbon removed (the H/Corg-determined fraction of feedstock carbon fixed into stable form) and the additionality (whether that removal would have happened without the economic mechanism). Our soil application pathway delivers on both: feedstock that would otherwise decompose or combust, converted to biochar with demonstrable permanence, applied to fields with documented GPS coordinates and application rates. <strong>Third-party auditors verify each step. Batch-level certificates are issued per EBC protocol and available to off-take counterparties on request.</strong></p>
+          </div>
+        </div>
+        <div class="index-item">
+          <div class="index-num">03</div>
+          <div>
+            <div class="index-content-head">Soil application rate is a meaningful variable, not a detail.</div>
+            <p class="index-content-body">Biochar's agronomic and climate benefits are both application-rate dependent. At 1 t/ha, the effect on CEC and water retention is measurable but modest. At 5 t/ha on degraded soil, the change in soil physical properties is significant enough to affect yield in the first season. <strong>Too high a rate on already-good soil can suppress microbial activity; too low a rate on heavily degraded soil misses the remediation opportunity.</strong> We work with application partners who match rate to soil type and crop system — the product specification is only part of the carbon story.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- THE CHAIN -->
-<section class="chain-section">
+<!-- STANDARDS -->
+<section class="standards-section">
   <div class="wrap">
-    <span class="chain-label">The carbon chain</span>
-    <h2 class="f-head chain-head" style="color:var(--white);">From atmosphere<br>to fixed.</h2>
-    <div class="chain-steps">
-      <div class="chain-step">
-        <span class="chain-step-num">Stage 01</span>
-        <div class="chain-dot"></div>
-        <div class="chain-step-title">Atmospheric CO₂</div>
-        <p class="chain-step-body">Carbon absorbed from the air by growing biological material over months or years.</p>
+    <div class="standards-grid">
+      <div class="standard-item">
+        <span class="standard-abbr">EBC</span>
+        <span class="standard-name">European Biochar Certificate · 2023</span>
+        <p class="standard-body">The primary certification framework we use for biochar quality and carbon permanence. EBC sets standards for H/Corg ratio, heavy metal limits, pH range, and ash content. EBC-Agro is the grade applicable to soil amendment use. Third-party auditors certify annually; batch-level lab reports are required for each production run.</p>
       </div>
-      <div class="chain-step">
-        <span class="chain-step-num">Stage 02</span>
-        <div class="chain-dot"></div>
-        <div class="chain-step-title">Biological feedstock</div>
-        <p class="chain-step-body">Harvested agricultural residue — assessed for quality and processed for conversion.</p>
+      <div class="standard-item">
+        <span class="standard-abbr">IBI</span>
+        <span class="standard-name">International Biochar Initiative · STD-2.0</span>
+        <p class="standard-body">The IBI standard provides an alternative certification pathway and is widely referenced in North American and Asian markets. IBI Class 1 biochar requires fixed carbon ≥ 60% (we target ≥ 70%) and H/Corg &lt; 0.7 at Class 1 level. Our product quality exceeds IBI Class 1 thresholds across all key parameters.</p>
       </div>
-      <div class="chain-step active">
-        <span class="chain-step-num">Stage 03</span>
-        <div class="chain-dot"></div>
-        <div class="chain-step-title">Thermal conversion</div>
-        <p class="chain-step-body">Controlled heat, low oxygen, measured conditions. Biological carbon becomes fixed carbon.</p>
-      </div>
-      <div class="chain-step">
-        <span class="chain-step-num">Stage 04</span>
-        <div class="chain-dot"></div>
-        <div class="chain-step-title">Grading</div>
-        <p class="chain-step-body">Output measured against specification. Biochar, activated carbon, or fuel — each to grade.</p>
-      </div>
-      <div class="chain-step">
-        <span class="chain-step-num">Stage 05</span>
-        <div class="chain-dot"></div>
-        <div class="chain-step-title">Verified permanence</div>
-        <p class="chain-step-body">Batch record, third-party audit, permanence class assigned. Carbon accounted for.</p>
+      <div class="standard-item">
+        <span class="standard-abbr">MRV</span>
+        <span class="standard-name">Measurement, Reporting, Verification</span>
+        <p class="standard-body">Carbon removal claims require documented MRV at three levels: feedstock intake (mass and moisture), production batch (conversion parameters and output yield), and application (location, rate, and timing). We maintain batch-level records across all three stages. CDR buyer documentation packages are available and include production logs, lab certificates, and application records.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- METHODOLOGY -->
-<section class="method-section" id="methodology">
+<section class="method-section">
   <div class="wrap">
-    <div class="method-head-row">
+    <div class="two-col">
+      <div class="label-col">
+        <div class="label-col-sticky">
+          <span class="label" style="margin-bottom:8px;">Verification chain</span>
+          <span class="label" style="margin-top:8px; color:var(--ink-3);">From intake to certificate</span>
+        </div>
+      </div>
       <div>
-        <span class="label" style="margin-bottom:16px;">How we measure</span>
-        <h2 class="f-head method-h2">The methodology.</h2>
-      </div>
-      <p class="method-intro">We don't estimate. We measure at intake, measure at output, and have a third party check our arithmetic. Every tonne we claim removed has a paper trail with three authors.</p>
-    </div>
-
-    <div class="method-list">
-      <div class="method-item">
-        <div class="method-item-name">Mass balance accounting</div>
-        <p class="method-item-body">Carbon entering the system — in the feedstock — is weighed against carbon leaving it, in each output stream: biochar, fuel, activated carbon, and process gas. Nothing is assumed or extrapolated. The numbers close or we don't report.</p>
-      </div>
-      <div class="method-item">
-        <div class="method-item-name">Third-party verification</div>
-        <p class="method-item-body">Independent auditors review our feedstock documentation, conversion records, and output test results. They confirm our mass balance and sign off on carbon removal claims. We report what they confirm — not what we calculated ourselves.</p>
-      </div>
-      <div class="method-item">
-        <div class="method-item-name">Batch-level ledger</div>
-        <p class="method-item-body">Each production run generates a record linking feedstock origin, conversion parameters, quality test results, and dispatch destination. The record is the basis for every permanence claim we make and every report we issue to customers.</p>
+        <h2 class="f-head section-head">What we document and why.</h2>
+        <p class="body-text">Carbon accounting in physical biochar works from a mass balance, not from an emissions factor applied to a projection. The chain of custody is auditable at every stage.</p>
+        <div class="method-steps">
+          <div class="method-step">
+            <div class="method-dot"></div>
+            <div>
+              <div class="method-step-head">Feedstock intake documentation</div>
+              <p class="method-step-body">Every feedstock delivery is weighed, moisture-tested, and assigned a batch number. Origin is recorded. The dry mass of organic carbon in the incoming material is calculated as the basis for the eventual carbon balance. This step determines the denominator in the carbon conversion efficiency calculation.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="method-dot"></div>
+            <div>
+              <div class="method-step-head">Production batch logging</div>
+              <p class="method-step-body">Each production run generates output data: yield by weight, conversion temperature profile, and residence time. The yield fraction (biochar output as a percentage of dry feedstock input) is a quality indicator — too high suggests incomplete conversion; too low may indicate feedstock variability. Both are flagged.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="method-dot"></div>
+            <div>
+              <div class="method-step-head">Laboratory analysis — every batch</div>
+              <p class="method-step-body">Samples from every production batch are sent to an accredited third-party laboratory before the batch is released for sale or application. Tests include: H/Corg ratio (EBC protocol), fixed carbon and ash (proximate analysis, ASTM D3172), pH, heavy metal screening (EBC 2023 limits), and bulk density. Results must meet grade specification before release.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="method-dot"></div>
+            <div>
+              <div class="method-step-head">Application records</div>
+              <p class="method-step-body">For soil application and CDR credit generation, application is documented with GPS coordinates, field area, application rate (t/ha), date, and farmer/operator identification. This record set is the final link in the chain from feedstock to sequestered carbon and forms the basis for credit issuance under both EBC and voluntary carbon market methodologies.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="method-dot"></div>
+            <div>
+              <div class="method-step-head">Third-party audit and certification</div>
+              <p class="method-step-body">Annual EBC certification audits are conducted by an accredited third-party certification body. Auditors review production records, laboratory reports, and application documentation. Certification is issued per producer, per facility, and per product grade. Batch-level certificates reference the audit and can be provided to buyers alongside product delivery.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PERMANENCE CHART -->
-<section class="permanence-section">
+<!-- INTERIOR LINKS -->
+<section class="interior-section">
   <div class="wrap">
-    <div class="perm-inner">
-      <div>
-        <span class="label" style="margin-bottom:16px;">Permanence classes</span>
-        <h2 class="f-head perm-h2">Not all removal<br>lasts equally.</h2>
-        <p class="perm-body">We produce carbon in three permanence classes. Soil-grade biochar achieves the longest — centuries in the ground, verified by reference samples from ancient fire events. Combustion-grade carbon delivers this-year impact by displacing fossil fuels in industrial processes. Activated carbon stays fixed in filtration systems until end of service, when it's reclassified and managed.</p>
-        <p class="perm-body">Each class is tracked separately. No averaging. No bundling.</p>
-      </div>
-      <div>
-        <div class="perm-chart" id="permChart">
-          <div class="perm-row">
-            <span class="perm-label" style="color:var(--ink-3);font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;">Fossil carbon</span>
-            <div class="perm-bar-wrap">
-              <div class="perm-bar" style="background:#C84040;opacity:0.4;" data-w="100%"></div>
-            </div>
-          </div>
-          <div class="perm-row">
-            <span class="perm-label">Biochar (soil)</span>
-            <div class="perm-bar-wrap">
-              <div class="perm-bar" style="background:var(--green);" data-w="92%"></div>
-            </div>
-          </div>
-          <div class="perm-row">
-            <span class="perm-label">Activated carbon</span>
-            <div class="perm-bar-wrap">
-              <div class="perm-bar" style="background:#4A7A8A;" data-w="52%"></div>
-            </div>
-          </div>
-          <div class="perm-row">
-            <span class="perm-label">Carbon fuel</span>
-            <div class="perm-bar-wrap">
-              <div class="perm-bar" style="background:var(--amber);" data-w="26%"></div>
-            </div>
-          </div>
-          <div class="perm-row">
-            <span class="perm-label">Biomass (raw)</span>
-            <div class="perm-bar-wrap">
-              <div class="perm-bar" style="background:var(--ink-3);" data-w="8%"></div>
-            </div>
-          </div>
-        </div>
-        <p class="perm-note" style="margin-top:20px;">Relative permanence — illustrative scale</p>
-      </div>
+    <div class="interior-grid">
+      <a href="applications.html" class="interior-item">
+        <div class="interior-item-label"><span>Products</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Full specifications for biochar, activated carbon, and carbon fuel.</div>
+      </a>
+      <a href="technology.html" class="interior-item">
+        <div class="interior-item-label"><span>Process</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">How we convert feedstock and what we test at each stage.</div>
+      </a>
+      <a href="company.html" class="interior-item">
+        <div class="interior-item-label"><span>Company</span><span class="interior-item-arrow">→</span></div>
+        <div class="interior-item-title">Who we are and why we're building this from Maharashtra.</div>
+      </a>
     </div>
   </div>
 </section>
@@ -508,22 +442,10 @@
 
 <script>
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.className = window.scrollY > 40 ? 'on-light' : 'on-light';
-}, { passive: true });
-
-/* Permanence bars */
-let animated = false;
-const observer = new IntersectionObserver(([e]) => {
-  if (e.isIntersecting && !animated) {
-    animated = true;
-    document.querySelectorAll('.perm-bar').forEach((bar, i) => {
-      setTimeout(() => { bar.style.width = bar.dataset.w; }, i * 120);
-    });
-  }
-}, { threshold: 0.4 });
-const chart = document.getElementById('permChart');
-if (chart) observer.observe(chart);
+const hero = document.getElementById('hero');
+new IntersectionObserver(([e]) => {
+  nav.className = e.isIntersecting ? 'on-dark' : 'on-light';
+}, { threshold: 0.05 }).observe(hero);
 </script>
 </body>
 </html>
