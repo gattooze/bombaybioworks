@@ -73,19 +73,16 @@
 }
 
 .prod-index-num {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 800;
-  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
   font-size: clamp(80px, 12vw, 160px);
   line-height: 1;
   color: var(--rule);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   display: block;
-  margin-bottom: -16px;
+  margin-bottom: -20px;
   user-select: none;
 }
-.prod-section--alt .prod-index-num { color: var(--paper); }
 
 .prod-badge {
   display: inline-block;
@@ -100,10 +97,8 @@
 }
 
 .prod-name {
-  font-family: 'Fraunces', serif;
-  font-style: normal;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
-  font-variation-settings: 'opsz' 72, 'WONK' 0;
   font-size: clamp(36px, 4.5vw, 60px);
   color: var(--ink);
   line-height: 1.0;
@@ -199,14 +194,21 @@
 }
 .closing-fact-label { font-size: 12px; color: rgba(250,250,248,0.35); letter-spacing: 0.04em; }
 .closing-fact-value {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-variation-settings: 'opsz' 48;
   font-size: 22px;
   color: var(--white);
   white-space: nowrap;
 }
+
+/* ── PRODUCT VISUAL ── */
+.prod-visual-wrap {
+  border: 1px solid var(--rule);
+  padding: 24px 20px 20px;
+  background: var(--white);
+  margin-bottom: 8px;
+}
+.prod-visual-wrap svg { width: 100%; height: auto; display: block; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
@@ -278,7 +280,31 @@
         <a href="carbon.html" class="text-link">Permanence and verification in detail →</a>
       </div>
       <div>
-        <span class="label" style="margin-bottom:20px;">Applications</span>
+        <div class="prod-visual-wrap">
+          <svg viewBox="0 0 480 212" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="12" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" letter-spacing="2" fill="#AEACA0">H/Corg PERMANENCE SPECTRUM — MOLAR RATIO</text>
+            <line x1="223" y1="22" x2="223" y2="168" stroke="#B87010" stroke-width="1" stroke-dasharray="3,4"/>
+            <text x="226" y="30" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#B87010">EBC limit 0.4</text>
+            <text x="118" y="52" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" fill="#AEACA0" text-anchor="end">Fresh organic</text>
+            <rect x="130" y="43" width="327" height="12" fill="#EDEAE2" rx="1"/>
+            <text x="461" y="52" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0" text-anchor="end">~1.4</text>
+            <text x="118" y="86" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" fill="#AEACA0" text-anchor="end">Stabilised humus</text>
+            <rect x="130" y="77" width="152" height="12" fill="#DCDAD0" rx="1"/>
+            <text x="285" y="86" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0"> 0.65</text>
+            <rect x="0" y="101" width="480" height="24" fill="#F2E4C4" rx="2"/>
+            <text x="118" y="117" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" font-weight="600" fill="#0D0D0B" text-anchor="end">Biochar (ours)</text>
+            <rect x="130" y="108" width="82" height="12" fill="#B87010" rx="1"/>
+            <text x="216" y="117" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#B87010" font-weight="600"> ≤ 0.35</text>
+            <text x="118" y="151" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" fill="#AEACA0" text-anchor="end">Anthracite coal</text>
+            <rect x="130" y="142" width="9" height="12" fill="#5C5C52" rx="1"/>
+            <text x="143" y="151" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#5C5C52"> 0.04</text>
+            <line x1="130" y1="168" x2="480" y2="168" stroke="#DCDAD0" stroke-width="1"/>
+            <text x="130" y="181" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0">0 ← more stable</text>
+            <text x="480" y="181" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0" text-anchor="end">less stable → 1.5</text>
+            <text x="0" y="207" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0">EBC 2023: H/Corg &lt; 0.4 molar ratio defines permanence threshold for CDR credit issuance</text>
+          </svg>
+        </div>
+        <span class="label" style="margin-bottom:16px; margin-top:36px;">Applications</span>
         <ul class="use-list">
           <li class="use-item"><strong>Agricultural soil amendment.</strong> Applied at 1–5 t/ha depending on soil type and degradation level. Improves CEC (typically +2 to +8 cmol/kg), water retention, and soil structure. Benefits are most pronounced on sandy or heavily degraded soils.</li>
           <li class="use-item"><strong>Durable carbon removal (CDR) credits.</strong> When applied to soil and documented per EBC or IBI protocol, each tonne of biochar represents 2.0–2.5 t CO₂e of durable removal, net of production emissions. Credits are issued batch by batch with full documentation chain.</li>
@@ -326,7 +352,34 @@
         <a href="carbon.html" class="text-link">Carbon accounting methodology →</a>
       </div>
       <div>
-        <span class="label" style="margin-bottom:20px;">Applications by sector</span>
+        <div class="prod-visual-wrap">
+          <svg viewBox="0 0 480 198" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="12" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" letter-spacing="2" fill="#AEACA0">PORE STRUCTURE — GAC CROSS-SECTION (SCHEMATIC)</text>
+            <text x="145" y="48" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" fill="#AEACA0" text-anchor="end">Macropore</text>
+            <rect x="155" y="38" width="240" height="16" fill="#EDEAE2" rx="2"/>
+            <text x="399" y="49" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0"> &gt;50 nm — access / transport</text>
+            <text x="145" y="82" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" fill="#AEACA0" text-anchor="end">Mesopore</text>
+            <rect x="155" y="73" width="80" height="12" fill="#DCDAD0" rx="2"/>
+            <text x="239" y="83" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0"> 2–50 nm — intermediate adsorption</text>
+            <rect x="0" y="98" width="480" height="24" fill="#F2E4C4" rx="2"/>
+            <text x="145" y="114" font-family="'Instrument Sans',system-ui,sans-serif" font-size="9.5" font-weight="600" fill="#0D0D0B" text-anchor="end">Micropore</text>
+            <rect x="155" y="104" width="16" height="12" fill="#B87010" rx="2"/>
+            <text x="175" y="114" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#B87010" font-weight="600"> &lt;2 nm — primary adsorption surface</text>
+            <text x="155" y="138" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0">← pore size decreasing</text>
+            <text x="480" y="138" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0" text-anchor="end">surface area contribution increasing →</text>
+            <line x1="155" y1="142" x2="480" y2="142" stroke="#DCDAD0" stroke-width="1"/>
+            <text x="0" y="159" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" fill="#0D0D0B">BET surface area</text>
+            <text x="200" y="159" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#5C5C52">900–1,200 m²/g</text>
+            <text x="380" y="159" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7" fill="#AEACA0">ASTM D3663</text>
+            <line x1="0" y1="164" x2="480" y2="164" stroke="#DCDAD0" stroke-width="0.5"/>
+            <text x="0" y="177" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" fill="#0D0D0B">Iodine number</text>
+            <text x="200" y="177" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#5C5C52">≥900 mg/g</text>
+            <text x="380" y="177" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7" fill="#AEACA0">ASTM D5742</text>
+            <line x1="0" y1="182" x2="480" y2="182" stroke="#DCDAD0" stroke-width="0.5"/>
+            <text x="0" y="196" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0">1g of activated carbon ≈ 1,100 m² — roughly the floor area of a large apartment block</text>
+          </svg>
+        </div>
+        <span class="label" style="margin-bottom:16px; margin-top:36px;">Applications by sector</span>
         <ul class="use-list">
           <li class="use-item"><strong>Potable water treatment.</strong> GAC contactors and PAC slurry dosing for removal of chlorine, chloramines, THMs, taste and odour compounds, and micropollutants including pharmaceuticals. Widely used in municipal water utilities and point-of-entry systems.</li>
           <li class="use-item"><strong>Industrial wastewater and effluent polishing.</strong> Tertiary treatment of industrial effluent streams — textile, pharmaceutical, petrochemical — for removal of colour, COD, and specific organic compounds ahead of discharge or reuse.</li>
@@ -375,7 +428,42 @@
         <a href="company.html" class="text-link">Export markets and contacts →</a>
       </div>
       <div>
-        <span class="label" style="margin-bottom:20px;">Markets and applications</span>
+        <div class="prod-visual-wrap">
+          <svg viewBox="0 0 480 205" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="12" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" letter-spacing="2" fill="#AEACA0">SPECIFICATION COMPARISON — vs THERMAL COAL</text>
+            <!-- Legend -->
+            <rect x="320" y="5" width="8" height="8" fill="#DCDAD0" rx="1"/>
+            <text x="332" y="12" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0">Thermal coal</text>
+            <rect x="410" y="5" width="8" height="8" fill="#B87010" rx="1"/>
+            <text x="422" y="12" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#B87010">Carbon fuel</text>
+            <!-- ROW 1: FIXED CARBON % (higher = better) -->
+            <text x="0" y="30" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" letter-spacing="1" fill="#5C5C52">FIXED CARBON %</text>
+            <text x="480" y="30" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0" text-anchor="end">higher → better</text>
+            <rect x="0" y="35" width="155" height="13" fill="#EDEAE2" rx="1"/>
+            <text x="159" y="45" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0">~50%</text>
+            <rect x="0" y="52" width="200" height="13" fill="#B87010" rx="1"/>
+            <text x="204" y="62" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#B87010" font-weight="600">≥65%</text>
+            <!-- ROW 2: TOTAL SULFUR % (lower = better) -->
+            <text x="0" y="90" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" letter-spacing="1" fill="#5C5C52">TOTAL SULFUR %</text>
+            <text x="480" y="90" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0" text-anchor="end">lower → better</text>
+            <rect x="0" y="95" width="112" height="13" fill="#DCDAD0" rx="1"/>
+            <text x="116" y="105" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#AEACA0">~1.5% avg</text>
+            <rect x="0" y="112" width="37" height="13" fill="#B87010" rx="1"/>
+            <text x="41" y="122" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#B87010" font-weight="600">≤0.5%</text>
+            <!-- Divider -->
+            <line x1="0" y1="140" x2="480" y2="140" stroke="#DCDAD0" stroke-width="1"/>
+            <!-- CALORIFIC VALUE callout -->
+            <text x="0" y="156" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" fill="#0D0D0B">Calorific value</text>
+            <text x="160" y="156" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#5C5C52">≥4,500 kcal/kg — within thermal coal range</text>
+            <text x="0" y="170" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7" fill="#AEACA0">ASTM D5865 bomb calorimetry</text>
+            <line x1="0" y1="175" x2="480" y2="175" stroke="#DCDAD0" stroke-width="0.5"/>
+            <text x="0" y="188" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" font-weight="600" fill="#0D0D0B">Form</text>
+            <text x="160" y="188" font-family="'Instrument Sans',system-ui,sans-serif" font-size="8" fill="#5C5C52">Briquette / pellet / lump — per buyer specification</text>
+            <line x1="0" y1="193" x2="480" y2="193" stroke="#DCDAD0" stroke-width="0.5"/>
+            <text x="0" y="204" font-family="'Instrument Sans',system-ui,sans-serif" font-size="7.5" fill="#AEACA0">Drop-in for thermal coal in industrial boilers, kilns, and furnaces — no equipment modification in most configurations</text>
+          </svg>
+        </div>
+        <span class="label" style="margin-bottom:16px; margin-top:36px;">Markets and applications</span>
         <ul class="use-list">
           <li class="use-item"><strong>Industrial boilers.</strong> Drop-in replacement for thermal coal in industrial steam boilers — textile, paper, chemical processing. Requires no equipment modification at fixed carbon content above 60% and comparable particle size distribution. Most buyers run mixed-fuel trials at 20–30% substitution before full conversion.</li>
           <li class="use-item"><strong>Cement and lime kilns.</strong> High-temperature rotary kiln fuel. The lower sulfur content relative to coal is an advantage in markets with SOx emission constraints. Ash composition requires review per kiln type to ensure compatibility with clinker chemistry.</li>
