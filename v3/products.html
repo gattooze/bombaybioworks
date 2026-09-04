@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Bombay Bioworks</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  background: var(--carbon);
+  min-height: 56svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 80px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 { color: var(--white); }
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(250,250,248,0.38);
+  max-width: 380px;
+  align-self: end;
+  padding-bottom: 4px;
+}
+
+/* Hero background illustration */
+.hero-bg-illus {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 55%;
+  opacity: 0.12;
+  overflow: hidden;
+}
+.hero-bg-illus svg { width: 100%; height: 100%; }
+
+/* ── PRODUCT SUBNAV ── */
+.pnav {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 100;
+  background: rgba(244,243,238,0.97);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  overflow-x: auto;
+}
+.pnav-link {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+  padding: 18px 36px;
+  border-right: 1px solid var(--rule);
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+.pnav-link:hover { color: var(--ink); background: var(--paper-warm); }
+.pnav-link.act { color: var(--amber); }
+
+/* ── PRODUCT SECTION ── */
+.prod-section {
+  padding: 140px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: visible;
+}
+.prod-section--alt { background: var(--paper-warm); }
+
+.prod-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* The large ghost number floating in background */
+.prod-num-bg {
+  position: absolute;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(200px, 28vw, 380px);
+  letter-spacing: -0.06em;
+  color: var(--rule);
+  line-height: 1;
+  user-select: none;
+  right: -20px;
+  bottom: -60px;
+  z-index: 0;
+  pointer-events: none;
+}
+.prod-section--alt .prod-num-bg { color: var(--paper-deep); }
+
+.prod-content { position: relative; z-index: 1; }
+
+.prod-index {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.prod-index-num {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.prod-index-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.prod-name {
+  font-size: clamp(40px, 5.5vw, 72px);
+  margin-bottom: 12px;
+}
+.prod-tagline {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: var(--ink-2);
+  letter-spacing: -0.015em;
+  margin-bottom: 32px;
+  line-height: 1.3;
+}
+.prod-desc {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  margin-bottom: 48px;
+  max-width: 540px;
+}
+.prod-desc strong { color: var(--ink); font-weight: 500; }
+
+/* Applications label */
+.prod-apps-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+  display: block;
+  margin-top: 40px;
+}
+.prod-apps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.prod-app-tag {
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--rule);
+  padding: 7px 14px;
+  color: var(--ink-2);
+  letter-spacing: 0.03em;
+}
+
+/* Right column: illustration + specs */
+.prod-right { position: relative; z-index: 1; }
+
+.prod-illus-wrap {
+  width: 100%;
+  overflow: visible;
+  margin-bottom: 8px;
+  position: relative;
+}
+/* Bleed right on odd sections */
+.prod-section:not(.prod-section--alt) .prod-illus-wrap {
+  margin-right: -80px;
+  width: calc(100% + 80px);
+}
+/* Bleed left on alt sections */
+.prod-section--alt .prod-illus-wrap {
+  margin-left: -80px;
+  width: calc(100% + 80px);
+}
+
+.prod-illus-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Specs panel */
+.specs-panel {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  padding: 28px;
+  margin-top: 24px;
+}
+.prod-section--alt .specs-panel {
+  background: var(--paper);
+}
+.specs-panel-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+  display: block;
+}
+
+/* ── CLOSING CALLOUT ── */
+.closing {
+  background: var(--carbon);
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+.closing-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border-left: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+  z-index: 1;
+}
+.closing-cell {
+  padding: 44px 44px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.closing-cell-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.28);
+  display: block;
+  margin-bottom: 14px;
+}
+.closing-cell-value {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 40px);
+  letter-spacing: -0.03em;
+  color: var(--white);
+  display: block;
+  margin-bottom: 10px;
+}
+.closing-cell-desc {
+  font-size: 13px;
+  color: rgba(250,250,248,0.38);
+  line-height: 1.65;
+}
+
+/* ── PLACEHOLDER IMAGE ── */
+.ph-img-prod {
+  width: 100%;
+  height: 260px;
+  margin-top: 24px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" class="dark-hero">
+  <a class="nav-logo" href="index.html">
+    <svg class="mark" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,1.5 18,5.75 18,14.25 10,18.5 2,14.25 2,5.75" stroke="currentColor" stroke-width="1.4" fill="none"/>
+      <circle cx="10" cy="10" r="2.2" fill="currentColor"/>
+    </svg>
+    Bombay<span class="dot">.</span>Bioworks
+  </a>
+  <ul class="nav-links">
+    <li><a href="products.html" class="active">Products</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="industries.html">Industries</a></li>
+    <li><a href="planet.html">Planet</a></li>
+    <li><a href="company.html">Company</a></li>
+  </ul>
+  <a class="nav-cta" href="company.html#contact">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Background hex illustration -->
+  <div class="hero-bg-illus">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g stroke="white" stroke-width="1" fill="none">
+        <polygon points="80,60 120,40 160,60 160,100 120,120 80,100"/>
+        <polygon points="176,60 216,40 256,60 256,100 216,120 176,100"/>
+        <polygon points="272,60 312,40 352,60 352,100 312,120 272,100"/>
+        <polygon points="368,60 408,40 448,60 448,100 408,120 368,100"/>
+        <polygon points="128,140 168,120 208,140 208,180 168,200 128,180"/>
+        <polygon points="224,140 264,120 304,140 304,180 264,200 224,180"/>
+        <polygon points="320,140 360,120 400,140 400,180 360,200 320,180"/>
+        <polygon points="80,220 120,200 160,220 160,260 120,280 80,260"/>
+        <polygon points="176,220 216,200 256,220 256,260 216,280 176,260"/>
+        <polygon points="272,220 312,200 352,220 352,260 312,280 272,260"/>
+        <polygon points="368,220 408,200 448,220 448,260 408,280 368,260"/>
+        <polygon points="128,300 168,280 208,300 208,340 168,360 128,340"/>
+        <polygon points="224,300 264,280 304,300 304,340 264,360 224,340"/>
+        <polygon points="320,300 360,280 400,300 400,340 360,360 320,340"/>
+        <polygon points="80,380 120,360 160,380 160,420 120,440 80,420"/>
+        <polygon points="176,380 216,360 256,380 256,420 216,440 176,420"/>
+        <polygon points="272,380 312,360 352,380 352,420 312,440 272,420"/>
+        <polygon points="368,380 408,360 448,380 448,420 408,440 368,420"/>
+        <polygon points="128,460 168,440 208,460 208,500 168,520 128,500"/>
+        <polygon points="224,460 264,440 304,460 304,500 264,520 224,500"/>
+        <polygon points="320,460 360,440 400,460 400,500 360,520 320,500"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">What we make</span>
+        <h1 class="f-head">Three materials.<br>One process.<br>Zero waste.</h1>
+      </div>
+      <p class="hero-sub">Our thermal conversion process yields three distinct carbon products simultaneously. Each is specified to exceed industry benchmarks. Each is independently marketable and in active demand.</p>
+    </div>
+  </div>
+  <div class="hero-amber-rule"></div>
+</section>
+
+<!-- PRODUCT SUBNAV -->
+<nav class="pnav">
+  <a class="pnav-link act" href="#biochar">01 Biochar</a>
+  <a class="pnav-link" href="#activated-carbon">02 Activated Carbon</a>
+  <a class="pnav-link" href="#carbon-fuel">03 Carbon Fuel</a>
+</nav>
+
+<!-- ── BIOCHAR ── -->
+<section class="prod-section" id="biochar">
+  <span class="prod-num-bg">01</span>
+  <div class="wrap">
+    <div class="prod-inner">
+
+      <!-- Left: Content -->
+      <div class="prod-content">
+        <div class="prod-index">
+          <span class="prod-index-num">Product 01</span>
+          <div class="prod-index-rule"></div>
+        </div>
+        <h2 class="prod-name f-head">Biochar</h2>
+        <p class="prod-tagline">Permanent carbon for agriculture, remediation, and CDR markets.</p>
+        <div class="prod-desc">
+          <p>Biochar is a stable, carbon-rich solid produced by the thermal conversion of organic material under limited oxygen conditions. Unlike compost or organic mulch, which decompose and release their carbon within years, biochar is chemically and biologically resistant. <strong>Applied to soil, it stays for millennia.</strong></p>
+          <br>
+          <p>Our biochar meets the European Biochar Certificate standard for carbon stability, with an H/C molar ratio below 0.4. This places it firmly within the EBC-defined permanence category, qualifying it for biochar carbon removal (BCR) credits under Puro.Earth, Verra, and equivalent carbon standard methodologies.</p>
+          <br>
+          <p>Beyond sequestration, biochar has measurable agronomic benefits: improved water retention, enhanced cation exchange capacity, and stimulated microbial activity in depleted soils.</p>
+        </div>
+
+        <span class="prod-apps-label">Primary applications</span>
+        <div class="prod-apps">
+          <span class="prod-app-tag">Soil amendment</span>
+          <span class="prod-app-tag">Carbon sequestration</span>
+          <span class="prod-app-tag">CDR credits</span>
+          <span class="prod-app-tag">Water retention</span>
+          <span class="prod-app-tag">Land remediation</span>
+          <span class="prod-app-tag">Livestock feed supplement</span>
+        </div>
+      </div>
+
+      <!-- Right: Illustration + Specs -->
+      <div class="prod-right">
+
+        <!-- BIOCHAR ILLUSTRATION: H/Corg permanence spectrum -->
+        <div class="prod-illus-wrap">
+          <svg viewBox="0 0 580 280" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="bWobble">
+                <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7"/>
+                <feDisplacementMap in="SourceGraphic" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+              <linearGradient id="spectrumGrad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#1E1E16"/>
+                <stop offset="100%" stop-color="#5C5C52"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Background: dark panel -->
+            <rect width="580" height="280" fill="#0E0E0C" rx="0"/>
+
+            <!-- X-axis: H/Corg spectrum (0 left = most stable, 1.5 right = least stable) -->
+            <!-- Axis line -->
+            <line x1="40" y1="200" x2="540" y2="200" stroke="#3A3A30" stroke-width="1.5"/>
+
+            <!-- Spectrum gradient bar -->
+            <defs>
+              <linearGradient id="stabGrad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#B87010"/>
+                <stop offset="30%" stop-color="#5C5C52"/>
+                <stop offset="100%" stop-color="#2A2A22"/>
+              </linearGradient>
+            </defs>
+            <rect x="40" y="204" width="500" height="8" fill="url(#stabGrad)" opacity="0.5"/>
+
+            <!-- EBC threshold line at 0.4 (roughly x = 40 + (0.4/1.5)*500 = 40 + 133 = 173) -->
+            <line x1="173" y1="60" x2="173" y2="220" stroke="#B87010" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <text x="173" y="54" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" text-anchor="middle" letter-spacing="0.08em">EBC 0.4</text>
+
+            <!-- Bars for each material category -->
+            <!-- Biochar (ours): H/Corg = 0.35, bar to x = 40 + (0.35/1.5)*500 = 40 + 117 = 157 -->
+            <!-- Highlight row -->
+            <rect x="40" y="144" width="117" height="24" fill="#B87010" opacity="0.85" rx="2"/>
+            <rect x="40" y="143" width="117" height="2" fill="#B87010" opacity="0.5"/>
+            <text x="164" y="161" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" font-weight="600">0.35</text>
+
+            <!-- Stabilised humus: H/Corg ~ 0.6, x = 40+200=240 -->
+            <rect x="40" y="116" width="200" height="20" fill="#2A2A22" rx="2"/>
+            <text x="248" y="130" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C5C52">0.60</text>
+
+            <!-- Fresh compost: H/Corg ~ 1.0, x = 40+333=373 -->
+            <rect x="40" y="88" width="333" height="20" fill="#222218" rx="2"/>
+            <text x="381" y="102" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C5C52">1.00</text>
+
+            <!-- Fresh organic matter: H/Corg ~ 1.4, x = 40+467=507 -->
+            <rect x="40" y="60" width="467" height="20" fill="#1A1A14" rx="2"/>
+            <text x="515" y="74" font-family="Space Grotesk, sans-serif" font-size="11" fill="#3A3A2A">1.40</text>
+
+            <!-- Labels: Y-axis (material names) -->
+            <text x="34" y="160" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" text-anchor="end" font-weight="500">Our Biochar</text>
+            <text x="34" y="130" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="end">Stabilised humus</text>
+            <text x="34" y="102" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="end">Fresh compost</text>
+            <text x="34" y="74" font-family="Instrument Sans, sans-serif" font-size="10" fill="#3A3A2A" text-anchor="end">Organic matter</text>
+
+            <!-- X-axis ticks and labels -->
+            <g font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A30" text-anchor="middle">
+              <line x1="40" y1="200" x2="40" y2="212" stroke="#3A3A30" stroke-width="1"/>
+              <text x="40" y="224">0.0</text>
+              <line x1="207" y1="200" x2="207" y2="212" stroke="#3A3A30" stroke-width="1"/>
+              <text x="207" y="224">0.5</text>
+              <line x1="373" y1="200" x2="373" y2="212" stroke="#3A3A30" stroke-width="1"/>
+              <text x="373" y="224">1.0</text>
+              <line x1="540" y1="200" x2="540" y2="212" stroke="#3A3A30" stroke-width="1"/>
+              <text x="540" y="224">1.5</text>
+            </g>
+
+            <!-- X-axis title -->
+            <text x="290" y="246" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A30" text-anchor="middle" letter-spacing="0.1em">H/C ORG MOLAR RATIO</text>
+
+            <!-- Left label: MORE STABLE -->
+            <text x="40" y="244" font-family="Instrument Sans, sans-serif" font-size="8" fill="#B87010" letter-spacing="0.12em">MORE STABLE</text>
+            <!-- Right label: LESS STABLE -->
+            <text x="540" y="244" font-family="Instrument Sans, sans-serif" font-size="8" fill="#3A3A30" text-anchor="end" letter-spacing="0.12em">LESS STABLE</text>
+
+            <!-- Chart title -->
+            <text x="290" y="20" font-family="Instrument Sans, sans-serif" font-size="10" fill="#AEACA0" text-anchor="middle" letter-spacing="0.12em">CARBON PERMANENCE SPECTRUM</text>
+            <text x="290" y="34" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A30" text-anchor="middle">EBC 2023: H/C org &lt; 0.4 defines permanence for CDR credit issuance</text>
+          </svg>
+        </div>
+
+        <!-- Spec table -->
+        <div class="specs-panel">
+          <span class="specs-panel-label">Specification</span>
+          <table class="spec-table">
+            <tr>
+              <td>H/C molar ratio<span class="spec-method">EBC / EBC 2023</span></td>
+              <td>&lt; 0.4</td>
+            </tr>
+            <tr>
+              <td>Carbon content (dry)<span class="spec-method">ASTM D5373</span></td>
+              <td>&ge; 70%</td>
+            </tr>
+            <tr>
+              <td>pH (water suspension)<span class="spec-method">EBC method</span></td>
+              <td>7.5 to 9.5</td>
+            </tr>
+            <tr>
+              <td>Ash content<span class="spec-method">ASTM D1102</span></td>
+              <td>&lt; 12%</td>
+            </tr>
+            <tr>
+              <td>Moisture (as-shipped)<span class="spec-method">ASTM D3173</span></td>
+              <td>&le; 15%</td>
+            </tr>
+            <tr>
+              <td>Particle size (typical)<span class="spec-method">Sieve analysis</span></td>
+              <td>0.5 to 10 mm</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- PLACEHOLDER: Biochar product photo -->
+        <div class="img-ph ph-img-prod">
+          <div class="img-ph-label"><strong>Photo needed:</strong><br>Close-up of biochar granules, ideally with soil context. Dark, rich texture.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVATED CARBON ── -->
+<section class="prod-section prod-section--alt" id="activated-carbon">
+  <span class="prod-num-bg">02</span>
+  <div class="wrap">
+    <div class="prod-inner" style="grid-template-columns: 1fr 1fr; direction: ltr;">
+
+      <!-- Right shown first visually by reversing grid order -->
+      <div class="prod-right" style="order:1;">
+
+        <!-- ACTIVATED CARBON ILLUSTRATION: Pore size distribution -->
+        <div class="prod-illus-wrap">
+          <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="580" height="300" fill="#0E0E0C" rx="0"/>
+
+            <!-- Pore structure schematic: three concentric pore types -->
+            <!-- MACROPORE (largest, leftmost) -->
+            <circle cx="120" cy="150" r="72" stroke="#2A2A22" stroke-width="1.5" fill="#1A1A14"/>
+            <circle cx="120" cy="150" r="55" stroke="#3A3A2A" stroke-width="0.7" fill="#222218" stroke-dasharray="3,3"/>
+            <circle cx="120" cy="150" r="35" stroke="#4A4A38" stroke-width="0.5" fill="#2A2A1E" stroke-dasharray="2,2"/>
+            <circle cx="120" cy="150" r="16" fill="#3A3A2C"/>
+            <text x="120" y="245" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="middle" letter-spacing="0.1em">MACROPORE</text>
+            <text x="120" y="258" font-family="Space Grotesk, sans-serif" font-size="11" fill="#AEACA0" text-anchor="middle">&gt;50 nm</text>
+
+            <!-- Label: transport -->
+            <text x="120" y="155" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#3A3A2A" text-anchor="middle">Transport</text>
+
+            <!-- Flow arrow -->
+            <path d="M198 150 L222 150" stroke="#3A3A30" stroke-width="1.2" marker-end="url(#arrowDk)"/>
+
+            <!-- MESOPORE (medium) -->
+            <circle cx="290" cy="150" r="56" stroke="#3A3A2A" stroke-width="1.5" fill="#1A1A14"/>
+            <circle cx="290" cy="150" r="40" stroke="#4A4A38" stroke-width="0.8" fill="#252520" stroke-dasharray="3,3"/>
+            <circle cx="290" cy="150" r="22" fill="#3A3A2C"/>
+            <text x="290" y="225" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="middle" letter-spacing="0.1em">MESOPORE</text>
+            <text x="290" y="238" font-family="Space Grotesk, sans-serif" font-size="11" fill="#AEACA0" text-anchor="middle">2 to 50 nm</text>
+            <text x="290" y="155" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#3A3A2A" text-anchor="middle">Diffusion</text>
+
+            <!-- Flow arrow -->
+            <path d="M352 150 L375 150" stroke="#3A3A30" stroke-width="1.2"/>
+
+            <!-- MICROPORE (smallest, where most adsorption happens, amber highlight) -->
+            <circle cx="440" cy="150" r="40" stroke="#B87010" stroke-width="1.8" fill="#1A0E04"/>
+            <circle cx="440" cy="150" r="24" stroke="#7A4A0A" stroke-width="0.8" fill="#220F02" stroke-dasharray="2,2"/>
+            <circle cx="440" cy="150" r="10" fill="#B87010" opacity="0.25"/>
+            <text x="440" y="210" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" text-anchor="middle" letter-spacing="0.1em">MICROPORE</text>
+            <text x="440" y="223" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" text-anchor="middle">&lt;2 nm</text>
+            <text x="440" y="155" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#B87010" text-anchor="middle" opacity="0.7">Adsorption</text>
+
+            <!-- Spec callouts: BET and Iodine -->
+            <rect x="30" y="14" width="520" height="40" fill="#141410" rx="2"/>
+            <text x="50" y="30" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.12em">BET SURFACE</text>
+            <text x="50" y="44" font-family="Space Grotesk, sans-serif" font-size="13" fill="#AEACA0" font-weight="600">900 to 1,200 m&#178;/g</text>
+            <line x1="240" y1="16" x2="240" y2="52" stroke="#2A2A22" stroke-width="1"/>
+            <text x="260" y="30" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.12em">IODINE NUMBER</text>
+            <text x="260" y="44" font-family="Space Grotesk, sans-serif" font-size="13" fill="#B87010" font-weight="600">&ge;900 mg/g</text>
+            <line x1="440" y1="16" x2="440" y2="52" stroke="#2A2A22" stroke-width="1"/>
+            <text x="460" y="30" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.12em">STANDARD</text>
+            <text x="460" y="44" font-family="Instrument Sans, sans-serif" font-size="10" fill="#AEACA0">ASTM D3663 / D5742</text>
+
+            <!-- Caption -->
+            <text x="290" y="285" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A30" text-anchor="middle">1 g of activated carbon covers approximately 1,100 m&#178; - the floor area of a large apartment block.</text>
+          </svg>
+        </div>
+
+        <!-- Spec table -->
+        <div class="specs-panel">
+          <span class="specs-panel-label">Specification</span>
+          <table class="spec-table">
+            <tr>
+              <td>BET surface area<span class="spec-method">ASTM D3663</span></td>
+              <td>900 to 1,200 m&#178;/g</td>
+            </tr>
+            <tr>
+              <td>Iodine number<span class="spec-method">ASTM D5742</span></td>
+              <td>&ge; 900 mg/g</td>
+            </tr>
+            <tr>
+              <td>Methylene blue number<span class="spec-method">ASTM D5999</span></td>
+              <td>&ge; 200 mg/g</td>
+            </tr>
+            <tr>
+              <td>Moisture content<span class="spec-method">ASTM D2867</span></td>
+              <td>&le; 5%</td>
+            </tr>
+            <tr>
+              <td>Ash content<span class="spec-method">ASTM D2866</span></td>
+              <td>&le; 8%</td>
+            </tr>
+            <tr>
+              <td>Form<span class="spec-method">Physical</span></td>
+              <td>Granular or powder</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- PLACEHOLDER: Activated carbon product photo -->
+        <div class="img-ph ph-img-prod">
+          <div class="img-ph-label"><strong>Photo needed:</strong><br>Activated carbon granules or powder in hand / container. Close-up, dark background.</div>
+        </div>
+
+      </div>
+
+      <!-- Left: Content -->
+      <div class="prod-content" style="order:2;">
+        <div class="prod-index">
+          <span class="prod-index-num">Product 02</span>
+          <div class="prod-index-rule"></div>
+        </div>
+        <h2 class="prod-name f-head">Activated Carbon</h2>
+        <p class="prod-tagline">Ultraporous sorbent for purification, filtration, and separation.</p>
+        <div class="prod-desc">
+          <p>Activated carbon is produced by controlled thermal activation of carbonised feedstock, developing an extraordinary internal surface area through the creation of millions of micropores. <strong>One gram of our activated carbon contains approximately 1,100 square metres of internal surface</strong> - available for adsorption at every point.</p>
+          <br>
+          <p>The structure is micropore-dominant, making it highly effective for the adsorption of small organic molecules, including pesticides, pharmaceuticals, disinfection by-products, and heavy metal species. This is the specification that water utilities, industrial plants, and pharmaceutical manufacturers specify.</p>
+          <br>
+          <p>We produce both granular activated carbon (GAC) and powdered activated carbon (PAC) to meet the full range of application requirements across gravity filtration, pressure systems, and dosing applications.</p>
+        </div>
+
+        <span class="prod-apps-label">Primary applications</span>
+        <div class="prod-apps">
+          <span class="prod-app-tag">Water treatment</span>
+          <span class="prod-app-tag">Air purification</span>
+          <span class="prod-app-tag">Pharmaceutical purification</span>
+          <span class="prod-app-tag">Food and beverage decolorisation</span>
+          <span class="prod-app-tag">Industrial solvent recovery</span>
+          <span class="prod-app-tag">Gas separation</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CARBON FUEL ── -->
+<section class="prod-section" id="carbon-fuel">
+  <span class="prod-num-bg">03</span>
+  <div class="wrap">
+    <div class="prod-inner">
+
+      <!-- Left: Content -->
+      <div class="prod-content">
+        <div class="prod-index">
+          <span class="prod-index-num">Product 03</span>
+          <div class="prod-index-rule"></div>
+        </div>
+        <h2 class="prod-name f-head">Carbon Fuel</h2>
+        <p class="prod-tagline">High fixed-carbon solid fuel with lower emissions than thermal coal.</p>
+        <div class="prod-desc">
+          <p>Carbon fuel is the densified, high fixed-carbon co-product of our thermal conversion process. With fixed carbon content above 65 percent and total sulfur below 0.5 percent, it is a cleaner-burning, drop-in replacement for thermal coal in power generation, cement kilns, and industrial furnaces.</p>
+          <br>
+          <p>The calorific value is comparable to mid-grade thermal coal, which means existing combustion infrastructure can use it without modification. <strong>Sulfur oxide emissions are reduced by more than 60 percent relative to standard thermal coal.</strong> Ash content is lower, reducing post-combustion waste handling costs.</p>
+          <br>
+          <p>Carbon fuel is available as briquettes or granular material, sized to customer combustion system specifications. It is particularly suited for cement plants, steel mills, and combined heat-and-power (CHP) applications seeking to reduce their emission intensity without capital expenditure on new equipment.</p>
+        </div>
+
+        <span class="prod-apps-label">Primary applications</span>
+        <div class="prod-apps">
+          <span class="prod-app-tag">Thermal power generation</span>
+          <span class="prod-app-tag">Cement kiln fuel</span>
+          <span class="prod-app-tag">Steel production</span>
+          <span class="prod-app-tag">Industrial furnaces</span>
+          <span class="prod-app-tag">Combined heat and power</span>
+          <span class="prod-app-tag">Brick kilns</span>
+        </div>
+      </div>
+
+      <!-- Right: Illustration + Specs -->
+      <div class="prod-right">
+
+        <!-- CARBON FUEL ILLUSTRATION: Full comparison vs thermal coal -->
+        <div class="prod-illus-wrap">
+          <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cfBgFull" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#14120A"/>
+                <stop offset="100%" stop-color="#0E0C08"/>
+              </linearGradient>
+              <linearGradient id="amberBar" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#B87010"/>
+                <stop offset="100%" stop-color="#7A4A0A"/>
+              </linearGradient>
+            </defs>
+            <rect width="580" height="300" fill="url(#cfBgFull)"/>
+
+            <!-- Chart title -->
+            <text x="290" y="22" font-family="Instrument Sans, sans-serif" font-size="10" fill="#AEACA0" text-anchor="middle" letter-spacing="0.12em">COAL VS CARBON FUEL: KEY PARAMETERS</text>
+
+            <!-- === FIXED CARBON % === -->
+            <text x="130" y="46" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#5C5C52" text-anchor="middle" letter-spacing="0.1em">FIXED CARBON %</text>
+
+            <!-- Coal bar: ~42%, max bar = 200px at 100% so 84px -->
+            <text x="76" y="68" font-family="Space Grotesk, sans-serif" font-size="12" fill="#5C5C52" text-anchor="middle">42%</text>
+            <text x="76" y="82" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A2A" text-anchor="middle">Coal</text>
+            <rect x="30" y="86" width="92" height="148" fill="#2A2A22" rx="2"/>
+            <rect x="30" y="82" width="92" height="4" fill="#3A3A30"/>
+
+            <!-- Carbon fuel bar: ~68%, so 136px -->
+            <text x="186" y="52" font-family="Space Grotesk, sans-serif" font-size="12" fill="#B87010" text-anchor="middle">68%+</text>
+            <text x="186" y="66" font-family="Instrument Sans, sans-serif" font-size="9" fill="#B87010" text-anchor="middle">Carbon Fuel</text>
+            <rect x="140" y="70" width="92" height="164" fill="url(#amberBar)" rx="2" opacity="0.85"/>
+            <rect x="140" y="66" width="92" height="4" fill="#B87010" opacity="0.6"/>
+
+            <!-- Separator -->
+            <line x1="260" y1="38" x2="260" y2="254" stroke="#1E1E18" stroke-width="1.5"/>
+
+            <!-- === TOTAL SULFUR % === -->
+            <text x="420" y="46" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#5C5C52" text-anchor="middle" letter-spacing="0.1em">TOTAL SULFUR %</text>
+
+            <!-- Coal sulfur: ~1.2%, scale is 0-1.5%, bar max = 200px so 160px -->
+            <text x="346" y="68" font-family="Space Grotesk, sans-serif" font-size="12" fill="#5C5C52" text-anchor="middle">1.2%</text>
+            <text x="346" y="82" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A2A" text-anchor="middle">Coal</text>
+            <rect x="300" y="86" width="92" height="148" fill="#2A2A22" rx="2"/>
+
+            <!-- Carbon fuel sulfur: ~0.4%, so 53px -->
+            <text x="456" y="178" font-family="Space Grotesk, sans-serif" font-size="12" fill="#B87010" text-anchor="middle">0.4%</text>
+            <text x="456" y="192" font-family="Instrument Sans, sans-serif" font-size="9" fill="#B87010" text-anchor="middle">Carbon Fuel</text>
+            <rect x="410" y="182" width="92" height="52" fill="url(#amberBar)" rx="2" opacity="0.85"/>
+
+            <!-- Lower is better note -->
+            <text x="456" y="82" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A2A" text-anchor="middle" font-style="italic">lower = better</text>
+
+            <!-- Bottom axis labels -->
+            <line x1="30" y1="236" x2="550" y2="236" stroke="#1E1E18" stroke-width="1"/>
+
+            <!-- Callout: calorific value comparison -->
+            <rect x="30" y="248" width="520" height="38" fill="#141210" rx="1"/>
+            <text x="50" y="265" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.1em">CALORIFIC VALUE</text>
+            <text x="50" y="278" font-family="Space Grotesk, sans-serif" font-size="11" fill="#AEACA0" font-weight="600">6,000 to 7,200 kcal/kg</text>
+            <line x1="240" y1="250" x2="240" y2="284" stroke="#1E1E18" stroke-width="1"/>
+            <text x="260" y="265" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.1em">ASH CONTENT</text>
+            <text x="260" y="278" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" font-weight="600">&le; 6% (vs 10 to 18% coal)</text>
+            <line x1="440" y1="250" x2="440" y2="284" stroke="#1E1E18" stroke-width="1"/>
+            <text x="460" y="265" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.1em">FORM</text>
+            <text x="460" y="278" font-family="Instrument Sans, sans-serif" font-size="10" fill="#AEACA0">Briquette / granular</text>
+          </svg>
+        </div>
+
+        <!-- Spec table -->
+        <div class="specs-panel">
+          <span class="specs-panel-label">Specification</span>
+          <table class="spec-table">
+            <tr>
+              <td>Fixed carbon<span class="spec-method">ASTM D3172 (proximate)</span></td>
+              <td>&ge; 65%</td>
+            </tr>
+            <tr>
+              <td>Calorific value<span class="spec-method">ASTM D5865</span></td>
+              <td>6,000 to 7,200 kcal/kg</td>
+            </tr>
+            <tr>
+              <td>Total sulfur<span class="spec-method">ASTM D4239</span></td>
+              <td>&le; 0.5%</td>
+            </tr>
+            <tr>
+              <td>Ash content<span class="spec-method">ASTM D3174</span></td>
+              <td>&le; 6%</td>
+            </tr>
+            <tr>
+              <td>Volatile matter<span class="spec-method">ASTM D3175</span></td>
+              <td>&le; 20%</td>
+            </tr>
+            <tr>
+              <td>Form<span class="spec-method">Physical</span></td>
+              <td>Briquette or granular</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- PLACEHOLDER: Carbon fuel photo -->
+        <div class="img-ph ph-img-prod">
+          <div class="img-ph-label"><strong>Photo needed:</strong><br>Carbon fuel briquettes or granular pile. Industrial setting preferred.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING STATS -->
+<section class="closing">
+  <div class="wrap">
+    <div style="margin-bottom:56px; position:relative; z-index:1;">
+      <span class="eyebrow">All three products. One facility.</span>
+      <h2 class="f-head" style="color:var(--white); font-size:clamp(28px,3.5vw,48px); max-width:600px;">
+        Simultaneous production of three markets' worth of carbon materials.
+      </h2>
+    </div>
+    <div class="closing-inner">
+      <div class="closing-cell">
+        <span class="closing-cell-label">Biochar permanence</span>
+        <span class="closing-cell-value">3,000+ yr</span>
+        <p class="closing-cell-desc">Stability in soil or mineral substrate. EBC 2023 standard. H/C molar ratio below 0.4.</p>
+      </div>
+      <div class="closing-cell">
+        <span class="closing-cell-label">AC surface area</span>
+        <span class="closing-cell-value">1,100 m&#178;/g</span>
+        <p class="closing-cell-desc">BET surface area per gram. Micropore-dominant. Exceeds IS 877 drinking water grade.</p>
+      </div>
+      <div class="closing-cell">
+        <span class="closing-cell-label">Carbon fuel purity</span>
+        <span class="closing-cell-value">&ge;65% fixed C</span>
+        <p class="closing-cell-desc">Fixed carbon content. Sulfur at 0.4 percent or below. Direct drop-in for thermal coal.</p>
+      </div>
+    </div>
+    <div style="padding:36px 0;border-top:1px solid rgba(255,255,255,0.07);margin-top:0;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;">
+      <p style="font-size:13px;color:rgba(250,250,248,0.35);">Need product samples or a detailed specification sheet?</p>
+      <a class="btn btn-ghost-white" href="company.html#contact">Contact us &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Bombay Bioworks.</div>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-col-label">Products</span>
+        <ul class="footer-links">
+          <li><a href="#biochar">Biochar</a></li>
+          <li><a href="#activated-carbon">Activated Carbon</a></li>
+          <li><a href="#carbon-fuel">Carbon Fuel</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Company</span>
+        <ul class="footer-links">
+          <li><a href="process.html">Process</a></li>
+          <li><a href="industries.html">Industries</a></li>
+          <li><a href="company.html">About</a></li>
+          <li><a href="company.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Climate</span>
+        <ul class="footer-links">
+          <li><a href="planet.html">Planet</a></li>
+          <li><a href="planet.html#certifications">EBC Certification</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Contact</span>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@bombaybioworks.com">hello@bombaybioworks.com</a></li>
+          <li><a href="#">Mumbai, Maharashtra</a></li>
+        </ul>
+        <p class="footer-tagline" style="margin-top:24px;">Carbon materials for a warming world.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">2024 Bombay Bioworks. All rights reserved.</span>
+      <span class="footer-copy">bombaybioworks.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Company — Bombay Bioworks</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  background: var(--carbon);
+  min-height: 60svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 60px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 { color: var(--white); font-size: clamp(40px,6vw,86px); }
+.hero-sub { font-size: 14px; line-height: 1.85; color: rgba(250,250,248,0.38); max-width: 380px; }
+
+/* Hero illustration (city/factory silhouette) */
+.hero-city {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  z-index: 0;
+  opacity: 0.12;
+}
+
+/* ── ORIGIN ── */
+.origin {
+  padding: 140px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: visible;
+}
+.origin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+
+/* Large pull quote */
+.pull-quote {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(22px, 2.8vw, 38px);
+  letter-spacing: -0.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  margin-bottom: 48px;
+  position: relative;
+}
+.pull-quote::before {
+  content: '\201C';
+  font-size: 1.2em;
+  color: var(--amber);
+  line-height: 0;
+  vertical-align: -0.18em;
+  margin-right: 4px;
+}
+
+/* Origin stats */
+.origin-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  margin-top: 56px;
+}
+.origin-stat-cell {
+  background: var(--paper);
+  padding: 32px 28px;
+}
+.origin-stat-num {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(28px, 3.5vw, 44px);
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 6px;
+}
+.origin-stat-label {
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* Origin right: photo placeholder + decorative element */
+.origin-right {
+  position: relative;
+}
+.origin-photo { height: 560px; width: 100%; }
+.origin-photo::after {
+  content: '';
+  position: absolute;
+  inset: -16px -16px 16px 16px;
+  border: 1.5px solid var(--rule);
+  z-index: -1;
+}
+
+/* Floating amber accent */
+.origin-accent {
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 180px;
+  height: 180px;
+  border: 1.5px solid var(--amber);
+  z-index: 2;
+}
+
+/* ── WHY WE EXIST ── */
+.why-section {
+  background: var(--paper-warm);
+  padding: 120px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0 80px;
+}
+.why-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+/* ── VALUES ── */
+.values-section {
+  padding: 120px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 3px solid var(--ink);
+  margin-top: 56px;
+}
+.value-item {
+  padding: 44px 36px 44px 0;
+  border-right: 1px solid var(--rule);
+}
+.value-item:last-child { border-right: none; }
+.value-item + .value-item { padding-left: 36px; }
+
+.value-num {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 48px;
+  letter-spacing: -0.05em;
+  color: var(--rule);
+  line-height: 1;
+  display: block;
+  margin-bottom: 20px;
+}
+.value-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 12px;
+}
+.value-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ink-3);
+}
+
+/* ── TEAM ── */
+.team-section {
+  background: var(--carbon);
+  padding: 120px 0;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin-top: 56px;
+}
+.team-item {
+  padding: 48px 40px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.team-item:last-child { border-right: none; }
+.team-photo {
+  width: 100%;
+  height: 240px;
+  margin-bottom: 24px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.team-photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+}
+.team-photo-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.18);
+  text-align: center;
+  padding: 16px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+.team-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  display: block;
+  margin-bottom: 4px;
+}
+.team-role {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 14px;
+}
+.team-bio {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(250,250,248,0.38);
+}
+
+/* Open positions -->
+.open-positions {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 56px 0 0;
+  margin-top: 48px;
+}
+.open-pos-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.open-pos-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.open-pos-type {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.28);
+}
+.open-pos-link {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-decoration: none;
+}
+
+/* ── CONTACT ── */
+.contact-section {
+  padding: 140px 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 40px;
+}
+.contact-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.contact-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.contact-value {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.contact-value:hover { color: var(--amber); }
+
+/* Decorative: Mumbai city silhouette behind contact -->
+.contact-city-illus {
+  position: absolute;
+  right: -60px;
+  bottom: -20px;
+  width: 55%;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" class="dark-hero">
+  <a class="nav-logo" href="index.html">
+    <svg class="mark" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,1.5 18,5.75 18,14.25 10,18.5 2,14.25 2,5.75" stroke="currentColor" stroke-width="1.4" fill="none"/>
+      <circle cx="10" cy="10" r="2.2" fill="currentColor"/>
+    </svg>
+    Bombay<span class="dot">.</span>Bioworks
+  </a>
+  <ul class="nav-links">
+    <li><a href="products.html">Products</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="industries.html">Industries</a></li>
+    <li><a href="planet.html">Planet</a></li>
+    <li><a href="company.html" class="active">Company</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Bombay skyline silhouette: decorative background illustration -->
+  <svg class="hero-city" viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax slice">
+    <!-- Simplified city silhouette inspired by Mumbai skyline -->
+    <rect x="0" y="200" width="1200" height="100" fill="white"/>
+    <!-- Buildings left -->
+    <rect x="20" y="160" width="40" height="140" fill="white"/>
+    <rect x="70" y="120" width="30" height="180" fill="white"/>
+    <rect x="55" y="100" width="10" height="60" fill="white"/>
+    <rect x="110" y="140" width="55" height="160" fill="white"/>
+    <rect x="175" y="100" width="25" height="200" fill="white"/>
+    <rect x="190" y="80" width="8" height="40" fill="white"/>
+    <rect x="210" y="130" width="60" height="170" fill="white"/>
+    <rect x="235" y="110" width="14" height="40" fill="white"/>
+    <rect x="280" y="150" width="45" height="150" fill="white"/>
+    <rect x="334" y="90" width="35" height="210" fill="white"/>
+    <rect x="347" y="70" width="10" height="30" fill="white"/>
+    <rect x="378" y="120" width="50" height="180" fill="white"/>
+    <rect x="436" y="80" width="28" height="220" fill="white"/>
+    <rect x="446" y="60" width="8" height="30" fill="white"/>
+    <!-- Center area with taller buildings -->
+    <rect x="472" y="60" width="40" height="240" fill="white"/>
+    <rect x="484" y="40" width="16" height="30" fill="white"/>
+    <rect x="520" y="100" width="55" height="200" fill="white"/>
+    <rect x="540" y="80" width="16" height="30" fill="white"/>
+    <rect x="583" y="50" width="45" height="250" fill="white"/>
+    <rect x="598" y="30" width="15" height="28" fill="white"/>
+    <rect x="636" y="90" width="35" height="210" fill="white"/>
+    <rect x="678" y="120" width="50" height="180" fill="white"/>
+    <rect x="690" y="100" width="14" height="30" fill="white"/>
+    <rect x="735" y="80" width="30" height="220" fill="white"/>
+    <rect x="747" y="60" width="8" height="30" fill="white"/>
+    <rect x="772" y="130" width="55" height="170" fill="white"/>
+    <rect x="834" y="100" width="40" height="200" fill="white"/>
+    <rect x="846" y="80" width="16" height="30" fill="white"/>
+    <rect x="882" y="140" width="48" height="160" fill="white"/>
+    <rect x="937" y="110" width="35" height="190" fill="white"/>
+    <rect x="979" y="150" width="50" height="150" fill="white"/>
+    <rect x="1036" y="120" width="40" height="180" fill="white"/>
+    <rect x="1084" y="100" width="30" height="200" fill="white"/>
+    <rect x="1096" y="80" width="8" height="30" fill="white"/>
+    <rect x="1120" y="140" width="55" height="160" fill="white"/>
+    <rect x="1148" y="170" width="50" height="130" fill="white"/>
+  </svg>
+
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Bombay Bioworks</span>
+        <h1 class="f-head">Built in Bombay.<br>Built around carbon.</h1>
+      </div>
+      <p class="hero-sub">We are a carbon materials company producing biochar, activated carbon, and carbon fuel from agricultural residue. We are based in Maharashtra, India, and we are here because the opportunity was obvious and the infrastructure was missing.</p>
+    </div>
+  </div>
+  <div class="hero-amber-rule"></div>
+</section>
+
+<!-- ORIGIN STORY -->
+<section class="origin">
+  <div class="wrap">
+    <div class="origin-grid">
+
+      <div>
+        <span class="eyebrow-plain">The origin</span>
+        <p class="pull-quote">The numbers were obvious. No one was doing it at scale. So we started.</p>
+
+        <p class="body-lg" style="margin-bottom:20px;">India generates hundreds of millions of tonnes of agricultural residue every year. The scale of this material stream is enormous. Most of it is either left to decompose in the field, releasing carbon back into the atmosphere, or it is burned in the open, causing acute air quality damage.</p>
+
+        <p class="body-md" style="margin-bottom:20px;">At the same time, India imports significant volumes of activated carbon for water treatment. The market for clean solid fuel as a coal substitute exists wherever air quality regulations create cost pressure. And the global market for biochar carbon removal credits is growing rapidly as corporations and governments look for permanent CDR solutions.</p>
+
+        <p class="body-md">The technology to convert agricultural residue into these three products simultaneously exists and has been proven at industrial scale. The feedstock is plentiful and currently a liability rather than an asset. The markets are real. We put all three together.</p>
+
+        <div class="origin-stats">
+          <div class="origin-stat-cell">
+            <span class="origin-stat-num">500M+</span>
+            <p class="origin-stat-label">Tonnes of agricultural residue generated annually in India</p>
+          </div>
+          <div class="origin-stat-cell">
+            <span class="origin-stat-num">3</span>
+            <p class="origin-stat-label">Carbon material markets served simultaneously from one process</p>
+          </div>
+          <div class="origin-stat-cell">
+            <span class="origin-stat-num">Zero</span>
+            <p class="origin-stat-label">Net process waste. Synthesis gas fuels the conversion unit itself.</p>
+          </div>
+          <div class="origin-stat-cell">
+            <span class="origin-stat-num">Mumbai</span>
+            <p class="origin-stat-label">Home base. India's commercial capital. Facility in Maharashtra.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="origin-right">
+        <div class="img-ph origin-photo">
+          <div class="img-ph-label">
+            <strong>Photo needed:</strong><br>
+            Founders / team photo, or facility establishing shot.<br>
+            Portrait or square format preferred here.
+          </div>
+        </div>
+        <div class="origin-accent"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY WE EXIST -->
+<section class="why-section">
+  <div class="wrap">
+    <div class="why-grid">
+      <div style="position:sticky;top:calc(var(--nav-h) + 40px);padding-top:4px;">
+        <span class="eyebrow-plain">Why this</span>
+        <h2 class="f-head" style="font-size:clamp(24px,2.8vw,38px); line-height:1.08;">The problem we are solving.</h2>
+      </div>
+      <div class="why-content">
+        <div>
+          <h3 class="f-head-md" style="font-size:18px; margin-bottom:14px; color:var(--ink);">Agricultural residue is a liability with an obvious fix.</h3>
+          <p class="body-md">When agricultural residue decomposes, it releases most of its stored carbon as CO2 and methane. When it is burned in the open, it releases all of it instantly, plus particulate matter and other pollutants. Neither outcome creates value. Thermal conversion creates value from the same material, captures the carbon permanently, and generates no ambient pollution.</p>
+        </div>
+        <div>
+          <h3 class="f-head-md" style="font-size:18px; margin-bottom:14px; color:var(--ink);">India is the world's largest market for what we make.</h3>
+          <p class="body-md">India has the agricultural scale, the import dependence on activated carbon, the industrial coal demand, and the soil health challenge that collectively make our three products immediately relevant. The market is not theoretical. It is active, it is large, and it is underserved from domestic supply.</p>
+        </div>
+        <div>
+          <h3 class="f-head-md" style="font-size:18px; margin-bottom:14px; color:var(--ink);">Carbon removal that actually removes carbon.</h3>
+          <p class="body-md">Most carbon offsetting involves payments for avoided future emissions, or carbon captured in living biomass that can be reversed. Biochar physically removes carbon from the carbon cycle and stores it in a form stable for over 3,000 years. This is not an offset. It is a removal. The distinction matters.</p>
+        </div>
+        <div>
+          <h3 class="f-head-md" style="font-size:18px; margin-bottom:14px; color:var(--ink);">The business model does not depend on climate policy.</h3>
+          <p class="body-md">Activated carbon and carbon fuel are commercial products with established markets that exist independently of any carbon price or climate regulation. Biochar has both commercial agronomic demand and a CDR credit premium. The business works at zero carbon credit price and improves as those markets mature.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div class="wrap">
+    <span class="eyebrow-plain">How we operate</span>
+    <h2 class="f-head" style="font-size:clamp(28px,3.5vw,48px);">Three principles.</h2>
+    <div class="values-grid">
+      <div class="value-item">
+        <span class="value-num">01</span>
+        <span class="value-name">Specification, not approximation.</span>
+        <p class="value-desc">We do not describe our products qualitatively. Every product is defined by a specification, tested to a standard, and shipped with a test certificate. We do not make claims we cannot back with a number and a method.</p>
+      </div>
+      <div class="value-item">
+        <span class="value-num">02</span>
+        <span class="value-name">No waste from a waste feedstock.</span>
+        <p class="value-desc">Our process converts material that would otherwise have negative value (decomposing or burning residue) into products with positive value, and generates no additional waste streams in doing so. The synthesis gas powers the process. Nothing else leaves the site.</p>
+      </div>
+      <div class="value-item">
+        <span class="value-num">03</span>
+        <span class="value-name">The climate claim is a fact, not a story.</span>
+        <p class="value-desc">We do not use climate language loosely. Our biochar has a measured H/C molar ratio, tested to EBC protocol. That ratio is the scientific basis for the permanence claim. Everything we say about carbon removal is backed by that number and the standard that defines it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--amber);">The team</span>
+    <h2 class="f-head" style="color:var(--white); font-size:clamp(28px,3.5vw,48px);">The people behind the process.</h2>
+
+    <div class="team-grid">
+
+      <div class="team-item">
+        <div class="team-photo">
+          <div class="team-photo-label">Photo needed:<br>Founder portrait.<br>Professional, natural light.</div>
+        </div>
+        <span class="team-name">Founder / CEO</span>
+        <span class="team-role">Co-Founder</span>
+        <p class="team-bio">Background in [industry / field]. Founded Bombay Bioworks to [mission sentence]. Previously [prior role or company].</p>
+      </div>
+
+      <div class="team-item">
+        <div class="team-photo">
+          <div class="team-photo-label">Photo needed:<br>Co-founder portrait.<br>Professional, natural light.</div>
+        </div>
+        <span class="team-name">Co-Founder / CTO</span>
+        <span class="team-role">Co-Founder</span>
+        <p class="team-bio">Responsible for process design, facility engineering, and quality assurance. [Background and credentials to be added].</p>
+      </div>
+
+      <div class="team-item" style="padding-left:40px;">
+        <div style="padding-top:20px;">
+          <span class="eyebrow" style="color:rgba(250,250,248,0.28); font-size:10px;">We are hiring</span>
+          <h3 style="color:var(--white); font-family:var(--f-display); font-weight:600; font-size:20px; letter-spacing:-0.02em; margin-bottom:20px;">Join us in building something useful.</h3>
+          <p style="font-size:13px; color:rgba(250,250,248,0.38); line-height:1.75; margin-bottom:32px;">We are a small, technical team. We are looking for people who are precise, driven by evidence, and genuinely interested in carbon materials.</p>
+
+          <div class="open-positions">
+            <span style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(250,250,248,0.25);display:block;margin-bottom:16px;">Open positions</span>
+            <div class="open-pos-item">
+              <div>
+                <span class="open-pos-title">Process Engineer</span>
+                <span style="display:block;" class="open-pos-type">Full-time &middot; Maharashtra</span>
+              </div>
+              <a class="open-pos-link" href="mailto:hello@bombaybioworks.com">Apply &rarr;</a>
+            </div>
+            <div class="open-pos-item">
+              <div>
+                <span class="open-pos-title">QC / Lab Analyst</span>
+                <span style="display:block;" class="open-pos-type">Full-time &middot; Maharashtra</span>
+              </div>
+              <a class="open-pos-link" href="mailto:hello@bombaybioworks.com">Apply &rarr;</a>
+            </div>
+            <div class="open-pos-item">
+              <div>
+                <span class="open-pos-title">Sales and Business Development</span>
+                <span style="display:block;" class="open-pos-type">Full-time &middot; Mumbai</span>
+              </div>
+              <a class="open-pos-link" href="mailto:hello@bombaybioworks.com">Apply &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+
+  <!-- Decorative Mumbai skyline (faint) -->
+  <svg class="contact-city-illus" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="120" width="800" height="80" fill="#0D0D0B"/>
+    <rect x="20" y="80" width="30" height="120" fill="#0D0D0B"/>
+    <rect x="60" y="60" width="20" height="140" fill="#0D0D0B"/>
+    <rect x="64" y="45" width="12" height="20" fill="#0D0D0B"/>
+    <rect x="90" y="90" width="40" height="110" fill="#0D0D0B"/>
+    <rect x="140" y="50" width="25" height="150" fill="#0D0D0B"/>
+    <rect x="174" y="70" width="35" height="130" fill="#0D0D0B"/>
+    <rect x="218" y="40" width="28" height="160" fill="#0D0D0B"/>
+    <rect x="226" y="28" width="12" height="20" fill="#0D0D0B"/>
+    <rect x="255" y="80" width="50" height="120" fill="#0D0D0B"/>
+    <rect x="315" y="30" width="32" height="170" fill="#0D0D0B"/>
+    <rect x="324" y="15" width="14" height="24" fill="#0D0D0B"/>
+    <rect x="356" y="60" width="40" height="140" fill="#0D0D0B"/>
+    <rect x="406" y="45" width="30" height="155" fill="#0D0D0B"/>
+    <rect x="445" y="70" width="55" height="130" fill="#0D0D0B"/>
+    <rect x="465" y="52" width="16" height="28" fill="#0D0D0B"/>
+    <rect x="510" y="90" width="38" height="110" fill="#0D0D0B"/>
+    <rect x="558" y="55" width="45" height="145" fill="#0D0D0B"/>
+    <rect x="575" y="38" width="14" height="26" fill="#0D0D0B"/>
+    <rect x="612" y="75" width="50" height="125" fill="#0D0D0B"/>
+    <rect x="672" y="95" width="35" height="105" fill="#0D0D0B"/>
+    <rect x="716" y="60" width="40" height="140" fill="#0D0D0B"/>
+    <rect x="765" y="85" width="35" height="115" fill="#0D0D0B"/>
+  </svg>
+
+  <div class="wrap">
+    <div class="contact-grid">
+
+      <div>
+        <span class="eyebrow-plain">Contact</span>
+        <h2 class="f-head" style="font-size:clamp(28px,3.5vw,52px); margin-bottom:24px;">Talk to us about our materials, our process, or your requirements.</h2>
+        <p class="body-lg">We are interested in serious commercial conversations. If you are a buyer, a developer, a researcher, or an investor, we want to hear from you. We respond to every message.</p>
+
+        <div class="contact-items">
+          <div class="contact-item">
+            <span class="contact-label">Email</span>
+            <a class="contact-value" href="mailto:hello@bombaybioworks.com">hello@bombaybioworks.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Location</span>
+            <span class="contact-value">Mumbai, Maharashtra, India</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Facility</span>
+            <span class="contact-value">Maharashtra (location available on request)</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">For samples</span>
+            <a class="contact-value" href="mailto:hello@bombaybioworks.com">Request a product sample kit</a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="eyebrow-plain" style="margin-bottom:8px;">What to expect</span>
+        <h3 style="font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:-0.02em;margin-bottom:28px;">When you reach out.</h3>
+
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="padding:20px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:32px 1fr;gap:16px;align-items:start;">
+            <span style="font-family:var(--f-display);font-weight:700;color:var(--amber);font-size:14px;letter-spacing:-0.02em;">01</span>
+            <div>
+              <span style="font-weight:600;font-size:14px;color:var(--ink);display:block;margin-bottom:6px;">We respond within one business day.</span>
+              <span style="font-size:13px;color:var(--ink-3);">Every enquiry gets a personal response from someone on the team, not an automated reply.</span>
+            </div>
+          </div>
+          <div style="padding:20px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:32px 1fr;gap:16px;align-items:start;">
+            <span style="font-family:var(--f-display);font-weight:700;color:var(--amber);font-size:14px;letter-spacing:-0.02em;">02</span>
+            <div>
+              <span style="font-weight:600;font-size:14px;color:var(--ink);display:block;margin-bottom:6px;">We send a full specification sheet.</span>
+              <span style="font-size:13px;color:var(--ink-3);">All parameters, test methods, and batch-level data for the product you are interested in.</span>
+            </div>
+          </div>
+          <div style="padding:20px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:32px 1fr;gap:16px;align-items:start;">
+            <span style="font-family:var(--f-display);font-weight:700;color:var(--amber);font-size:14px;letter-spacing:-0.02em;">03</span>
+            <div>
+              <span style="font-weight:600;font-size:14px;color:var(--ink);display:block;margin-bottom:6px;">Samples available on request.</span>
+              <span style="font-size:13px;color:var(--ink-3);">We can ship product samples for your own testing and evaluation before any commercial decision.</span>
+            </div>
+          </div>
+          <div style="padding:20px 0;display:grid;grid-template-columns:32px 1fr;gap:16px;align-items:start;">
+            <span style="font-family:var(--f-display);font-weight:700;color:var(--amber);font-size:14px;letter-spacing:-0.02em;">04</span>
+            <div>
+              <span style="font-weight:600;font-size:14px;color:var(--ink);display:block;margin-bottom:6px;">Facility visits by arrangement.</span>
+              <span style="font-size:13px;color:var(--ink-3);">Serious buyers, investors, and researchers are welcome to visit the facility with prior arrangement.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:40px;">
+          <a class="btn" href="mailto:hello@bombaybioworks.com" style="width:100%;justify-content:center;">Send us a message &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Bombay Bioworks.</div>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-col-label">Products</span>
+        <ul class="footer-links">
+          <li><a href="products.html#biochar">Biochar</a></li>
+          <li><a href="products.html#activated-carbon">Activated Carbon</a></li>
+          <li><a href="products.html#carbon-fuel">Carbon Fuel</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Company</span>
+        <ul class="footer-links">
+          <li><a href="process.html">Process</a></li>
+          <li><a href="industries.html">Industries</a></li>
+          <li><a href="company.html">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Climate</span>
+        <ul class="footer-links">
+          <li><a href="planet.html">Planet</a></li>
+          <li><a href="planet.html#certifications">EBC Certification</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Contact</span>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@bombaybioworks.com">hello@bombaybioworks.com</a></li>
+          <li><a href="#">Mumbai, Maharashtra</a></li>
+        </ul>
+        <p class="footer-tagline" style="margin-top:24px;">Carbon materials for a warming world.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">2024 Bombay Bioworks. All rights reserved.</span>
+      <span class="footer-copy">bombaybioworks.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+</script>
+</body>
+</html>

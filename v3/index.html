@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bombay Bioworks — Carbon Materials</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 0;
+  padding-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-left {
+  padding-top: calc(var(--nav-h) + 100px);
+  padding-bottom: 72px;
+}
+
+.hero-eyebrow {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--ink-3);
+}
+
+.mast-stack { margin-bottom: 56px; }
+.mast-line {
+  font-family: var(--f-display);
+  font-size: clamp(60px, 8.5vw, 124px);
+  line-height: 0.95;
+  display: block;
+  letter-spacing: -0.04em;
+}
+.mast-line--a { font-weight: 300; color: var(--ink-3); }
+.mast-line--b { font-weight: 500; color: var(--ink-2); }
+.mast-line--c { font-weight: 700; color: var(--ink); }
+
+.hero-rule {
+  width: 100%;
+  height: 3px;
+  background: var(--ink);
+  margin-bottom: 28px;
+}
+
+.hero-sub {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--ink-3);
+  max-width: 400px;
+}
+.hero-sub strong { color: var(--ink-2); font-weight: 500; }
+
+.hero-right {
+  position: relative;
+  height: 100%;
+  min-height: 100svh;
+  display: flex;
+  align-items: stretch;
+}
+
+/* The full-canvas hero illustration */
+.hero-illus-wrap {
+  position: absolute;
+  top: 0;
+  right: -80px;
+  bottom: 0;
+  width: calc(100% + 80px);
+  overflow: visible;
+}
+.hero-illus-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Hero coordinates tag */
+.hero-coords {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  font-size: 10px;
+  font-family: var(--f-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  z-index: 2;
+}
+
+/* ── STATEMENT STRIP ── */
+.statement {
+  background: var(--carbon);
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.statement-inner {
+  padding: 100px 0;
+  position: relative;
+  z-index: 1;
+}
+.statement-text {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 58px);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--white);
+  max-width: 900px;
+}
+.statement-text em {
+  color: var(--amber);
+  font-style: normal;
+}
+.statement-text span {
+  color: rgba(250,250,248,0.28);
+}
+/* Abstract decorative element in statement */
+.statement-deco {
+  position: absolute;
+  right: -40px;
+  top: -60px;
+  width: 500px;
+  height: 500px;
+  opacity: 0.04;
+  overflow: visible;
+}
+
+/* ── PRODUCTS GRID ── */
+.products-section {
+  padding: 120px 0 0;
+  border-top: 1px solid var(--rule);
+}
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 64px;
+}
+.products-header h2 {
+  font-size: clamp(36px, 4.5vw, 60px);
+}
+.products-header .products-meta {
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: 280px;
+  text-align: right;
+  line-height: 1.7;
+}
+
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.pgrid-item {
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: visible;
+  transition: background 0.25s;
+}
+.pgrid-item:hover { background: var(--paper-warm); }
+
+.pgrid-illus {
+  width: 100%;
+  height: 220px;
+  overflow: visible;
+  display: block;
+  position: relative;
+}
+.pgrid-illus svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pgrid-content { padding: 32px 40px 44px; }
+
+.pgrid-num {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 16px;
+}
+.pgrid-ghost {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(70px, 9vw, 120px);
+  letter-spacing: -0.05em;
+  color: var(--rule);
+  line-height: 1;
+  display: block;
+  margin-bottom: -12px;
+  user-select: none;
+  transition: color 0.25s;
+}
+.pgrid-item:hover .pgrid-ghost { color: var(--paper-deep); }
+.pgrid-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: clamp(18px, 2vw, 24px);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 14px;
+}
+.pgrid-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-3);
+  margin-bottom: 28px;
+}
+.pgrid-spec {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(20px, 2.5vw, 30px);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  display: block;
+}
+.pgrid-spec-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── NUMBERS STRIP ── */
+.numbers-section {
+  background: var(--paper-warm);
+  padding: 100px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.numbers-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-left: 1px solid var(--rule);
+  position: relative;
+  z-index: 1;
+}
+.numbers-cell {
+  padding: 0 44px 0 44px;
+  border-right: 1px solid var(--rule);
+}
+.numbers-cell:first-child { padding-left: 0; }
+.stat-val { font-size: clamp(36px, 4.5vw, 58px); }
+.num-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+  display: block;
+}
+
+/* Numbers decorative lines */
+.numbers-section::before {
+  content: '';
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 480px;
+  height: 480px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+}
+.numbers-section::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  height: 320px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+}
+
+/* ── INDUSTRIES TEASER ── */
+.industries-teaser {
+  background: var(--carbon);
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+.industries-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 48px;
+}
+.industries-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.ind-item {
+  border-right: 1px solid rgba(255,255,255,0.07);
+  padding: 48px 32px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.ind-item:last-child { border-right: none; }
+.ind-item:hover { background: rgba(255,255,255,0.03); }
+.ind-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 24px;
+  display: block;
+  overflow: visible;
+}
+.ind-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  display: block;
+  margin-bottom: 8px;
+}
+.ind-product {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgba(250,250,248,0.35);
+  text-transform: uppercase;
+}
+
+/* Industries decorative */
+.ind-deco {
+  position: absolute;
+  left: -120px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 560px;
+  height: 560px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* ── COMPANY BRIEF ── */
+.company-brief {
+  padding: 140px 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  overflow: visible;
+}
+.company-brief-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+}
+.company-brief-text h2 {
+  font-size: clamp(32px, 3.8vw, 52px);
+  margin-bottom: 32px;
+}
+.company-brief-text p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  margin-bottom: 20px;
+  max-width: 520px;
+}
+.company-brief-text p strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+.company-brief-img {
+  position: relative;
+}
+.co-img-ph {
+  height: 480px;
+  width: 100%;
+}
+/* Decorative offset frame */
+.co-img-ph::after {
+  content: '';
+  position: absolute;
+  inset: -16px -16px 16px 16px;
+  border: 1.5px solid var(--rule);
+  z-index: -1;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <!-- BB mark: a minimal hexagon/carbon unit -->
+    <svg class="mark" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,1.5 18,5.75 18,14.25 10,18.5 2,14.25 2,5.75" stroke="currentColor" stroke-width="1.4" fill="none"/>
+      <circle cx="10" cy="10" r="2.2" fill="currentColor"/>
+    </svg>
+    Bombay<span class="dot">.</span>Bioworks
+  </a>
+  <ul class="nav-links">
+    <li><a href="products.html">Products</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="industries.html">Industries</a></li>
+    <li><a href="planet.html">Planet</a></li>
+    <li><a href="company.html">Company</a></li>
+  </ul>
+  <a class="nav-cta" href="company.html#contact">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <!-- Left: Typography -->
+      <div class="hero-left above-illus">
+        <div class="hero-eyebrow">Carbon Materials from Agricultural Residue</div>
+        <div class="mast-stack">
+          <span class="mast-line mast-line--a">Biochar.</span>
+          <span class="mast-line mast-line--b">Activated Carbon.</span>
+          <span class="mast-line mast-line--c">Carbon Fuel.</span>
+        </div>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">
+          <strong>Three high-value carbon materials from one continuous thermal process.</strong>
+          Agricultural residue converted, not burned. Made in Bombay.
+          Permanent, certified, and ready to ship.
+        </p>
+      </div>
+
+      <!-- Right: Full-canvas illustration -->
+      <div class="hero-right">
+        <div class="hero-illus-wrap">
+
+          <!-- HERO ILLUSTRATION: Field to Facility to Material -->
+          <svg viewBox="0 0 860 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <!-- Organic wobble filter for plant forms -->
+              <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.03 0.04" numOctaves="3" seed="12" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+              <!-- Fade left to right -->
+              <linearGradient id="fadeRight" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="var(--paper)" stop-opacity="1"/>
+                <stop offset="30%" stop-color="var(--paper)" stop-opacity="0.6"/>
+                <stop offset="60%" stop-color="var(--paper)" stop-opacity="0"/>
+              </linearGradient>
+              <!-- Pore zone fade -->
+              <linearGradient id="poreFade" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#AEACA0" stop-opacity="0"/>
+                <stop offset="40%" stop-color="#AEACA0" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#AEACA0" stop-opacity="0.22"/>
+              </linearGradient>
+              <!-- Carbon matrix texture gradient -->
+              <radialGradient id="poreGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#F4F3EE" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#F4F3EE" stop-opacity="0.1"/>
+              </radialGradient>
+              <!-- Clipping for right edge -->
+              <clipPath id="heroClip">
+                <rect x="0" y="0" width="860" height="900"/>
+              </clipPath>
+            </defs>
+
+            <!-- ─── EARTH LAYERS (bottom) ─── -->
+            <!-- Base ground -->
+            <path d="M0 600 Q215 582 430 594 Q645 606 860 587 L860 900 L0 900 Z" fill="#DCDAD0"/>
+            <!-- Topsoil layer -->
+            <path d="M0 648 Q200 632 420 646 Q630 658 860 636 L860 900 L0 900 Z" fill="#C8C6BC" opacity="0.6"/>
+            <!-- Deep layer -->
+            <path d="M0 700 Q260 688 520 700 Q700 710 860 694 L860 900 L0 900 Z" fill="#B4B2A6" opacity="0.4"/>
+
+            <!-- ─── CROP ROWS (field texture, left zone) ─── -->
+            <g stroke="#5C5C52" stroke-width="0.8" fill="none" opacity="0.18">
+              <path d="M0 562 Q72 556 145 563 Q215 570 288 561"/>
+              <path d="M0 572 Q72 566 145 573 Q215 580 288 571"/>
+              <path d="M0 582 Q72 576 145 583 Q215 590 288 581"/>
+              <path d="M0 592 Q72 586 145 593 Q215 600 288 591"/>
+              <path d="M0 551 Q72 545 145 552 Q215 559 288 550"/>
+            </g>
+
+            <!-- ─── PLANT CLUSTER A (tall, prominent) ─── -->
+            <g filter="url(#wobble)" opacity="0.72">
+              <!-- Stems: thin lines -->
+              <g stroke="#5C5C52" stroke-width="1.8" fill="none">
+                <path d="M48 600 C46 560 52 520 46 478"/>
+                <path d="M80 600 C78 555 85 510 80 462"/>
+                <path d="M115 600 C113 558 120 514 114 468"/>
+                <path d="M148 600 C146 562 154 522 148 480"/>
+                <path d="M178 600 C176 552 184 506 178 456"/>
+                <path d="M210 600 C208 564 216 526 210 484"/>
+                <path d="M240 600 C238 568 246 534 240 496"/>
+              </g>
+              <!-- Leaf clusters: filled ovals -->
+              <g fill="#5C5C52">
+                <ellipse cx="46" cy="463" rx="17" ry="26" transform="rotate(-10,46,463)"/>
+                <ellipse cx="80" cy="447" rx="15" ry="24" transform="rotate(7,80,447)"/>
+                <ellipse cx="114" cy="452" rx="16" ry="25" transform="rotate(-5,114,452)"/>
+                <ellipse cx="148" cy="465" rx="14" ry="22" transform="rotate(8,148,465)"/>
+                <ellipse cx="178" cy="441" rx="17" ry="26" transform="rotate(-8,178,441)"/>
+                <ellipse cx="210" cy="468" rx="15" ry="23" transform="rotate(5,210,468)"/>
+                <ellipse cx="240" cy="480" rx="13" ry="21" transform="rotate(-4,240,480)"/>
+              </g>
+            </g>
+
+            <!-- ─── PLANT CLUSTER B (shorter, background plants) ─── -->
+            <g filter="url(#wobble)" opacity="0.38">
+              <g stroke="#AEACA0" stroke-width="1.4" fill="none">
+                <path d="M268 600 C266 572 272 542 268 510"/>
+                <path d="M295 600 C294 574 300 548 296 520"/>
+                <path d="M322 600 C320 576 327 549 322 520"/>
+              </g>
+              <g fill="#AEACA0">
+                <ellipse cx="268" cy="496" rx="12" ry="19"/>
+                <ellipse cx="296" cy="506" rx="11" ry="18" transform="rotate(6,296,506)"/>
+                <ellipse cx="322" cy="506" rx="12" ry="20" transform="rotate(-5,322,506)"/>
+              </g>
+            </g>
+
+            <!-- ─── FACILITY SILHOUETTE (center) ─── -->
+            <!-- Storage building (left of main) -->
+            <rect x="350" y="408" width="90" height="192" fill="#2A2A22"/>
+            <!-- Connector pipe -->
+            <rect x="438" y="372" width="12" height="48" fill="#222218"/>
+            <!-- Main processing building -->
+            <rect x="440" y="324" width="188" height="276" fill="#1E1E16"/>
+            <!-- Roof edge line -->
+            <rect x="440" y="320" width="188" height="6" fill="#141410"/>
+            <!-- Pitched roof -->
+            <polygon points="440,324 534,292 628,324" fill="#121210"/>
+            <!-- Kiln tower (tall, cylindrical) -->
+            <rect x="536" y="172" width="58" height="224" rx="8" fill="#0E0E0C"/>
+            <!-- Kiln cap / top -->
+            <ellipse cx="565" cy="172" rx="29" ry="13" fill="#080808"/>
+            <!-- Kiln stack inner -->
+            <rect x="550" y="178" width="30" height="10" rx="2" fill="#141412" opacity="0.5"/>
+            <!-- Heat / steam rising (very subtle wispy lines) -->
+            <g stroke="#DCDAD0" stroke-width="1.2" fill="none" opacity="0.14">
+              <path d="M553 165 C551 150 556 138 553 124 C550 110 555 97 552 83"/>
+              <path d="M565 160 C564 144 568 130 565 116 C562 102 567 88 564 74"/>
+              <path d="M577 163 C576 148 580 134 577 120 C574 106 578 92 576 78"/>
+            </g>
+            <!-- Windows / vents -->
+            <g fill="#AEACA0" opacity="0.08">
+              <rect x="460" y="352" width="26" height="18" rx="2"/>
+              <rect x="498" y="352" width="26" height="18" rx="2"/>
+              <rect x="460" y="388" width="26" height="18" rx="2"/>
+              <rect x="498" y="388" width="26" height="18" rx="2"/>
+              <rect x="460" y="424" width="26" height="18" rx="2"/>
+              <rect x="498" y="424" width="26" height="18" rx="2"/>
+            </g>
+            <!-- Secondary small structure (right of main) -->
+            <rect x="628" y="456" width="72" height="144" fill="#242420"/>
+            <!-- Connector pipe between main and secondary -->
+            <rect x="619" y="432" width="12" height="36" rx="3" fill="#1A1A16"/>
+
+            <!-- Ground shadow under facility -->
+            <ellipse cx="512" cy="602" rx="190" ry="14" fill="#0D0D0B" opacity="0.08"/>
+
+            <!-- ─── TRANSFORMATION PARTICLES ─── -->
+            <!-- Organic particles near facility - amber, scattered -->
+            <g fill="#B87010">
+              <circle cx="712" cy="390" r="3.5"/>
+              <circle cx="728" cy="420" r="4.5"/>
+              <circle cx="718" cy="448" r="2.8"/>
+              <circle cx="738" cy="370" r="3"/>
+              <circle cx="748" cy="408" r="5"/>
+              <circle cx="730" cy="460" r="3.2"/>
+              <circle cx="752" cy="435" r="2.5"/>
+              <circle cx="760" cy="382" r="4"/>
+              <circle cx="720" cy="480" r="2.8"/>
+              <circle cx="742" cy="350" r="3.5"/>
+            </g>
+            <!-- Dark ink particles (more carbon-like) -->
+            <g fill="#5C5C52" opacity="0.45">
+              <circle cx="706" cy="360" r="5"/>
+              <circle cx="722" cy="495" r="4"/>
+              <circle cx="745" cy="472" r="5.5"/>
+              <circle cx="758" cy="350" r="3.5"/>
+              <circle cx="716" cy="415" r="4.5"/>
+            </g>
+
+            <!-- ─── MATERIAL PORE STRUCTURE (right zone) ─── -->
+            <!-- Background wash: the carbon matrix -->
+            <rect x="755" y="100" width="200" height="780" fill="url(#poreFade)" rx="2"/>
+
+            <!-- Pore circles: varying sizes representing micro, meso, macro pores -->
+            <!-- These represent the void space (lighter) in the carbon matrix (the fills) -->
+            <g stroke="#DCDAD0" stroke-width="0.7" fill="#F4F3EE">
+              <!-- Micropores (smallest, tightly packed) -->
+              <circle cx="774" cy="142" r="7.5" fill-opacity="0.5"/>
+              <circle cx="798" cy="138" r="11" fill-opacity="0.45"/>
+              <circle cx="826" cy="144" r="8" fill-opacity="0.5"/>
+              <circle cx="852" cy="139" r="13" fill-opacity="0.4"/>
+
+              <circle cx="768" cy="178" r="10" fill-opacity="0.45"/>
+              <circle cx="792" cy="175" r="7" fill-opacity="0.5"/>
+              <circle cx="818" cy="180" r="14" fill-opacity="0.4"/>
+              <circle cx="846" cy="176" r="9" fill-opacity="0.48"/>
+
+              <circle cx="778" cy="214" r="8" fill-opacity="0.5"/>
+              <circle cx="804" cy="210" r="12" fill-opacity="0.44"/>
+              <circle cx="832" cy="216" r="7" fill-opacity="0.5"/>
+              <circle cx="858" cy="211" r="10" fill-opacity="0.46"/>
+
+              <circle cx="770" cy="250" r="13" fill-opacity="0.42"/>
+              <circle cx="798" cy="246" r="8" fill-opacity="0.5"/>
+              <circle cx="824" cy="252" r="11" fill-opacity="0.45"/>
+              <circle cx="852" cy="247" r="7.5" fill-opacity="0.5"/>
+
+              <circle cx="780" cy="286" r="9" fill-opacity="0.48"/>
+              <circle cx="806" cy="282" r="13" fill-opacity="0.42"/>
+              <circle cx="834" cy="288" r="8.5" fill-opacity="0.5"/>
+              <circle cx="860" cy="283" r="11" fill-opacity="0.45"/>
+
+              <circle cx="772" cy="322" r="11" fill-opacity="0.44"/>
+              <circle cx="800" cy="318" r="7" fill-opacity="0.5"/>
+              <circle cx="826" cy="324" r="12" fill-opacity="0.43"/>
+              <circle cx="854" cy="319" r="9" fill-opacity="0.48"/>
+
+              <circle cx="782" cy="358" r="8" fill-opacity="0.5"/>
+              <circle cx="808" cy="354" r="10" fill-opacity="0.46"/>
+              <circle cx="836" cy="360" r="13.5" fill-opacity="0.41"/>
+              <circle cx="862" cy="355" r="8" fill-opacity="0.5"/>
+
+              <circle cx="774" cy="394" r="12" fill-opacity="0.43"/>
+              <circle cx="800" cy="390" r="7.5" fill-opacity="0.5"/>
+              <circle cx="828" cy="396" r="10" fill-opacity="0.46"/>
+              <circle cx="856" cy="391" r="13" fill-opacity="0.41"/>
+
+              <circle cx="784" cy="430" r="9" fill-opacity="0.48"/>
+              <circle cx="812" cy="426" r="13" fill-opacity="0.42"/>
+              <circle cx="840" cy="432" r="8" fill-opacity="0.5"/>
+              <circle cx="866" cy="427" r="11" fill-opacity="0.44"/>
+
+              <circle cx="776" cy="466" r="10" fill-opacity="0.46"/>
+              <circle cx="804" cy="462" r="8" fill-opacity="0.5"/>
+              <circle cx="830" cy="468" r="12" fill-opacity="0.43"/>
+              <circle cx="858" cy="463" r="9" fill-opacity="0.48"/>
+
+              <circle cx="786" cy="502" r="7" fill-opacity="0.5"/>
+              <circle cx="814" cy="498" r="11" fill-opacity="0.45"/>
+              <circle cx="842" cy="504" r="8.5" fill-opacity="0.49"/>
+              <circle cx="868" cy="499" r="13" fill-opacity="0.41"/>
+
+              <circle cx="778" cy="538" r="12" fill-opacity="0.43"/>
+              <circle cx="806" cy="534" r="8" fill-opacity="0.5"/>
+              <circle cx="834" cy="540" r="10" fill-opacity="0.46"/>
+              <circle cx="860" cy="535" r="7.5" fill-opacity="0.5"/>
+            </g>
+
+            <!-- Amber highlight on a few pores (the most active micropores) -->
+            <g fill="#B87010" opacity="0.18">
+              <circle cx="798" cy="138" r="11"/>
+              <circle cx="818" cy="180" r="14"/>
+              <circle cx="806" cy="282" r="13"/>
+              <circle cx="836" cy="360" r="13.5"/>
+              <circle cx="812" cy="426" r="13"/>
+            </g>
+
+            <!-- ─── LEFT FADE (to blend with paper bg) ─── -->
+            <rect x="0" y="0" width="200" height="900" fill="url(#fadeRight)"/>
+
+            <!-- ─── HORIZONTAL RULE LINE (bottom) ─── -->
+            <rect x="0" y="897" width="860" height="3" fill="#0D0D0B" opacity="0.12"/>
+
+          </svg>
+        </div>
+
+        <!-- Coordinate tag -->
+        <div class="hero-coords above-illus">18.97°N &nbsp; 72.82°E &nbsp; Mumbai</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THICK RULE -->
+<div class="hr-thick"></div>
+
+<!-- STATEMENT STRIP -->
+<section class="statement">
+
+  <!-- Decorative pore circle pattern (background) -->
+  <svg class="statement-deco" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="250" cy="250" r="140" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="250" cy="250" r="80" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="250" cy="250" r="30" stroke="white" stroke-width="1" fill="none"/>
+    <line x1="250" y1="50" x2="250" y2="450" stroke="white" stroke-width="0.5"/>
+    <line x1="50" y1="250" x2="450" y2="250" stroke="white" stroke-width="0.5"/>
+    <line x1="109" y1="109" x2="391" y2="391" stroke="white" stroke-width="0.5"/>
+    <line x1="391" y1="109" x2="109" y2="391" stroke="white" stroke-width="0.5"/>
+  </svg>
+
+  <div class="wrap">
+    <div class="statement-inner">
+      <p class="statement-text">
+        Agricultural residue is not waste.<br>
+        <span>It is</span> <em>unprocessed carbon wealth.</em><br>
+        <span>We process it.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS GRID -->
+<section class="products-section">
+  <div class="wrap">
+    <div class="products-header above-illus">
+      <h2 class="f-head">What we make.</h2>
+      <p class="products-meta">Three distinct materials from a single thermal conversion process. Each with its own market, specification, and application stack.</p>
+    </div>
+
+    <div class="pgrid">
+
+      <!-- Biochar -->
+      <a class="pgrid-item" href="products.html#biochar">
+
+        <!-- BIOCHAR ILLUSTRATION: Pore cross-section organic form -->
+        <div class="pgrid-illus">
+          <svg viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <filter id="bioWobble">
+                <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="5" result="n"/>
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <!-- Background: deep carbon matrix -->
+            <rect width="380" height="220" fill="#1E1E16" rx="0"/>
+            <!-- Large irregular organic shape (the biochar particle) -->
+            <path d="M60 160 C40 130 35 90 55 65 C72 42 100 35 130 40 C160 44 185 32 210 45 C235 56 248 80 258 105 C268 130 272 160 260 175 C245 192 215 198 185 195 C155 192 130 200 105 192 C80 184 70 180 60 160 Z"
+                  fill="#2A2A20" filter="url(#bioWobble)"/>
+            <!-- Pore voids (lighter circles within the dark matrix) -->
+            <g fill="#3D3D30" filter="url(#bioWobble)">
+              <circle cx="110" cy="90" r="22"/>
+              <circle cx="155" cy="75" r="16"/>
+              <circle cx="195" cy="95" r="20"/>
+              <circle cx="135" cy="130" r="14"/>
+              <circle cx="175" cy="145" r="18"/>
+              <circle cx="215" cy="125" r="12"/>
+              <circle cx="240" cy="95" r="10"/>
+              <circle cx="88" cy="130" r="12"/>
+            </g>
+            <!-- Smaller sub-pores -->
+            <g fill="#4A4A38" filter="url(#bioWobble)">
+              <circle cx="116" cy="94" r="8"/>
+              <circle cx="198" cy="100" r="7"/>
+              <circle cx="178" cy="148" r="6"/>
+              <circle cx="90" cy="132" r="5"/>
+              <circle cx="244" cy="98" r="5"/>
+            </g>
+            <!-- Amber accent: a few highlighted pores -->
+            <g fill="#B87010" opacity="0.22">
+              <circle cx="155" cy="75" r="16"/>
+              <circle cx="175" cy="145" r="18"/>
+            </g>
+            <!-- Surface texture lines -->
+            <g stroke="#3A3A2A" stroke-width="0.6" fill="none" opacity="0.6" filter="url(#bioWobble)">
+              <path d="M75 100 C90 95 105 100 118 95"/>
+              <path d="M220 140 C232 135 244 142 255 138"/>
+            </g>
+            <!-- Small particle details scattered around -->
+            <g fill="#5C5C42" opacity="0.4">
+              <circle cx="45" cy="80" r="4"/>
+              <circle cx="310" cy="140" r="5"/>
+              <circle cx="335" cy="90" r="3.5"/>
+              <circle cx="30" cy="160" r="3"/>
+              <circle cx="340" cy="170" r="4"/>
+              <circle cx="360" cy="100" r="3"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="pgrid-content">
+          <span class="pgrid-num">01</span>
+          <span class="pgrid-ghost">01</span>
+          <span class="pgrid-name">Biochar</span>
+          <p class="pgrid-desc">Permanent carbon for agriculture and land remediation. Stable for millennia. EBC-certified and CDR-eligible.</p>
+          <span class="pgrid-spec">&lt;0.4 H/C<sub style="font-size:0.6em">org</sub></span>
+          <span class="pgrid-spec-label">Molar ratio &mdash; EBC permanence threshold</span>
+        </div>
+      </a>
+
+      <!-- Activated Carbon -->
+      <a class="pgrid-item" href="products.html#activated-carbon">
+
+        <!-- ACTIVATED CARBON ILLUSTRATION: Honeycomb crystal lattice -->
+        <div class="pgrid-illus">
+          <svg viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="acBg" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#0E0E0A"/>
+                <stop offset="100%" stop-color="#1A1A14"/>
+              </linearGradient>
+            </defs>
+            <rect width="380" height="220" fill="url(#acBg)"/>
+            <!-- Hexagonal grid representing micropore crystal structure -->
+            <!-- Each hexagon is a "pore" in the carbon lattice -->
+            <g stroke="#3A3A2C" stroke-width="1.2" fill="#252520">
+              <!-- Row 1 -->
+              <polygon points="52,38 66,20 94,20 108,38 94,56 66,56"/>
+              <polygon points="124,38 138,20 166,20 180,38 166,56 138,56"/>
+              <polygon points="196,38 210,20 238,20 252,38 238,56 210,56"/>
+              <polygon points="268,38 282,20 310,20 324,38 310,56 282,56"/>
+              <!-- Row 2 (offset) -->
+              <polygon points="88,90 102,72 130,72 144,90 130,108 102,108"/>
+              <polygon points="160,90 174,72 202,72 216,90 202,108 174,108"/>
+              <polygon points="232,90 246,72 274,72 288,90 274,108 246,108"/>
+              <polygon points="304,90 318,72 346,72 360,90 346,108 318,108"/>
+              <!-- Row 3 -->
+              <polygon points="52,142 66,124 94,124 108,142 94,160 66,160"/>
+              <polygon points="124,142 138,124 166,124 180,142 166,160 138,160"/>
+              <polygon points="196,142 210,124 238,124 252,142 238,160 210,160"/>
+              <polygon points="268,142 282,124 310,124 324,142 310,160 282,160"/>
+              <!-- Row 4 (offset) -->
+              <polygon points="88,194 102,176 130,176 144,194 130,212 102,212"/>
+              <polygon points="160,194 174,176 202,176 216,194 202,212 174,212"/>
+              <polygon points="232,194 246,176 274,176 288,194 274,212 246,212"/>
+              <polygon points="304,194 318,176 346,176 360,194 346,212 318,212"/>
+            </g>
+            <!-- Amber highlighted pores (the most active sites) -->
+            <g stroke="#B87010" stroke-width="1.4" fill="#1A0E04" opacity="0.6">
+              <polygon points="160,90 174,72 202,72 216,90 202,108 174,108"/>
+              <polygon points="196,142 210,124 238,124 252,142 238,160 210,160"/>
+            </g>
+            <!-- Inner structure details: small dots at hex centers -->
+            <g fill="#B87010" opacity="0.15">
+              <circle cx="80" cy="38" r="3"/>
+              <circle cx="152" cy="38" r="3"/>
+              <circle cx="224" cy="38" r="3"/>
+              <circle cx="116" cy="90" r="3"/>
+              <circle cx="188" cy="90" r="3"/>
+              <circle cx="260" cy="90" r="3"/>
+              <circle cx="80" cy="142" r="3"/>
+              <circle cx="152" cy="142" r="3"/>
+              <circle cx="224" cy="142" r="3"/>
+            </g>
+            <!-- Surface decoration: fine grid lines -->
+            <g stroke="#AEACA0" stroke-width="0.3" opacity="0.06">
+              <line x1="0" y1="0" x2="380" y2="220"/>
+              <line x1="380" y1="0" x2="0" y2="220"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="pgrid-content">
+          <span class="pgrid-num">02</span>
+          <span class="pgrid-ghost">02</span>
+          <span class="pgrid-name">Activated Carbon</span>
+          <p class="pgrid-desc">Ultraporous sorbent for water treatment, air purification, and industrial separation. Micropore-dominant structure.</p>
+          <span class="pgrid-spec">1,100 m<sup style="font-size:0.6em">2</sup>/g</span>
+          <span class="pgrid-spec-label">BET surface area &mdash; ASTM D3663</span>
+        </div>
+      </a>
+
+      <!-- Carbon Fuel -->
+      <a class="pgrid-item" href="products.html#carbon-fuel">
+
+        <!-- CARBON FUEL ILLUSTRATION: Dense hexagonal blocks suggesting energy density -->
+        <div class="pgrid-illus">
+          <svg viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="cfBg" x1="0" x2="0.8" y1="0" y2="1">
+                <stop offset="0%" stop-color="#1A1208"/>
+                <stop offset="100%" stop-color="#0E0C08"/>
+              </linearGradient>
+              <linearGradient id="cfBar" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#B87010"/>
+                <stop offset="100%" stop-color="#7A4A0A"/>
+              </linearGradient>
+            </defs>
+            <rect width="380" height="220" fill="url(#cfBg)"/>
+
+            <!-- Comparison bars: Coal vs Carbon Fuel -->
+            <!-- X-axis labels -->
+            <text x="32" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#AEACA0" letter-spacing="0.12em" text-anchor="middle">COAL</text>
+            <text x="140" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#B87010" letter-spacing="0.12em" text-anchor="middle">CARBON FUEL</text>
+
+            <!-- Fixed Carbon % bars -->
+            <text x="32" y="42" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C5C52" text-anchor="middle">42%</text>
+            <rect x="16" y="48" width="32" height="132" fill="#2A2A22" rx="2"/>
+
+            <text x="140" y="20" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" text-anchor="middle">65%+</text>
+            <rect x="112" y="26" width="56" height="154" fill="url(#cfBar)" rx="2" opacity="0.9"/>
+
+            <!-- Label: Fixed Carbon -->
+            <text x="18" y="200" font-family="Instrument Sans, sans-serif" font-size="7.5" fill="#5C5C52" letter-spacing="0.08em">FIXED C</text>
+
+            <!-- Divider -->
+            <line x1="200" y1="30" x2="200" y2="185" stroke="#2A2A22" stroke-width="1"/>
+
+            <!-- Sulfur % bars (inverted scale) -->
+            <text x="244" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#AEACA0" letter-spacing="0.12em" text-anchor="middle">COAL</text>
+            <text x="334" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#B87010" letter-spacing="0.12em" text-anchor="middle">CARBON FUEL</text>
+
+            <!-- Coal sulfur (high - bad) -->
+            <text x="244" y="60" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C5C52" text-anchor="middle">1.2%</text>
+            <rect x="228" y="66" width="32" height="114" fill="#2A2A22" rx="2"/>
+
+            <!-- Carbon fuel sulfur (low - good) -->
+            <text x="334" y="138" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" text-anchor="middle">0.4%</text>
+            <rect x="318" y="144" width="32" height="36" fill="url(#cfBar)" rx="2" opacity="0.85"/>
+
+            <!-- Label: Total S -->
+            <text x="230" y="200" font-family="Instrument Sans, sans-serif" font-size="7.5" fill="#5C5C52" letter-spacing="0.08em">TOTAL S</text>
+
+            <!-- Top annotation -->
+            <text x="213" y="42" font-family="Instrument Sans, sans-serif" font-size="8" fill="#5C5C52" letter-spacing="0.06em">SULFUR CONTENT</text>
+            <text x="20" y="34" font-family="Instrument Sans, sans-serif" font-size="8" fill="#5C5C52" letter-spacing="0.06em">FIXED CARBON</text>
+          </svg>
+        </div>
+
+        <div class="pgrid-content">
+          <span class="pgrid-num">03</span>
+          <span class="pgrid-ghost">03</span>
+          <span class="pgrid-name">Carbon Fuel</span>
+          <p class="pgrid-desc">High fixed-carbon solid fuel. Drop-in replacement for thermal coal with significantly lower sulfur and ash content.</p>
+          <span class="pgrid-spec">65%+ Fixed C</span>
+          <span class="pgrid-spec-label">Fixed carbon content &mdash; ASTM D3172</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Products footer link -->
+    <div style="padding: 40px 0; text-align: right; border-top: 1px solid var(--rule);">
+      <a class="btn" href="products.html">Full product specifications &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers-section">
+  <div class="wrap">
+    <div class="numbers-inner">
+      <div class="numbers-cell">
+        <span class="num-label">Permanence</span>
+        <div class="stat-val f-display">3,000<span class="stat-unit">+ yr</span></div>
+        <p class="stat-desc">Minimum stability of EBC-certified biochar in soil. Tested via H/C molar ratio.</p>
+      </div>
+      <div class="numbers-cell">
+        <span class="num-label">Surface Area</span>
+        <div class="stat-val f-display">1,100<span class="stat-unit">m&#178;/g</span></div>
+        <p class="stat-desc">BET surface area of our activated carbon. One gram covers 1,100 square metres.</p>
+      </div>
+      <div class="numbers-cell">
+        <span class="num-label">Fixed Carbon</span>
+        <div class="stat-val f-display">65<span class="stat-unit">%+</span></div>
+        <p class="stat-desc">Fixed carbon in our carbon fuel. Thermal coal averages 38 to 48 percent.</p>
+      </div>
+      <div class="numbers-cell">
+        <span class="num-label">CO&#8322; Removal</span>
+        <div class="stat-val f-display">2.2<span class="stat-unit">t/t</span></div>
+        <p class="stat-desc">Tonnes of CO&#8322; equivalent removed per tonne of biochar applied to soil.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES TEASER -->
+<section class="industries-teaser">
+
+  <!-- Decorative circle (background) -->
+  <svg class="ind-deco" viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="280" cy="280" r="250" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="280" cy="280" r="180" stroke="white" stroke-width="0.6" fill="none"/>
+    <circle cx="280" cy="280" r="110" stroke="white" stroke-width="0.4" fill="none"/>
+  </svg>
+
+  <div class="wrap above-illus">
+    <p class="industries-label">Where our materials go</p>
+    <div class="industries-list">
+
+      <!-- Agriculture -->
+      <a class="ind-item" href="industries.html#agriculture">
+        <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Sprout in soil icon -->
+          <rect x="4" y="26" width="28" height="2" rx="1" fill="#5C5C52"/>
+          <path d="M18 26 L18 14" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M18 20 C18 20 12 18 10 12 C14 12 18 16 18 20" fill="#3A5C3E" opacity="0.8"/>
+          <path d="M18 17 C18 17 24 14 26 8 C22 9 18 13 18 17" fill="#3A5C3E" opacity="0.8"/>
+        </svg>
+        <span class="ind-name">Agriculture</span>
+        <span class="ind-product">Biochar</span>
+      </a>
+
+      <!-- Water Treatment -->
+      <a class="ind-item" href="industries.html#water">
+        <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 4 C18 4 8 16 8 22 C8 27.5 12.5 32 18 32 C23.5 32 28 27.5 28 22 C28 16 18 4 18 4 Z" stroke="var(--amber)" stroke-width="1.5" fill="none"/>
+          <path d="M13 26 C15 24 17 25 18 26 C19 27 21 28 23 26" stroke="#5C5C52" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="ind-name">Water Treatment</span>
+        <span class="ind-product">Activated Carbon</span>
+      </a>
+
+      <!-- Energy -->
+      <a class="ind-item" href="industries.html#energy">
+        <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4 L12 20 L18 20 L16 32 L24 16 L18 16 Z" stroke="var(--amber)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+        </svg>
+        <span class="ind-name">Energy</span>
+        <span class="ind-product">Carbon Fuel</span>
+      </a>
+
+      <!-- Purification -->
+      <a class="ind-item" href="industries.html#purification">
+        <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="6" width="16" height="4" rx="1" stroke="var(--amber)" stroke-width="1.4" fill="none"/>
+          <path d="M14 10 L10 30 L26 30 L22 10" stroke="#5C5C52" stroke-width="1.4" fill="none"/>
+          <line x1="10" y1="20" x2="26" y2="20" stroke="#5C5C52" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+        <span class="ind-name">Pharma and Food</span>
+        <span class="ind-product">Activated Carbon</span>
+      </a>
+
+      <!-- Carbon Markets -->
+      <a class="ind-item" href="industries.html#carbon-markets">
+        <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="12" stroke="var(--amber)" stroke-width="1.4" fill="none"/>
+          <path d="M10 18 Q14 10 18 18 Q22 26 26 18" stroke="#5C5C52" stroke-width="1" fill="none"/>
+          <text x="18" y="22" font-family="Space Grotesk" font-size="9" fill="var(--amber)" text-anchor="middle" font-weight="700">C</text>
+        </svg>
+        <span class="ind-name">Carbon Markets</span>
+        <span class="ind-product">Biochar Credits</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY BRIEF -->
+<section class="company-brief">
+  <div class="wrap">
+    <div class="company-brief-grid">
+
+      <div class="company-brief-text above-illus">
+        <span class="eyebrow-plain">Our story</span>
+        <h2 class="f-head">Built in Bombay. Built around carbon.</h2>
+        <p>We started Bombay Bioworks because the numbers were obvious and no one in India was acting on them at scale. Agricultural residue streams here are enormous. The technology to convert them into high-value carbon materials exists. The markets for biochar, activated carbon, and clean solid fuel are real, growing, and underserved.</p>
+        <p>We put all three together. <strong>One facility. One continuous process. Three products, zero waste.</strong></p>
+        <div style="margin-top:36px; display:flex; gap:16px; flex-wrap:wrap;">
+          <a class="btn" href="company.html">About the company &rarr;</a>
+          <a class="btn-amber btn" href="process.html">See the process &rarr;</a>
+        </div>
+      </div>
+
+      <div class="company-brief-img">
+        <!-- PLACEHOLDER: Facility exterior or aerial photo -->
+        <div class="img-ph co-img-ph">
+          <div class="img-ph-label">
+            <strong>Photo needed:</strong><br>
+            Facility exterior or aerial view.<br>
+            Landscape orientation preferred.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PLANET TEASER -->
+<section style="background:var(--forest); padding:100px 0; position:relative; overflow:hidden;">
+
+  <!-- Decorative rings -->
+  <svg style="position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;opacity:0.06;overflow:visible;" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="250" cy="250" r="220" stroke="white" stroke-width="1.5" fill="none"/>
+    <circle cx="250" cy="250" r="160" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="250" cy="250" r="100" stroke="white" stroke-width="0.7" fill="none"/>
+  </svg>
+
+  <div class="wrap above-illus">
+    <div class="grid-2" style="align-items:center; gap:80px;">
+      <div>
+        <span class="eyebrow" style="color:#6BA870;">Climate &amp; permanence</span>
+        <h2 class="f-head" style="color:var(--white); font-size:clamp(28px,3.5vw,48px); margin-bottom:28px;">
+          Every tonne of our biochar locks away 2.2 tonnes of CO&#8322; permanently.
+        </h2>
+        <p style="font-size:15px;line-height:1.85;color:rgba(250,250,248,0.52);margin-bottom:36px;">Not an offset. Not a credit that expires. A physical carbon removal with a 3,000-year minimum stability guarantee, backed by the European Biochar Certificate standard.</p>
+        <a class="btn btn-ghost-white" href="planet.html">The full climate story &rarr;</a>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.07);">
+        <div style="background:var(--forest-2);padding:40px 32px;">
+          <div class="stat-val f-display" style="font-size:clamp(32px,3.5vw,48px);color:var(--white);">3,000<span style="font-size:0.45em;color:rgba(250,250,248,0.4);">+ yr</span></div>
+          <p style="font-size:12px;color:rgba(250,250,248,0.38);margin-top:10px;line-height:1.6;letter-spacing:0.02em;">Minimum permanence of EBC-certified biochar in soil or mineral substrate</p>
+        </div>
+        <div style="background:var(--forest-2);padding:40px 32px;">
+          <div class="stat-val f-display" style="font-size:clamp(32px,3.5vw,48px);color:#6BA870;">Zero</div>
+          <p style="font-size:12px;color:rgba(250,250,248,0.38);margin-top:10px;line-height:1.6;letter-spacing:0.02em;">Net combustion. The thermal process runs without burning feedstock in open air.</p>
+        </div>
+        <div style="background:var(--forest-2);padding:40px 32px;">
+          <div class="stat-val f-display" style="font-size:clamp(32px,3.5vw,48px);color:var(--white);">2.2<span style="font-size:0.45em;color:rgba(250,250,248,0.4);">t CO&#8322;e/t</span></div>
+          <p style="font-size:12px;color:rgba(250,250,248,0.38);margin-top:10px;line-height:1.6;letter-spacing:0.02em;">Permanent carbon dioxide removal per tonne of biochar produced and applied</p>
+        </div>
+        <div style="background:var(--forest-2);padding:40px 32px;">
+          <div class="stat-val f-display" style="font-size:clamp(32px,3.5vw,48px);color:#6BA870;">EBC</div>
+          <p style="font-size:12px;color:rgba(250,250,248,0.38);margin-top:10px;line-height:1.6;letter-spacing:0.02em;">European Biochar Certificate standard: the global benchmark for biochar permanence and CDR eligibility</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Bombay Bioworks.</div>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-col-label">Products</span>
+        <ul class="footer-links">
+          <li><a href="products.html#biochar">Biochar</a></li>
+          <li><a href="products.html#activated-carbon">Activated Carbon</a></li>
+          <li><a href="products.html#carbon-fuel">Carbon Fuel</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Company</span>
+        <ul class="footer-links">
+          <li><a href="process.html">Process</a></li>
+          <li><a href="industries.html">Industries</a></li>
+          <li><a href="company.html">About</a></li>
+          <li><a href="company.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Standards</span>
+        <ul class="footer-links">
+          <li><a href="planet.html">Climate and Permanence</a></li>
+          <li><a href="planet.html#certifications">EBC Certification</a></li>
+          <li><a href="planet.html#methodology">CDR Methodology</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Contact</span>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@bombaybioworks.com">hello@bombaybioworks.com</a></li>
+          <li><a href="#">Mumbai, Maharashtra</a></li>
+          <li><a href="#">India</a></li>
+        </ul>
+        <div style="margin-top:24px;">
+          <p class="footer-tagline">Carbon materials for a warming world.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">2024 Bombay Bioworks. All rights reserved.</span>
+      <span class="footer-copy">bombaybioworks.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll behaviour
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+</script>
+</body>
+</html>

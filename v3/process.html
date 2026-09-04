@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process — Bombay Bioworks</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  min-height: 62svh;
+  background: var(--carbon);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 60px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 { color: var(--white); }
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(250,250,248,0.38);
+  max-width: 380px;
+  align-self: end;
+}
+
+/* Hero: large photo placeholder overlaid with facility illustration -->
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-photo-ph {
+  width: 100%;
+  height: 100%;
+  background: #080806;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 24px 32px;
+}
+.hero-ph-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.18);
+  max-width: 240px;
+  text-align: right;
+  line-height: 1.8;
+}
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(10,10,8,0.97) 35%, rgba(10,10,8,0.6) 65%, rgba(10,10,8,0.3) 100%);
+}
+
+/* ── PROCESS INTRO ── */
+.process-intro {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.process-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+
+/* ── PROCESS FLOW ── */
+.flow-section {
+  background: var(--carbon);
+  padding: 120px 0;
+  position: relative;
+  overflow: visible;
+}
+.flow-section-inner { position: relative; z-index: 1; }
+
+/* The process flow illustration stretches full width with overflow */
+.flow-illus-outer {
+  margin: 60px -80px 0;
+  overflow-x: auto;
+}
+.flow-illus-outer svg { min-width: 1000px; }
+
+/* ── STAGE GRID ── */
+.stages-section {
+  padding: 120px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: visible;
+}
+.stages-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 3px solid var(--ink);
+  margin-top: 64px;
+}
+.stage-item {
+  padding: 48px 36px 48px 0;
+  border-right: 1px solid var(--rule);
+  position: relative;
+}
+.stage-item:last-child { border-right: none; }
+.stage-item:first-child { padding-left: 0; }
+.stage-item + .stage-item { padding-left: 36px; }
+
+.stage-num {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: -0.05em;
+  color: var(--rule);
+  line-height: 1;
+  display: block;
+  margin-bottom: 20px;
+}
+.stage-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: clamp(16px, 1.8vw, 22px);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 12px;
+}
+.stage-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ink-3);
+  margin-bottom: 28px;
+}
+.stage-params {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stage-param {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--rule);
+  padding-top: 8px;
+}
+.stage-param-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.stage-param-value {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+/* ── QC SECTION ── */
+.qc-section {
+  background: var(--paper-warm);
+  padding: 120px 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.qc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+.qc-right { position: relative; }
+
+/* QC lab illustration floating right */
+.qc-illus {
+  width: calc(100% + 80px);
+  margin-right: -80px;
+  overflow: visible;
+}
+.qc-illus svg { width: 100%; overflow: visible; }
+
+.qc-tests {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.qc-test {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.qc-test-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.qc-test-method {
+  font-size: 11px;
+  color: var(--ink-3);
+  font-family: var(--f-body);
+}
+.qc-test-product {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-align: right;
+}
+
+/* ── INFRA ── */
+.infra-section {
+  padding: 120px 0;
+  border-top: 1px solid var(--rule);
+}
+.infra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  margin-top: 56px;
+}
+.infra-cell {
+  background: var(--paper);
+  padding: 44px 40px;
+}
+.infra-cell-num {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(28px, 3.5vw, 48px);
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 8px;
+}
+.infra-cell-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 12px;
+}
+.infra-cell-desc {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.65;
+}
+
+/* ── FACILITY PHOTOS GRID ── */
+.facility-photos {
+  padding: 80px 0;
+  border-top: 1px solid var(--rule);
+}
+.facility-ph-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 40px;
+}
+.facility-ph { min-height: 280px; }
+.facility-ph-sm { min-height: 280px; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" class="dark-hero">
+  <a class="nav-logo" href="index.html">
+    <svg class="mark" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,1.5 18,5.75 18,14.25 10,18.5 2,14.25 2,5.75" stroke="currentColor" stroke-width="1.4" fill="none"/>
+      <circle cx="10" cy="10" r="2.2" fill="currentColor"/>
+    </svg>
+    Bombay<span class="dot">.</span>Bioworks
+  </a>
+  <ul class="nav-links">
+    <li><a href="products.html">Products</a></li>
+    <li><a href="process.html" class="active">Process</a></li>
+    <li><a href="industries.html">Industries</a></li>
+    <li><a href="planet.html">Planet</a></li>
+    <li><a href="company.html">Company</a></li>
+  </ul>
+  <a class="nav-cta" href="company.html#contact">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Background: facility photo placeholder -->
+  <div class="hero-photo">
+    <div class="hero-photo-ph">
+      <div class="hero-ph-label">
+        Photo needed: Facility exterior, aerial, or internal equipment shot. Full-bleed. Moody, industrial.
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">How we make it</span>
+        <h1 class="f-head">Continuous.<br>Controlled.<br>Co-product.</h1>
+      </div>
+      <p class="hero-sub">Our thermal conversion process runs continuously, converting prepared agricultural feedstock into three distinct carbon products in a single pass. The process generates its own energy, requires no fossil fuel input, and produces no liquid or gaseous waste streams.</p>
+    </div>
+  </div>
+  <div class="hero-amber-rule"></div>
+</section>
+
+<!-- PROCESS INTRO -->
+<section class="process-intro">
+  <div class="wrap">
+    <div class="process-intro-grid">
+      <div>
+        <span class="eyebrow-plain">The principle</span>
+        <h2 class="f-head" style="font-size:clamp(28px,3.5vw,48px); margin-bottom:28px;">Carbon is not destroyed. It is reorganised.</h2>
+        <p class="body-lg" style="margin-bottom:18px;">Agricultural matter is primarily composed of cellulose, hemicellulose, and lignin. These compounds are carbon-rich. When heated in a controlled, oxygen-limited environment, they do not combust. They undergo thermochemical reorganisation.</p>
+        <p class="body-md">The volatile fractions vaporise and are collected as synthesis gas and bio-oil. The solid residue, now almost entirely composed of stable carbon structures, is the base material from which we refine our three products. No waste leaves the site.</p>
+      </div>
+      <div>
+        <span class="eyebrow-plain">What enters, what exits</span>
+        <!-- Input/Output diagram -->
+        <div style="border:1px solid var(--rule);padding:40px 32px; margin-top:8px; background:var(--paper-warm);">
+          <div style="margin-bottom:32px;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px;">INPUT</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+              <div style="width:40px;height:4px;background:var(--ink-3);"></div>
+              <span style="font-size:14px;font-weight:500;color:var(--ink);">Agricultural residue feedstock</span>
+            </div>
+            <div style="font-size:12px;color:var(--ink-3);padding-left:52px;">Prepared, sized, and dried to moisture specification.</div>
+          </div>
+          <div style="margin-bottom:32px;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;">PROCESS</div>
+            <div style="background:var(--carbon);padding:14px 18px;border-left:3px solid var(--amber);">
+              <span style="font-size:13px;font-weight:600;color:var(--white);letter-spacing:-0.01em;">Thermal conversion</span>
+              <span style="display:block;font-size:11px;color:rgba(250,250,248,0.38);margin-top:4px;">400 to 700 C, oxygen-limited, continuous</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px;">OUTPUTS</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:40px;height:4px;background:var(--amber);"></div>
+                <span style="font-size:13px;font-weight:500;color:var(--ink);">Biochar</span>
+                <span style="font-size:11px;color:var(--ink-3);">Solid. 25 to 35% mass yield.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:40px;height:4px;background:var(--amber);"></div>
+                <span style="font-size:13px;font-weight:500;color:var(--ink);">Activated Carbon</span>
+                <span style="font-size:11px;color:var(--ink-3);">Post-activation from char.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:40px;height:4px;background:var(--amber);"></div>
+                <span style="font-size:13px;font-weight:500;color:var(--ink);">Carbon Fuel</span>
+                <span style="font-size:11px;color:var(--ink-3);">Densified char product.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:40px;height:4px;background:var(--ink-3);opacity:0.4;"></div>
+                <span style="font-size:13px;color:var(--ink-2);">Synthesis gas</span>
+                <span style="font-size:11px;color:var(--ink-3);">Internally combusted for process heat.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS FLOW (dark section, full-width illustration) -->
+<section class="flow-section">
+  <div class="wrap flow-section-inner">
+    <span class="eyebrow">The four stages</span>
+    <h2 class="f-head" style="color:var(--white); font-size:clamp(28px,3.5vw,48px); max-width:540px;">From feedstock to finished carbon, continuously.</h2>
+  </div>
+
+  <!-- PROCESS FLOW ILLUSTRATION: Full-bleed, overflowing the section -->
+  <div class="flow-illus-outer">
+    <svg viewBox="0 0 1200 340" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:visible;">
+      <defs>
+        <linearGradient id="stageGrad1" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#1A1A14"/>
+          <stop offset="100%" stop-color="#0E0E0C"/>
+        </linearGradient>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,1 L8,4 L0,7 Z" fill="#B87010" opacity="0.6"/>
+        </marker>
+      </defs>
+
+      <!-- === Stage 1: Feedstock Preparation === -->
+      <rect x="40" y="60" width="200" height="180" fill="#1A1A14" stroke="#2A2A22" stroke-width="1" rx="2"/>
+      <!-- Icon: stacked layers -->
+      <rect x="90" y="88" width="100" height="10" rx="2" fill="#3A3A2A"/>
+      <rect x="85" y="104" width="110" height="10" rx="2" fill="#3A3A2A"/>
+      <rect x="80" y="120" width="120" height="10" rx="2" fill="#4A4A38"/>
+      <rect x="75" y="136" width="130" height="10" rx="2" fill="#5C5C42"/>
+      <!-- Stage number -->
+      <text x="56" y="176" font-family="Space Grotesk, sans-serif" font-size="56" fill="rgba(255,255,255,0.04)" font-weight="700" letter-spacing="-0.05em">1</text>
+      <!-- Stage name -->
+      <text x="56" y="212" font-family="Space Grotesk, sans-serif" font-size="14" fill="white" font-weight="600" letter-spacing="-0.02em">Feedstock Prep</text>
+      <text x="56" y="228" font-family="Instrument Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.32)" letter-spacing="0.04em">Size, dry, convey</text>
+
+      <!-- Arrow 1 to 2 -->
+      <path d="M240 150 L282 150" stroke="#B87010" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+
+      <!-- === Stage 2: Thermal Conversion === -->
+      <rect x="282" y="40" width="240" height="220" fill="#141210" stroke="#B87010" stroke-width="1.5" rx="2"/>
+      <!-- Kiln icon: cylinder with heat rising -->
+      <rect x="340" y="72" width="60" height="100" rx="8" fill="#1E1A10" stroke="#B87010" stroke-width="1" opacity="0.7"/>
+      <ellipse cx="370" cy="72" rx="30" ry="10" fill="#251E0C" stroke="#B87010" stroke-width="1" opacity="0.6"/>
+      <!-- Heat rising lines -->
+      <g stroke="#B87010" stroke-width="1.2" fill="none" opacity="0.35">
+        <path d="M356 66 C354 56 358 48 355 38"/>
+        <path d="M370 62 C369 52 373 42 370 32"/>
+        <path d="M384 66 C382 56 386 47 383 37"/>
+      </g>
+      <!-- Temperature annotation -->
+      <text x="340" y="190" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" font-weight="600" text-anchor="middle" letter-spacing="-0.02em">400 to 700°C</text>
+      <!-- Stage name -->
+      <text x="298" y="224" font-family="Space Grotesk, sans-serif" font-size="14" fill="white" font-weight="600" letter-spacing="-0.02em">Thermal Conversion</text>
+      <text x="298" y="242" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" letter-spacing="0.04em">Core process &nbsp; Oxygen-limited</text>
+
+      <!-- Arrow 2 to 3 -->
+      <path d="M522 150 L562 150" stroke="#B87010" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+
+      <!-- === Stage 3: Separation and Grading === -->
+      <rect x="562" y="60" width="210" height="180" fill="#1A1A14" stroke="#2A2A22" stroke-width="1" rx="2"/>
+      <!-- Separator icon: funnel with 3 outputs -->
+      <polygon points="617,82 697,82 677,130 637,130" fill="none" stroke="#3A3A2A" stroke-width="1.5"/>
+      <path d="M657 130 L657 148" stroke="#3A3A2A" stroke-width="1.5"/>
+      <!-- Three output streams -->
+      <line x1="637" y1="150" x2="607" y2="172" stroke="#AEACA0" stroke-width="1" opacity="0.5"/>
+      <line x1="657" y1="150" x2="657" y2="172" stroke="#B87010" stroke-width="1.2" opacity="0.7"/>
+      <line x1="677" y1="150" x2="707" y2="172" stroke="#AEACA0" stroke-width="1" opacity="0.5"/>
+      <!-- Stage number -->
+      <text x="576" y="180" font-family="Space Grotesk, sans-serif" font-size="56" fill="rgba(255,255,255,0.04)" font-weight="700" letter-spacing="-0.05em">3</text>
+      <!-- Stage name -->
+      <text x="578" y="212" font-family="Space Grotesk, sans-serif" font-size="14" fill="white" font-weight="600" letter-spacing="-0.02em">Separation</text>
+      <text x="578" y="228" font-family="Instrument Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.32)" letter-spacing="0.04em">Sort, grade, stream</text>
+
+      <!-- Arrow 3 to 4 -->
+      <path d="M772 150 L812 150" stroke="#B87010" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+
+      <!-- === Stage 4: Finishing and QC === -->
+      <rect x="812" y="60" width="210" height="180" fill="#1A1A14" stroke="#2A2A22" stroke-width="1" rx="2"/>
+      <!-- QC/finishing icon: beaker with check -->
+      <path d="M880 88 L870 130 L920 130 L910 88 Z" fill="none" stroke="#3A3A2A" stroke-width="1.5"/>
+      <ellipse cx="895" cy="130" rx="25" ry="8" fill="#1E1E18" stroke="#3A3A2A" stroke-width="1"/>
+      <path d="M879 115 L889 125 L912 100" stroke="#B87010" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- Stage number -->
+      <text x="826" y="180" font-family="Space Grotesk, sans-serif" font-size="56" fill="rgba(255,255,255,0.04)" font-weight="700" letter-spacing="-0.05em">4</text>
+      <!-- Stage name -->
+      <text x="826" y="212" font-family="Space Grotesk, sans-serif" font-size="14" fill="white" font-weight="600" letter-spacing="-0.02em">Finishing and QC</text>
+      <text x="826" y="228" font-family="Instrument Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.32)" letter-spacing="0.04em">Test, pack, dispatch</text>
+
+      <!-- Three product outputs (right side, extending out) -->
+      <line x1="1022" y1="150" x2="1060" y2="150" stroke="#3A3A2A" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="1065" y="130" font-family="Space Grotesk, sans-serif" font-size="12" fill="#B87010" font-weight="600">Biochar</text>
+      <text x="1065" y="152" font-family="Space Grotesk, sans-serif" font-size="12" fill="#AEACA0">Activated Carbon</text>
+      <text x="1065" y="174" font-family="Space Grotesk, sans-serif" font-size="12" fill="#5C5C52">Carbon Fuel</text>
+
+      <!-- Connecting lines to three products -->
+      <path d="M1060 150 L1060 128" stroke="#3A3A2A" stroke-width="1" fill="none"/>
+      <path d="M1060 128 L1060 172" stroke="#3A3A2A" stroke-width="1" fill="none"/>
+      <line x1="1060" y1="128" x2="1062" y2="128" stroke="#B87010" stroke-width="1.5"/>
+      <line x1="1060" y1="150" x2="1062" y2="150" stroke="#AEACA0" stroke-width="1.5"/>
+      <line x1="1060" y1="172" x2="1062" y2="172" stroke="#5C5C52" stroke-width="1.5"/>
+
+      <!-- Stage 2 bg label -->
+      <text x="402" y="60" font-family="Space Grotesk, sans-serif" font-size="44" fill="rgba(184,112,16,0.06)" font-weight="700" letter-spacing="-0.05em" text-anchor="middle">2</text>
+
+      <!-- Top annotation: syngas loop -->
+      <path d="M402 40 C402 20 657 20 657 40" stroke="#3A3A2A" stroke-width="1" fill="none" stroke-dasharray="3,3"/>
+      <text x="530" y="16" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A3A2A" text-anchor="middle" letter-spacing="0.08em">SYNGAS RECYCLED FOR PROCESS HEAT</text>
+    </svg>
+  </div>
+</section>
+
+<!-- FOUR STAGES DETAIL -->
+<section class="stages-section">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div>
+        <span class="eyebrow-plain">Stage by stage</span>
+        <h2 class="f-head" style="font-size:clamp(28px,3.5vw,48px);">What happens at each step.</h2>
+      </div>
+    </div>
+
+    <div class="stages-grid">
+
+      <div class="stage-item">
+        <span class="stage-num">01</span>
+        <span class="stage-name">Feedstock Preparation</span>
+        <p class="stage-desc">Agricultural residue arrives in bulk. It is inspected for contaminants, shredded to a uniform particle size (typically 5 to 25 mm), and dried to a moisture content below 15 percent before entering the process.</p>
+        <div class="stage-params">
+          <div class="stage-param">
+            <span class="stage-param-label">Target moisture</span>
+            <span class="stage-param-value">&lt;15%</span>
+          </div>
+          <div class="stage-param">
+            <span class="stage-param-label">Particle size</span>
+            <span class="stage-param-value">5 to 25 mm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <span class="stage-num">02</span>
+        <span class="stage-name">Thermal Conversion</span>
+        <p class="stage-desc">Prepared feedstock moves continuously through the conversion unit. Temperature is precisely controlled between 400 and 700 degrees Celsius in a low-oxygen environment. The volatile organic fraction vaporises; the carbon skeleton remains as char.</p>
+        <div class="stage-params">
+          <div class="stage-param">
+            <span class="stage-param-label">Temperature range</span>
+            <span class="stage-param-value">400 to 700°C</span>
+          </div>
+          <div class="stage-param">
+            <span class="stage-param-label">Residence time</span>
+            <span class="stage-param-value">20 to 60 min</span>
+          </div>
+          <div class="stage-param">
+            <span class="stage-param-label">Oxygen level</span>
+            <span class="stage-param-value">&lt;2%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <span class="stage-num">03</span>
+        <span class="stage-name">Separation and Grading</span>
+        <p class="stage-desc">The hot char stream is cooled and separated. Fines are screened from granular and coarse fractions. Char destined for activation continues to the activation unit. Carbon fuel is densified into briquettes. Biochar is graded and sized for application.</p>
+        <div class="stage-params">
+          <div class="stage-param">
+            <span class="stage-param-label">Exit temperature</span>
+            <span class="stage-param-value">&lt;80°C</span>
+          </div>
+          <div class="stage-param">
+            <span class="stage-param-label">Char yield</span>
+            <span class="stage-param-value">25 to 35%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <span class="stage-num">04</span>
+        <span class="stage-name">Finishing and QC</span>
+        <p class="stage-desc">Each product undergoes batch quality testing before dispatch. Biochar is tested for H/C molar ratio, pH, and carbon content. Activated carbon is tested for BET surface area and iodine number. Carbon fuel undergoes proximate and calorific analysis.</p>
+        <div class="stage-params">
+          <div class="stage-param">
+            <span class="stage-param-label">Tests per batch</span>
+            <span class="stage-param-value">6 to 9</span>
+          </div>
+          <div class="stage-param">
+            <span class="stage-param-label">Turnaround</span>
+            <span class="stage-param-value">24 to 48 hr</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- QC -->
+<section class="qc-section">
+  <div class="wrap">
+    <div class="qc-grid">
+      <div>
+        <span class="eyebrow-plain">Quality control</span>
+        <h2 class="f-head" style="font-size:clamp(28px,3.5vw,48px); margin-bottom:24px;">Tested to standard. Batch by batch.</h2>
+        <p class="body-lg" style="margin-bottom:28px;">Every batch of every product is tested against the relevant ASTM, EBC, or IS specification before dispatch. We do not ship on prior-batch data. If a batch fails, it does not leave.</p>
+        <p class="body-md">Our in-house lab handles proximate analysis, moisture, ash, and pH. BET surface area and iodine number testing for activated carbon is handled by accredited external laboratories, with typical 24-hour turnaround.</p>
+
+        <div class="qc-tests">
+          <div class="qc-test">
+            <span class="qc-test-name">H/C molar ratio</span>
+            <span class="qc-test-method">EBC 2023 protocol / elemental analysis</span>
+            <span class="qc-test-product">Biochar</span>
+          </div>
+          <div class="qc-test">
+            <span class="qc-test-name">Proximate analysis</span>
+            <span class="qc-test-method">ASTM D3172 (moisture, ash, volatile, FC)</span>
+            <span class="qc-test-product">All products</span>
+          </div>
+          <div class="qc-test">
+            <span class="qc-test-name">BET surface area</span>
+            <span class="qc-test-method">ASTM D3663 (N&#8322; adsorption)</span>
+            <span class="qc-test-product">Activated Carbon</span>
+          </div>
+          <div class="qc-test">
+            <span class="qc-test-name">Iodine number</span>
+            <span class="qc-test-method">ASTM D5742</span>
+            <span class="qc-test-product">Activated Carbon</span>
+          </div>
+          <div class="qc-test">
+            <span class="qc-test-name">Calorific value</span>
+            <span class="qc-test-method">ASTM D5865 (bomb calorimetry)</span>
+            <span class="qc-test-product">Carbon Fuel</span>
+          </div>
+          <div class="qc-test">
+            <span class="qc-test-name">Total sulfur</span>
+            <span class="qc-test-method">ASTM D4239</span>
+            <span class="qc-test-product">Carbon Fuel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QC illustration: a stylised laboratory / testing diagram -->
+      <div class="qc-right">
+        <div class="qc-illus">
+          <svg viewBox="0 0 540 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+            <defs>
+              <filter id="labWobble">
+                <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="14"/>
+                <feDisplacementMap in="SourceGraphic" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+
+            <!-- Background: lab bench top -->
+            <rect x="0" y="320" width="540" height="160" fill="#DCDAD0" opacity="0.5"/>
+            <rect x="0" y="316" width="540" height="6" fill="#C8C6BC"/>
+
+            <!-- Flask 1 (left): BET testing -->
+            <path d="M120 200 L100 320 L160 320 L140 200 Z" fill="none" stroke="#5C5C52" stroke-width="1.8" filter="url(#labWobble)"/>
+            <ellipse cx="130" cy="200" rx="22" ry="9" fill="none" stroke="#5C5C52" stroke-width="1.8" filter="url(#labWobble)"/>
+            <path d="M104 295 L156 295 L152 310 L108 310 Z" fill="#AEACA0" opacity="0.2" filter="url(#labWobble)"/>
+            <text x="130" y="348" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="middle" letter-spacing="0.06em">BET N&#8322;</text>
+
+            <!-- Beaker (center): Iodine number -->
+            <path d="M230 240 L220 320 L280 320 L270 240 Z" fill="none" stroke="#B87010" stroke-width="1.8" filter="url(#labWobble)" opacity="0.8"/>
+            <rect x="220" y="236" width="50" height="6" fill="none" stroke="#B87010" stroke-width="1.5" rx="2" opacity="0.8"/>
+            <!-- Liquid level -->
+            <path d="M222 295 Q250 288 278 295 L276 320 L224 320 Z" fill="#B87010" opacity="0.12" filter="url(#labWobble)"/>
+            <text x="250" y="348" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" text-anchor="middle" letter-spacing="0.06em">Iodine No.</text>
+
+            <!-- Test tube rack (right): Proximate analysis samples -->
+            <rect x="360" y="260" width="120" height="12" rx="2" fill="#AEACA0" opacity="0.4"/>
+            <g stroke="#5C5C52" stroke-width="1.5" fill="none">
+              <!-- 4 test tubes -->
+              <path d="M370 272 L370 318 Q370 326 378 326 Q386 326 386 318 L386 272" filter="url(#labWobble)"/>
+              <path d="M396 272 L396 310 Q396 318 404 318 Q412 318 412 310 L412 272" filter="url(#labWobble)"/>
+              <path d="M422 272 L422 314 Q422 322 430 322 Q438 322 438 314 L438 272" filter="url(#labWobble)"/>
+              <path d="M448 272 L448 308 Q448 316 456 316 Q464 316 464 308 L464 272" filter="url(#labWobble)"/>
+            </g>
+            <!-- Liquid in each tube -->
+            <path d="M371 300 L385 300 L385 318 Q385 325 378 325 Q371 325 371 318 Z" fill="#5C5C52" opacity="0.15"/>
+            <path d="M397 305 L411 305 L411 310 Q411 317 404 317 Q397 317 397 310 Z" fill="#B87010" opacity="0.2"/>
+            <text x="417" y="348" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="middle" letter-spacing="0.06em">Proximate</text>
+
+            <!-- Measurement callout: BET result -->
+            <rect x="30" y="80" width="200" height="72" fill="#F4F3EE" stroke="#DCDAD0" stroke-width="1" rx="2"/>
+            <text x="48" y="104" font-family="Instrument Sans, sans-serif" font-size="10" fill="#AEACA0" letter-spacing="0.1em">BATCH RESULT</text>
+            <text x="48" y="124" font-family="Space Grotesk, sans-serif" font-size="22" fill="#0D0D0B" font-weight="700" letter-spacing="-0.03em">1,148 m&#178;/g</text>
+            <text x="48" y="140" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" letter-spacing="0.06em">PASS &nbsp; &gt;900 threshold</text>
+            <!-- Connector line to flask -->
+            <line x1="130" y1="152" x2="130" y2="190" stroke="#DCDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <!-- Measurement callout: H/C result -->
+            <rect x="295" y="80" width="200" height="72" fill="#F4F3EE" stroke="#DCDAD0" stroke-width="1" rx="2"/>
+            <text x="313" y="104" font-family="Instrument Sans, sans-serif" font-size="10" fill="#AEACA0" letter-spacing="0.1em">H/C MOLAR RATIO</text>
+            <text x="313" y="124" font-family="Space Grotesk, sans-serif" font-size="22" fill="#0D0D0B" font-weight="700" letter-spacing="-0.03em">0.32</text>
+            <text x="313" y="140" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010" letter-spacing="0.06em">PASS &nbsp; EBC &lt;0.4 threshold</text>
+
+            <!-- Grid lines (lab bench texture) -->
+            <g stroke="#C8C6BC" stroke-width="0.5" opacity="0.4">
+              <line x1="0" y1="340" x2="540" y2="340"/>
+              <line x1="0" y1="360" x2="540" y2="360"/>
+              <line x1="0" y1="380" x2="540" y2="380"/>
+            </g>
+
+          </svg>
+        </div>
+
+        <!-- Placeholder for lab photo -->
+        <div class="img-ph" style="height:200px; margin-top:20px;">
+          <div class="img-ph-label"><strong>Photo needed:</strong><br>Lab or testing equipment photo. Ideally close-up of instrument or sample.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFRASTRUCTURE -->
+<section class="infra-section">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:0;">
+      <div>
+        <span class="eyebrow-plain">Infrastructure</span>
+        <h2 class="f-head" style="font-size:clamp(28px,3.5vw,48px);">Built for scale. Designed for specification.</h2>
+      </div>
+      <p class="body-lg" style="padding-bottom:4px;">Our facility is purpose-built for carbon material production, not adapted from an existing plant. Every component is sized and specified for continuous operation and consistent output quality.</p>
+    </div>
+    <div class="infra-grid">
+      <div class="infra-cell">
+        <span class="infra-cell-label">Throughput capacity</span>
+        <span class="infra-cell-num">XX MT/day</span>
+        <p class="infra-cell-desc">Dry feedstock throughput at design capacity. Scalable with additional conversion units.</p>
+      </div>
+      <div class="infra-cell">
+        <span class="infra-cell-label">Process control</span>
+        <span class="infra-cell-num">Continuous</span>
+        <p class="infra-cell-desc">24/7 operation with automated temperature and atmosphere monitoring at each stage.</p>
+      </div>
+      <div class="infra-cell">
+        <span class="infra-cell-label">Energy self-sufficiency</span>
+        <span class="infra-cell-num">100%</span>
+        <p class="infra-cell-desc">Process heat is generated entirely from the synthesis gas co-product. No fossil fuel input for operations.</p>
+      </div>
+      <div class="infra-cell">
+        <span class="infra-cell-label">Liquid discharge</span>
+        <span class="infra-cell-num">Zero</span>
+        <p class="infra-cell-desc">The process generates no liquid effluent streams. Bio-oil is recovered and internally utilised.</p>
+      </div>
+      <div class="infra-cell">
+        <span class="infra-cell-label">Activation unit</span>
+        <span class="infra-cell-num">Integrated</span>
+        <p class="infra-cell-desc">Dedicated char activation unit for production of activated carbon from base char.</p>
+      </div>
+      <div class="infra-cell">
+        <span class="infra-cell-label">Location</span>
+        <span class="infra-cell-num">Maharashtra</span>
+        <p class="infra-cell-desc">Facility located in Maharashtra, India, with feedstock sourcing from regional agricultural supply chains.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FACILITY PHOTOS GRID -->
+<section class="facility-photos">
+  <div class="wrap">
+    <span class="eyebrow-plain" style="margin-bottom:8px;">The facility</span>
+    <h2 class="f-head" style="font-size:clamp(22px,2.5vw,36px);margin-bottom:0;">Where it happens.</h2>
+    <div class="facility-ph-grid">
+      <div class="img-ph facility-ph">
+        <div class="img-ph-label"><strong>Photo needed:</strong><br>Facility exterior or aerial view. Wide angle preferred.</div>
+      </div>
+      <div class="img-ph facility-ph-sm">
+        <div class="img-ph-label"><strong>Photo needed:</strong><br>Kiln / reactor equipment. Interior.</div>
+      </div>
+      <div class="img-ph facility-ph-sm">
+        <div class="img-ph-label"><strong>Photo needed:</strong><br>Conveyor / material handling equipment or product output.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Bombay Bioworks.</div>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-col-label">Products</span>
+        <ul class="footer-links">
+          <li><a href="products.html#biochar">Biochar</a></li>
+          <li><a href="products.html#activated-carbon">Activated Carbon</a></li>
+          <li><a href="products.html#carbon-fuel">Carbon Fuel</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Company</span>
+        <ul class="footer-links">
+          <li><a href="process.html">Process</a></li>
+          <li><a href="industries.html">Industries</a></li>
+          <li><a href="company.html">About</a></li>
+          <li><a href="company.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Climate</span>
+        <ul class="footer-links">
+          <li><a href="planet.html">Planet</a></li>
+          <li><a href="planet.html#certifications">EBC Certification</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Contact</span>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@bombaybioworks.com">hello@bombaybioworks.com</a></li>
+          <li><a href="#">Mumbai, Maharashtra</a></li>
+        </ul>
+        <p class="footer-tagline" style="margin-top:24px;">Carbon materials for a warming world.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">2024 Bombay Bioworks. All rights reserved.</span>
+      <span class="footer-copy">bombaybioworks.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+</script>
+</body>
+</html>

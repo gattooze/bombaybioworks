@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industries — Bombay Bioworks</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  background: var(--carbon);
+  min-height: 50svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--nav-h) + 80px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 { color: var(--white); }
+.hero-sub { font-size: 14px; line-height: 1.85; color: rgba(250,250,248,0.38); max-width: 380px; }
+
+/* ── DEMAND STATEMENT ── */
+.demand-strip {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.demand-strip-inner {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* ── INDUSTRY SECTION ── */
+.ind-section {
+  padding: 120px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: visible;
+}
+.ind-section--dark {
+  background: var(--carbon);
+}
+.ind-section--warm {
+  background: var(--paper-warm);
+}
+
+.ind-section-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Sector number (large ghost) */
+.ind-ghost-num {
+  position: absolute;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(180px, 24vw, 320px);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  right: -20px;
+  bottom: -40px;
+  z-index: 0;
+  color: var(--rule);
+}
+.ind-section--dark .ind-ghost-num {
+  color: rgba(255,255,255,0.03);
+}
+.ind-section--warm .ind-ghost-num {
+  color: var(--paper-deep);
+}
+
+.ind-content { position: relative; z-index: 1; }
+.ind-right { position: relative; z-index: 1; }
+
+.ind-product-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  padding: 5px 12px;
+  margin-bottom: 28px;
+}
+.ind-section--dark .ind-name { color: var(--white); }
+.ind-name {
+  font-size: clamp(32px, 4vw, 56px);
+  margin-bottom: 16px;
+}
+.ind-tagline {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(15px, 1.6vw, 20px);
+  letter-spacing: -0.015em;
+  margin-bottom: 28px;
+  line-height: 1.3;
+}
+.ind-section--dark .ind-tagline { color: rgba(250,250,248,0.55); }
+.ind-section:not(.ind-section--dark) .ind-tagline { color: var(--ink-2); }
+
+.ind-desc {
+  font-size: 14px;
+  line-height: 1.85;
+  margin-bottom: 40px;
+}
+.ind-section--dark .ind-desc { color: rgba(250,250,248,0.45); }
+.ind-section:not(.ind-section--dark) .ind-desc { color: var(--ink-2); }
+
+.ind-uses {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ind-use {
+  padding: 12px 0;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ind-section--dark .ind-use {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(250,250,248,0.55);
+}
+.ind-section:not(.ind-section--dark) .ind-use {
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-2);
+}
+.ind-use::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--amber);
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+
+/* Demand data panel */
+.demand-panel {
+  border: 1px solid var(--rule);
+  padding: 32px;
+  position: relative;
+}
+.ind-section--dark .demand-panel {
+  border-color: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+}
+.demand-panel-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 20px;
+  display: block;
+}
+.ind-section--dark .demand-panel-label { color: rgba(250,250,248,0.28); }
+.demand-stat {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(28px, 3.5vw, 48px);
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 6px;
+}
+.ind-section--dark .demand-stat { color: var(--white); }
+.demand-stat-sub {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.ind-section--dark .demand-stat-sub { color: rgba(250,250,248,0.35); }
+
+/* Industry illustration area */
+.ind-illus {
+  width: 100%;
+  overflow: visible;
+  position: relative;
+}
+.ind-illus svg { width: 100%; display: block; overflow: visible; }
+
+/* Photo placeholder for industry -->
+.ind-photo { width: 100%; height: 300px; }
+
+/* ── MARKET OVERVIEW ── */
+.market-overview {
+  padding: 120px 0;
+  background: var(--paper-warm);
+  border-top: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border: 1px solid var(--rule);
+  margin-top: 60px;
+}
+.market-cell {
+  padding: 32px 24px;
+  border-right: 1px solid var(--rule);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.market-cell:last-child { border-right: none; }
+.market-cell:hover { background: var(--paper-deep); }
+.market-cell-num {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 14px;
+}
+.market-cell-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 8px;
+}
+.market-cell-product {
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" class="dark-hero">
+  <a class="nav-logo" href="index.html">
+    <svg class="mark" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,1.5 18,5.75 18,14.25 10,18.5 2,14.25 2,5.75" stroke="currentColor" stroke-width="1.4" fill="none"/>
+      <circle cx="10" cy="10" r="2.2" fill="currentColor"/>
+    </svg>
+    Bombay<span class="dot">.</span>Bioworks
+  </a>
+  <ul class="nav-links">
+    <li><a href="products.html">Products</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="industries.html" class="active">Industries</a></li>
+    <li><a href="planet.html">Planet</a></li>
+    <li><a href="company.html">Company</a></li>
+  </ul>
+  <a class="nav-cta" href="company.html#contact">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Where our materials go</span>
+        <h1 class="f-head">Five sectors.<br>Real demand.<br>Active markets.</h1>
+      </div>
+      <p class="hero-sub">Biochar, activated carbon, and carbon fuel each serve established, growing industrial markets. The demand exists independently of climate policy. The climate benefit is additional.</p>
+    </div>
+  </div>
+  <div class="hero-amber-rule"></div>
+</section>
+
+<!-- DEMAND STATEMENT -->
+<section class="demand-strip">
+  <div class="wrap">
+    <div class="demand-strip-inner">
+      <div>
+        <span class="eyebrow-plain">Market context</span>
+        <h2 class="f-head" style="font-size:clamp(26px,3vw,42px);">These materials are in active commercial demand today.</h2>
+      </div>
+      <p class="body-lg">India imports significant volumes of activated carbon for water treatment and industrial applications. The market for biochar in soil management is nascent but growing rapidly as soil health mandates tighten. Carbon fuel substitution for coal is happening wherever air quality regulations create pressure to reduce sulfur emissions. We are not creating these markets. We are entering them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── AGRICULTURE ── -->
+<section class="ind-section" id="agriculture">
+  <span class="ind-ghost-num">01</span>
+  <div class="wrap">
+    <div class="ind-section-inner">
+
+      <div class="ind-content">
+        <span class="ind-product-tag">Biochar</span>
+        <h2 class="ind-name f-head">Agriculture and Soil Health</h2>
+        <p class="ind-tagline">The original carbon soil amendment, rediscovered at scale.</p>
+        <p class="ind-desc">Biochar applied to agricultural soil creates measurable improvements in water retention, nutrient holding capacity, and microbial activity. For Indian agriculture, which faces compounding challenges of declining soil organic matter, over-irrigation, and micronutrient depletion, biochar addresses all three simultaneously. Unlike chemical amendments, it does not leach, does not expire, and improves in effectiveness over the first several seasons as microbial colonisation of the pore structure increases.</p>
+
+        <ul class="ind-uses">
+          <li class="ind-use">Dryland farming water retention improvement</li>
+          <li class="ind-use">Micronutrient-depleted soil restoration</li>
+          <li class="ind-use">Paddy soil amendment post-harvest</li>
+          <li class="ind-use">Horticulture and cash crop soil conditioning</li>
+          <li class="ind-use">Carbon credit generation from soil application</li>
+        </ul>
+      </div>
+
+      <div class="ind-right">
+        <!-- AGRICULTURE ILLUSTRATION: Cross-section of soil with biochar particles -->
+        <div class="ind-illus">
+          <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="agWobble">
+                <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="3" seed="9"/>
+                <feDisplacementMap in="SourceGraphic" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+              <linearGradient id="soilGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#EDEAE2"/>
+                <stop offset="30%" stop-color="#D4C8A8"/>
+                <stop offset="70%" stop-color="#8A6040"/>
+                <stop offset="100%" stop-color="#5C3820"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Sky -->
+            <rect x="0" y="0" width="520" height="120" fill="#F4F3EE"/>
+
+            <!-- Crop silhouettes (above ground) -->
+            <g filter="url(#agWobble)" opacity="0.75">
+              <g stroke="#3A5C3E" stroke-width="1.8" fill="none">
+                <path d="M60 120 C58 90 64 62 60 38"/>
+                <path d="M120 120 C118 88 125 58 120 30"/>
+                <path d="M180 120 C178 92 185 64 180 36"/>
+                <path d="M250 120 C248 94 255 68 250 40"/>
+                <path d="M320 120 C318 96 325 70 320 42"/>
+                <path d="M390 120 C388 98 395 74 390 46"/>
+                <path d="M460 120 C458 100 465 78 460 52"/>
+              </g>
+              <g fill="#3A5C3E">
+                <ellipse cx="60" cy="28" rx="16" ry="22" transform="rotate(-8,60,28)"/>
+                <ellipse cx="120" cy="20" rx="15" ry="23" transform="rotate(6,120,20)"/>
+                <ellipse cx="180" cy="26" rx="16" ry="22" transform="rotate(-5,180,26)"/>
+                <ellipse cx="250" cy="30" rx="14" ry="21" transform="rotate(7,250,30)"/>
+                <ellipse cx="320" cy="32" rx="16" ry="22" transform="rotate(-6,320,32)"/>
+                <ellipse cx="390" cy="36" rx="15" ry="21" transform="rotate(5,390,36)"/>
+                <ellipse cx="460" cy="42" rx="14" ry="20" transform="rotate(-4,460,42)"/>
+              </g>
+            </g>
+
+            <!-- Ground line -->
+            <path d="M0 120 Q130 115 260 122 Q390 128 520 118 L520 360 L0 360 Z" fill="url(#soilGrad)"/>
+
+            <!-- Soil layers labels -->
+            <text x="16" y="152" font-family="Instrument Sans, sans-serif" font-size="9" fill="rgba(92,60,32,0.6)" letter-spacing="0.1em">TOPSOIL</text>
+            <text x="16" y="224" font-family="Instrument Sans, sans-serif" font-size="9" fill="rgba(92,60,32,0.5)" letter-spacing="0.1em">SUBSOIL</text>
+
+            <!-- Biochar particles in topsoil (dark, irregular shapes) -->
+            <g fill="#1E1E14" filter="url(#agWobble)" opacity="0.85">
+              <path d="M80 145 C74 138 72 130 80 126 C88 122 96 128 95 136 C94 144 86 150 80 145 Z"/>
+              <path d="M150 155 C144 147 142 138 150 133 C158 128 167 135 166 144 C165 153 156 160 150 155 Z"/>
+              <path d="M220 140 C215 133 213 126 221 122 C229 118 237 124 236 132 C235 140 226 146 220 140 Z"/>
+              <path d="M300 158 C294 150 292 141 300 136 C308 131 317 138 316 147 C315 156 306 163 300 158 Z"/>
+              <path d="M370 148 C365 141 363 133 371 129 C379 125 387 131 386 139 C385 147 376 153 370 148 Z"/>
+              <path d="M440 160 C435 152 433 143 441 138 C449 133 457 140 456 149 C455 158 446 165 440 160 Z"/>
+              <path d="M110 175 C105 168 103 160 111 156 C119 152 127 158 126 166 C125 174 116 180 110 175 Z"/>
+              <path d="M260 170 C255 163 253 155 261 151 C269 147 277 153 276 161 C275 169 266 175 260 170 Z"/>
+            </g>
+
+            <!-- Amber glow from biochar (roots / nutrient release) -->
+            <g fill="none" stroke="#B87010" stroke-width="1" opacity="0.25">
+              <path d="M80 146 C80 165 72 178 70 192"/>
+              <path d="M80 146 C88 158 96 164 100 180"/>
+              <path d="M150 156 C148 172 140 184 138 200"/>
+              <path d="M220 141 C220 158 228 172 226 190"/>
+              <path d="M300 159 C296 176 290 190 288 208"/>
+              <path d="M370 149 C372 166 380 178 382 196"/>
+              <path d="M440 161 C436 180 430 194 428 212"/>
+            </g>
+
+            <!-- Water retention arrow callout -->
+            <rect x="380" y="20" width="130" height="56" fill="white" stroke="#DCDAD0" stroke-width="1" rx="2"/>
+            <text x="396" y="36" font-family="Instrument Sans, sans-serif" font-size="9" fill="#AEACA0" letter-spacing="0.08em">EFFECT</text>
+            <text x="396" y="52" font-family="Space Grotesk, sans-serif" font-size="12" fill="#0D0D0B" font-weight="600">+30% Water</text>
+            <text x="396" y="66" font-family="Instrument Sans, sans-serif" font-size="10" fill="#B87010">Retention in sandy soil</text>
+
+          </svg>
+        </div>
+
+        <div class="demand-panel" style="margin-top:20px;">
+          <span class="demand-panel-label">Market signal</span>
+          <span class="demand-stat">85M ha</span>
+          <p class="demand-stat-sub">India's total cultivated area with degraded or depleted topsoil. The largest single market for soil carbon amendments globally.</p>
+          <a class="btn btn-amber" href="products.html#biochar" style="display:inline-flex;">Biochar specification &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WATER TREATMENT ── -->
+<section class="ind-section ind-section--dark" id="water">
+  <span class="ind-ghost-num">02</span>
+  <div class="wrap">
+    <div class="ind-section-inner" style="grid-template-columns:1fr 1fr;">
+
+      <!-- Right first (flip layout) -->
+      <div class="ind-right" style="order:1;">
+
+        <!-- WATER TREATMENT ILLUSTRATION: Filtration column diagram -->
+        <div class="ind-illus">
+          <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="waterGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#B87010" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#B87010" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="cleanWater" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#3A5C3E" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#3A5C3E" stop-opacity="0.4"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Filtration column (wide, center) -->
+            <!-- Column body -->
+            <rect x="140" y="50" width="200" height="260" fill="#141410" stroke="#2A2A22" stroke-width="1.5" rx="6"/>
+            <!-- Column top cap -->
+            <rect x="130" y="40" width="220" height="16" fill="#1E1E18" stroke="#2A2A22" stroke-width="1" rx="3"/>
+            <!-- Column bottom cap -->
+            <rect x="130" y="304" width="220" height="16" fill="#1E1E18" stroke="#2A2A22" stroke-width="1" rx="3"/>
+
+            <!-- AC bed (the dark granular interior) -->
+            <rect x="146" y="60" width="188" height="240" fill="#0E0E0C" rx="2"/>
+            <!-- AC grain texture -->
+            <g fill="#2A2A20" opacity="0.7">
+              <circle cx="168" cy="80" r="5"/>
+              <circle cx="185" cy="74" r="6"/>
+              <circle cx="204" cy="82" r="5"/>
+              <circle cx="220" cy="76" r="4"/>
+              <circle cx="238" cy="84" r="6"/>
+              <circle cx="256" cy="78" r="5"/>
+              <circle cx="274" cy="82" r="4"/>
+              <circle cx="290" cy="76" r="5"/>
+              <circle cx="168" cy="100" r="4"/>
+              <circle cx="186" cy="96" r="6"/>
+              <circle cx="204" cy="104" r="5"/>
+              <circle cx="222" cy="98" r="4"/>
+              <circle cx="240" cy="106" r="5"/>
+              <circle cx="258" cy="100" r="6"/>
+              <circle cx="276" cy="104" r="4"/>
+              <circle cx="292" cy="98" r="5"/>
+              <!-- and so on, several more rows implied by the dark fill -->
+            </g>
+
+            <!-- Contaminated water entering (top, amber/murky) -->
+            <rect x="200" y="10" width="80" height="30" fill="url(#waterGrad)"/>
+            <rect x="215" y="0" width="50" height="14" fill="#B87010" opacity="0.2" rx="2"/>
+            <text x="240" y="10" font-family="Instrument Sans, sans-serif" font-size="9" fill="#B87010" text-anchor="middle" letter-spacing="0.08em">CONTAMINATED</text>
+
+            <!-- Arrows down (water flow) -->
+            <g stroke="#B87010" stroke-width="1" opacity="0.3">
+              <line x1="222" y1="20" x2="222" y2="50"/>
+              <line x1="240" y1="20" x2="240" y2="50"/>
+              <line x1="258" y1="20" x2="258" y2="50"/>
+            </g>
+
+            <!-- Clean water exiting (bottom, green/clear) -->
+            <rect x="200" y="320" width="80" height="48" fill="url(#cleanWater)" rx="0"/>
+            <text x="240" y="382" font-family="Instrument Sans, sans-serif" font-size="9" fill="#3A5C3E" text-anchor="middle" letter-spacing="0.08em">CLEAN</text>
+
+            <!-- Arrows down (clean output) -->
+            <g stroke="#3A5C3E" stroke-width="1" opacity="0.4">
+              <line x1="222" y1="320" x2="222" y2="360"/>
+              <line x1="240" y1="320" x2="240" y2="368"/>
+              <line x1="258" y1="320" x2="258" y2="360"/>
+            </g>
+
+            <!-- Adsorption callout line -->
+            <line x1="328" y1="160" x2="380" y2="160" stroke="#AEACA0" stroke-width="1" stroke-dasharray="3,3"/>
+            <rect x="380" y="136" width="90" height="52" fill="#1A1A14" stroke="#2A2A22" stroke-width="1" rx="2"/>
+            <text x="394" y="154" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52" letter-spacing="0.08em">ADSORPTION</text>
+            <text x="394" y="170" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" font-weight="600">BET 1,100</text>
+            <text x="394" y="182" font-family="Instrument Sans, sans-serif" font-size="9" fill="#5C5C52">m&#178;/g active</text>
+
+            <!-- Column label -->
+            <text x="80" y="184" font-family="Instrument Sans, sans-serif" font-size="10" fill="#5C5C52" text-anchor="middle" letter-spacing="0.06em" transform="rotate(-90,80,184)">GRANULAR AC BED</text>
+
+          </svg>
+        </div>
+
+        <div class="demand-panel" style="margin-top:20px;">
+          <span class="demand-panel-label" style="color:rgba(250,250,248,0.28);">Market signal</span>
+          <span class="demand-stat">140,000 MT</span>
+          <p class="demand-stat-sub" style="color:rgba(250,250,248,0.35);">Annual activated carbon demand in India for water treatment, predominantly imported from China and Sri Lanka. Import substitution opportunity.</p>
+          <a class="btn btn-amber" href="products.html#activated-carbon" style="display:inline-flex;">Activated carbon spec &rarr;</a>
+        </div>
+
+      </div>
+
+      <div class="ind-content" style="order:2;">
+        <span class="ind-product-tag">Activated Carbon</span>
+        <h2 class="ind-name f-head">Water Treatment</h2>
+        <p class="ind-tagline">The most widely specified technology for removing organic contaminants from water.</p>
+        <p class="ind-desc" style="color:rgba(250,250,248,0.45);">Activated carbon adsorption is the workhorse technology of municipal and industrial water treatment. It removes organic compounds, pesticides, disinfection by-products, pharmaceutical residues, and heavy metal complexes that other treatment steps cannot address. Granular activated carbon (GAC) is packed into fixed-bed pressure or gravity filters. Powdered activated carbon (PAC) is dosed directly into treatment streams. Both are consumables: spent carbon is either regenerated or replaced.</p>
+
+        <ul class="ind-uses">
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Municipal drinking water treatment (IS 877 grade)</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Industrial effluent treatment before discharge</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Groundwater remediation</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Swimming pool and aquarium filtration</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Point-of-use household filtration systems</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ENERGY ── -->
+<section class="ind-section ind-section--warm" id="energy">
+  <span class="ind-ghost-num">03</span>
+  <div class="wrap">
+    <div class="ind-section-inner">
+
+      <div class="ind-content">
+        <span class="ind-product-tag">Carbon Fuel</span>
+        <h2 class="ind-name f-head">Energy and Industrial Heat</h2>
+        <p class="ind-tagline">Lower emissions, same energy density. Without capital expenditure on new equipment.</p>
+        <p class="ind-desc">Cement kilns, brick kilns, steel mills, and industrial boilers that run on thermal coal can switch partially or fully to carbon fuel without infrastructure modification. The calorific value is equivalent. Sulfur content is significantly lower, reducing SOx emissions and the associated regulatory and environmental burden. Ash content is also lower, reducing post-combustion waste. For industries facing air quality compliance pressure, carbon fuel provides a path to reduced emission intensity today.</p>
+
+        <ul class="ind-uses">
+          <li class="ind-use">Cement kiln fuel (partial or full substitution)</li>
+          <li class="ind-use">Brick and ceramics kiln firing</li>
+          <li class="ind-use">Industrial boiler fuel</li>
+          <li class="ind-use">Sponge iron and ferro-alloy production</li>
+          <li class="ind-use">Combined heat and power (CHP) plants</li>
+        </ul>
+      </div>
+
+      <div class="ind-right">
+        <!-- ENERGY ILLUSTRATION: Emissions comparison visual -->
+        <div class="ind-illus">
+          <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background -->
+            <rect width="480" height="320" fill="#EDEAE2" rx="0"/>
+
+            <!-- Two chimney stacks: Coal vs Carbon Fuel -->
+            <!-- Coal chimney (left, heavy smoke) -->
+            <rect x="80" y="80" width="60" height="180" fill="#2A2A22" rx="4"/>
+            <rect x="60" y="68" width="100" height="16" fill="#1E1E18" rx="3"/>
+            <!-- Heavy smoke plume (coal) -->
+            <g fill="#5C5C52" opacity="0.5">
+              <ellipse cx="110" cy="44" rx="24" ry="18" filter="url(#cfWobbleInd)"/>
+              <ellipse cx="95" cy="24" rx="20" ry="16"/>
+              <ellipse cx="118" cy="12" rx="18" ry="14"/>
+              <ellipse cx="100" cy="0" rx="16" ry="14"/>
+              <ellipse cx="124" cy="-4" rx="14" ry="12"/>
+            </g>
+            <defs>
+              <filter id="cfWobbleInd">
+                <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4"/>
+                <feDisplacementMap in="SourceGraphic" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <text x="110" y="280" font-family="Instrument Sans, sans-serif" font-size="11" fill="#5C5C52" text-anchor="middle" letter-spacing="0.06em">COAL</text>
+            <text x="110" y="296" font-family="Space Grotesk, sans-serif" font-size="10" fill="#2A2A22" text-anchor="middle">1.2% S &nbsp; 12% Ash</text>
+
+            <!-- Carbon Fuel chimney (right, minimal smoke) -->
+            <rect x="320" y="80" width="60" height="180" fill="#1E1A10" rx="4"/>
+            <rect x="300" y="68" width="100" height="16" fill="#14120A" rx="3"/>
+            <!-- Light / almost no smoke (carbon fuel) -->
+            <g fill="#AEACA0" opacity="0.2">
+              <ellipse cx="350" cy="50" rx="12" ry="8"/>
+              <ellipse cx="344" cy="36" rx="10" ry="7"/>
+            </g>
+            <text x="350" y="280" font-family="Instrument Sans, sans-serif" font-size="11" fill="#B87010" text-anchor="middle" letter-spacing="0.06em">CARBON FUEL</text>
+            <text x="350" y="296" font-family="Space Grotesk, sans-serif" font-size="10" fill="#B87010" text-anchor="middle">0.4% S &nbsp; 6% Ash</text>
+
+            <!-- VS label -->
+            <text x="240" y="180" font-family="Space Grotesk, sans-serif" font-size="22" fill="#AEACA0" text-anchor="middle" font-weight="300">vs</text>
+
+            <!-- Annotation: SOx reduction -->
+            <rect x="168" y="20" width="148" height="48" fill="white" stroke="#DCDAD0" stroke-width="1" rx="2"/>
+            <text x="184" y="38" font-family="Instrument Sans, sans-serif" font-size="9" fill="#AEACA0" letter-spacing="0.1em">SOx REDUCTION</text>
+            <text x="184" y="56" font-family="Space Grotesk, sans-serif" font-size="18" fill="#B87010" font-weight="700" letter-spacing="-0.03em">&gt;60%</text>
+          </svg>
+        </div>
+
+        <div class="demand-panel" style="margin-top:20px;">
+          <span class="demand-panel-label">Market signal</span>
+          <span class="demand-stat">740 MT/yr</span>
+          <p class="demand-stat-sub">India's annual thermal coal consumption in industrial applications (cement, brick, steel). Even a 1% substitution represents a very large addressable market.</p>
+          <a class="btn btn-amber" href="products.html#carbon-fuel" style="display:inline-flex;">Carbon fuel specification &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PHARMA AND FOOD ── -->
+<section class="ind-section ind-section--dark" id="purification">
+  <span class="ind-ghost-num">04</span>
+  <div class="wrap">
+    <div class="ind-section-inner">
+
+      <div class="ind-right" style="order:1;">
+        <div class="img-ph ind-photo">
+          <div class="img-ph-label" style="color:rgba(250,250,248,0.3);"><strong style="color:rgba(250,250,248,0.5);">Photo needed:</strong><br>Pharmaceutical / lab context. White coat, equipment, precision setting.</div>
+        </div>
+        <div class="demand-panel" style="margin-top:20px;">
+          <span class="demand-panel-label" style="color:rgba(250,250,248,0.28);">Market signal</span>
+          <span class="demand-stat">Grade-specific</span>
+          <p class="demand-stat-sub" style="color:rgba(250,250,248,0.35);">Pharmaceutical, food-grade, and reagent-grade activated carbon commands a 3 to 5x premium over water-treatment grade. Smaller volumes, higher margins.</p>
+          <a class="btn btn-amber" href="company.html#contact" style="display:inline-flex;">Enquire for spec sheet &rarr;</a>
+        </div>
+      </div>
+
+      <div class="ind-content" style="order:2;">
+        <span class="ind-product-tag">Activated Carbon</span>
+        <h2 class="ind-name f-head">Pharma and Food</h2>
+        <p class="ind-tagline">The highest-margin application of activated carbon. Specification, not commodity.</p>
+        <p class="ind-desc" style="color:rgba(250,250,248,0.45);">Pharmaceutical-grade activated carbon is used in drug purification, decolorisation of APIs, and as a direct therapeutic agent (gastric decontamination). Food-grade activated carbon is used for decolorisation in sugar refining, glucose and starch production, beverage filtration, and edible oil purification. These applications require a higher purity standard and more precise specification than water-treatment grade, and they command a commensurately higher price.</p>
+        <ul class="ind-uses">
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">API purification and decolorisation</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Sugar and glucose refining</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Edible oil and fat purification</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Beverage filtration and clarity</li>
+          <li class="ind-use" style="color:rgba(250,250,248,0.45);">Therapeutic/antidote applications</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CARBON MARKETS ── -->
+<section class="ind-section" id="carbon-markets">
+  <span class="ind-ghost-num">05</span>
+  <div class="wrap">
+    <div class="ind-section-inner">
+
+      <div class="ind-content">
+        <span class="ind-product-tag">Biochar</span>
+        <h2 class="ind-name f-head">Carbon Markets and CDR</h2>
+        <p class="ind-tagline">Biochar carbon removal is one of the fastest-scaling carbon dioxide removal categories globally.</p>
+        <p class="ind-desc">Biochar carbon removal (BCR) is a method of carbon dioxide removal that involves converting biomass into biochar and applying it to soil or other long-term storage settings. Each tonne of EBC-certified biochar applied represents approximately 2.2 tonnes of CO2 equivalent permanently removed from the carbon cycle. This removal can be monetised as a carbon credit under methodologies accepted by Puro.Earth, Verra, and other voluntary carbon standard bodies. The credit adds significant revenue to the core materials business, improving margins on biochar substantially.</p>
+        <ul class="ind-uses">
+          <li class="ind-use">Voluntary carbon market credit generation</li>
+          <li class="ind-use">Corporate net-zero pathway compliance</li>
+          <li class="ind-use">Article 6 CDR credits (national programmes)</li>
+          <li class="ind-use">Biochar carbon removal methodology credits (Puro.Earth)</li>
+        </ul>
+      </div>
+
+      <div class="ind-right">
+        <!-- Carbon cycle illustration (simplified for this context) -->
+        <div class="ind-illus">
+          <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <!-- Simple circular carbon removal diagram -->
+            <!-- Background -->
+            <rect width="480" height="360" fill="#F4F3EE" rx="0"/>
+
+            <!-- Central circle: the biochar -->
+            <circle cx="240" cy="180" r="70" fill="#1E1E14" stroke="#2A2A22" stroke-width="1.5"/>
+            <text x="240" y="174" font-family="Space Grotesk, sans-serif" font-size="12" fill="#AEACA0" text-anchor="middle" font-weight="600" letter-spacing="-0.01em">BIOCHAR</text>
+            <text x="240" y="192" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" text-anchor="middle" font-weight="700" letter-spacing="-0.02em">IN SOIL</text>
+
+            <!-- Arrows around the circle: the CDR loop -->
+            <!-- Arrow 1: Atmosphere to Biomass (top) -->
+            <path d="M190 108 A80 80 0 0 1 290 108" stroke="#3A5C3E" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+            <text x="240" y="82" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#3A5C3E" text-anchor="middle" letter-spacing="0.04em">CO&#8322; captured</text>
+            <text x="240" y="96" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#3A5C3E" text-anchor="middle" letter-spacing="0.04em">by biomass</text>
+
+            <!-- Arrow 2: Biomass to Process -->
+            <path d="M304 114 A80 80 0 0 1 310 252" stroke="#B87010" stroke-width="1.5" fill="none"/>
+            <text x="380" y="186" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#B87010" text-anchor="middle" letter-spacing="0.04em">Thermal</text>
+            <text x="380" y="200" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#B87010" text-anchor="middle" letter-spacing="0.04em">conversion</text>
+
+            <!-- Arrow 3: Biochar in soil (permanence) -->
+            <path d="M188 252 A80 80 0 0 1 170 114" stroke="#AEACA0" stroke-width="1.5" fill="none" stroke-dasharray="2,4"/>
+            <text x="100" y="186" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#5C5C52" text-anchor="middle" letter-spacing="0.04em">Locked</text>
+            <text x="100" y="200" font-family="Instrument Sans, sans-serif" font-size="9.5" fill="#5C5C52" text-anchor="middle" letter-spacing="0.04em">3,000+ yr</text>
+
+            <!-- Credit symbol -->
+            <circle cx="240" cy="296" r="22" fill="none" stroke="#B87010" stroke-width="1.5"/>
+            <text x="240" y="301" font-family="Space Grotesk, sans-serif" font-size="13" fill="#B87010" text-anchor="middle" font-weight="700">CDR</text>
+            <line x1="240" y1="250" x2="240" y2="274" stroke="#B87010" stroke-width="1.2" stroke-dasharray="3,3"/>
+
+            <!-- Stats around -->
+            <rect x="338" y="278" width="132" height="52" fill="white" stroke="#DCDAD0" stroke-width="1" rx="2"/>
+            <text x="354" y="298" font-family="Instrument Sans, sans-serif" font-size="9" fill="#AEACA0" letter-spacing="0.1em">REMOVAL RATE</text>
+            <text x="354" y="314" font-family="Space Grotesk, sans-serif" font-size="16" fill="#0D0D0B" font-weight="700" letter-spacing="-0.03em">2.2 t CO&#8322;e/t</text>
+            <text x="354" y="326" font-family="Instrument Sans, sans-serif" font-size="9" fill="#B87010">Permanent. EBC-certified.</text>
+
+          </svg>
+        </div>
+
+        <div class="demand-panel" style="margin-top:20px;">
+          <span class="demand-panel-label">Market signal</span>
+          <span class="demand-stat">$200+ /tCO&#8322;</span>
+          <p class="demand-stat-sub">Prevailing BCR credit price on Puro.Earth for EBC-certified biochar carbon removal. Significantly above generic nature-based offset pricing.</p>
+          <a class="btn btn-amber" href="planet.html" style="display:inline-flex;">The full climate story &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARKET SUMMARY -->
+<section class="market-overview">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:0;">
+      <div>
+        <span class="eyebrow-plain">All five markets</span>
+        <h2 class="f-head" style="font-size:clamp(26px,3vw,42px);">Wherever carbon is needed, we supply it.</h2>
+      </div>
+      <p class="body-md">Each market has its own demand driver: soil health regulation, water quality standards, emissions compliance, pharmaceutical purity requirements, or carbon credit price. No single market determines our business.</p>
+    </div>
+    <div class="market-grid">
+      <a class="market-cell" href="#agriculture">
+        <span class="market-cell-num">01</span>
+        <span class="market-cell-name">Agriculture</span>
+        <span class="market-cell-product">Biochar &middot; Soil health</span>
+      </a>
+      <a class="market-cell" href="#water">
+        <span class="market-cell-num">02</span>
+        <span class="market-cell-name">Water Treatment</span>
+        <span class="market-cell-product">Activated Carbon &middot; Filtration</span>
+      </a>
+      <a class="market-cell" href="#energy">
+        <span class="market-cell-num">03</span>
+        <span class="market-cell-name">Energy</span>
+        <span class="market-cell-product">Carbon Fuel &middot; Industrial heat</span>
+      </a>
+      <a class="market-cell" href="#purification">
+        <span class="market-cell-num">04</span>
+        <span class="market-cell-name">Pharma and Food</span>
+        <span class="market-cell-product">Activated Carbon &middot; High grade</span>
+      </a>
+      <a class="market-cell" href="#carbon-markets">
+        <span class="market-cell-num">05</span>
+        <span class="market-cell-name">Carbon Markets</span>
+        <span class="market-cell-product">Biochar &middot; CDR credits</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Bombay Bioworks.</div>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-col-label">Products</span>
+        <ul class="footer-links">
+          <li><a href="products.html#biochar">Biochar</a></li>
+          <li><a href="products.html#activated-carbon">Activated Carbon</a></li>
+          <li><a href="products.html#carbon-fuel">Carbon Fuel</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Company</span>
+        <ul class="footer-links">
+          <li><a href="process.html">Process</a></li>
+          <li><a href="industries.html">Industries</a></li>
+          <li><a href="company.html">About</a></li>
+          <li><a href="company.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Climate</span>
+        <ul class="footer-links">
+          <li><a href="planet.html">Planet</a></li>
+          <li><a href="planet.html#certifications">EBC Certification</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-label">Contact</span>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@bombaybioworks.com">hello@bombaybioworks.com</a></li>
+          <li><a href="#">Mumbai, Maharashtra</a></li>
+        </ul>
+        <p class="footer-tagline" style="margin-top:24px;">Carbon materials for a warming world.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">2024 Bombay Bioworks. All rights reserved.</span>
+      <span class="footer-copy">bombaybioworks.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+</script>
+</body>
+</html>
