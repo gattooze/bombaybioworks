@@ -246,6 +246,13 @@ body.dark .badge-dot { box-shadow: 0 0 6px rgba(107,168,112,.6); }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.strike {
+  color: var(--tx3);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0;
+}
 .hero-sub {
   font-size: 17px;
   color: var(--tx2);
