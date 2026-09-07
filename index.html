@@ -62,6 +62,7 @@
 
 <main class="hero">
   <div class="hero-mesh" aria-hidden="true"></div>
+  <canvas class="bb-motif-canvas" id="heroMotif" aria-hidden="true"></canvas>
 
   <div class="hero-inner">
 
@@ -105,6 +106,7 @@
   <span class="footer-meta">&copy; <span id="year">2026</span> &middot; Mumbai, India</span>
 </footer>
 
+<script src="assets/motifs.js"></script>
 <script>
   (function () {
     var body   = document.body;
@@ -114,6 +116,19 @@
     // Adopt whatever the pre-paint script decided, then hand control to body.dark
     if (root.getAttribute('data-boot-theme') === 'dark') body.classList.add('dark');
     root.removeAttribute('data-boot-theme');
+
+    // Bamboo Grove watermark (see BB Design System, "09 — Background Motifs").
+    // Adaptive: it reads .hero-inner's live bounding box and parts the culms
+    // around it, so the grove never draws through the headline or button.
+    var motif = null;
+    if (window.BBMotifs) {
+      motif = BBMotifs.attach(document.getElementById('heroMotif'), {
+        type: 'bamboo-grove', hills: true, seed: 41,
+        avoidElement: document.querySelector('.hero-inner'),
+        color: body.classList.contains('dark') ? '#6BA870' : '#3E6448',
+        alpha:  body.classList.contains('dark') ? 0.11 : 0.055
+      });
+    }
 
     function syncLabel() {
       var dark = body.classList.contains('dark');
@@ -125,6 +140,7 @@
       var dark = body.classList.toggle('dark');
       try { localStorage.setItem('bb-theme', dark ? 'dark' : 'light'); } catch (e) {}
       syncLabel();
+      if (motif) motif.update({ color: dark ? '#6BA870' : '#3E6448', alpha: dark ? 0.11 : 0.055 });
     });
 
     document.getElementById('year').textContent = new Date().getFullYear();
