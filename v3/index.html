@@ -140,7 +140,7 @@
   max-width: 900px;
 }
 .statement-text em {
-  color: var(--amber);
+  color: var(--accent);
   font-style: normal;
 }
 .statement-text span {
@@ -182,21 +182,25 @@
 .pgrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--rule);
-  border-left: 1px solid var(--rule);
+  gap: 16px;
+  border: none;
 }
 
 .pgrid-item {
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
   padding: 0;
   text-decoration: none;
   display: block;
   position: relative;
-  overflow: visible;
-  transition: background 0.25s;
+  overflow: hidden;
+  transition: background 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
-.pgrid-item:hover { background: var(--paper-warm); }
+.pgrid-item:hover {
+  background: var(--paper-warm);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+  border-color: var(--rule);
+}
 
 .pgrid-illus {
   width: 100%;
@@ -218,7 +222,7 @@
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--accent);
   display: block;
   margin-bottom: 16px;
 }
@@ -441,7 +445,6 @@
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="index.html">
-    <!-- BB mark: a minimal hexagon/carbon unit -->
     <svg class="mark" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <polygon points="10,1.5 18,5.75 18,14.25 10,18.5 2,14.25 2,5.75" stroke="currentColor" stroke-width="1.4" fill="none"/>
       <circle cx="10" cy="10" r="2.2" fill="currentColor"/>
@@ -455,7 +458,7 @@
     <li><a href="planet.html">Planet</a></li>
     <li><a href="company.html">Company</a></li>
   </ul>
-  <a class="nav-cta" href="company.html#contact">Get in touch</a>
+  <a class="nav-cta" href="company.html#contact">Get in touch <span class="icon" style="font-size:14px;">arrow_forward</span></a>
 </nav>
 
 <!-- HERO -->
@@ -464,7 +467,7 @@
     <div class="hero-inner">
       <!-- Left: Typography -->
       <div class="hero-left above-illus">
-        <div class="hero-eyebrow">Carbon Materials from Agricultural Residue</div>
+        <div class="hero-eyebrow"><span class="icon" style="font-size:14px;vertical-align:middle;margin-right:8px;color:var(--forest);">eco</span>Carbon Materials from Agricultural Residue</div>
         <div class="mast-stack">
           <span class="mast-line mast-line--a">Biochar.</span>
           <span class="mast-line mast-line--b">Activated Carbon.</span>
@@ -975,7 +978,7 @@
 
     <!-- Products footer link -->
     <div style="padding: 40px 0; text-align: right; border-top: 1px solid var(--rule);">
-      <a class="btn" href="products.html">Full product specifications &rarr;</a>
+      <a class="btn btn-accent" href="products.html">Full product specifications <span class="icon" style="font-size:15px;">arrow_forward</span></a>
     </div>
   </div>
 </section>
@@ -1019,7 +1022,7 @@
   </svg>
 
   <div class="wrap above-illus">
-    <p class="industries-label">Where our materials go</p>
+    <p class="industries-label"><span class="icon" style="font-size:14px;vertical-align:middle;margin-right:6px;">factory</span>Where our materials go</p>
     <div class="industries-list">
 
       <!-- Agriculture -->
@@ -1090,9 +1093,9 @@
         <h2 class="f-head">Built in Bombay. Built around carbon.</h2>
         <p>We started Bombay Bioworks because the numbers were obvious and no one in India was acting on them at scale. Agricultural residue streams here are enormous. The technology to convert them into high-value carbon materials exists. The markets for biochar, activated carbon, and clean solid fuel are real, growing, and underserved.</p>
         <p>We put all three together. <strong>One facility. One continuous process. Three products, zero waste.</strong></p>
-        <div style="margin-top:36px; display:flex; gap:16px; flex-wrap:wrap;">
-          <a class="btn" href="company.html">About the company &rarr;</a>
-          <a class="btn-amber btn" href="process.html">See the process &rarr;</a>
+        <div style="margin-top:36px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn btn-filled" href="company.html">About the company <span class="icon" style="font-size:15px;">arrow_forward</span></a>
+          <a class="btn btn-tonal" href="process.html">See the process <span class="icon" style="font-size:15px;">arrow_forward</span></a>
         </div>
       </div>
 
@@ -1124,12 +1127,12 @@
   <div class="wrap above-illus">
     <div class="grid-2" style="align-items:center; gap:80px;">
       <div>
-        <span class="eyebrow" style="color:#6BA870;">Climate &amp; permanence</span>
+        <span class="eyebrow" style="color:var(--leaf);"><span class="icon" style="font-size:14px;vertical-align:middle;margin-right:6px;">co2</span>Climate &amp; permanence</span>
         <h2 class="f-head" style="color:var(--white); font-size:clamp(28px,3.5vw,48px); margin-bottom:28px;">
           Every tonne of our biochar locks away 2.2 tonnes of CO&#8322; permanently.
         </h2>
         <p style="font-size:15px;line-height:1.85;color:rgba(250,250,248,0.52);margin-bottom:36px;">Not an offset. Not a credit that expires. A physical carbon removal with a 3,000-year minimum stability guarantee, backed by the European Biochar Certificate standard.</p>
-        <a class="btn btn-ghost-white" href="planet.html">The full climate story &rarr;</a>
+        <a class="btn btn-ghost-white" href="planet.html">The full climate story <span class="icon" style="font-size:15px;">arrow_forward</span></a>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.07);">
         <div style="background:var(--forest-2);padding:40px 32px;">
@@ -1203,15 +1206,11 @@
 </footer>
 
 <script>
-// Nav scroll behaviour
+// Nav scroll: subtle blur + border when scrolled
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 60) {
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
-  }
-});
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
 </script>
 </body>
 </html>
