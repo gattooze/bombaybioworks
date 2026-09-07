@@ -7,57 +7,54 @@
 <link rel="stylesheet" href="style.css">
 <style>
 
-/* ── HERO ── */
+/* ── HERO — M3 ── */
 .hero {
-  min-height: 100svh;
   background: var(--paper);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding-top: var(--nav-h);
 }
 
 .hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: end;
+  align-items: stretch;
   gap: 0;
-  padding-bottom: 0;
+  min-height: calc(88svh - var(--nav-h));
   position: relative;
   z-index: 1;
 }
 
 .hero-left {
-  padding-top: calc(var(--nav-h) + 100px);
-  padding-bottom: 72px;
+  padding: 80px 80px 80px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
+/* M3 eyebrow: icon + label pattern */
 .hero-eyebrow {
   font-family: var(--f-body);
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--ink-3);
-  margin-bottom: 44px;
+  color: var(--forest);
+  margin-bottom: 36px;
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-.hero-eyebrow::before {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--ink-3);
+  gap: 10px;
 }
 
-.mast-stack { margin-bottom: 56px; }
+/* M3 Display type scale: three-weight stacked headline */
+.mast-stack { margin-bottom: 48px; }
 .mast-line {
   font-family: var(--f-display);
-  font-size: clamp(60px, 8.5vw, 124px);
-  line-height: 0.95;
+  font-size: clamp(48px, 7vw, 100px);
+  line-height: 0.97;
   display: block;
   letter-spacing: -0.04em;
 }
@@ -65,25 +62,33 @@
 .mast-line--b { font-weight: 500; color: var(--ink-2); }
 .mast-line--c { font-weight: 700; color: var(--ink); }
 
+/* M3 accent rule — accent color replaces stark black */
 .hero-rule {
-  width: 100%;
+  width: 48px;
   height: 3px;
-  background: var(--ink);
-  margin-bottom: 28px;
+  background: var(--accent);
+  margin-bottom: 24px;
+  border-radius: var(--r-full);
 }
 
 .hero-sub {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.85;
-  color: var(--ink-3);
+  color: var(--ink-2);
   max-width: 400px;
+  margin-bottom: 40px;
 }
-.hero-sub strong { color: var(--ink-2); font-weight: 500; }
+.hero-sub strong { color: var(--ink); font-weight: 500; }
+
+/* M3 hero CTA — pill filled + tonal pair */
+.hero-cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
 .hero-right {
   position: relative;
-  height: 100%;
-  min-height: 100svh;
   display: flex;
   align-items: stretch;
 }
@@ -341,7 +346,7 @@
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--accent);
   margin-bottom: 48px;
 }
 .industries-list {
@@ -479,6 +484,15 @@
           Agricultural residue converted, not burned. Made in Bombay.
           Permanent, certified, and ready to ship.
         </p>
+        <div class="hero-cta-row">
+          <a class="btn btn-filled" href="products.html">
+            <span class="icon" style="font-size:16px;">grain</span>
+            View Products
+          </a>
+          <a class="btn btn-tonal" href="company.html#contact">
+            Get in touch
+          </a>
+        </div>
       </div>
 
       <!-- Right: Full-canvas illustration -->
@@ -613,7 +627,7 @@
 
             <!-- ─── TRANSFORMATION PARTICLES ─── -->
             <!-- Organic particles near facility - amber, scattered -->
-            <g fill="#B87010">
+            <g fill="#5C9AB8">
               <circle cx="712" cy="390" r="3.5"/>
               <circle cx="728" cy="420" r="4.5"/>
               <circle cx="718" cy="448" r="2.8"/>
@@ -704,7 +718,7 @@
             </g>
 
             <!-- Amber highlight on a few pores (the most active micropores) -->
-            <g fill="#B87010" opacity="0.18">
+            <g fill="#5C9AB8" opacity="0.18">
               <circle cx="798" cy="138" r="11"/>
               <circle cx="818" cy="180" r="14"/>
               <circle cx="806" cy="282" r="13"/>
@@ -804,7 +818,7 @@
               <circle cx="244" cy="98" r="5"/>
             </g>
             <!-- Amber accent: a few highlighted pores -->
-            <g fill="#B87010" opacity="0.22">
+            <g fill="#5C9AB8" opacity="0.22">
               <circle cx="155" cy="75" r="16"/>
               <circle cx="175" cy="145" r="18"/>
             </g>
@@ -873,12 +887,12 @@
               <polygon points="304,194 318,176 346,176 360,194 346,212 318,212"/>
             </g>
             <!-- Amber highlighted pores (the most active sites) -->
-            <g stroke="#B87010" stroke-width="1.4" fill="#1A0E04" opacity="0.6">
+            <g stroke="#5C9AB8" stroke-width="1.4" fill="#1A0E04" opacity="0.6">
               <polygon points="160,90 174,72 202,72 216,90 202,108 174,108"/>
               <polygon points="196,142 210,124 238,124 252,142 238,160 210,160"/>
             </g>
             <!-- Inner structure details: small dots at hex centers -->
-            <g fill="#B87010" opacity="0.15">
+            <g fill="#5C9AB8" opacity="0.15">
               <circle cx="80" cy="38" r="3"/>
               <circle cx="152" cy="38" r="3"/>
               <circle cx="224" cy="38" r="3"/>
@@ -919,8 +933,8 @@
                 <stop offset="100%" stop-color="#0E0C08"/>
               </linearGradient>
               <linearGradient id="cfBar" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="0%" stop-color="#B87010"/>
-                <stop offset="100%" stop-color="#7A4A0A"/>
+                <stop offset="0%" stop-color="#5C9AB8"/>
+                <stop offset="100%" stop-color="#3A7A96"/>
               </linearGradient>
             </defs>
             <rect width="380" height="220" fill="url(#cfBg)"/>
@@ -928,13 +942,13 @@
             <!-- Comparison bars: Coal vs Carbon Fuel -->
             <!-- X-axis labels -->
             <text x="32" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#AEACA0" letter-spacing="0.12em" text-anchor="middle">COAL</text>
-            <text x="140" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#B87010" letter-spacing="0.12em" text-anchor="middle">CARBON FUEL</text>
+            <text x="140" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#5C9AB8" letter-spacing="0.12em" text-anchor="middle">CARBON FUEL</text>
 
             <!-- Fixed Carbon % bars -->
             <text x="32" y="42" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C5C52" text-anchor="middle">42%</text>
             <rect x="16" y="48" width="32" height="132" fill="#2A2A22" rx="2"/>
 
-            <text x="140" y="20" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" text-anchor="middle">65%+</text>
+            <text x="140" y="20" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C9AB8" text-anchor="middle">65%+</text>
             <rect x="112" y="26" width="56" height="154" fill="url(#cfBar)" rx="2" opacity="0.9"/>
 
             <!-- Label: Fixed Carbon -->
@@ -945,14 +959,14 @@
 
             <!-- Sulfur % bars (inverted scale) -->
             <text x="244" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#AEACA0" letter-spacing="0.12em" text-anchor="middle">COAL</text>
-            <text x="334" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#B87010" letter-spacing="0.12em" text-anchor="middle">CARBON FUEL</text>
+            <text x="334" y="196" font-family="Instrument Sans, sans-serif" font-size="8.5" fill="#5C9AB8" letter-spacing="0.12em" text-anchor="middle">CARBON FUEL</text>
 
             <!-- Coal sulfur (high - bad) -->
             <text x="244" y="60" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C5C52" text-anchor="middle">1.2%</text>
             <rect x="228" y="66" width="32" height="114" fill="#2A2A22" rx="2"/>
 
             <!-- Carbon fuel sulfur (low - good) -->
-            <text x="334" y="138" font-family="Space Grotesk, sans-serif" font-size="11" fill="#B87010" text-anchor="middle">0.4%</text>
+            <text x="334" y="138" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5C9AB8" text-anchor="middle">0.4%</text>
             <rect x="318" y="144" width="32" height="36" fill="url(#cfBar)" rx="2" opacity="0.85"/>
 
             <!-- Label: Total S -->
@@ -1030,7 +1044,7 @@
         <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Sprout in soil icon -->
           <rect x="4" y="26" width="28" height="2" rx="1" fill="#5C5C52"/>
-          <path d="M18 26 L18 14" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M18 26 L18 14" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
           <path d="M18 20 C18 20 12 18 10 12 C14 12 18 16 18 20" fill="#3A5C3E" opacity="0.8"/>
           <path d="M18 17 C18 17 24 14 26 8 C22 9 18 13 18 17" fill="#3A5C3E" opacity="0.8"/>
         </svg>
@@ -1041,7 +1055,7 @@
       <!-- Water Treatment -->
       <a class="ind-item" href="industries.html#water">
         <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 4 C18 4 8 16 8 22 C8 27.5 12.5 32 18 32 C23.5 32 28 27.5 28 22 C28 16 18 4 18 4 Z" stroke="var(--amber)" stroke-width="1.5" fill="none"/>
+          <path d="M18 4 C18 4 8 16 8 22 C8 27.5 12.5 32 18 32 C23.5 32 28 27.5 28 22 C28 16 18 4 18 4 Z" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
           <path d="M13 26 C15 24 17 25 18 26 C19 27 21 28 23 26" stroke="#5C5C52" stroke-width="1" fill="none" stroke-linecap="round"/>
         </svg>
         <span class="ind-name">Water Treatment</span>
@@ -1051,7 +1065,7 @@
       <!-- Energy -->
       <a class="ind-item" href="industries.html#energy">
         <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 4 L12 20 L18 20 L16 32 L24 16 L18 16 Z" stroke="var(--amber)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+          <path d="M20 4 L12 20 L18 20 L16 32 L24 16 L18 16 Z" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
         </svg>
         <span class="ind-name">Energy</span>
         <span class="ind-product">Carbon Fuel</span>
@@ -1060,7 +1074,7 @@
       <!-- Purification -->
       <a class="ind-item" href="industries.html#purification">
         <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="6" width="16" height="4" rx="1" stroke="var(--amber)" stroke-width="1.4" fill="none"/>
+          <rect x="10" y="6" width="16" height="4" rx="1" stroke="var(--accent)" stroke-width="1.4" fill="none"/>
           <path d="M14 10 L10 30 L26 30 L22 10" stroke="#5C5C52" stroke-width="1.4" fill="none"/>
           <line x1="10" y1="20" x2="26" y2="20" stroke="#5C5C52" stroke-width="0.8" opacity="0.5"/>
         </svg>
@@ -1071,9 +1085,9 @@
       <!-- Carbon Markets -->
       <a class="ind-item" href="industries.html#carbon-markets">
         <svg class="ind-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="18" cy="18" r="12" stroke="var(--amber)" stroke-width="1.4" fill="none"/>
+          <circle cx="18" cy="18" r="12" stroke="var(--accent)" stroke-width="1.4" fill="none"/>
           <path d="M10 18 Q14 10 18 18 Q22 26 26 18" stroke="#5C5C52" stroke-width="1" fill="none"/>
-          <text x="18" y="22" font-family="Space Grotesk" font-size="9" fill="var(--amber)" text-anchor="middle" font-weight="700">C</text>
+          <text x="18" y="22" font-family="Space Grotesk" font-size="9" fill="var(--accent)" text-anchor="middle" font-weight="700">C</text>
         </svg>
         <span class="ind-name">Carbon Markets</span>
         <span class="ind-product">Biochar Credits</span>

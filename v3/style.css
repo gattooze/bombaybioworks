@@ -15,9 +15,9 @@
   --accent:      #5C9AB8;      /* Steel blue — primary interactive */
   --accent-c:    #D4EEF8;      /* Accent container (M3 Primary Container) */
   --accent-dk:   #3A7A96;      /* Accent pressed/hover */
-  --amber:       #B87010;      /* Kept for illustration SVG warm details */
+  --amber:       #5C9AB8;      /* Kept for illustration SVG warm details */
   --amber-lt:    #F2E4C4;
-  --amber-dk:    #7A4A0A;
+  --amber-dk:    #3A7A96;
   --rule:        #D8D8D4;
   --rule-dk:     rgba(255,255,255,0.08);
   --white:       #FAFAF8;
@@ -538,3 +538,210 @@ footer {
 .spec-table-dk td:first-child { color: rgba(250,250,248,0.38); }
 .spec-table-dk td:last-child { color: var(--white); }
 .spec-table-dk .spec-method { color: rgba(250,250,248,0.2); }
+
+/* ── M3 ELEVATION — tonal surface hierarchy ── */
+/* Level 0: flat (base surface, no elevation) */
+.elev-0 { box-shadow: none; }
+
+/* Level 1: subtle lift — cards, nav on scroll */
+.elev-1 {
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 2px 6px rgba(0,0,0,.06);
+}
+
+/* Level 2: interactive cards on hover */
+.elev-2 {
+  box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.08);
+}
+
+/* Level 3: modals, toasts, popovers */
+.elev-3 {
+  box-shadow: 0 4px 8px rgba(0,0,0,.08), 0 12px 32px rgba(0,0,0,.12);
+}
+
+/* ── M3 STATE LAYERS ── */
+/* Hover: 8% tonal overlay on accent containers */
+.state-layer {
+  position: relative;
+  overflow: hidden;
+}
+.state-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  transition: opacity 0.2s;
+}
+.state-layer:hover::after  { opacity: 0.08; }
+.state-layer:focus::after  { opacity: 0.12; }
+.state-layer:active::after { opacity: 0.16; }
+
+/* ── M3 SURFACE TONES ── */
+/* Surface variant — slightly elevated from base paper */
+.surface-variant {
+  background: var(--paper-warm);
+  border-radius: var(--r-md);
+}
+/* Primary container — accent-tinted background for inline cards */
+.surface-primary-c {
+  background: var(--accent-c);
+  border-radius: var(--r-md);
+}
+/* Secondary container — forest-tinted for eco panels */
+.surface-secondary-c {
+  background: var(--forest-c);
+  border-radius: var(--r-md);
+}
+
+/* ── M3 CHIP SYSTEM ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 5px 14px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-full);
+  color: var(--ink-2);
+  background: transparent;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.chip:hover {
+  background: var(--accent-c);
+  border-color: var(--accent);
+  color: #1A3A4E;
+}
+/* Filled chip — selected state */
+.chip-filled {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.chip-filled:hover {
+  background: var(--accent-dk);
+  border-color: var(--accent-dk);
+  color: #fff;
+}
+/* Forest chip — for eco/planet contexts */
+.chip-forest {
+  background: var(--forest-c);
+  border-color: transparent;
+  color: #1C3D26;
+}
+
+/* ── M3 CARD ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.card:hover { box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.08); }
+
+/* Outlined card variant */
+.card-outlined {
+  background: transparent;
+  border: 1.5px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 28px;
+}
+
+/* Filled card variant — tonal surface */
+.card-filled {
+  background: var(--paper-warm);
+  border: none;
+  border-radius: var(--r-lg);
+  padding: 28px;
+}
+
+/* ── M3 TYPOGRAPHY SCALE ── */
+/* Display: largest, for hero headings */
+.type-display-lg {
+  font-family: var(--f-display);
+  font-size: clamp(48px, 7vw, 100px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.type-display-md {
+  font-family: var(--f-display);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 600;
+  line-height: 0.97;
+  letter-spacing: -0.035em;
+}
+.type-display-sm {
+  font-family: var(--f-display);
+  font-size: clamp(28px, 3.5vw, 52px);
+  font-weight: 600;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+}
+/* Headline: section headings */
+.type-headline-lg {
+  font-family: var(--f-display);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.type-headline-md {
+  font-family: var(--f-display);
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+/* Title: cards, sub-sections */
+.type-title-lg {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.type-title-md {
+  font-family: var(--f-display);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+/* Label: uppercase small caps, eyebrows */
+.type-label-lg {
+  font-family: var(--f-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.type-label-md {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+/* Body: running text */
+.type-body-lg {
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.85;
+}
+.type-body-md {
+  font-family: var(--f-body);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.type-body-sm {
+  font-family: var(--f-body);
+  font-size: 13px;
+  line-height: 1.7;
+}

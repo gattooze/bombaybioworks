@@ -286,16 +286,16 @@
   gap: 8px;
   background: var(--leaf);
   color: var(--white);
-  font-family: var(--f-display);
+  font-family: var(--f-body);
   font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   text-decoration: none;
-  padding: 14px 28px;
+  padding: 12px 24px;
   border: none;
+  border-radius: var(--r-full);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.2s;
   position: relative;
   z-index: 1;
 }
@@ -354,14 +354,14 @@
 
     <!-- Carbon particles locked in soil -->
     <g opacity="0.6">
-      <ellipse cx="180" cy="510" rx="4" ry="2.5" fill="#B87010" transform="rotate(-15,180,510)"/>
-      <ellipse cx="240" cy="525" rx="3" ry="2" fill="#B87010" transform="rotate(8,240,525)"/>
-      <ellipse cx="310" cy="515" rx="5" ry="3" fill="#B87010" transform="rotate(-5,310,515)"/>
-      <ellipse cx="390" cy="522" rx="3.5" ry="2" fill="#B87010" transform="rotate(12,390,522)"/>
-      <ellipse cx="450" cy="512" rx="4" ry="2.5" fill="#B87010" transform="rotate(-8,450,512)"/>
-      <ellipse cx="200" cy="542" rx="3" ry="2" fill="#7A4A0A" transform="rotate(20,200,542)"/>
-      <ellipse cx="350" cy="545" rx="4.5" ry="2.5" fill="#7A4A0A" transform="rotate(-12,350,545)"/>
-      <ellipse cx="470" cy="538" rx="3" ry="2" fill="#7A4A0A" transform="rotate(5,470,538)"/>
+      <ellipse cx="180" cy="510" rx="4" ry="2.5" fill="#5C9AB8" transform="rotate(-15,180,510)"/>
+      <ellipse cx="240" cy="525" rx="3" ry="2" fill="#5C9AB8" transform="rotate(8,240,525)"/>
+      <ellipse cx="310" cy="515" rx="5" ry="3" fill="#5C9AB8" transform="rotate(-5,310,515)"/>
+      <ellipse cx="390" cy="522" rx="3.5" ry="2" fill="#5C9AB8" transform="rotate(12,390,522)"/>
+      <ellipse cx="450" cy="512" rx="4" ry="2.5" fill="#5C9AB8" transform="rotate(-8,450,512)"/>
+      <ellipse cx="200" cy="542" rx="3" ry="2" fill="#3A7A96" transform="rotate(20,200,542)"/>
+      <ellipse cx="350" cy="545" rx="4.5" ry="2.5" fill="#3A7A96" transform="rotate(-12,350,545)"/>
+      <ellipse cx="470" cy="538" rx="3" ry="2" fill="#3A7A96" transform="rotate(5,470,538)"/>
     </g>
 
     <!-- Plants growing from soil -->
@@ -509,7 +509,7 @@
               <path d="M0,0 L0,6 L8,3 z" fill="#3A5C3E"/>
             </marker>
             <marker id="arrowAmber2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="#B87010"/>
+              <path d="M0,0 L0,6 L8,3 z" fill="#5C9AB8"/>
             </marker>
             <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
               <path d="M0,0 L0,6 L8,3 z" fill="rgba(92,92,82,0.5)"/>
@@ -566,19 +566,19 @@
 
           <!-- CONVERSION zone (central) -->
           <!-- Arrow: residue to conversion -->
-          <path d="M 250 350 C 285 340 310 332 336 328" stroke="#B87010" stroke-width="1.8" fill="none" marker-end="url(#arrowAmber2)"/>
-          <text x="255" y="330" font-size="10" fill="#B87010" font-family="Space Grotesk, sans-serif" font-weight="500">residue</text>
+          <path d="M 250 350 C 285 340 310 332 336 328" stroke="#5C9AB8" stroke-width="1.8" fill="none" marker-end="url(#arrowAmber2)"/>
+          <text x="255" y="330" font-size="10" fill="#5C9AB8" font-family="Space Grotesk, sans-serif" font-weight="500">residue</text>
 
           <!-- CONVERSION BOX -->
           <rect x="340" y="295" width="140" height="78" fill="#141410" rx="2"/>
-          <rect x="340" y="295" width="140" height="3" fill="#B87010" rx="2 2 0 0"/>
+          <rect x="340" y="295" width="140" height="3" fill="#5C9AB8" rx="2 2 0 0"/>
           <text x="360" y="326" font-size="12" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#F2E4C4" letter-spacing="-0.01em">Thermal</text>
           <text x="360" y="342" font-size="12" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#F2E4C4" letter-spacing="-0.01em">Conversion</text>
           <text x="360" y="360" font-size="10" font-family="Space Grotesk, sans-serif" fill="rgba(250,228,196,0.45)">carbonization</text>
 
           <!-- Syngas loop icon -->
-          <path d="M 472 334 C 508 290 515 250 490 235 C 465 220 440 240 445 270" stroke="#B87010" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowAmber2)"/>
-          <text x="496" y="278" font-size="9" fill="#B87010" font-family="Space Grotesk, sans-serif">syngas loop</text>
+          <path d="M 472 334 C 508 290 515 250 490 235 C 465 220 440 240 445 270" stroke="#5C9AB8" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowAmber2)"/>
+          <text x="496" y="278" font-size="9" fill="#5C9AB8" font-family="Space Grotesk, sans-serif">syngas loop</text>
           <text x="498" y="290" font-size="9" fill="rgba(184,112,16,0.55)" font-family="Space Grotesk, sans-serif">(self-fuel)</text>
 
           <!-- OUTPUTS from conversion -->
@@ -586,7 +586,7 @@
           <path d="M 360 374 C 340 400 300 420 260 445" stroke="#3A5C3E" stroke-width="1.8" fill="none" marker-end="url(#arrowGreen)"/>
 
           <!-- Arrow to activated carbon (right) -->
-          <path d="M 482 334 C 520 334 530 334 540 334" stroke="#B87010" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <path d="M 482 334 C 520 334 530 334 540 334" stroke="#5C9AB8" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
 
           <!-- BIOCHAR circle -->
           <circle cx="240" cy="466" r="38" fill="none" stroke="#3A5C3E" stroke-width="1.5"/>
@@ -598,11 +598,11 @@
           <path d="M 240 505 L 240 530" stroke="#3A5C3E" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
           <!-- SOIL LABEL -->
-          <text x="218" y="548" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#B87010" letter-spacing="0.08em">SOIL STOCK</text>
+          <text x="218" y="548" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#5C9AB8" letter-spacing="0.08em">SOIL STOCK</text>
 
           <!-- Soil ground lines -->
-          <path d="M 140 535 Q 240 528 340 535" stroke="#B87010" stroke-width="1" fill="none" opacity="0.4"/>
-          <path d="M 150 545 Q 240 538 330 545" stroke="#7A4A0A" stroke-width="1" fill="none" opacity="0.3"/>
+          <path d="M 140 535 Q 240 528 340 535" stroke="#5C9AB8" stroke-width="1" fill="none" opacity="0.4"/>
+          <path d="M 150 545 Q 240 538 330 545" stroke="#3A7A96" stroke-width="1" fill="none" opacity="0.3"/>
 
           <!-- Traditional burn path (dashed gray, crossing out) -->
           <path d="M 220 350 C 195 310 175 260 178 190" stroke="rgba(92,92,82,0.35)" stroke-width="1.2" fill="none" stroke-dasharray="4,4" marker-end="url(#arrowGray)"/>
@@ -766,10 +766,10 @@
           <rect x="230" y="352" width="180" height="12" fill="rgba(28,46,30,0.45)" rx="1"/>
 
           <!-- Biochar particles in soil -->
-          <ellipse cx="268" cy="344" rx="4" ry="2.5" fill="#B87010" transform="rotate(-10,268,344)"/>
-          <ellipse cx="310" cy="348" rx="3" ry="2" fill="#B87010" transform="rotate(15,310,348)"/>
-          <ellipse cx="355" cy="343" rx="4.5" ry="2.5" fill="#B87010" transform="rotate(-5,355,343)"/>
-          <ellipse cx="385" cy="349" rx="3" ry="2" fill="#7A4A0A" transform="rotate(20,385,349)"/>
+          <ellipse cx="268" cy="344" rx="4" ry="2.5" fill="#5C9AB8" transform="rotate(-10,268,344)"/>
+          <ellipse cx="310" cy="348" rx="3" ry="2" fill="#5C9AB8" transform="rotate(15,310,348)"/>
+          <ellipse cx="355" cy="343" rx="4.5" ry="2.5" fill="#5C9AB8" transform="rotate(-5,355,343)"/>
+          <ellipse cx="385" cy="349" rx="3" ry="2" fill="#3A7A96" transform="rotate(20,385,349)"/>
 
           <!-- Atmosphere label above -->
           <text x="290" y="80" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#6DBF72" text-anchor="middle">Near-zero</text>
@@ -962,22 +962,22 @@
           <!-- ROOT SYSTEMS growing down -->
           <g filter="url(#rootWobble)" opacity="0.65">
             <!-- Roots from plant A -->
-            <path d="M 120 100 C 118 130 112 165 108 200" stroke="#B87010" stroke-width="1.2" fill="none"/>
-            <path d="M 118 135 C 100 145 88 158 82 170" stroke="#B87010" stroke-width="0.8" fill="none"/>
-            <path d="M 115 150 C 130 165 138 178 140 195" stroke="#B87010" stroke-width="0.8" fill="none"/>
+            <path d="M 120 100 C 118 130 112 165 108 200" stroke="#5C9AB8" stroke-width="1.2" fill="none"/>
+            <path d="M 118 135 C 100 145 88 158 82 170" stroke="#5C9AB8" stroke-width="0.8" fill="none"/>
+            <path d="M 115 150 C 130 165 138 178 140 195" stroke="#5C9AB8" stroke-width="0.8" fill="none"/>
             <!-- Roots from plant B -->
-            <path d="M 200 100 C 200 135 198 170 194 215" stroke="#B87010" stroke-width="1.5" fill="none"/>
-            <path d="M 199 140 C 178 152 165 165 160 185" stroke="#B87010" stroke-width="1" fill="none"/>
-            <path d="M 200 155 C 218 168 226 182 228 202" stroke="#B87010" stroke-width="1" fill="none"/>
-            <path d="M 196 180 C 180 195 172 210 170 225" stroke="#B87010" stroke-width="0.7" fill="none"/>
+            <path d="M 200 100 C 200 135 198 170 194 215" stroke="#5C9AB8" stroke-width="1.5" fill="none"/>
+            <path d="M 199 140 C 178 152 165 165 160 185" stroke="#5C9AB8" stroke-width="1" fill="none"/>
+            <path d="M 200 155 C 218 168 226 182 228 202" stroke="#5C9AB8" stroke-width="1" fill="none"/>
+            <path d="M 196 180 C 180 195 172 210 170 225" stroke="#5C9AB8" stroke-width="0.7" fill="none"/>
             <!-- Roots from plant C -->
-            <path d="M 290 100 C 288 130 286 165 285 205" stroke="#B87010" stroke-width="1.2" fill="none"/>
-            <path d="M 287 142 C 270 155 262 170 258 188" stroke="#B87010" stroke-width="0.8" fill="none"/>
-            <path d="M 288 158 C 304 170 310 184 312 200" stroke="#B87010" stroke-width="0.8" fill="none"/>
+            <path d="M 290 100 C 288 130 286 165 285 205" stroke="#5C9AB8" stroke-width="1.2" fill="none"/>
+            <path d="M 287 142 C 270 155 262 170 258 188" stroke="#5C9AB8" stroke-width="0.8" fill="none"/>
+            <path d="M 288 158 C 304 170 310 184 312 200" stroke="#5C9AB8" stroke-width="0.8" fill="none"/>
             <!-- Roots from plant D -->
-            <path d="M 380 100 C 380 132 378 168 376 210" stroke="#B87010" stroke-width="1.3" fill="none"/>
-            <path d="M 378 145 C 362 158 352 172 348 190" stroke="#B87010" stroke-width="0.9" fill="none"/>
-            <path d="M 380 160 C 396 174 403 188 405 208" stroke="#B87010" stroke-width="0.9" fill="none"/>
+            <path d="M 380 100 C 380 132 378 168 376 210" stroke="#5C9AB8" stroke-width="1.3" fill="none"/>
+            <path d="M 378 145 C 362 158 352 172 348 190" stroke="#5C9AB8" stroke-width="0.9" fill="none"/>
+            <path d="M 380 160 C 396 174 403 188 405 208" stroke="#5C9AB8" stroke-width="0.9" fill="none"/>
           </g>
 
           <!-- CALLOUT BOXES -->
@@ -990,8 +990,8 @@
 
           <!-- Callout 2: Carbon locked -->
           <rect x="368" y="195" width="168" height="58" fill="white" rx="2" stroke="#DCDAD0" stroke-width="1"/>
-          <rect x="368" y="195" width="4" height="58" fill="#B87010" rx="2 0 0 2"/>
-          <text x="380" y="212" font-size="9" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#B87010" letter-spacing="0.08em">CARBON STOCK</text>
+          <rect x="368" y="195" width="4" height="58" fill="#5C9AB8" rx="2 0 0 2"/>
+          <text x="380" y="212" font-size="9" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#5C9AB8" letter-spacing="0.08em">CARBON STOCK</text>
           <text x="380" y="228" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="600" fill="#0D0D0B" letter-spacing="-0.01em">&gt;3,000 yr stability</text>
           <text x="380" y="243" font-size="10" font-family="Space Grotesk, sans-serif" fill="#5C5C52">H/C molar ratio: 0.32</text>
 
