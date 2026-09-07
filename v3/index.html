@@ -191,20 +191,26 @@
   border: none;
 }
 
+/* M3 Outlined Card — Elevation Level 0 at rest */
 .pgrid-item {
   border: 1px solid var(--rule);
-  border-radius: var(--r-md);
+  border-radius: var(--r-lg);       /* M3: Large (16dp) for cards */
   padding: 0;
   text-decoration: none;
   display: block;
   position: relative;
   overflow: hidden;
-  transition: background 0.25s, box-shadow 0.25s, border-color 0.25s;
+  background: var(--paper);
+  transition:
+    background var(--dur-medium) var(--ease-standard),
+    box-shadow var(--dur-medium) var(--ease-standard),
+    border-color var(--dur-medium) var(--ease-standard);
 }
+/* M3 tonal elevation on hover: primary tint (Elevation Level 1) + shadow */
 .pgrid-item:hover {
-  background: var(--paper-warm);
-  box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
-  border-color: var(--rule);
+  background: #EEF4F8; /* Primary tonal lift: ~5% #5C9AB8 on #F1F1F1 */
+  box-shadow: var(--elev-2-shadow);
+  border-color: rgba(92,154,184,0.3);
 }
 
 .pgrid-illus {
@@ -241,7 +247,7 @@
   display: block;
   margin-bottom: -12px;
   user-select: none;
-  transition: color 0.25s;
+  transition: color var(--dur-medium) var(--ease-standard);
 }
 .pgrid-item:hover .pgrid-ghost { color: var(--paper-deep); }
 .pgrid-name {
@@ -359,7 +365,7 @@
   border-right: 1px solid rgba(255,255,255,0.07);
   padding: 48px 32px;
   text-decoration: none;
-  transition: background 0.2s;
+  transition: background var(--dur-short) var(--ease-standard);
 }
 .ind-item:last-child { border-right: none; }
 .ind-item:hover { background: rgba(255,255,255,0.03); }
@@ -775,7 +781,10 @@
 <section class="products-section">
   <div class="wrap">
     <div class="products-header above-illus">
-      <h2 class="f-head">What we make.</h2>
+      <div>
+        <span class="eyebrow"><span class="icon icon-sm" style="color:var(--secondary);">hexagon</span>Products</span>
+        <h2 class="f-head">What we make.</h2>
+      </div>
       <p class="products-meta">Three distinct materials from a single thermal conversion process. Each with its own market, specification, and application stack.</p>
     </div>
 
@@ -1103,7 +1112,7 @@
     <div class="company-brief-grid">
 
       <div class="company-brief-text above-illus">
-        <span class="eyebrow-plain">Our story</span>
+        <span class="eyebrow"><span class="icon icon-sm">business</span>Our story</span>
         <h2 class="f-head">Built in Bombay. Built around carbon.</h2>
         <p>We started Bombay Bioworks because the numbers were obvious and no one in India was acting on them at scale. Agricultural residue streams here are enormous. The technology to convert them into high-value carbon materials exists. The markets for biochar, activated carbon, and clean solid fuel are real, growing, and underserved.</p>
         <p>We put all three together. <strong>One facility. One continuous process. Three products, zero waste.</strong></p>
@@ -1213,7 +1222,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">2024 Bombay Bioworks. All rights reserved.</span>
+      <span class="footer-copy">2026 Bombay Bioworks. All rights reserved.</span>
       <span class="footer-copy">bombaybioworks.com</span>
     </div>
   </div>

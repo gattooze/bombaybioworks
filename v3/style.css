@@ -1,39 +1,79 @@
 /* BOMBAY BIOWORKS — DESIGN SYSTEM V3 — STEEL + M3 */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
 
-/* ── TOKENS ── */
+/* ── M3 DESIGN TOKEN SYSTEM ── */
 :root {
-  /* Steel palette */
-  --paper:       #F1F1F1;
-  --paper-warm:  #E8E6E2;
-  --paper-deep:  #DDDAD4;
-  --ink:         #0A0A0A;
-  --ink-2:       #5A5A54;
-  --ink-3:       #9A9A92;
-  --carbon:      #0C0C0C;
+  /* ── Steel palette — base tones ── */
+  --paper:       #F1F1F1;      /* M3: Surface */
+  --paper-warm:  #E8E6E2;      /* M3: Surface Variant */
+  --paper-deep:  #DDDAD4;      /* M3: Surface Container */
+  --ink:         #0A0A0A;      /* M3: On Surface */
+  --ink-2:       #5A5A54;      /* M3: On Surface Variant */
+  --ink-3:       #9A9A92;      /* M3: Outline */
+  --carbon:      #0C0C0C;      /* M3: Inverse Surface */
   --carbon-2:    #181818;
-  --accent:      #5C9AB8;      /* Steel blue — primary interactive */
-  --accent-c:    #D4EEF8;      /* Accent container (M3 Primary Container) */
-  --accent-dk:   #3A7A96;      /* Accent pressed/hover */
-  --amber:       #5C9AB8;      /* Kept for illustration SVG warm details */
-  --amber-lt:    #F2E4C4;
-  --amber-dk:    #3A7A96;
-  --rule:        #D8D8D4;
+  --white:       #FAFAF8;      /* M3: Inverse On Surface */
+
+  /* ── M3 Primary — Steel Blue ── */
+  --primary:     #5C9AB8;      /* M3: Primary */
+  --on-primary:  #FFFFFF;      /* M3: On Primary */
+  --primary-c:   #D4EEF8;      /* M3: Primary Container */
+  --on-primary-c:#1A3A4E;      /* M3: On Primary Container */
+  --primary-dk:  #3A7A96;      /* Primary hover/pressed */
+
+  /* ── M3 Secondary — Forest Green ── */
+  --secondary:   #3E6448;      /* M3: Secondary */
+  --on-secondary:#FFFFFF;      /* M3: On Secondary */
+  --secondary-c: #C8E4D0;      /* M3: Secondary Container */
+  --on-secondary-c:#1C3D26;   /* M3: On Secondary Container */
+  --secondary-2: #4A7256;
+  --leaf:        #6BA870;      /* M3: Tertiary */
+
+  /* Aliases for backward compat (SVG illustrations) */
+  --accent:      var(--primary);
+  --accent-c:    var(--primary-c);
+  --accent-dk:   var(--primary-dk);
+  --amber:       var(--primary);
+  --amber-dk:    var(--primary-dk);
+  --amber-lt:    var(--primary-c);
+  --forest:      var(--secondary);
+  --forest-2:    var(--secondary-2);
+  --forest-c:    var(--secondary-c);
+
+  --rule:        #D8D8D4;      /* M3: Outline Variant */
   --rule-dk:     rgba(255,255,255,0.08);
-  --white:       #FAFAF8;
-  --forest:      #3E6448;      /* Deep forest green — stats, dark sections */
-  --forest-2:    #4A7256;
-  --forest-c:    #C8E4D0;      /* Forest container */
-  --leaf:        #6BA870;
 
-  /* M3 shape scale */
-  --r-xs:   4px;
-  --r-sm:   8px;
-  --r-md:   12px;
-  --r-lg:   16px;
-  --r-xl:   28px;
-  --r-full: 9999px;
+  /* ── M3 shape scale ── */
+  --r-xs:   4px;   /* Extra Small */
+  --r-sm:   8px;   /* Small */
+  --r-md:   12px;  /* Medium */
+  --r-lg:   16px;  /* Large */
+  --r-xl:   28px;  /* Extra Large */
+  --r-full: 9999px;/* Full */
 
+  /* ── M3 elevation — tonal surface overlays ── */
+  --elev-1-bg: rgba(92,154,184,0.05);
+  --elev-2-bg: rgba(92,154,184,0.08);
+  --elev-1-shadow: 0 1px 2px rgba(0,0,0,.04), 0 2px 6px rgba(0,0,0,.06);
+  --elev-2-shadow: 0 2px 4px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.08);
+  --elev-3-shadow: 0 4px 8px rgba(0,0,0,.08), 0 12px 32px rgba(0,0,0,.12);
+
+  /* ── M3 motion — easing tokens ── */
+  --ease-standard:   cubic-bezier(0.2, 0, 0, 1.0);    /* Standard: most transitions */
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1.0);    /* Emphasized: larger motions */
+  --ease-decel:      cubic-bezier(0.05, 0.7, 0.1, 1.0); /* Enter: elements coming in */
+  --ease-accel:      cubic-bezier(0.3, 0, 0.8, 0.15);   /* Exit: elements leaving */
+  --dur-short:  150ms;   /* State changes (hover, focus) */
+  --dur-medium: 250ms;   /* Component transitions */
+  --dur-long:   350ms;   /* Page-level transitions */
+
+  /* ── M3 icon optical size ── */
+  --icon-sm: 18px;   /* Small context: chips, labels */
+  --icon-md: 20px;   /* Default: buttons, eyebrows */
+  --icon-lg: 24px;   /* Navigation, standalone icons */
+  --icon-xl: 40px;   /* Hero, feature icons */
+
+  /* ── Layout ── */
   --nav-h:  64px;
   --max:    1380px;
   --pad:    80px;
@@ -70,7 +110,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--pad);
-  transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+  transition: background var(--dur-long) var(--ease-decel), border-color var(--dur-long) var(--ease-decel), backdrop-filter var(--dur-long) var(--ease-decel);
   border-bottom: 1px solid transparent;
 }
 nav.scrolled {
@@ -110,7 +150,7 @@ nav.scrolled {
   text-decoration: none;
   padding: 6px 14px;
   border-radius: var(--r-full);
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--dur-short) var(--ease-standard), background var(--dur-short) var(--ease-standard);
 }
 .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.07); }
 .nav-links a.active { color: var(--white); }
@@ -125,7 +165,7 @@ nav.scrolled {
   border-radius: var(--r-full);
   padding: 8px 22px;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background var(--dur-short) var(--ease-standard), color var(--dur-short) var(--ease-standard), border-color var(--dur-short) var(--ease-standard);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -139,7 +179,27 @@ nav.scrolled {
   padding: 0 var(--pad);
 }
 
-/* ── TYPOGRAPHY ── */
+/* ── M3 TYPOGRAPHY SCALE — applied to elements ── */
+/*
+  M3 Type Scale roles (mapped to Space Grotesk + Instrument Sans):
+  Display Large:   57/64sp  — hero mast-line (applied inline in index)
+  Display Medium:  45/52sp  — statement strip headline
+  Display Small:   36/44sp  — major section headings (h1 in page-hero)
+  Headline Large:  32/40sp  — section h2s, product names
+  Headline Medium: 28/36sp  — card headings, secondary sections
+  Headline Small:  24/32sp  — subsections
+  Title Large:     22/28sp  — card titles, eyebrow pairs
+  Title Medium:    16/24sp  — nav items, labels (not caps)
+  Title Small:     14/20sp  — tab labels, secondary cards
+  Label Large:     14/20sp  — button labels, chips (caps + tracking)
+  Label Medium:    12/16sp  — eyebrows, stat labels
+  Label Small:     11/16sp  — helper text
+  Body Large:      16/24sp  — main running text
+  Body Medium:     14/20sp  — supporting copy
+  Body Small:      12/16sp  — footnotes, meta
+*/
+
+/* Utility classes — semantic type roles */
 .f-display {
   font-family: var(--f-display);
   font-weight: 700;
@@ -158,44 +218,150 @@ nav.scrolled {
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
+
+/* M3 Display Medium — statement / hero quotes */
+.statement-text {
+  font-family: var(--f-display);
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.07;
+}
+
+/* M3 Headline Large — page h1s in interior heroes */
+.page-hero h1 {
+  font-family: var(--f-display);
+  font-size: clamp(36px, 5.5vw, 80px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+/* M3 Headline Large — section h2s */
+.products-header h2,
+.company-brief-text h2 {
+  font-family: var(--f-display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+/* M3 Headline Medium — product names, interior section titles */
+.pgrid-name,
+.prod-name {
+  font-family: var(--f-display);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* M3 Label Large — eyebrows (Primary Container color) */
 .eyebrow {
   font-family: var(--f-body);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--forest);
-  display: block;
+  color: var(--secondary);       /* M3: Secondary — eco/planet signals */
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 20px;
 }
+
+/* M3 Label Medium — neutral eyebrows, meta labels */
 .eyebrow-plain {
   font-family: var(--f-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-3);           /* M3: Outline color */
   display: block;
   margin-bottom: 20px;
 }
 
-/* ── M3 ICON UTILITY ── */
+/* M3 Body Large — main running text */
+.company-brief-text p,
+.prod-desc p,
+.hero-sub {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink-2);           /* M3: On Surface Variant */
+}
+
+/* M3 Body Medium — supporting copy, product descriptions */
+.pgrid-desc,
+.page-hero-sub {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+
+/* M3 Label Large — button text (already handled by .btn) */
+/* M3 Label Medium — chips, stat labels */
+.pgrid-num,
+.prod-index-num,
+.num-label,
+.prod-apps-label {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);         /* M3: Primary color for active/count labels */
+}
+
+/* pgrid-spec uses M3 Display Small scale */
+.pgrid-spec {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(22px, 2.8vw, 34px);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  display: block;
+}
+.pgrid-spec-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── M3 ICON UTILITY — Material Symbols Outlined ── */
 .icon {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
   font-style: normal;
-  font-size: inherit;
+  /* Default: 20dp optical size — buttons, eyebrows */
+  font-size: var(--icon-md);
+  font-variation-settings: 'opsz' 20, 'wght' 400, 'FILL' 0, 'GRAD' 0;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
   -webkit-font-smoothing: antialiased;
   vertical-align: middle;
   user-select: none;
+  flex-shrink: 0;
 }
+/* Optical size variants */
+.icon-sm { font-size: var(--icon-sm); font-variation-settings: 'opsz' 18, 'wght' 400, 'FILL' 0, 'GRAD' 0; }
+.icon-md { font-size: var(--icon-md); font-variation-settings: 'opsz' 20, 'wght' 400, 'FILL' 0, 'GRAD' 0; }
+.icon-lg { font-size: var(--icon-lg); font-variation-settings: 'opsz' 24, 'wght' 400, 'FILL' 0, 'GRAD' 0; }
+.icon-xl { font-size: var(--icon-xl); font-variation-settings: 'opsz' 40, 'wght' 300, 'FILL' 0, 'GRAD' -25; }
+/* Filled icon variant (FILL=1) */
+.icon-filled { font-variation-settings: 'opsz' 20, 'wght' 400, 'FILL' 1, 'GRAD' 0; }
 
 /* ── BUTTONS — M3 pill shapes ── */
 .btn {
@@ -211,7 +377,7 @@ nav.scrolled {
   border: 1.5px solid var(--ink);
   border-radius: var(--r-full);
   color: var(--ink);
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background var(--dur-short) var(--ease-standard), color var(--dur-short) var(--ease-standard), border-color var(--dur-short) var(--ease-standard);
 }
 .btn:hover { background: var(--ink); color: var(--white); }
 
@@ -341,6 +507,27 @@ nav.scrolled {
   border-color: rgba(255,255,255,.08) !important;
 }
 
+/* ── M3 TONAL ELEVATION — applied to interactive containers ── */
+/* Industries grid: dark section with secondary tonal hover */
+.ind-item {
+  transition: background var(--dur-short) var(--ease-standard);
+}
+.ind-item:hover {
+  background: rgba(255,255,255,0.05);  /* white tonal lift on dark surface */
+}
+
+/* Stat cells: subtle lift on hover (numbers section) */
+.numbers-cell {
+  transition: background var(--dur-short) var(--ease-standard);
+}
+
+/* Focus visible — M3 keyboard focus ring */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
 /* ── RULE / DIVIDER ── */
 .hr { height: 1px; background: var(--rule); border: none; margin: 0; }
 .hr-dk { height: 1px; background: rgba(255,255,255,0.08); border: none; margin: 0; }
@@ -376,7 +563,7 @@ footer {
   font-size: 14px;
   color: rgba(250,250,248,0.55);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color var(--dur-short) var(--ease-standard);
 }
 .footer-links a:hover { color: var(--white); }
 .footer-brand {
@@ -435,8 +622,11 @@ footer {
   gap: 80px;
   align-items: end;
 }
+/* M3 Display Small on interior dark heroes */
 .page-hero h1 {
-  font-size: clamp(40px, 6vw, 86px);
+  font-family: var(--f-display);
+  font-size: clamp(36px, 5.5vw, 80px);
+  font-weight: 700;
   color: var(--white);
   line-height: 0.95;
   letter-spacing: -0.035em;
@@ -572,7 +762,7 @@ footer {
   opacity: 0;
   pointer-events: none;
   border-radius: inherit;
-  transition: opacity 0.2s;
+  transition: opacity var(--dur-short) var(--ease-standard);
 }
 .state-layer:hover::after  { opacity: 0.08; }
 .state-layer:focus::after  { opacity: 0.12; }
@@ -610,7 +800,7 @@ footer {
   color: var(--ink-2);
   background: transparent;
   text-decoration: none;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: background var(--dur-short) var(--ease-standard), border-color var(--dur-short) var(--ease-standard), color var(--dur-short) var(--ease-standard);
 }
 .chip:hover {
   background: var(--accent-c);
@@ -641,7 +831,7 @@ footer {
   border: 1px solid var(--rule);
   border-radius: var(--r-lg);
   padding: 28px;
-  transition: box-shadow 0.2s, background 0.2s;
+  transition: box-shadow var(--dur-short) var(--ease-standard), background var(--dur-short) var(--ease-standard);
 }
 .card:hover { box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.08); }
 
