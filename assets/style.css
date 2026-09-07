@@ -92,6 +92,16 @@ body.dark {
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* Layout rule — the "first fold": nav + .hero together always fill
+   exactly one viewport (min-height, so short content never leaves a gap
+   and short viewports grow rather than clip). Today .footer sits inside
+   this same flex column because nothing follows it, so the whole page
+   happens to be one screen. THE FIRST TIME A REAL SECTION IS ADDED BELOW
+   THE HERO: move .footer out to follow that new content instead of
+   staying a flex sibling here, and give body plain block flow instead of
+   this flex column — nav + .hero then keep this exact min-height:100dvh
+   sizing on their own (wrap them in one element if body no longer flexes
+   them directly). Documented alongside in the BB Design System, §06. */
 body {
   font-family: var(--f-sans);
   background: var(--bg);
@@ -100,6 +110,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   transition: background var(--dur-slow) var(--ease),
@@ -247,12 +258,37 @@ body.dark .badge-dot { box-shadow: 0 0 6px rgba(107,168,112,.6); }
   -webkit-text-fill-color: transparent;
 }
 .strike {
+  position: relative;
+  display: inline-block;
   color: var(--tx3);
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: currentColor;
-  text-underline-offset: 0;
 }
+.strike::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.hero h1 .grad { opacity: 1; }
+
+/* Sequenced reveal — "black" strikes through, then "green carbon."
+   answers in the gradient. Kept short on purpose (~0.6s total, starts
+   almost immediately) — a hint of motion, not a wait. */
+@media (prefers-reduced-motion: no-preference) {
+  .strike::after {
+    transform: scaleX(0);
+    animation: strikeIn .22s ease-out .12s forwards;
+  }
+  .hero h1 .grad {
+    opacity: 0;
+    transform: translateY(6px);
+    animation: gradIn .28s ease-out .32s forwards;
+  }
+}
+@keyframes strikeIn { to { transform: scaleX(1); } }
+@keyframes gradIn    { to { opacity: 1; transform: translateY(0); } }
 .hero-sub {
   font-size: 17px;
   color: var(--tx2);
@@ -279,6 +315,20 @@ body.dark .badge-dot { box-shadow: 0 0 6px rgba(107,168,112,.6); }
 .chip-primary   { background: rgba(62,100,72,.08);  color: var(--p);    border-color: rgba(62,100,72,.2);  }
 .chip-secondary { background: rgba(92,154,184,.08); color: var(--s-dk); border-color: rgba(92,154,184,.2); }
 .chip-tertiary  { background: rgba(168,82,104,.08); color: var(--t-dk); border-color: rgba(168,82,104,.2); }
+
+/* Hover swaps the full label for its one-word form. The default label
+   stays in flow (sets the chip's width — it's the longer of the two);
+   the hover label sits absolutely on top so nothing reflows. */
+.chip-label { position: relative; display: inline-block; }
+.chip-label-hover {
+  position: absolute; left: 0; top: 0;
+  white-space: nowrap; opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chip-label-default, .chip-label-hover { transition: opacity var(--dur-fast) var(--ease); }
+}
+.chip:hover .chip-label-default { opacity: 0; }
+.chip:hover .chip-label-hover   { opacity: 1; }
 
 body.dark .chip-primary   { background: rgba(62,100,72,.15);  color: var(--p-lt);  border-color: rgba(62,100,72,.25);  }
 body.dark .chip-secondary { background: rgba(92,154,184,.12); color: var(--s);     border-color: rgba(92,154,184,.25); }
@@ -341,4 +391,24 @@ body.dark .btn-secondary:hover { color: var(--dm-tx); border-color: rgba(255,255
   .hero   { padding: var(--sp-3xl) var(--sp-lg); }
   .footer { padding: var(--sp-lg); justify-content: center; text-align: center; }
   .hero-sub { font-size: 16px; }
+}
+
+/* Compact desktop/laptop windows (1280×720 and similar) — a light trim,
+   just enough to close the few px this design's generous hero padding
+   otherwise overflows by. Nothing else changes at this tier. */
+@media (max-height: 800px) {
+  .hero { padding: var(--sp-2xl) var(--sp-xl); }
+}
+
+/* Short viewports (landscape phones) — the "first fold" rule holds
+   regardless of height: nav + .hero must never force a scrollbar.
+   Vertical rhythm tightens further here. Threshold covers landscape
+   phones (~360–430px tall). */
+@media (max-height: 560px) {
+  .hero      { padding: var(--sp-sm) var(--sp-xl); }
+  .badge     { margin-bottom: var(--sp-xs); }
+  .hero h1   { font-size: clamp(20px, 4.5vw, 40px); margin-bottom: var(--sp-xs); }
+  .hero-sub  { font-size: 13px; line-height: 1.45; margin-bottom: var(--sp-xs); }
+  .chip-row  { margin-bottom: var(--sp-xs); }
+  .footer    { padding: var(--sp-xs) var(--sp-xl); }
 }
