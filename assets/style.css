@@ -184,6 +184,15 @@ body.dark .theme-toggle .icon-moon { display: block; }
 /* ── Hero ──────────────────────────────────────────────────── */
 .hero {
   flex: 1;
+  /* Explicit floor, not just flex:1. flex:1 alone only fills one screen
+     when the hero is the ONLY sibling before the footer (true on the
+     coming-soon page). The moment real sections follow inside the same
+     <main>, total content exceeds one viewport, flex-grow has nothing
+     left to distribute, and flex:1 quietly stops doing anything, sizing
+     the hero to its own content instead. This floor makes "hero + nav
+     fills the first viewport" true unconditionally, matching .fold. */
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
   position: relative; overflow: hidden;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;

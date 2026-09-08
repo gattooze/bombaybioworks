@@ -20,17 +20,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:opsz,wght@14,400;14,500;14,600;14,700;32,700&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/modules.css">
 
 <script>
-  /* Applied before first paint so the correct theme renders immediately
-     (no flash). Default is light; only an explicit saved choice flips it. */
-  try {
-    if (localStorage.getItem('bb-theme') === 'dark') {
-      document.documentElement.setAttribute('data-boot-theme', 'dark');
-    }
-  } catch (e) { /* storage blocked, stay on the light default */ }
+  try { if (localStorage.getItem('bb-theme') === 'dark') document.documentElement.setAttribute('data-boot-theme','dark'); }
+  catch (e) {}
 </script>
 <style>
   html[data-boot-theme="dark"] body { background: #0A0A0A; color: #EDEDEC; }
@@ -43,120 +38,274 @@
     <span class="nav-logo-mark" aria-hidden="true">BB</span>
     Bombay Bioworks
   </a>
+  <div class="nav-links">
+    <a href="products.html" data-nav="products">Products</a>
+    <a href="chemistry.html" data-nav="chemistry">Chemistry</a>
+    <a href="industry.html" data-nav="industry">Industry</a>
+    <a href="planet.html" data-nav="planet">Planet</a>
+    <a href="circularity.html" data-nav="circularity">Circularity</a>
+    <a href="about.html" data-nav="about">About</a>
+  </div>
   <span class="nav-spacer"></span>
-  <button class="theme-toggle" id="themeToggle" type="button"
-          aria-label="Switch to dark mode" title="Switch theme">
-    <!-- sun: shown in light mode -->
-    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4"/>
-      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
-    </svg>
-    <!-- moon: shown in dark mode -->
-    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
-    </svg>
-  </button>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch theme" title="Switch theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <button class="nav-burger" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel" aria-label="Menu">
+      <svg class="ic-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
 </nav>
 
-<main class="hero">
-  <div class="hero-mesh" aria-hidden="true"></div>
-  <canvas class="bb-motif-canvas" id="heroMotif" aria-hidden="true"></canvas>
+<div class="nav-panel" id="navPanel" hidden>
+  <a href="products.html" data-nav="products">Products</a>
+  <a href="chemistry.html" data-nav="chemistry">Chemistry</a>
+  <a href="industry.html" data-nav="industry">Industry</a>
+  <a href="planet.html" data-nav="planet">Planet</a>
+  <a href="circularity.html" data-nav="circularity">Circularity</a>
+  <a href="about.html" data-nav="about">About</a>
+</div>
 
-  <div class="hero-inner">
+<main>
 
-    <span class="badge">
-      <span class="badge-dot" aria-hidden="true"></span>
-      Site in progress
-    </span>
+  <!-- HERO, unchanged content, now data-attribute driven -->
+  <header class="hero">
+    <div class="hero-mesh" aria-hidden="true"></div>
+    <canvas class="bb-motif-canvas" data-motif="bamboo-grove" data-hills="true"
+            data-avoid=".hero-inner" data-hue="forest"
+            data-alpha-light="0.055" data-alpha-dark="0.11" data-seed="41" aria-hidden="true"></canvas>
 
-    <h1>
-      We make <span class="strike">black</span><br>
-      <span class="grad">green carbon.</span>
-    </h1>
-
-    <p class="hero-sub">
-      Industrial grade bio-coal manufactured with sustainable chemistry, using
-      renewable and upcycled sources of raw material.
-    </p>
-
-    <div class="chip-row">
-      <span class="chip chip-primary">
-        <span class="chip-dot chip-dot-p" aria-hidden="true"></span>
-        <span class="chip-label">
-          <span class="chip-label-default">Soil &amp; Crop Enhancement</span>
-          <span class="chip-label-hover" aria-hidden="true">Agriculture</span>
-        </span>
+    <div class="hero-inner">
+      <span class="badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Site in progress
       </span>
-      <span class="chip chip-secondary">
-        <span class="chip-dot chip-dot-s" aria-hidden="true"></span>
-        <span class="chip-label">
-          <span class="chip-label-default">Treatment &amp; Purification</span>
-          <span class="chip-label-hover" aria-hidden="true">Purification</span>
+
+      <h1>
+        We make <span class="strike">black</span><br>
+        <span class="grad">green carbon.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Industrial grade bio-coal manufactured with sustainable chemistry, using
+        renewable and upcycled sources of raw material.
+      </p>
+
+      <div class="chip-row">
+        <span class="chip chip-primary">
+          <span class="chip-dot chip-dot-p" aria-hidden="true"></span>
+          <span class="chip-label">
+            <span class="chip-label-default">Soil &amp; Crop Enhancement</span>
+            <span class="chip-label-hover" aria-hidden="true">Agriculture</span>
+          </span>
         </span>
-      </span>
-      <span class="chip chip-tertiary">
-        <span class="chip-dot chip-dot-t" aria-hidden="true"></span>
-        <span class="chip-label">
-          <span class="chip-label-default">Energy &amp; Power</span>
-          <span class="chip-label-hover" aria-hidden="true">Energy</span>
+        <span class="chip chip-secondary">
+          <span class="chip-dot chip-dot-s" aria-hidden="true"></span>
+          <span class="chip-label">
+            <span class="chip-label-default">Treatment &amp; Purification</span>
+            <span class="chip-label-hover" aria-hidden="true">Purification</span>
+          </span>
         </span>
-      </span>
+        <span class="chip chip-tertiary">
+          <span class="chip-dot chip-dot-t" aria-hidden="true"></span>
+          <span class="chip-label">
+            <span class="chip-label-default">Energy &amp; Power</span>
+            <span class="chip-label-hover" aria-hidden="true">Energy</span>
+          </span>
+        </span>
+      </div>
+
+      <div class="btn-row">
+        <a class="btn btn-primary" href="mailto:founders@bombaybioworks.com">Get in touch</a>
+      </div>
     </div>
+  </header>
 
-    <div class="btn-row">
-      <a class="btn btn-primary" href="mailto:founders@bombaybioworks.com">Get in touch</a>
+  <!-- 02: CARBON IS ALREADY EVERYWHERE -->
+  <section class="bb-sec bb-reveal">
+    <div class="bb-wrap tiny">
+      <div class="bb-thesis center">You already rely on carbon today. You just do not see it.</div>
+      <p class="bb-thesis-sub">It cleans the water you drink, feeds the soil that grows your food, and fires the kilns that make steel and cement. Almost all of that carbon is dug out of the ground.</p>
     </div>
+  </section>
 
-  </div>
+  <!-- 03: THREE THINGS CARBON DOES (reserves space for 04's overlap) -->
+  <section class="bb-sec tight has-overlap bb-reveal">
+    <div class="bb-wrap">
+      <div class="bb-head center">
+        <div class="bb-eyebrow">What carbon actually does</div>
+        <h2>Three jobs, one material</h2>
+        <p>Every use of industrial carbon comes back to one of these.</p>
+      </div>
+      <div class="bb-cases">
+        <div class="bb-case">
+          <div class="bb-case-ic s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7S5 10 5 14a7 7 0 0 0 14 0c0-4-7-11.3-7-11.3z"/></svg></div>
+          <h4>Purification</h4>
+          <p>Removing what should not be there. Water, air, sugar, oil, precious metal, all cleaned by the same porous carbon.</p>
+        </div>
+        <div class="bb-case">
+          <div class="bb-case-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8M12 8s0-6 6-6c0 5-3 6-6 6zM12 12s0-5-6-5c0 4 3 5 6 5z"/></svg></div>
+          <h4>Enrichment</h4>
+          <p>Adding what soil is missing. Structure, water retention, and a home for the microbes that make land productive.</p>
+        </div>
+        <div class="bb-case">
+          <div class="bb-case-ic t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+          <h4>Combustion</h4>
+          <p>Generating heat and power. Dense carbon fuel for the kilns and boilers that run heavy industry.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04: THE SCALE OF IT (statstrip pulls up across the seam from 03) -->
+  <section class="bb-sec tight bb-reveal">
+    <canvas class="bb-motif-canvas" data-motif="carbon-network" data-placement="bleed"
+            data-hue="steel" data-alpha-light="0.05" data-alpha-dark="0.10" data-seed="9" aria-hidden="true"></canvas>
+    <div class="bb-wrap">
+      <div class="bb-statstrip bb-overlap" style="max-width:900px;margin-inline:auto">
+        <div class="bb-stat"><div class="bb-n n-p">$4B<span class="bb-n-unit">+</span></div><div class="bb-stat-l">Global activated carbon market, 2025</div></div>
+        <div class="bb-stat"><div class="bb-n n-s">630,000<span class="bb-n-unit">t</span></div><div class="bb-stat-l">Traded worldwide in the first six months of 2025 alone</div></div>
+        <div class="bb-stat"><div class="bb-n n-s">44<span class="bb-n-unit">%</span></div><div class="bb-stat-l">Goes to water treatment, the single largest use</div></div>
+      </div>
+      <div class="bb-head center" style="margin-top:var(--sp-2xl);margin-bottom:0">
+        <div class="bb-eyebrow">The scale of it</div>
+        <h2>An industry most people never think about</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05: WHERE IT COMES FROM TODAY -->
+  <section class="bb-sec bb-reveal" style="background:var(--card)">
+    <div class="bb-wrap narrow">
+      <div class="bb-head center">
+        <div class="bb-eyebrow">Where it comes from today</div>
+        <h2>Most of it is still mined</h2>
+        <p>Over 40 percent of the world's activated carbon starts life as coal, pulled out of the ground and processed at real cost to the climate.</p>
+      </div>
+
+      <div class="bb-share-track">
+        <div class="bb-share-seg is-fossil" style="--pct:43">Mined coal, 43%</div>
+        <div class="bb-share-seg is-rest" style="--pct:57">Coconut, wood, other biomass</div>
+      </div>
+      <div class="bb-share-key">
+        <span><i style="background:rgba(10,10,10,.25)"></i>Coal derived</span>
+        <span><i style="background:rgba(62,100,72,.35)"></i>Everything else</span>
+      </div>
+
+      <div style="margin-top:var(--sp-2xl)">
+        <div class="bb-compare">
+          <div class="bb-cmp-row" style="--pct:100">
+            <div class="bb-cmp-label">Coal route</div>
+            <div class="bb-cmp-track"><div class="bb-cmp-bar is-fossil"></div></div>
+            <div class="bb-cmp-val">18.28</div>
+          </div>
+          <div class="bb-cmp-row" style="--pct:47">
+            <div class="bb-cmp-label">Our route</div>
+            <div class="bb-cmp-track"><div class="bb-cmp-bar"></div></div>
+            <div class="bb-cmp-val">8.60</div>
+          </div>
+        </div>
+        <div class="bb-cmp-note">Kilograms of CO2 equivalent per kilogram of activated carbon produced. Same product, same study, roughly half the emissions.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06: DID YOU KNOW, offset + float -->
+  <section class="bb-sec bb-reveal">
+    <canvas class="bb-motif-canvas" data-motif="carbon-network" data-placement="corner" data-corner="tr"
+            data-hue="steel" data-alpha-light="0.055" data-alpha-dark="0.11" data-seed="17" aria-hidden="true"></canvas>
+    <div class="bb-wrap">
+      <div class="bb-offset-r bb-float-host">
+        <aside class="bb-dyk">
+          <div class="bb-dyk-tag">Did you know</div>
+          <p>India burns an estimated <b>90 to 140 million tonnes</b> of crop residue in the open every year.</p>
+          <p>In the same period, India imports a large share of its activated carbon, most of it from a single country.</p>
+        </aside>
+        <div class="bb-statcard bb-float br">
+          <span class="bb-n n-s">68.9<span class="bb-n-unit">%</span></span>
+          <div class="bb-stat-l">of India's activated carbon import volume came from China by October 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07: WHAT WE MAKE INSTEAD -->
+  <section class="bb-sec bb-reveal">
+    <div class="bb-wrap">
+      <div class="bb-head center">
+        <div class="bb-eyebrow">What we make instead</div>
+        <h2>One feedstock, three outputs</h2>
+        <p>Agricultural residue and other renewable biomass, carbonised and activated into products that already have a market. Nothing here needs to be invented, only replaced.</p>
+      </div>
+
+      <div class="bb-split" style="margin-bottom:var(--sp-2xl)">
+        <div class="bb-split-media"><img src="assets/img/biochar.jpg" alt="Close view of biochar granules"></div>
+        <div>
+          <h3>Soil &amp; crop enhancement</h3>
+          <p>Stable carbon that improves structure, holds water, and gives soil microbes somewhere to live. Field studies show roughly an 11 percent average lift in crop yield, with the biggest gains in exactly the degraded, tropical soils common across India.</p>
+        </div>
+      </div>
+
+      <div class="bb-split" style="margin-bottom:var(--sp-2xl)">
+        <div>
+          <h3>Treatment &amp; purification</h3>
+          <p>Activated carbon for water, air, and process purification, the same role coal based carbon plays today, at a lower carbon cost to make.</p>
+        </div>
+        <div class="bb-split-media"><img src="assets/img/kiln.jpg" alt="Kiln used for carbonising biomass"></div>
+      </div>
+
+      <div class="bb-split">
+        <div class="bb-split-media"><img src="assets/img/bamboo.jpg" alt="Renewable biomass feedstock"></div>
+        <div>
+          <h3>Energy &amp; power</h3>
+          <p>Dense, high calorific carbon fuel for kilns and boilers, a direct substitute for the mined coal those furnaces run on today.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08: CLOSE -->
+  <section class="bb-sec bb-reveal">
+    <canvas class="bb-motif-canvas" data-motif="horizon-hills"
+            data-hue="forest" data-alpha-light="0.07" data-alpha-dark="0.13" data-seed="41" aria-hidden="true"></canvas>
+    <div class="bb-wrap tiny">
+      <div class="bb-thesis center">One feedstock. Three outputs. <span class="grad">Zero mining.</span></div>
+      <div class="btn-row" style="justify-content:center;margin-top:var(--sp-xl)">
+        <a class="btn btn-primary" href="mailto:founders@bombaybioworks.com">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
-<footer class="footer">
-  <span class="footer-brand">Bombay Bioworks</span>
-  <span class="footer-meta">&copy; <span id="year">2026</span> &middot; Mumbai, India</span>
+<footer class="footer-rich">
+  <div class="footer-rich-inner">
+    <div class="footer-col">
+      <a class="nav-logo" href="/"><span class="nav-logo-mark" aria-hidden="true">BB</span> Bombay Bioworks</a>
+      <p class="footer-blurb">Industrial grade bio-coal manufactured with sustainable chemistry, using renewable and upcycled sources of raw material.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Site</h5>
+      <a href="products.html">Products</a>
+      <a href="chemistry.html">Chemistry</a>
+      <a href="industry.html">Industry</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="planet.html">Planet</a>
+      <a href="circularity.html">Circularity</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span class="footer-brand">Bombay Bioworks</span>
+    <span class="footer-meta">&copy; <span id="year">2026</span> &middot; Mumbai, India</span>
+  </div>
 </footer>
 
 <script src="assets/motifs.js"></script>
-<script>
-  (function () {
-    var body   = document.body;
-    var root   = document.documentElement;
-    var toggle = document.getElementById('themeToggle');
-
-    // Adopt whatever the pre-paint script decided, then hand control to body.dark
-    if (root.getAttribute('data-boot-theme') === 'dark') body.classList.add('dark');
-    root.removeAttribute('data-boot-theme');
-
-    // Bamboo Grove watermark (see BB Design System, "09, Background Motifs").
-    // Adaptive: it reads .hero-inner's live bounding box and parts the culms
-    // around it, so the grove never draws through the headline or button.
-    var motif = null;
-    if (window.BBMotifs) {
-      motif = BBMotifs.attach(document.getElementById('heroMotif'), {
-        type: 'bamboo-grove', hills: true, seed: 41,
-        avoidElement: document.querySelector('.hero-inner'),
-        color: body.classList.contains('dark') ? '#6BA870' : '#3E6448',
-        alpha:  body.classList.contains('dark') ? 0.11 : 0.055
-      });
-    }
-
-    function syncLabel() {
-      var dark = body.classList.contains('dark');
-      toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-    }
-    syncLabel();
-
-    toggle.addEventListener('click', function () {
-      var dark = body.classList.toggle('dark');
-      try { localStorage.setItem('bb-theme', dark ? 'dark' : 'light'); } catch (e) {}
-      syncLabel();
-      if (motif) motif.update({ color: dark ? '#6BA870' : '#3E6448', alpha: dark ? 0.11 : 0.055 });
-    });
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-  })();
-</script>
-
+<script src="assets/site.js"></script>
 </body>
 </html>
