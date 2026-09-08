@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Bombay Bioworks — Coming soon</title>
+<title>Bombay Bioworks, coming soon</title>
 <meta name="description" content="Bombay Bioworks manufactures industrial grade bio-coal with sustainable chemistry, from renewable and upcycled raw material. Full site coming soon.">
 <meta name="robots" content="index, follow">
 
@@ -30,7 +30,7 @@
     if (localStorage.getItem('bb-theme') === 'dark') {
       document.documentElement.setAttribute('data-boot-theme', 'dark');
     }
-  } catch (e) { /* storage blocked — stay on the light default */ }
+  } catch (e) { /* storage blocked, stay on the light default */ }
 </script>
 <style>
   html[data-boot-theme="dark"] body { background: #0A0A0A; color: #EDEDEC; }
@@ -128,7 +128,7 @@
     if (root.getAttribute('data-boot-theme') === 'dark') body.classList.add('dark');
     root.removeAttribute('data-boot-theme');
 
-    // Bamboo Grove watermark (see BB Design System, "09 — Background Motifs").
+    // Bamboo Grove watermark (see BB Design System, "09, Background Motifs").
     // Adaptive: it reads .hero-inner's live bounding box and parts the culms
     // around it, so the grove never draws through the headline or button.
     var motif = null;

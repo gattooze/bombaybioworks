@@ -28,3 +28,24 @@ Built strictly against the BB Design System v1.0 ("Linear Swapped"):
 tokens copied verbatim into `assets/style.css`, forest leads, cranberry
 confined to the industrial-energy chip only, Inter + IBM Plex Mono,
 light default with the dark variant fully specified rather than inverted.
+
+## Imagery (added during the seven page build)
+
+Placeholder photography from Wikimedia Commons, credited in `assets/img/ATTRIBUTION.md`.
+CC BY and CC BY-SA require that credit to be retained wherever the image appears.
+
+| File | Subject | Status |
+|---|---|---|
+| `bamboo.jpg` | Bamboo grove | Placeholder, swap for real plantation photography |
+| `biochar.jpg` | Biochar close up | Placeholder, but genuinely on subject |
+| `farmer.jpg` | Rice harvest, Karnataka | Placeholder, swap for your own community photography |
+| `kiln.jpg` | Kontiki pyrolysis kiln | Placeholder, swap for your facility |
+
+**Still missing:** a purification image. Wikimedia Commons is thin on modern water
+treatment and process photography, so nothing usable was found. Either supply one
+or that section runs on a motif background instead.
+
+## Em-dash rule
+
+Enforced by `tools/lint.sh`, run before every push. The live page title previously
+read "Bombay Bioworks — Coming soon" and has been corrected to a comma.

@@ -1,15 +1,15 @@
 /*!
- * BBMotifs — Bombay Bioworks background motif library
- * v1.0 · documented in the BB Design System, "09 — Background Motifs"
+ * BBMotifs, Bombay Bioworks background motif library
+ * v1.0 · documented in the BB Design System, "09, Background Motifs"
  *
  * Three motif types, each a pure canvas drawer plus a DOM-attach helper:
- *   bamboo-grove    — layered silhouette (hills optional). Adaptive: pass
+ *   bamboo-grove   , layered silhouette (hills optional). Adaptive: pass
  *                     `avoidElement` and the culms thin out, shorten, and
  *                     drop their leaves under whatever sits in front of them,
  *                     rather than being drawn full-size behind it.
- *   carbon-network  — scattered hex nodes + connectors. `placement`:
+ *   carbon-network , scattered hex nodes + connectors. `placement`:
  *                     'corner' | 'bleed' | 'band'.
- *   horizon-hills   — the grove's hill layer alone, no culms.
+ *   horizon-hills  , the grove's hill layer alone, no culms.
  *
  * Usage:
  *   const handle = BBMotifs.attach(canvasEl, {
@@ -19,7 +19,7 @@
  *   handle.update({ color: '#6BA870', alpha: 0.1 });   // e.g. on theme toggle
  *   handle.destroy();                                   // on teardown
  *
- * Every color/alpha/seed is a caller-supplied parameter — this file holds no
+ * Every color/alpha/seed is a caller-supplied parameter, this file holds no
  * brand hex values itself, so it stays reusable outside this one palette.
  */
 (function (global) {
@@ -43,7 +43,7 @@
   }
 
   // ── Avoidance ───────────────────────────────────────────────────────
-  // Only the horizontal band matters for a vertical culm — how far into
+  // Only the horizontal band matters for a vertical culm, how far into
   // the protected x-range does this x-coordinate fall, feathered at the
   // edges so the effect eases in rather than cutting off sharply.
   function xOverlap(x, avoidX, feather) {
@@ -112,7 +112,7 @@
   }
 
   // One cluster of culms. `avoidX` (optional) is the {x0,x1} band from
-  // avoidXFromElement() — culms under it shrink, dim, drop their leaves,
+  // avoidXFromElement(), culms under it shrink, dim, drop their leaves,
   // and (past ~90% overlap) skip entirely, so the grove parts around
   // whatever content sits in front of it instead of drawing through it.
   function drawBambooCluster(ctx, w, h, opts) {
@@ -154,7 +154,7 @@
         }
       }
     }
-    // Grass fringe under the cluster — same suppression, so it thins in step.
+    // Grass fringe under the cluster, same suppression, so it thins in step.
     const gStart = w * Math.max(0, opts.clusterX - opts.spread * 0.6 - 0.08);
     const gEnd = w * Math.min(1, opts.clusterX + opts.spread * 0.6 + 0.08);
     for (let x = gStart; x < gEnd; x += 6) {
@@ -176,7 +176,7 @@
   // ── Motif: bamboo-grove ─────────────────────────────────────────────
   // opts: color, alpha, seed, hills (default true), avoidX ({x0,x1} or null),
   //       clusterSide ('left'|'right', default 'right'), clusters (optional
-  //       override array — see DEFAULT_CLUSTERS below for the shape).
+  //       override array, see DEFAULT_CLUSTERS below for the shape).
   const DEFAULT_CLUSTERS_RIGHT = [
     { clusterX: 0.68, spread: 0.30, count: 6, tiers: 1, minHf: 0.28, varHf: 0.14, alphaMul: 1.6, seedOff: 11 },
     { clusterX: 0.80, spread: 0.34, count: 8, tiers: 2, minHf: 0.42, varHf: 0.24, alphaMul: 2.6, seedOff: 23 }
