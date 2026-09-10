@@ -111,9 +111,14 @@ const useApp = () => useContext(AppCtx);
 const CFG_KEY = 'hivemind.config';
 const loadCfg = () => { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch { return {}; } };
 const saveCfg = (c) => localStorage.setItem(CFG_KEY, JSON.stringify(c));
+const DEFAULT_SUPABASE_URL = 'https://wxrcwvwefwfhbvwpgzti.supabase.co';
+const DEFAULT_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmN3dndlZndmaGJ2d3BnenRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMTEwNjMsImV4cCI6MjEwNDU4NzA2M30.AKW7PqHjun_WbjK53HocRdLUuZdgKZa9k5T5taCMry0';
+
 function buildAdapter(cfg) {
-  if (cfg.supabaseUrl && cfg.supabaseKey && window.supabase) {
-    try { return makeCloudAdapter(window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey)); }
+  const url = cfg.supabaseUrl || DEFAULT_SUPABASE_URL;
+  const key = cfg.supabaseKey || DEFAULT_SUPABASE_KEY;
+  if (url && key && window.supabase) {
+    try { return makeCloudAdapter(window.supabase.createClient(url, key)); }
     catch (e) { console.error('Supabase init failed', e); }
   }
   return LocalAdapter;

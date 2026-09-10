@@ -36,17 +36,34 @@ create table if not exists notes (
   created_at            timestamptz default now()
 );
 
+create table if not exists tasks (
+  id                text primary key,
+  title             text not null,
+  description       text,
+  assigned_to       text,
+  assigned_to_name  text,
+  due_date          text,
+  priority          text default 'medium',
+  status            text default 'todo',
+  linked_note_id    text,
+  linked_note_title text,
+  tags              jsonb default '[]'::jsonb,
+  created_by        text,
+  created_at        timestamptz default now()
+);
+
 -- ----------------------------------------------------------------------------
 -- Row Level Security — permissive team-wide access via the anon key.
 -- (Tighten later with Supabase Auth if you need per-user control.)
 -- ----------------------------------------------------------------------------
 alter table people enable row level security;
 alter table notes  enable row level security;
+alter table tasks  enable row level security;
 
 do $$
 declare t text;
 begin
-  foreach t in array array['people','notes'] loop
+  foreach t in array array['people','notes','tasks'] loop
     execute format('drop policy if exists "team_all" on %I;', t);
     execute format('create policy "team_all" on %I for all using (true) with check (true);', t);
   end loop;
