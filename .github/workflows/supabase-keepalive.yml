@@ -1,0 +1,43 @@
+name: Supabase Keepalive
+
+# Runs every 3 days — Supabase pauses after 7 days of inactivity,
+# so this gives a 2× safety buffer even if one run fails.
+on:
+  schedule:
+    - cron: '0 6 */3 * *'   # 06:00 UTC every 3 days
+  workflow_dispatch:         # manual trigger from GitHub Actions UI
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # needed to commit the heartbeat file
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ping Supabase (Hivemind DB)
+        id: ping
+        run: |
+          STATUS=$(curl -s -o /tmp/ping_body.txt -w "%{http_code}" \
+            "https://wxrcwvwefwfhbvwpgzti.supabase.co/rest/v1/people?select=id&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmN3dndlZndmaGJ2d3BnenRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMTEwNjMsImV4cCI6MjEwNDU4NzA2M30.AKW7PqHjun_WbjK53HocRdLUuZdgKZa9k5T5taCMry0" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmN3dndlZndmaGJ2d3BnenRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMTEwNjMsImV4cCI6MjEwNDU4NzA2M30.AKW7PqHjun_WbjK53HocRdLUuZdgKZa9k5T5taCMry0")
+          echo "HTTP status: $STATUS"
+          cat /tmp/ping_body.txt
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Supabase ping failed with status $STATUS"
+            exit 1
+          fi
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+
+      - name: Commit heartbeat (keeps repo active so workflow isn't disabled)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) — Supabase ping OK (HTTP ${{ steps.ping.outputs.status }})" \
+            >> hivemind/.supabase-heartbeat.log
+          git add hivemind/.supabase-heartbeat.log
+          git commit -m "chore: Supabase keepalive $(date -u +%Y-%m-%d)"
+          git push
