@@ -43,7 +43,7 @@
    "id": "wood-priority-buyers",
    "title": "Named 440290 buyers in the priority markets (Japan, Korea, Taiwan, Saudi, UAE)",
    "chart": "table",
-   "sql": "SELECT buyer, GROUP_CONCAT(DISTINCT destination) AS destinations, GROUP_CONCAT(DISTINCT origin) AS sourced_from, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440290' AND record_type='shipment' AND buyer IS NOT NULL AND destination IN ('Japan','South Korea','Taiwan','Saudi Arabia','United Arab Emirates') GROUP BY buyer ORDER BY tonnes DESC LIMIT 25",
+   "sql": "SELECT c.name AS company, GROUP_CONCAT(DISTINCT destination) AS destinations, GROUP_CONCAT(DISTINCT origin) AS sourced_from, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments s JOIN companies c ON c.key = s.buyer_key WHERE hs6='440290' AND record_type='shipment' AND buyer IS NOT NULL AND destination IN ('Japan','South Korea','Taiwan','Saudi Arabia','United Arab Emirates') GROUP BY s.buyer_key ORDER BY tonnes DESC LIMIT 25",
    "read": "A ready target list: Idemitsu Kosan (Japan, ~7,500 t from Vietnam), Bijei Muyek and DCM Co. (Korea and Japan, Indonesian briquette charcoal), SS Global Harvest, Takayama, Utex. Saudi buyers (Jealous Devil, Rwazen, Sohol Al Reem, Tal Al Jabia) move 2,000 to 15,000 t each. Large Saudi lots from Paraguay run $170-280/t; Indonesian lots $470-720/t.",
    "caveat": "Names are as declared on customs documents, with spelling variants and some trading houses. Verify before outreach."
   },
@@ -116,18 +116,34 @@
    "caveat": "Prices here are the customs value, mixing grades."
   },
   {
+   "id": "top-importers",
+   "title": "Biggest named importers across all three HSNs (by shipments)",
+   "chart": "table",
+   "sql": "SELECT c.name AS company, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, COUNT(DISTINCT destination) AS countries, GROUP_CONCAT(DISTINCT destination) AS importing_countries, GROUP_CONCAT(DISTINCT hs6) AS hsn FROM shipments s JOIN companies c ON c.key = s.buyer_key WHERE s.buyer_key IS NOT NULL GROUP BY s.buyer_key ORDER BY shipments DESC LIMIT 25",
+   "read": "Lump and BBQ charcoal distributors dominate by shipment count: Big K Products (UK, ~74,000 t, sourced from Paraguay, Indonesia and Namibia), Gryfskand (Polish, shipping into Germany, Poland and Bulgaria), Holzkohlewerk Lüneburg (Germany, ~35,000 t) and RJJ Product of Import (Spain, ~17,000 t). In the priority Asian markets the largest are Bijei Muyek, Hana Trading and DSP (South Korea) and Takayama (Japan). DHG Vertriebs ranks sixth by shipments but is a five-country trader with little tonnage per shipment.",
+   "caveat": "Named buyers exist only on shipment-level rows (about 60% of records). Rank by shipments, since tonnes are blank on lines without a KGS weight. Spelling variants are merged, not legal entities: group companies may still appear separately."
+  },
+  {
+   "id": "multi-hsn",
+   "title": "Importers buying more than one HSN",
+   "chart": "table",
+   "sql": "SELECT c.name AS company, COUNT(DISTINCT hs6) AS hsn_count, GROUP_CONCAT(DISTINCT hs6) AS hsn, COUNT(*) AS shipments, COUNT(DISTINCT destination) AS countries, ROUND(SUM(tonnes)) AS tonnes FROM shipments s JOIN companies c ON c.key = s.buyer_key WHERE s.buyer_key IS NOT NULL GROUP BY s.buyer_key HAVING hsn_count >= 2 ORDER BY shipments DESC LIMIT 25",
+   "read": "Buyers spanning HSNs are mostly Asian traders and activated-carbon users: Hebei Yulunsi (China, all three HSNs, ~7,200 t), SS Global Harvest (Malaysia, selling into Japan, Saudi Arabia and the UAE), Osaka Gas Chemicals (Japan, 440220 and 440290, ~8,400 t), DCM, Taur Young and Huge Mountain. These are the accounts that would take a mixed offer of shell, wood and bamboo-derived products.",
+   "caveat": "A company appearing under several HSNs may be a trader or distributor rather than an end user."
+  },
+  {
    "id": "shell-buyers",
    "title": "Named buyers of 440220 are activated-carbon makers",
    "chart": "table",
-   "sql": "SELECT buyer, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, GROUP_CONCAT(DISTINCT destination) AS destinations FROM shipments WHERE hs6='440220' AND record_type='shipment' AND buyer IS NOT NULL GROUP BY buyer ORDER BY tonnes DESC LIMIT 15",
-   "read": "Xiamen Phisoul, Jacobi Carbons Lanka, Tianjin Brilliant, Kuraray, Osaka Gas Chemicals, Chang Zhou Qi Di are the real activated-carbon converters. They are the natural targets for an AC-raw-material offer. Guess: some would test bamboo char as an alternative feedstock.",
-   "caveat": "Names come from export-side shipment feeds (Philippines, Vietnam, Sri Lanka). Buyers in China's aggregates are anonymous."
+   "sql": "SELECT c.name AS company, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, GROUP_CONCAT(DISTINCT destination) AS destinations FROM shipments s JOIN companies c ON c.key = s.buyer_key WHERE hs6='440220' AND record_type='shipment' AND buyer IS NOT NULL GROUP BY s.buyer_key ORDER BY tonnes DESC LIMIT 15",
+   "read": "Xiamen Phisoul, Jacobi Carbons Lanka, Tianjin Brilliant, Osaka Gas Chemicals, Kuraray and Chang Zhou Qi Di are the real activated-carbon converters. Also visible: Shomoukh Al Rayed (Saudi Arabia, ~5,400 t) and United Carbon Solutions (India, ~4,600 t), a direct Indian buyer. Guess: some would test bamboo char as an alternative feedstock.",
+   "caveat": "Names come mostly from export-side shipment feeds (Philippines, Vietnam, Sri Lanka, Indonesia). Buyers inside China's official totals are anonymous. Variants of one company are merged."
   },
   {
    "id": "bamboo-buyers",
    "title": "Named 440210 buyers are thin and small",
    "chart": "table",
-   "sql": "SELECT buyer, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, GROUP_CONCAT(DISTINCT destination) AS destinations FROM shipments WHERE hs6='440210' AND record_type='shipment' AND buyer IS NOT NULL GROUP BY buyer ORDER BY tonnes DESC, shipments DESC LIMIT 15",
+   "sql": "SELECT c.name AS company, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, GROUP_CONCAT(DISTINCT destination) AS destinations FROM shipments s JOIN companies c ON c.key = s.buyer_key WHERE hs6='440210' AND record_type='shipment' AND buyer IS NOT NULL GROUP BY s.buyer_key ORDER BY tonnes DESC, shipments DESC LIMIT 15",
    "read": "Only ~950 of 10,400 bamboo records are shipment-level, and the biggest named buyer with a usable weight moved 128 t in total. US bill-of-lading rows name importers (B&B Charcoal, EB Express Provisions, Dancoal, Susshi) but carry no usable tonnage, and many are Brazilian/Colombian wood charcoal declared under this code. This data will not build a bamboo buyer list; use it for market and price sizing, then buy contact data elsewhere.",
    "caveat": "Many named buyers are traders (Pakistan, Vietnam, Uganda), not end users. HS 440210 is also misused for general charcoal."
   },

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild data/trade.sqlite (clean, typed, what the website loads) from data/raw/volza_raw.sqlite (untouched Volza rows).
 Run:  python3 build.py        (also called by ingest.py)"""
-import sqlite3, re, os, json, datetime
+import sqlite3, re, os, json, datetime, unicodedata
 ROOT = os.path.dirname(os.path.abspath(__file__))
 RAW, OUT = f"{ROOT}/data/raw/volza_raw.sqlite", f"{ROOT}/data/trade.sqlite"
 
@@ -23,6 +23,16 @@ def ctry(x):
     x = (x or "").strip()
     return None if x in NA else CTRY.get(x, x)
 
+LEGAL = set("LTD LIMITED LLC INC INCORPORATED CORP CORPORATION CO COMPANY PLC GMBH MBH AG SA SRL SPZOO SP ZOO ZO OO OOO BV NV AB AS OY SAS SARL PTE PVT PT TBK SDN BHD KG KK CV DOO SL UG THE AND OF".split())
+def company_key(name):
+    """Normalised company key so spelling variants group together (accents, punctuation, spacing, legal suffixes). Mirrored in lib.js."""
+    if not name: return None
+    s = unicodedata.normalize("NFKD", name)
+    s = "".join(ch for ch in s if ord(ch) < 128 and not unicodedata.combining(ch)).upper().replace("&", " AND ")
+    s = re.sub(r"[^A-Z0-9 ]", " ", s)
+    k = "".join(t for t in s.split() if t not in LEGAL)[:40]
+    return k or None
+
 def parse_source(s):
     m = re.match(r"^(.*?)\s+(T\d)\s+(Import|Export)$", (s or "").strip())
     if not m: return None, None, None
@@ -41,7 +51,7 @@ def main():
       port_origin TEXT, port_destination TEXT,
       qty REAL, unit TEXT, kg REAL, tonnes REAL, value_usd REAL,
       price_usd_t REAL, price_ok INT, incoterm TEXT, mode TEXT, teu REAL, bl TEXT, vessel TEXT, carrier TEXT,
-      batch TEXT, qty_flag TEXT)""")
+      batch TEXT, qty_flag TEXT, buyer_key TEXT, supplier_key TEXT)""")
     rows = []; skipped = 0
     for r in raw.execute("select * from shipments"):
         reporter, tier, flow = parse_source(r["Source_Country"])
@@ -69,9 +79,13 @@ def main():
           txt(r["Port_of_Origin"]), txt(r["Port_of_Destination"]),
           qty, unit, kg, kg/1000 if kg else None, val,
           pr, ok, txt(r["Incoterms"]), txt(r["Shipment_Mode"]), num(r["Container_TEU"]),
-          txt(r["Bill_of_Lading"]), txt(r["Vessel_Name"]), txt(r["Carrier_Name"]), r["source_file"], qflag))
-    out.executemany("INSERT OR IGNORE INTO shipments VALUES(" + ",".join("?"*34) + ")", rows)
-    for c in ("hs6","year","origin","destination","buyer","flow","reporter","record_type","month"):
+          txt(r["Bill_of_Lading"]), txt(r["Vessel_Name"]), txt(r["Carrier_Name"]), r["source_file"], qflag, company_key(buyer), company_key(sup)))
+    out.executemany("INSERT OR IGNORE INTO shipments VALUES(" + ",".join("?"*36) + ")", rows)
+    out.execute("CREATE TABLE companies(key TEXT PRIMARY KEY, name TEXT)")
+    out.execute("""INSERT INTO companies SELECT buyer_key, buyer FROM (SELECT buyer_key, buyer, COUNT(*) n FROM shipments WHERE buyer_key IS NOT NULL GROUP BY buyer_key, buyer ORDER BY n DESC) GROUP BY buyer_key""")
+    out.execute("CREATE TABLE supplier_names(key TEXT PRIMARY KEY, name TEXT)")
+    out.execute("""INSERT INTO supplier_names SELECT supplier_key, supplier FROM (SELECT supplier_key, supplier, COUNT(*) n FROM shipments WHERE supplier_key IS NOT NULL GROUP BY supplier_key, supplier ORDER BY n DESC) GROUP BY supplier_key""")
+    for c in ("buyer_key","supplier_key","hs6","year","origin","destination","buyer","flow","reporter","record_type","month"):
         out.execute(f"CREATE INDEX ix_{c} ON shipments({c})")
     # lineage + metadata the site shows
     out.execute("CREATE TABLE meta(k TEXT PRIMARY KEY, v TEXT)")

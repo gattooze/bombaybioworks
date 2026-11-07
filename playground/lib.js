@@ -24,6 +24,14 @@
   const ctry = (x) => { x = (x == null ? "" : String(x)).trim(); return NA.has(x) ? null : (CTRY[x] || x); };
   const num = (x) => { if (x == null || x === "") return null; const n = Number(String(x).replace(/,/g, "")); return Number.isFinite(n) ? n : null; };
   const ALIAS = { value: "valueusd", stdunitrate: "stdunitrateusd", unitrate: "unitrateusd" };
+  const LEGAL = new Set("LTD LIMITED LLC INC INCORPORATED CORP CORPORATION CO COMPANY PLC GMBH MBH AG SA SRL SPZOO SP ZOO ZO OO OOO BV NV AB AS OY SAS SARL PTE PVT PT TBK SDN BHD KG KK CV DOO SL UG THE AND OF".split(" "));
+  function companyKey(name) {
+    if (!name) return null;
+    let s = String(name).normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^\x00-\x7F]/g, "").toUpperCase().replace(/&/g, " AND ");
+    s = s.replace(/[^A-Z0-9 ]/g, " ");
+    const k = s.split(/\s+/).filter((t) => t && !LEGAL.has(t)).join("").slice(0, 40);
+    return k || null;
+  }
   const canon = (h) => { const k = String(h).toLowerCase().replace(/[^a-z0-9]/g, ""); return ALIAS[k] || k; };
 
   function parseSource(s) {
@@ -58,7 +66,7 @@
       ctry(g("countryoforigin")), ctry(g("countryofdestination")), buyer, sup, ctry(g("buyercountry")),
       txt(g("portoforigin")), txt(g("portofdestination")),
       qty, unit, kg, kg ? kg / 1000 : null, val, pr, ok, txt(g("incoterms")), txt(g("shipmentmode")), num(g("containerteu")),
-      txt(g("billoflading")), txt(g("vesselname")), txt(g("carriername")), batch, qflag];
+      txt(g("billoflading")), txt(g("vesselname")), txt(g("carriername")), batch, qflag, companyKey(buyer), companyKey(sup)];
   }
   function hash(s) { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
 
@@ -134,6 +142,6 @@
     return [cols.map(q).join(","), ...rows.map((r) => r.map(q).join(","))].join("\n");
   }
 
-  const api = { HS_NAME, DIMS, TIME_DIMS, METRICS, canon, parseSource, cleanRow, buildExploreSQL, pivot, fmt, toCSV, PRICE_MIN, PRICE_MAX };
+  const api = { companyKey, HS_NAME, DIMS, TIME_DIMS, METRICS, canon, parseSource, cleanRow, buildExploreSQL, pivot, fmt, toCSV, PRICE_MIN, PRICE_MAX };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.TL = api;
 })(typeof window !== "undefined" ? window : globalThis);

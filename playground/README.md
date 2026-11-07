@@ -5,7 +5,9 @@ SQLite runs in the browser (sql.js), so GitHub Pages is the whole backend.
 
 | Tab | Use |
 |---|---|
+| About & caveats | What data exists (country × HSN × span) and how to read it |
 | Insights | Curated findings; numbers are live SQL, commentary is in `insights.json` |
+| Importers | League table of named buyers across HSNs and countries (names normalised), with company profiles |
 | Explore | Pivot builder: filter + group by product / flow / reporter / origin / destination / buyer / year / month… with charts and CSV |
 | SQL | Free SQL on the `shipments` table, saved queries, quick chart |
 | Rows | Browse and search the raw records |

@@ -71,7 +71,7 @@ ul.tight{margin:4px 0 8px;padding-left:20px}
     <div><button class="b sm" id="theme">Theme</button></div>
   </div>
   <nav id="nav">
-    <button data-t="about" class="on">About &amp; caveats</button><button data-t="insights">Insights</button><button data-t="explore">Explore</button><button data-t="sql">SQL</button>
+    <button data-t="about" class="on">About &amp; caveats</button><button data-t="insights">Insights</button><button data-t="imp">Importers</button><button data-t="explore">Explore</button><button data-t="sql">SQL</button>
     <button data-t="data">Rows</button><button data-t="add">Add data</button>
   </nav>
 </header>
@@ -79,6 +79,22 @@ ul.tight{margin:4px 0 8px;padding-left:20px}
 <div id="loading">Loading SQLite engine and data (~9 MB)…</div>
 
 <section class="tab" id="t-insights"><div class="sub" id="insVer" style="margin-bottom:10px"></div><div class="grid" id="cards"></div></section>
+
+<section class="tab" id="t-imp">
+  <div class="panel">
+    <div class="row" id="impFilters"></div>
+    <div class="row">
+      <label class="f">Company name contains<input type="search" id="impQ" style="width:220px"></label>
+      <label class="f">Min shipments<input type="number" id="impMin" value="5" min="1" style="width:80px"></label>
+      <label class="f">Rank by<select id="impSort"><option value="shipments">Shipments</option><option value="tonnes">Tonnes</option><option value="value_m">Value</option><option value="countries">Countries</option><option value="suppliers">Suppliers</option></select></label>
+      <label class="f">Rows<select id="impN"><option>50</option><option selected>100</option><option>250</option><option>500</option></select></label>
+      <button class="b pri" id="impRun" style="margin-top:14px">Update</button><button class="b sm" id="impCsv" style="margin-top:14px">Download CSV</button>
+    </div>
+    <div class="banner" style="color:var(--ink);background:var(--panel);border:1px solid var(--line)">Importers are the named buyers on shipment-level records. Names are normalised (case, accents, punctuation, legal suffixes) so spelling variants group together. Tonnes only count lines with a weight in KGS, so rank by Shipments when weights are missing (US bills of lading have none). Click a company for its profile.</div>
+    <div id="impTable"></div>
+  </div>
+  <div class="panel" id="impProfile" style="display:none"></div>
+</section>
 
 <section class="tab" id="t-explore">
   <div class="panel">
@@ -239,7 +255,7 @@ async function init() {
     return;
   }
   $("#loading").style.display = "none";
-  refreshStatus(); buildExplore(); buildSchema(); buildRows(); buildAbout(); loadSaved();
+  refreshStatus(); buildExplore(); buildSchema(); buildRows(); buildAbout(); buildImporters(); loadSaved();
   await loadInsights(); runExplore();
 }
 function refreshStatus() {
@@ -278,6 +294,46 @@ async function loadInsights() {
   });
 }
 function goTab(t) { document.querySelector(`#nav button[data-t=${t}]`).click(); }
+
+/* ---------- importers ---------- */
+let impMS = {}, impRes = null;
+function buildImporters() {
+  const box = $("#impFilters"); box.innerHTML = ""; impMS = {};
+  impMS.hs6 = MS("HSN", distinct("hs6"), () => {}); impMS.destination = MS("Importing country", distinct("destination").filter(Boolean), () => {}); impMS.origin = MS("Sourced from", distinct("origin").filter(Boolean), () => {});
+  Object.values(impMS).forEach((d) => box.appendChild(d));
+  $("#impRun").onclick = runImporters; $("#impQ").onkeydown = (e) => { if (e.key === "Enter") runImporters(); };
+  $("#impCsv").onclick = () => impRes && download("importers.csv", toCSV(impRes.cols, impRes.rows));
+  runImporters();
+}
+function runImporters() {
+  const w = ["s.buyer_key IS NOT NULL"], p = [];
+  for (const [col, d] of Object.entries(impMS)) { const v = d.get(); if (v.length) { w.push(`s.${col} IN (${v.map(() => "?").join(",")})`); p.push(...v); } }
+  const qn = $("#impQ").value.trim(); if (qn) { w.push("c.name LIKE ?"); p.push("%" + qn + "%"); }
+  const sort = ["shipments", "tonnes", "value_m", "countries", "suppliers"].includes($("#impSort").value) ? $("#impSort").value : "shipments";
+  const sql = `SELECT c.name AS company, COUNT(*) AS shipments, ROUND(SUM(s.tonnes)) AS tonnes, ROUND(SUM(s.value_usd)/1e6,2) AS value_m,
+    ROUND(SUM(CASE WHEN s.price_ok THEN s.value_usd END)/NULLIF(SUM(CASE WHEN s.price_ok THEN s.kg END),0)*1000) AS avg_price_usd_t,
+    COUNT(DISTINCT s.destination) AS countries, GROUP_CONCAT(DISTINCT s.destination) AS importing_countries, GROUP_CONCAT(DISTINCT s.hs6) AS hsn,
+    COUNT(DISTINCT s.supplier_key) AS suppliers, GROUP_CONCAT(DISTINCT s.origin) AS sourced_from, MIN(s.month) AS first_month, MAX(s.month) AS last_month
+    FROM shipments s JOIN companies c ON c.key = s.buyer_key WHERE ${w.join(" AND ")} GROUP BY s.buyer_key HAVING COUNT(*) >= ${Math.max(1, +$("#impMin").value || 1)}
+    ORDER BY COALESCE(${sort}, 0) DESC, shipments DESC LIMIT ${+$("#impN").value || 100}`;
+  try { impRes = q(sql, p); } catch (e) { $("#impTable").innerHTML = `<div class="err">${esc(e.message)}</div>`; return; }
+  $("#impTable").innerHTML = table(impRes.cols, impRes.rows, { max: 500 });
+  $("#impTable").querySelector("tbody").onclick = (e) => { const tr = e.target.closest("tr"); if (tr) showProfile(tr.firstChild.getAttribute("title")); };
+}
+function showProfile(name) {
+  const k = q("SELECT key FROM companies WHERE name = ? LIMIT 1", [name]).rows[0]; if (!k) return; const key = k[0], P = $("#impProfile"); P.style.display = "block";
+  const tot = q("SELECT COUNT(*), ROUND(SUM(tonnes)), ROUND(SUM(value_usd)/1e6,2), COUNT(DISTINCT destination), MIN(month), MAX(month) FROM shipments WHERE buyer_key = ?", [key]).rows[0];
+  const lane = q(`SELECT hs6 AS hsn, destination AS importing_country, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/NULLIF(SUM(CASE WHEN price_ok THEN kg END),0)*1000) AS avg_price_usd_t FROM shipments WHERE buyer_key = ? GROUP BY 1, 2 ORDER BY 3 DESC`, [key]);
+  const org = q(`SELECT origin AS sourced_from, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/NULLIF(SUM(CASE WHEN price_ok THEN kg END),0)*1000) AS avg_price_usd_t FROM shipments WHERE buyer_key = ? AND origin IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 12`, [key]);
+  const sup = q(`SELECT n.name AS supplier, COUNT(*) AS shipments, ROUND(SUM(s.tonnes)) AS tonnes, GROUP_CONCAT(DISTINCT s.origin) AS origin FROM shipments s JOIN supplier_names n ON n.key = s.supplier_key WHERE s.buyer_key = ? GROUP BY s.supplier_key ORDER BY 2 DESC LIMIT 12`, [key]);
+  const var_ = q("SELECT buyer, COUNT(*) FROM shipments WHERE buyer_key = ? GROUP BY buyer ORDER BY 2 DESC LIMIT 8", [key]).rows.map((r) => esc(r[0]) + " (" + r[1] + ")").join("; ");
+  P.innerHTML = `<h3>${esc(name)}</h3><div class="kpis"><div class="kpi"><b>${fmt(tot[0])}</b><span>shipments</span></div><div class="kpi"><b>${fmt(tot[1])}</b><span>tonnes (weighted lines)</span></div><div class="kpi"><b>${fmt(tot[2])}</b><span>value, $M</span></div><div class="kpi"><b>${tot[3]}</b><span>importing countries</span></div><div class="kpi"><b>${monLabel(tot[4])} to ${monLabel(tot[5])}</b><span>active</span></div></div>
+    <div class="sub">Name variants merged: ${var_}</div><div class="chartbox" style="height:180px"><canvas id="impChart"></canvas></div>
+    <h3 style="margin-top:12px">By HSN and country</h3>${table(lane.cols, lane.rows, { max: 50 })}<h3 style="margin-top:12px">Where it buys from</h3>${table(org.cols, org.rows)}<h3 style="margin-top:12px">Main suppliers</h3>${table(sup.cols, sup.rows)}<div class="row"><button class="b sm" id="impClose">Close</button></div>`;
+  const mo = q("SELECT month, COUNT(*) FROM shipments WHERE buyer_key = ? GROUP BY month ORDER BY month", [key]).rows;
+  chartFrom($("#impChart"), mo.map((r) => r[0]), [{ name: "shipments", data: mo.map((r) => r[1]) }], "bar");
+  $("#impClose").onclick = () => (P.style.display = "none"); P.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 /* ---------- explore ---------- */
 const FILTER_COLS = [["hs6", "HSN"], ["flow", "Flow"], ["record_type", "Record type"], ["reporter", "Reporter"], ["origin", "Origin"], ["destination", "Destination"], ["year", "Year"], ["incoterm", "Incoterm"], ["mode", "Mode"]];
@@ -402,13 +458,14 @@ async function handleFiles(files) {
       if (miss.length) { out.innerHTML += `<p class="err">${esc(f.name)}: missing expected column(s): ${miss.join(", ")}. Found: ${esc(Object.keys(rowsIn[0]).join(", "))}</p>`; continue; }
       const hasSrc = heads.includes("sourcecountry"); if (!hasSrc && !(opts.flow && opts.reporter)) { out.innerHTML += `<p class="err">${esc(f.name)}: no "Source Country" column. Set Flow and Reporting country above and drop it again.</p>`; continue; }
       const before = q("SELECT COUNT(*) FROM shipments").rows[0][0];
-      const ins = db.prepare("INSERT OR IGNORE INTO shipments VALUES(" + new Array(34).fill("?").join(",") + ")");
+      const ins = db.prepare("INSERT OR IGNORE INTO shipments VALUES(" + new Array(36).fill("?").join(",") + ")");
       db.run("BEGIN"); for (const r of rowsIn) { const o = {}; for (const [k, v] of Object.entries(r)) o[TL.canon(k)] = v; ins.run(TL.cleanRow(o, batch, opts)); } db.run("COMMIT"); ins.free();
       const added = q("SELECT COUNT(*) FROM shipments").rows[0][0] - before;
       out.innerHTML += `<p><b>${esc(f.name)}</b>: ${rowsIn.length.toLocaleString()} rows read, <b>${added.toLocaleString()} added</b>, ${(rowsIn.length - added).toLocaleString()} skipped as duplicates (same Record Id). Batch <code>${esc(batch)}</code>.</p>`;
     } catch (e) { out.innerHTML += `<p class="err">${esc(f.name)}: ${esc(e.message)}</p>`; }
   }
-  refreshStatus(); buildExplore(); buildRows(); loadInsights();
+  db.run("INSERT OR IGNORE INTO companies SELECT buyer_key, buyer FROM shipments WHERE buyer_key IS NOT NULL GROUP BY buyer_key"); db.run("INSERT OR IGNORE INTO supplier_names SELECT supplier_key, supplier FROM shipments WHERE supplier_key IS NOT NULL GROUP BY supplier_key");
+  refreshStatus(); buildExplore(); buildRows(); buildImporters(); buildAbout(); loadInsights();
 }
 $("#dlDb").onclick = () => { const b = db.export(); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([b], { type: "application/x-sqlite3" })); a.download = "trade.sqlite"; a.click(); };
 
@@ -444,6 +501,7 @@ function buildAbout() {
 <li><b>Quantity errors.</b> Where value divided by weight gives under $50/t the source quantity is in the wrong unit (e.g. India-Bhutan rows reporting hundreds of thousands of tonnes). Those rows are kept but get <code>qty_flag = qty_overstated</code> and no tonnage.</li>
 <li><b>US rows</b> are bill-of-lading lines: names and ports, but no value and no usable weight (gross weight repeats on every container line), so US tonnage and price are blank by design.</li>
 </ul>
+<h3>Importers</h3><p class="read">The Importers tab ranks named buyers across all HSNs and countries, with filters and a company profile (HSN × country, sources, suppliers, monthly activity). Only shipment-level records carry names (about 60% of records), and five-year named history is not available: a single market costs tens of thousands of download points for that window.</p>
 <h3>Add more data</h3>
 <ol class="tight"><li>Drop the Volza export in <code>data/incoming/</code> and run <code>python3 ingest.py data/incoming/yourfile.xlsx</code>. It appends to the raw DB (deduping on Record Id), rebuilds <code>data/trade.sqlite</code>, and prints what was added.</li>
 <li><code>git add -A &amp;&amp; git commit -m "add data" &amp;&amp; git push</code>. GitHub Pages redeploys in about a minute.</li>
