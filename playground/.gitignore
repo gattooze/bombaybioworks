@@ -1,0 +1,4 @@
+.DS_Store
+volza_trade.sqlite
+data/incoming/*
+!data/incoming/.gitkeep

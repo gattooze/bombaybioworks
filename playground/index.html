@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Charcoal Trade Playground</title>
+<style>
+:root{--bg:#f6f5f1;--panel:#fff;--ink:#1d2127;--mute:#626b76;--line:#dcdad2;--accent:#1f5f8b;--accent-ink:#fff;--warn:#8a5a00;--warn-bg:#fff4d6;--ok:#1d6b46;
+--c1:#2563a8;--c2:#d9772b;--c3:#2a9d8f;--c4:#8e5ea2;--c5:#c4443c;--c6:#5a6b7b;--c7:#a89414;--c8:#3b9ac4;--c9:#9aa0a6}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171b;--panel:#1c2026;--ink:#e6e8eb;--mute:#97a0ab;--line:#2f353d;--accent:#5aa9e0;--accent-ink:#0b1620;--warn:#f0c46b;--warn-bg:#352a10;--ok:#6fcf9b;
+--c1:#6aa6e8;--c2:#f0a05e;--c3:#52c4b6;--c4:#c39ad6;--c5:#ec7a73;--c6:#9fb0c0;--c7:#d9c64a;--c8:#74c0e8;--c9:#6b727a}}
+:root[data-theme=dark]{--bg:#14171b;--panel:#1c2026;--ink:#e6e8eb;--mute:#97a0ab;--line:#2f353d;--accent:#5aa9e0;--accent-ink:#0b1620;--warn:#f0c46b;--warn-bg:#352a10;--ok:#6fcf9b;
+--c1:#6aa6e8;--c2:#f0a05e;--c3:#52c4b6;--c4:#c39ad6;--c5:#ec7a73;--c6:#9fb0c0;--c7:#d9c64a;--c8:#74c0e8;--c9:#6b727a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{padding:16px 20px 0;max-width:1400px;margin:0 auto}
+h1{font-size:20px;margin:0 0 2px}
+.sub{color:var(--mute);font-size:12.5px}
+nav{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);margin-top:12px}
+nav button{background:none;border:0;border-bottom:2px solid transparent;color:var(--mute);padding:9px 14px;font:inherit;cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--ink);border-color:var(--accent);font-weight:600}
+main{max-width:1400px;margin:0 auto;padding:16px 20px 60px}
+.tab{display:none}.tab.on{display:block}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}main,header{padding-left:12px;padding-right:12px}}
+h3{margin:0 0 4px;font-size:15px}
+.read{margin:6px 0;font-size:13.5px}
+.cav{margin:6px 0 8px;font-size:12px;color:var(--warn);background:var(--warn-bg);padding:5px 8px;border-radius:5px}
+.banner{font-size:12.5px;color:var(--warn);background:var(--warn-bg);padding:7px 10px;border-radius:6px;margin:8px 0}
+.chartbox{position:relative;height:260px}
+.chartbox.tall{height:380px}
+button.b,select,input[type=text],input[type=search],textarea{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 9px}
+button.b{cursor:pointer}button.b.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.b.sm{padding:2px 8px;font-size:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+label.f{font-size:12px;color:var(--mute);display:flex;flex-direction:column;gap:2px}
+.tblwrap{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:6px;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:4px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;max-width:340px;overflow:hidden;text-overflow:ellipsis}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+th{position:sticky;top:0;background:var(--panel);cursor:pointer;user-select:none}
+th:hover{color:var(--accent)}
+details.ms{position:relative}
+details.ms>summary{list-style:none;cursor:pointer;border:1px solid var(--line);border-radius:6px;padding:5px 9px;background:var(--panel);min-width:130px;font-size:13px}
+details.ms>summary::-webkit-details-marker{display:none}
+details.ms .pop{position:absolute;z-index:20;top:100%;left:0;margin-top:3px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px;width:260px;max-height:300px;overflow:auto;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+details.ms .pop label{display:flex;gap:6px;padding:2px 0;font-size:13px;align-items:center}
+details.ms .pop input[type=search]{width:100%;margin-bottom:4px}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.kpi{border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-width:130px;background:var(--panel)}
+.kpi b{display:block;font-size:20px}.kpi span{font-size:11.5px;color:var(--mute)}
+textarea#sqlbox{width:100%;height:150px;font:12.5px/1.45 ui-monospace,Menlo,Consolas,monospace}
+.schema{font:12px ui-monospace,Menlo,monospace;max-height:340px;overflow:auto}
+.schema div{cursor:pointer;padding:1px 4px;border-radius:3px}.schema div:hover{background:var(--line)}
+.schema i{color:var(--mute);font-style:normal}
+code{background:var(--line);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:30px;text-align:center;color:var(--mute)}
+.drop.over{border-color:var(--accent);color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 260px;gap:14px}@media(max-width:800px){.two{grid-template-columns:1fr}}
+.err{color:var(--c5);font-size:13px;white-space:pre-wrap}
+#loading{padding:60px;text-align:center;color:var(--mute)}
+ul.tight{margin:4px 0 8px;padding-left:20px}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap">
+    <div><h1>Charcoal Trade Playground</h1>
+    <div class="sub" id="status">Loading database…</div></div>
+    <div><button class="b sm" id="theme">Theme</button></div>
+  </div>
+  <nav id="nav">
+    <button data-t="about" class="on">About &amp; caveats</button><button data-t="insights">Insights</button><button data-t="explore">Explore</button><button data-t="sql">SQL</button>
+    <button data-t="data">Rows</button><button data-t="add">Add data</button>
+  </nav>
+</header>
+<main>
+<div id="loading">Loading SQLite engine and data (~9 MB)…</div>
+
+<section class="tab" id="t-insights"><div class="sub" id="insVer" style="margin-bottom:10px"></div><div class="grid" id="cards"></div></section>
+
+<section class="tab" id="t-explore">
+  <div class="panel">
+    <div class="row" id="filters"></div>
+    <div class="row">
+      <label class="f">From month<select id="mFrom"></select></label>
+      <label class="f">To month<select id="mTo"></select></label>
+      <label class="f">Text (buyer / supplier / description / B/L)<input type="search" id="txt" style="width:260px"></label>
+      <label class="f" style="flex-direction:row;align-items:center;gap:5px;margin-top:14px"><input type="checkbox" id="pok"> price-valid rows only</label>
+      <label class="f" style="flex-direction:row;align-items:center;gap:5px;margin-top:14px" title="Keeps only reporter/flow/product series that have data in every year of the date range, removing coverage artefacts"><input type="checkbox" id="lfl"> like-for-like reporters</label>
+      <button class="b sm" id="resetF" style="margin-top:14px">Reset filters</button>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--line)">
+    <div class="row">
+      <label class="f">Group by (1)<select id="d1"></select></label>
+      <label class="f">Group by (2)<select id="d2"></select></label>
+      <label class="f">Metrics<span id="metBox" style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--ink)"></span></label>
+      <label class="f">Chart metric<select id="cm"></select></label>
+      <label class="f">Chart<select id="ct"><option value="auto">Auto</option><option value="bar">Bar</option><option value="hbar">Horizontal bar</option><option value="stack">Stacked bar</option><option value="line">Line</option></select></label>
+      <label class="f">Top N<input type="number" id="topn" value="15" min="3" max="60" style="width:70px"></label>
+      <button class="b pri" id="runX" style="margin-top:14px">Run</button>
+    </div>
+    <div id="xWarn"></div>
+  </div>
+  <div class="panel" id="xOut" style="display:none">
+    <div class="kpis" id="kpis"></div>
+    <div class="chartbox tall"><canvas id="xChart"></canvas></div>
+    <div class="row"><button class="b sm" id="xCsv">Download CSV</button><button class="b sm" id="xSql">Open SQL in editor</button><span class="sub" id="xInfo"></span></div>
+    <div id="xTable"></div>
+  </div>
+</section>
+
+<section class="tab" id="t-sql">
+  <div class="two">
+    <div>
+      <div class="panel">
+        <textarea id="sqlbox" spellcheck="false">SELECT hs6 AS hsn, flow, year, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m
+FROM shipments
+GROUP BY 1,2,3
+ORDER BY 1,2,3;</textarea>
+        <div class="row"><button class="b pri" id="runSql">Run (Ctrl/⌘+Enter)</button><button class="b sm" id="saveSql">Save query</button><button class="b sm" id="sqlCsv">CSV</button>
+        <select id="saved"><option value="">Saved &amp; recent…</option></select>
+        <span class="sub">Edits here affect this browser session only.</span></div>
+        <div class="err" id="sqlErr"></div>
+        <div class="row" id="sqlChartCtl" style="display:none"><label class="f">x<select id="sx"></select></label><label class="f">y<select id="sy"></select></label><label class="f">chart<select id="sct"><option>bar</option><option>line</option></select></label></div>
+        <div class="chartbox" id="sqlChartBox" style="display:none"><canvas id="sqlChart"></canvas></div>
+        <div id="sqlTable"></div>
+      </div>
+    </div>
+    <div class="panel"><b>Tables</b><div class="sub">click a column to insert</div><div class="schema" id="schema"></div></div>
+  </div>
+</section>
+
+<section class="tab" id="t-data">
+  <div class="panel">
+    <div class="row"><input type="search" id="rq" placeholder="Search buyer, supplier, description, B/L…" style="width:320px">
+      <select id="rprod"><option value="">All HSN</option></select><select id="rflow"><option value="">Any flow</option><option>Import</option><option>Export</option><option>Directory</option></select>
+      <select id="rtype"><option value="">Any record type</option><option>shipment</option><option>monthly_aggregate</option><option>directory</option></select>
+      <select id="rsort"><option value="date DESC">Newest</option><option value="value_usd DESC">Largest value</option><option value="tonnes DESC">Largest tonnes</option><option value="price_usd_t DESC">Highest price</option></select>
+      <button class="b sm" id="rcsv">Download filtered CSV</button></div>
+    <div class="row"><button class="b sm" id="rprev">‹ Prev</button><span id="rinfo" class="sub"></span><button class="b sm" id="rnext">Next ›</button></div>
+    <div id="rTable"></div>
+  </div>
+</section>
+
+<section class="tab" id="t-add">
+  <div class="panel">
+    <h3>Add a Volza export to this session</h3>
+    <p class="read">Drop a Volza CSV or XLSX. Columns are matched by name and cleaned with the same rules as the build script (see About). New rows appear in every tab immediately. To <b>keep</b> them, download the merged database below and commit it as <code>data/trade.sqlite</code>, or use <code>ingest.py</code> (recommended: it also archives the raw rows).</p>
+    <div class="row">
+      <label class="f">Flow (if no "Source Country" column)<select id="aFlow"><option value="">Auto from file</option><option>Import</option><option>Export</option></select></label>
+      <label class="f">Reporting country (if no "Source Country" column)<input type="text" id="aRep" placeholder="e.g. India" style="width:180px"></label>
+    </div>
+    <div class="drop" id="drop">Drop .csv / .xlsx here or <input type="file" id="file" accept=".csv,.xlsx,.xls" multiple></div>
+    <div id="addOut" class="read"></div>
+    <div class="row"><button class="b pri" id="dlDb">Download merged trade.sqlite</button></div>
+  </div>
+</section>
+
+<section class="tab on" id="t-about"><div class="panel" id="aboutBody"></div></section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="lib.js"></script>
+<script>
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const { fmt, toCSV } = TL;
+let db, SQLmod, charts = new Map();
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+
+function q(sql, params = []) {
+  const st = db.prepare(sql); st.bind(params);
+  const cols = st.getColumnNames(), rows = [];
+  while (st.step()) rows.push(st.get());
+  st.free(); return { cols, rows };
+}
+const colorVar = (i) => getComputedStyle(document.documentElement).getPropertyValue("--c" + ((i % 9) + 1)).trim();
+function draw(canvas, cfg) {
+  if (charts.has(canvas)) charts.get(canvas).destroy();
+  const ink = getComputedStyle(document.documentElement).getPropertyValue("--mute").trim(), line = getComputedStyle(document.documentElement).getPropertyValue("--line").trim();
+  cfg.options = Object.assign({ responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: { legend: { display: cfg.data.datasets.length > 1, labels: { color: ink, boxWidth: 12 } } },
+    scales: cfg.options?.indexAxis === "y" ? { x: { ticks: { color: ink }, grid: { color: line } }, y: { ticks: { color: ink, autoSkip: false }, grid: { display: false } } }
+      : { x: { ticks: { color: ink, maxRotation: 60 }, grid: { display: false }, stacked: cfg.stacked }, y: { ticks: { color: ink }, grid: { color: line }, stacked: cfg.stacked } } }, cfg.options || {});
+  Chart.defaults.color = ink; Chart.defaults.borderColor = line;
+  charts.set(canvas, new Chart(canvas, cfg));
+}
+function chartFrom(canvas, labels, series, type, metric) {
+  const stacked = type === "stack", line = type === "line", h = type === "hbar";
+  const datasets = series.map((s, i) => ({ label: s.name, data: s.data, backgroundColor: colorVar(i), borderColor: colorVar(i), borderWidth: line ? 2 : 0, pointRadius: line ? 2 : 0, tension: 0.2, spanGaps: true }));
+  draw(canvas, { type: line ? "line" : "bar", data: { labels, datasets }, stacked, options: { indexAxis: h ? "y" : "x",
+    plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${fmt(c.parsed[h ? "x" : "y"])}` } }, legend: { display: datasets.length > 1 } } } });
+}
+
+function table(cols, rows, opts = {}) {
+  const max = opts.max || 500, id = "t" + Math.random().toString(36).slice(2, 8);
+  const numCol = cols.map((_, i) => rows.slice(0, 50).some((r) => typeof r[i] === "number") && rows.slice(0, 50).every((r) => r[i] == null || typeof r[i] === "number"));
+  const body = (rs) => rs.slice(0, max).map((r) => "<tr>" + r.map((v, i) => `<td class="${numCol[i] ? "n" : ""}" title="${esc(v)}">${esc(numCol[i] ? fmt(v) : v)}</td>`).join("") + "</tr>").join("");
+  const html = `<div class="tblwrap"><table id="${id}"><thead><tr>${cols.map((c, i) => `<th data-i="${i}" class="${numCol[i] ? "n" : ""}">${esc(c)}</th>`).join("")}</tr></thead><tbody>${body(rows)}</tbody></table></div>` +
+    (rows.length > max ? `<div class="sub">Showing first ${max} of ${rows.length.toLocaleString()} rows (CSV has all).</div>` : `<div class="sub">${rows.length.toLocaleString()} rows</div>`);
+  setTimeout(() => {
+    const t = document.getElementById(id); if (!t) return; let dir = 1, last = -1, cur = rows.slice();
+    t.querySelectorAll("th").forEach((th) => th.onclick = () => { const i = +th.dataset.i; dir = last === i ? -dir : 1; last = i;
+      cur.sort((a, b) => { const x = a[i], y = b[i]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+      t.querySelector("tbody").innerHTML = body(cur); });
+  }, 0);
+  return html;
+}
+function download(name, text, type = "text/csv") { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+
+/* ---------- multi-select ---------- */
+function MS(label, values, onChange) {
+  const d = document.createElement("details"); d.className = "ms"; const sel = new Set();
+  d.innerHTML = `<summary></summary><div class="pop"><input type="search" placeholder="search…"><div class="opts"></div><button class="b sm clr" style="margin-top:4px">clear</button></div>`;
+  const sum = d.querySelector("summary"), opts = d.querySelector(".opts");
+  const upd = () => { sum.textContent = label + ": " + (sel.size ? (sel.size <= 2 ? [...sel].map((v) => v || "(blank)").join(", ") : sel.size + " selected") : "all"); };
+  const render = (f = "") => { opts.innerHTML = values.filter((v) => (v || "(blank)").toLowerCase().includes(f.toLowerCase())).slice(0, 400)
+    .map((v) => `<label><input type="checkbox" value="${esc(v)}" ${sel.has(v) ? "checked" : ""}>${esc(v || "(blank)")}</label>`).join(""); };
+  opts.onchange = (e) => { const v = e.target.value; e.target.checked ? sel.add(v) : sel.delete(v); upd(); onChange(); };
+  d.querySelector("input[type=search]").oninput = (e) => render(e.target.value);
+  d.querySelector(".clr").onclick = () => { sel.clear(); render(d.querySelector("input[type=search]").value); upd(); onChange(); };
+  d.get = () => [...sel]; d.reset = () => { sel.clear(); render(); upd(); }; render(); upd(); return d;
+}
+document.addEventListener("click", (e) => $$("details.ms[open]").forEach((d) => { if (!d.contains(e.target)) d.open = false; }));
+
+/* ---------- init ---------- */
+const PROD_LABEL = TL.HS_NAME;
+async function init() {
+  try {
+    SQLmod = await initSqlJs({ locateFile: (f) => "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/" + f });
+    const buf = await (await fetch("data/trade.sqlite", { cache: "no-cache" })).arrayBuffer();
+    db = new SQLmod.Database(new Uint8Array(buf));
+  } catch (e) {
+    $("#loading").innerHTML = "Could not load data/trade.sqlite: " + esc(e.message) + "<br>If you opened this file directly, serve the folder instead: <code>python3 -m http.server</code> then open http://localhost:8000";
+    return;
+  }
+  $("#loading").style.display = "none";
+  refreshStatus(); buildExplore(); buildSchema(); buildRows(); buildAbout(); loadSaved();
+  await loadInsights(); runExplore();
+}
+function refreshStatus() {
+  const meta = Object.fromEntries(q("SELECT k,v FROM meta").rows);
+  const n = q("SELECT COUNT(*), MIN(month), MAX(month) FROM shipments").rows[0];
+  $("#status").textContent = `${n[0].toLocaleString()} records · ${n[1]} to ${n[2]} · ${JSON.parse(meta.batches || "[]").length} batches`;
+}
+
+/* ---------- tabs ---------- */
+$("#nav").onclick = (e) => { const t = e.target.dataset.t; if (!t) return; $$("#nav button").forEach((b) => b.classList.toggle("on", b === e.target)); $$(".tab").forEach((s) => s.classList.toggle("on", s.id === "t-" + t)); };
+$("#theme").onclick = () => { const r = document.documentElement, cur = r.dataset.theme || (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"); r.dataset.theme = cur === "dark" ? "light" : "dark"; store.set("theme", r.dataset.theme); rerenderCharts(); };
+if (store.get("theme")) document.documentElement.dataset.theme = store.get("theme");
+function rerenderCharts() { setTimeout(() => { if (db) { loadInsights(); if ($("#xOut").style.display !== "none") runExplore(); } }, 50); }
+
+/* ---------- insights ---------- */
+let INS = null;
+async function loadInsights() {
+  if (!INS) INS = await (await fetch("insights.json", { cache: "no-cache" })).json();
+  $("#insVer").textContent = INS.version;
+  const box = $("#cards"); box.innerHTML = "";
+  INS.cards.forEach((c, i) => {
+    const el = document.createElement("div"); el.className = "panel"; let res;
+    try { res = q(c.sql); } catch (e) { el.innerHTML = `<h3>${esc(c.title)}</h3><div class="err">${esc(e.message)}</div>`; box.appendChild(el); return; }
+    el.innerHTML = `<h3>${esc(c.title)}</h3><div class="read">${esc(c.read)}</div><div class="cav">${esc(c.caveat)}</div>` +
+      (c.chart !== "table" ? `<div class="chartbox"><canvas></canvas></div>` : "") + `<div class="tbl">${c.chart === "table" ? table(res.cols, res.rows, { max: 60 }) : ""}</div>` +
+      `<div class="row"><button class="b sm tg">${c.chart === "table" ? "" : "Show table"}</button><button class="b sm op">Open in SQL</button></div>`;
+    box.appendChild(el);
+    if (c.chart !== "table") {
+      const xi = res.cols.indexOf(c.x), yi = res.cols.indexOf(c.y);
+      const kind = c.chart === "line" ? "line" : (res.rows.length > 6 && c.x !== "year" ? "hbar" : "bar");
+      if (kind === "hbar") el.querySelector(".chartbox").style.height = Math.max(260, res.rows.length * 24 + 50) + "px";
+      chartFrom(el.querySelector("canvas"), res.rows.map((r) => r[xi] == null ? "(blank)" : String(r[xi])), [{ name: c.y, data: res.rows.map((r) => r[yi]) }], kind);
+      el.querySelector(".tg").onclick = (e) => { const t = el.querySelector(".tbl"); if (t.innerHTML) { t.innerHTML = ""; e.target.textContent = "Show table"; } else { t.innerHTML = table(res.cols, res.rows); e.target.textContent = "Hide table"; } };
+    } else el.querySelector(".tg").remove();
+    el.querySelector(".op").onclick = () => { $("#sqlbox").value = c.sql; goTab("sql"); runSql(); };
+  });
+}
+function goTab(t) { document.querySelector(`#nav button[data-t=${t}]`).click(); }
+
+/* ---------- explore ---------- */
+const FILTER_COLS = [["hs6", "HSN"], ["flow", "Flow"], ["record_type", "Record type"], ["reporter", "Reporter"], ["origin", "Origin"], ["destination", "Destination"], ["year", "Year"], ["incoterm", "Incoterm"], ["mode", "Mode"]];
+let msFilters = {};
+function distinct(col) { return q(`SELECT DISTINCT ${col} FROM shipments ORDER BY 1`).rows.map((r) => r[0] == null ? "" : String(r[0])); }
+function buildExplore() {
+  const box = $("#filters"); box.innerHTML = ""; msFilters = {};
+  for (const [col, label] of FILTER_COLS) { const d = MS(label, distinct(col), () => {}); msFilters[col] = d; box.appendChild(d); }
+  const months = distinct("month").filter(Boolean);
+  for (const id of ["#mFrom", "#mTo"]) $(id).innerHTML = months.map((m) => `<option>${m}</option>`).join("");
+  $("#mFrom").value = months[0]; $("#mTo").value = months[months.length - 1];
+  const dimOpts = Object.keys(TL.DIMS);
+  $("#d1").innerHTML = dimOpts.map((d) => `<option>${d}</option>`).join(""); $("#d1").value = "destination";
+  $("#d2").innerHTML = `<option value="">(none)</option>` + dimOpts.map((d) => `<option>${d}</option>`).join("");
+  $("#metBox").innerHTML = Object.keys(TL.METRICS).map((m) => `<label style="display:flex;gap:3px;align-items:center"><input type="checkbox" class="mchk" value="${m}" ${["shipments", "tonnes", "value_usd_m", "avg_price_usd_t"].includes(m) ? "checked" : ""}>${m}</label>`).join("");
+  syncCM(); $("#cm").value = "value_usd_m"; $("#metBox").onchange = syncCM;
+  // sensible default filter: imports + official aggregates only, to avoid double counting
+  msFilters.flow.querySelector('input[value="Import"]').click();
+  msFilters.record_type.querySelector('input[value="monthly_aggregate"]').click();   // default = official totals; switch to shipment for names and prices
+  $("#runX").onclick = runExplore;
+  $("#resetF").onclick = () => { Object.values(msFilters).forEach((d) => d.reset()); $("#mFrom").value = months[0]; $("#mTo").value = months.at(-1); $("#txt").value = ""; $("#pok").checked = $("#lfl").checked = false; };
+}
+function syncCM() { const ms = $$(".mchk:checked").map((c) => c.value), cur = $("#cm").value; $("#cm").innerHTML = ms.map((m) => `<option>${m}</option>`).join(""); if (ms.includes(cur)) $("#cm").value = cur; }
+let lastX = null;
+function exploreState() {
+  const filters = {}; for (const [c, d] of Object.entries(msFilters)) { const v = d.get(); if (v.length) filters[c] = c === "year" ? v : v; }
+  const dims = [$("#d1").value, $("#d2").value].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
+  const metrics = $$(".mchk:checked").map((c) => c.value);
+  return { dims, metrics, filters, monthFrom: $("#mFrom").value, monthTo: $("#mTo").value, text: $("#txt").value, priceOkOnly: $("#pok").checked, likeForLike: $("#lfl").checked, sortMetric: $("#cm").value, sortDir: "desc" };
+}
+function runExplore() {
+  const st = exploreState(); if (!st.metrics.length) return;
+  const b = TL.buildExploreSQL(st); let res;
+  try { res = q(b.sql, b.params); } catch (e) { $("#xWarn").innerHTML = `<div class="err">${esc(e.message)}</div>`; return; }
+  lastX = { b, res, st }; $("#xOut").style.display = "block";
+  const w = [];
+  if (!(st.filters.flow || []).includes("Import") && !(st.filters.flow || []).includes("Export") || ((st.filters.flow || []).includes("Import") && (st.filters.flow || []).includes("Export")))
+    w.push("Import and Export feeds overlap (the same trade is reported by both sides). Totals across both flows double count: filter Flow to one.");
+  if ((st.filters.record_type || []).length !== 1)
+    w.push("Aggregate and shipment rows can describe the same trades (customs totals vs the individual consignments inside them). For market size filter Record type to monthly_aggregate; for names and prices use shipment. Do not add them.");
+  if (st.dims.some((d) => ["year", "quarter", "month"].includes(d)) && !st.likeForLike && !(st.filters.reporter || []).length)
+    w.push("Reporter coverage changes over time (several countries only start in 2026). A raw trend is mostly new data, not market growth: tick “like-for-like reporters” or filter Reporter.");
+  $("#xWarn").innerHTML = w.map((x) => `<div class="banner">⚠ ${esc(x)}</div>`).join("");
+  // KPIs
+  const tot = q(`SELECT COUNT(*),ROUND(SUM(tonnes)),ROUND(SUM(value_usd)/1e6,2),${TL.METRICS.avg_price_usd_t.sql} FROM shipments${b.whereSql}`, b.params).rows[0];
+  $("#kpis").innerHTML = [["records", tot[0]], ["tonnes", tot[1]], ["value, $M", tot[2]], ["avg price, $/t", tot[3]]].map(([l, v]) => `<div class="kpi"><b>${fmt(v)}</b><span>${l}</span></div>`).join("");
+  const cm = st.metrics.includes($("#cm").value) ? $("#cm").value : st.metrics[0];
+  if (st.dims.length) {
+    const pv = TL.pivot(res.cols, res.rows, st.dims, cm, +$("#topn").value || 15);
+    let ct = $("#ct").value; const time = TL.TIME_DIMS.has(st.dims[0]);
+    if (ct === "auto") ct = time ? (st.dims.length > 1 ? "line" : "bar") : (st.dims.length > 1 ? "stack" : "hbar");
+    $("#xChart").parentElement.style.display = "block"; chartFrom($("#xChart"), pv.labels, pv.series, ct, cm);
+  } else $("#xChart").parentElement.style.display = "none";
+  $("#xTable").innerHTML = table(res.cols, res.rows);
+  $("#xInfo").textContent = `${res.rows.length.toLocaleString()} groups · chart metric: ${cm}`;
+}
+$("#xCsv").onclick = () => lastX && download("explore.csv", toCSV(lastX.res.cols, lastX.res.rows));
+$("#xSql").onclick = () => { if (!lastX) return; let s = lastX.b.sql; lastX.b.params.forEach((p) => s = s.replace("?", typeof p === "number" ? p : "'" + String(p).replace(/'/g, "''") + "'")); $("#sqlbox").value = s + ";"; goTab("sql"); runSql(); };
+
+/* ---------- SQL ---------- */
+function buildSchema() {
+  const cols = q("PRAGMA table_info(shipments)").rows;
+  $("#schema").innerHTML = "<b>shipments</b>" + cols.map((c) => `<div data-c="${c[1]}">${c[1]} <i>${c[2]}</i></div>`).join("") + "<br><b>meta</b><div data-c='meta'>k, v</div>";
+  $("#schema").onclick = (e) => { const c = e.target.closest("[data-c]"); if (!c) return; const t = $("#sqlbox"); const p = t.selectionStart; t.value = t.value.slice(0, p) + c.dataset.c + t.value.slice(t.selectionEnd); t.focus(); };
+}
+let sqlRes = null;
+function runSql() {
+  $("#sqlErr").textContent = ""; const s = $("#sqlbox").value.trim(); if (!s) return;
+  try {
+    const t0 = performance.now(); const out = db.exec(s); const ms = Math.round(performance.now() - t0);
+    const hist = store.get("hist", []).filter((x) => x !== s); hist.unshift(s); store.set("hist", hist.slice(0, 15)); loadSaved();
+    if (!out.length) { $("#sqlTable").innerHTML = `<div class="sub">OK (${ms} ms), no rows returned.</div>`; $("#sqlChartBox").style.display = $("#sqlChartCtl").style.display = "none"; sqlRes = null; return; }
+    const r = out[out.length - 1]; sqlRes = { cols: r.columns, rows: r.values };
+    $("#sqlTable").innerHTML = `<div class="sub">${ms} ms</div>` + table(r.columns, r.values);
+    const ok = r.values.length > 1 && r.values.length <= 400 && r.columns.some((_, i) => r.values.every((v) => v[i] == null || typeof v[i] === "number"));
+    $("#sqlChartCtl").style.display = $("#sqlChartBox").style.display = ok ? "" : "none";
+    if (ok) { const numIdx = r.columns.map((_, i) => i).filter((i) => r.values.every((v) => v[i] == null || typeof v[i] === "number"));
+      $("#sx").innerHTML = r.columns.map((c, i) => `<option value="${i}">${esc(c)}</option>`).join(""); $("#sy").innerHTML = numIdx.map((i) => `<option value="${i}">${esc(r.columns[i])}</option>`).join("");
+      $("#sx").value = 0; $("#sy").value = numIdx.find((i) => i !== 0) ?? numIdx[0]; drawSql(); }
+    if (/^\s*(insert|update|delete|create|drop|alter)/i.test(s)) { refreshStatus(); }
+  } catch (e) { $("#sqlErr").textContent = e.message; }
+}
+function drawSql() { if (!sqlRes) return; const xi = +$("#sx").value, yi = +$("#sy").value; chartFrom($("#sqlChart"), sqlRes.rows.map((r) => String(r[xi] ?? "(blank)")), [{ name: sqlRes.cols[yi], data: sqlRes.rows.map((r) => r[yi]) }], $("#sct").value); }
+["#sx", "#sy", "#sct"].forEach((s) => $(s).onchange = drawSql);
+$("#runSql").onclick = runSql; $("#sqlbox").onkeydown = (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); runSql(); } };
+$("#sqlCsv").onclick = () => sqlRes && download("query.csv", toCSV(sqlRes.cols, sqlRes.rows));
+$("#saveSql").onclick = () => { const n = prompt("Name for this query?"); if (!n) return; const sv = store.get("saved", {}); sv[n] = $("#sqlbox").value; store.set("saved", sv); loadSaved(); };
+function loadSaved() { const sv = store.get("saved", {}), h = store.get("hist", []); $("#saved").innerHTML = `<option value="">Saved &amp; recent…</option>` + Object.keys(sv).map((k) => `<option value="s:${esc(k)}">★ ${esc(k)}</option>`).join("") + h.map((x, i) => `<option value="h:${i}">${esc(x.replace(/\s+/g, " ").slice(0, 70))}</option>`).join(""); }
+$("#saved").onchange = (e) => { const v = e.target.value; if (!v) return; $("#sqlbox").value = v[0] === "s" ? store.get("saved", {})[v.slice(2)] : store.get("hist", [])[+v.slice(2)]; };
+
+/* ---------- raw rows ---------- */
+let rpage = 0; const RP = 50;
+function buildRows() {
+  $("#rprod").innerHTML = `<option value="">All HSN</option>` + q("SELECT DISTINCT hs6 FROM shipments ORDER BY 1").rows.map((r) => `<option value="${r[0]}">${r[0]}</option>`).join("");
+  ["#rq", "#rprod", "#rflow", "#rtype", "#rsort"].forEach((s) => $(s).oninput = () => { rpage = 0; runRows(); });
+  $("#rprev").onclick = () => { rpage = Math.max(0, rpage - 1); runRows(); }; $("#rnext").onclick = () => { rpage++; runRows(); };
+  $("#rcsv").onclick = () => { const w = rowsWhere(); const r = q(`SELECT * FROM shipments ${w.sql} ORDER BY ${$("#rsort").value} LIMIT 50000`, w.p); download("rows.csv", toCSV(r.cols, r.rows)); };
+  runRows();
+}
+function rowsWhere() { const w = [], p = [];
+  if ($("#rq").value.trim()) { const t = "%" + $("#rq").value.trim() + "%"; w.push("(buyer LIKE ? OR supplier LIKE ? OR description LIKE ? OR bl LIKE ? OR origin LIKE ? OR destination LIKE ?)"); p.push(t, t, t, t, t, t); }
+  if ($("#rprod").value) { w.push("hs6=?"); p.push($("#rprod").value); } if ($("#rflow").value) { w.push("flow=?"); p.push($("#rflow").value); } if ($("#rtype").value) { w.push("record_type=?"); p.push($("#rtype").value); }
+  return { sql: w.length ? "WHERE " + w.join(" AND ") : "", p }; }
+function runRows() { const w = rowsWhere(); const n = q(`SELECT COUNT(*) FROM shipments ${w.sql}`, w.p).rows[0][0]; const maxp = Math.max(0, Math.ceil(n / RP) - 1); rpage = Math.min(rpage, maxp);
+  const r = q(`SELECT date,product,flow,reporter,record_type,origin,destination,buyer,supplier,tonnes,value_usd,price_usd_t,price_ok,incoterm,description FROM shipments ${w.sql} ORDER BY ${$("#rsort").value} LIMIT ${RP} OFFSET ${rpage * RP}`, w.p);
+  $("#rTable").innerHTML = table(r.cols, r.rows, { max: RP }); $("#rinfo").textContent = `${n.toLocaleString()} rows · page ${rpage + 1} of ${maxp + 1}`; }
+
+/* ---------- add data ---------- */
+const drop = $("#drop");
+["dragover", "dragenter"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files)); $("#file").onchange = (e) => handleFiles(e.target.files);
+async function handleFiles(files) {
+  const out = $("#addOut"); out.innerHTML = "";
+  for (const f of files) {
+    try {
+      const wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true, raw: false, dateNF: "yyyy-mm-dd" });
+      const rowsIn = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: "", raw: false, dateNF: "yyyy-mm-dd" });
+      if (!rowsIn.length) { out.innerHTML += `<p>${esc(f.name)}: no rows.</p>`; continue; }
+      const batch = "session:" + f.name, opts = { flow: $("#aFlow").value || null, reporter: $("#aRep").value.trim() || null };
+      const heads = Object.keys(rowsIn[0]).map(TL.canon); const need = ["date", "hscode", "valueusd"], miss = need.filter((k) => !heads.includes(k));
+      if (miss.length) { out.innerHTML += `<p class="err">${esc(f.name)}: missing expected column(s): ${miss.join(", ")}. Found: ${esc(Object.keys(rowsIn[0]).join(", "))}</p>`; continue; }
+      const hasSrc = heads.includes("sourcecountry"); if (!hasSrc && !(opts.flow && opts.reporter)) { out.innerHTML += `<p class="err">${esc(f.name)}: no "Source Country" column. Set Flow and Reporting country above and drop it again.</p>`; continue; }
+      const before = q("SELECT COUNT(*) FROM shipments").rows[0][0];
+      const ins = db.prepare("INSERT OR IGNORE INTO shipments VALUES(" + new Array(34).fill("?").join(",") + ")");
+      db.run("BEGIN"); for (const r of rowsIn) { const o = {}; for (const [k, v] of Object.entries(r)) o[TL.canon(k)] = v; ins.run(TL.cleanRow(o, batch, opts)); } db.run("COMMIT"); ins.free();
+      const added = q("SELECT COUNT(*) FROM shipments").rows[0][0] - before;
+      out.innerHTML += `<p><b>${esc(f.name)}</b>: ${rowsIn.length.toLocaleString()} rows read, <b>${added.toLocaleString()} added</b>, ${(rowsIn.length - added).toLocaleString()} skipped as duplicates (same Record Id). Batch <code>${esc(batch)}</code>.</p>`;
+    } catch (e) { out.innerHTML += `<p class="err">${esc(f.name)}: ${esc(e.message)}</p>`; }
+  }
+  refreshStatus(); buildExplore(); buildRows(); loadInsights();
+}
+$("#dlDb").onclick = () => { const b = db.export(); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([b], { type: "application/x-sqlite3" })); a.download = "trade.sqlite"; a.click(); };
+
+/* ---------- about ---------- */
+function monLabel(m) { if (!m) return ""; const [y, mm] = m.split("-"); return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+mm - 1] + "-" + y.slice(2); }
+function coverageHTML(showAll) {
+  const hs = q("SELECT hs6, COUNT(*), COUNT(DISTINCT destination), MIN(month), MAX(month) FROM shipments GROUP BY hs6 ORDER BY hs6").rows;
+  const cells = q("SELECT destination, hs6, MIN(month), MAX(month), COUNT(*) FROM shipments WHERE destination IS NOT NULL GROUP BY 1, 2").rows;
+  const codes = hs.map((r) => r[0]), by = {}, tot = {};
+  for (const [d, c, a, b, n] of cells) { (by[d] = by[d] || {})[c] = [a, b, n]; tot[d] = (tot[d] || 0) + n; }
+  const countries = Object.keys(tot).sort((x, y) => tot[y] - tot[x]), shown = showAll ? countries : countries.slice(0, 30);
+  const head = hs.map((r) => `<div class="kpi"><b>${r[0]}</b><span>${r[1].toLocaleString()} records · ${r[2]} importing countries<br>${monLabel(r[3])} to ${monLabel(r[4])}</span></div>`).join("");
+  const rows = shown.map((d) => `<tr><td>${esc(d)}</td>` + codes.map((c) => { const x = by[d][c]; return x ? `<td title="${x[2]} records">${monLabel(x[0])} to ${monLabel(x[1])}</td>` : `<td style="color:var(--mute)">-</td>`; }).join("") + "</tr>").join("");
+  return `<div class="kpis">${head}</div><div class="tblwrap"><table><thead><tr><th>Destination country</th>${codes.map((c) => `<th>${c}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="row"><span class="sub">${showAll ? "All " + countries.length : "Top 30 of " + countries.length} destination countries by record count. Each cell is the first to last month with data for that country and HSN. Gaps inside a span are months with no recorded trade.</span><button class="b sm" id="covAll">${showAll ? "Show top 30" : "Show all countries"}</button></div>`;
+}
+function buildAbout() {
+  const draw = (all) => { $("#covBox").innerHTML = coverageHTML(all); $("#covAll").onclick = () => draw(!all); };
+  $("#aboutBody").innerHTML = `<h3>What data exists</h3><div id="covBox"></div><hr style="border:0;border-top:1px solid var(--line);margin:16px 0">` + ``;
+  draw(false);
+  $("#aboutBody").insertAdjacentHTML("beforeend", `
+<h3>What is in here</h3>
+<p class="read">Customs trade records exported from Volza for charcoal HS codes. Product, flow, reporter, origin, destination, buyer, supplier, weight, value and a derived USD/tonne price. Raw rows are untouched in <code>data/raw/volza_raw.sqlite</code>; the site loads the cleaned <code>data/trade.sqlite</code>.</p>
+<h3>Read these before trusting a number</h3>
+<ul class="tight">
+<li><b>Import and Export double count.</b> A Philippines export to China also appears as a China import. Pick one flow. The Explore tab defaults to Import.</li>
+<li><b>Official feeds start at different dates.</b> European customs feeds run Nov-2021 to Jul-2026; China imports start 2025; Japan, South Korea, Saudi Arabia, the UK, Australia and Taiwan only have official totals from Jan-2026 (Volza's own limit), so for those markets Nov-Dec 2025 is covered by shipment-level rows only. Use “like-for-like reporters” for multi-year trends.</li>
+<li><b>record_type.</b> <code>monthly_aggregate</code> = customs totals per country pair per month (no buyer/supplier, ~70% of value). <code>shipment</code> = individual consignments with names (~30%). <code>directory</code> = a buyer/supplier listing, flow set to “Directory” so it never enters Import/Export totals.</li>
+<li><b>Price</b> = value ÷ weight, only where the unit is KGS and both are positive. Prices outside $50 to 15,000/t get <code>price_ok = 0</code> and are excluded from average price (rows kept). The average is value-weighted (total value ÷ total kg), not a mean of row prices. Customs value is not a quote.</li>
+<li><b>Units.</b> Rows measured in pieces, bags, boxes have no tonnage or price. HS 440210 is also used for generic charcoal, so “bamboo” is a customs category, not a guarantee.</li>
+<li><b>Coverage by HSN.</b> 440210: Nov-2021 to Oct-2026. 440220 and 440290: Nov-2025 to Oct-2026. Importer-side databases were pulled for the markets listed in the table above; everything else is not loaded, so totals are lower bounds, not global. <b>440290</b>: Nov-2025 to Oct-2026, importer-side databases for 20 markets only (Japan, South Korea, Taiwan, Saudi Arabia, UAE, UK, US, Germany, Netherlands, France, Italy, Spain, Poland, Belgium, Austria, Sweden, Denmark, China, Australia, Canada, India). Everything else is not loaded: totals are lower bounds, not global.</li>
+<li><b>Overlap inside 440290.</b> Each importer database also carries mirrored exporter rows (Paraguay, Ukraine, Indonesia, Vietnam…). They are the named shipments behind that importer's customs total. Official totals and named shipments describe the same trade: use one or the other, never both.</li>
+<li><b>Quantity errors.</b> Where value divided by weight gives under $50/t the source quantity is in the wrong unit (e.g. India-Bhutan rows reporting hundreds of thousands of tonnes). Those rows are kept but get <code>qty_flag = qty_overstated</code> and no tonnage.</li>
+<li><b>US rows</b> are bill-of-lading lines: names and ports, but no value and no usable weight (gross weight repeats on every container line), so US tonnage and price are blank by design.</li>
+</ul>
+<h3>Add more data</h3>
+<ol class="tight"><li>Drop the Volza export in <code>data/incoming/</code> and run <code>python3 ingest.py data/incoming/yourfile.xlsx</code>. It appends to the raw DB (deduping on Record Id), rebuilds <code>data/trade.sqlite</code>, and prints what was added.</li>
+<li><code>git add -A &amp;&amp; git commit -m "add data" &amp;&amp; git push</code>. GitHub Pages redeploys in about a minute.</li>
+<li>Quick look without committing: the <b>Add data</b> tab loads a file into your browser session only.</li></ol>
+<h3>Column dictionary</h3>` + table(["column", "meaning"], [
+  ["date / year / quarter / month", "Shipment or reporting month (aggregates are dated the 1st)"], ["hs6", "6-digit HSN code (440210, 440220, 440290)"], ["flow", "Import / Export (reporter's perspective) / Directory"],
+  ["reporter / tier", "Country whose customs feed this row came from; Volza tier T1-T3"], ["record_type", "monthly_aggregate / shipment / directory"], ["origin / destination", "Country of origin / destination"],
+  ["buyer / supplier", "Named parties (null when withheld)"], ["qty / unit / kg / tonnes", "Volza standardised quantity; kg only when unit is KGS"], ["value_usd", "Declared customs value"],
+  ["price_usd_t / price_ok", "value ÷ tonnes; 1 when within $50-15,000/t"], ["incoterm / mode / teu / bl / vessel / carrier", "Shipping details where reported"], ["qty_flag", "qty_overstated when the source quantity was dropped as a unit error"], ["batch", "Which download this row came from"]], { max: 60 }));
+}
+init();
+</script>
+</body>
+</html>

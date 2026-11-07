@@ -1,0 +1,161 @@
+{
+ "version": "Numbers in the SQL cards are live; the commentary text is static and should be re-read after new data is added.",
+ "cards": [
+  {
+   "id": "hs-sizing",
+   "title": "440290 is ~27x 440210 by value and over twice 440220",
+   "chart": "bar",
+   "x": "hsn",
+   "y": "value_m",
+   "sql": "SELECT hs6 AS hsn, COUNT(DISTINCT destination) AS markets, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE flow='Import' AND record_type='monthly_aggregate' AND date>='2025-11-01' GROUP BY hs6 ORDER BY value_m DESC",
+   "read": "Official customs import totals, Nov-25 onward. 440290 is ~$610M and ~0.9M t across the 20 markets pulled; 440220 ~$268M; 440210 ~$22M. 440210 is a niche inside a very large category.",
+   "caveat": "Markets covered differ by HSN, so sizes are lower bounds, not market totals."
+  },
+  {
+   "id": "wood-markets",
+   "title": "440290: China and Saudi Arabia lead on tonnes, Germany and Korea on value",
+   "chart": "bar",
+   "x": "destination",
+   "y": "tonnes",
+   "sql": "SELECT destination, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, COUNT(*) AS rows_ FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND destination IS NOT NULL GROUP BY destination ORDER BY tonnes DESC LIMIT 16",
+   "read": "China imports ~192,000 t but at ~$285/t (mostly Myanmar), so only ~$55M. Saudi Arabia ~88,000 t, Germany ~82,000 t, Netherlands ~74,000 t, Japan ~65,000 t, South Korea ~58,000 t. By value Germany (~$66M), South Korea (~$64M), Japan (~$63M) and the Netherlands (~$62M) are level; Korea and Japan pay the most per tonne among the big importers.",
+   "caveat": "Only the 20 importer markets pulled. UK's official feed starts Jan-2026 (understated). The US has no official totals here, only bill-of-lading rows."
+  },
+  {
+   "id": "wood-price",
+   "title": "What importers pay for 440290: ~$1,100/t in Korea and France, ~$285/t in China",
+   "chart": "bar",
+   "x": "destination",
+   "y": "avg_price_usd_t",
+   "sql": "SELECT destination, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, ROUND(SUM(CASE WHEN price_ok THEN tonnes END)) AS tonnes_priced FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND destination IS NOT NULL GROUP BY destination HAVING tonnes_priced>=5000 ORDER BY avg_price_usd_t DESC",
+   "read": "Weighted customs value per tonne. South Korea ~$1,113, France ~$1,076, Sweden ~$978, Japan ~$958, Germany ~$813, UK ~$839, Saudi ~$575, Poland ~$565, China ~$285. The spread is mostly product mix: cheap lump charcoal (Paraguay, Myanmar) versus briquettes and sawdust charcoal (Indonesia, Vietnam) versus premium restaurant grade.",
+   "caveat": "Customs value, not a quote. Rows implying under $50/t were dropped from tonnage as unit errors (318 rows in 440290)."
+  },
+  {
+   "id": "wood-lanes",
+   "title": "Who ships to whom: Paraguay dominates European and Saudi lump charcoal at $175-310/t",
+   "chart": "table",
+   "sql": "SELECT origin || ' > ' || destination AS lane, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440290' AND record_type='shipment' AND origin IS NOT NULL AND destination IS NOT NULL AND flow IN ('Export','Import') GROUP BY 1 ORDER BY tonnes DESC LIMIT 20",
+   "read": "Named shipments (Nov-25 to Oct-26). Paraguay to UK ~86,000 t at ~$214/t, Paraguay to Germany ~44,000 t at ~$176/t, Indonesia to Saudi ~35,000 t at ~$479/t, Vietnam to Japan ~17,000 t at ~$550/t, Ukraine to Poland/Germany ~$620-860/t. Asian buyers (Japan, Korea, Saudi) are served by Indonesia and Vietnam at $480-730/t.",
+   "caveat": "Shipment rows cover 18% to 100% of official volume depending on the importer (see the coverage card), so lane totals are a sample. Not additive with the official totals."
+  },
+  {
+   "id": "wood-priority-buyers",
+   "title": "Named 440290 buyers in the priority markets (Japan, Korea, Taiwan, Saudi, UAE)",
+   "chart": "table",
+   "sql": "SELECT buyer, GROUP_CONCAT(DISTINCT destination) AS destinations, GROUP_CONCAT(DISTINCT origin) AS sourced_from, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440290' AND record_type='shipment' AND buyer IS NOT NULL AND destination IN ('Japan','South Korea','Taiwan','Saudi Arabia','United Arab Emirates') GROUP BY buyer ORDER BY tonnes DESC LIMIT 25",
+   "read": "A ready target list: Idemitsu Kosan (Japan, ~7,500 t from Vietnam), Bijei Muyek and DCM Co. (Korea and Japan, Indonesian briquette charcoal), SS Global Harvest, Takayama, Utex. Saudi buyers (Jealous Devil, Rwazen, Sohol Al Reem, Tal Al Jabia) move 2,000 to 15,000 t each. Large Saudi lots from Paraguay run $170-280/t; Indonesian lots $470-720/t.",
+   "caveat": "Names are as declared on customs documents, with spelling variants and some trading houses. Verify before outreach."
+  },
+  {
+   "id": "wood-coverage",
+   "title": "How much of each market's official volume is visible as named shipments",
+   "chart": "table",
+   "sql": "SELECT d.destination, ROUND(d.t) AS named_shipment_t, ROUND(o.t) AS official_t, ROUND(100.0*d.t/o.t) AS pct_visible FROM (SELECT destination, SUM(tonnes) AS t FROM shipments WHERE hs6='440290' AND record_type='shipment' AND destination IS NOT NULL GROUP BY destination) d JOIN (SELECT destination, SUM(tonnes) AS t FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' GROUP BY destination) o USING (destination) WHERE o.t > 0 ORDER BY o.t DESC LIMIT 20",
+   "read": "China 15%, Poland 25%, France 25%, Italy 33%, Netherlands 36%, South Korea 38%, Japan 54%, Germany 69%, Saudi Arabia ~100%. Over 100% (UK) means the official feed is incomplete for that country, not that named shipments are wrong: the UK official feed only starts in Jan-2026.",
+   "caveat": "Use official totals for market size and named shipments for who and at what price. Never add the two: the same trade appears in both."
+  },
+  {
+   "id": "bamboo-destinations",
+   "title": "440210: Japan and South Korea are the volume markets",
+   "chart": "bar",
+   "x": "destination",
+   "y": "value_m",
+   "sql": "SELECT destination, ROUND(SUM(value_usd)/1e6,2) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440210' AND flow='Import' AND date>='2025-11-01' AND destination IS NOT NULL GROUP BY destination ORDER BY value_m DESC LIMIT 12",
+   "read": "Japan (~$7.4M, ~8,300 t) and South Korea (~$6.5M, ~7,800 t) lead, then Saudi Arabia (~$1.8M). Europe is many small markets, each under $1M.",
+   "caveat": "Japan, Korea, Saudi and the UK feeds start Jan-2026, so their figures are ~7-8 months, not 12. US coverage is shipment-level only, so it is understated."
+  },
+  {
+   "id": "bamboo-origin",
+   "title": "440210 supply is a China story",
+   "chart": "bar",
+   "x": "origin",
+   "y": "value_m",
+   "sql": "SELECT origin, ROUND(SUM(value_usd)/1e6,2) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440210' AND flow='Import' AND date>='2025-11-01' AND origin IS NOT NULL GROUP BY origin ORDER BY value_m DESC LIMIT 12",
+   "read": "China accounts for ~$17M and ~18,400 t of reported bamboo-charcoal imports. Next best (Malaysia, Indonesia, Vietnam, Laos) are each ~$1M or less.",
+   "caveat": "Origin 'Not available' rows are excluded here. Imports only, to avoid double counting with export feeds."
+  },
+  {
+   "id": "bamboo-price",
+   "title": "440210 price: ~$700-900/t in bulk Asia, $1,500-2,400/t in small European lots",
+   "chart": "bar",
+   "x": "destination",
+   "y": "avg_price_usd_t",
+   "sql": "SELECT destination, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, ROUND(SUM(CASE WHEN price_ok THEN tonnes END)) AS tonnes_priced FROM shipments WHERE hs6='440210' AND flow='Import' AND date>='2025-11-01' AND destination IS NOT NULL GROUP BY destination HAVING tonnes_priced>=100 ORDER BY avg_price_usd_t DESC LIMIT 14",
+   "read": "Weighted CIF/customs-value price. Japan ~$890, South Korea ~$840, Saudi ~$670, India ~$770 per tonne. UK, Netherlands, France, Belgium sit at $1,500-2,400 on far smaller volumes, which is likely packed or graded product (BBQ/retail).",
+   "caveat": "Customs value is not a quote: it includes freight/insurance on CIF and under-declaration is common. Treat as a floor for what a premium product can fetch."
+  },
+  {
+   "id": "bamboo-trend",
+   "title": "Like-for-like 440210 import trend: value roughly halved 2022 to 2025",
+   "chart": "bar",
+   "x": "year",
+   "y": "value_m",
+   "sql": "SELECT year, ROUND(SUM(value_usd)/1e6,2) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440210' AND flow='Import' AND year BETWEEN 2022 AND 2025 AND reporter IN (SELECT reporter FROM shipments WHERE hs6='440210' AND flow='Import' AND year BETWEEN 2022 AND 2025 GROUP BY reporter HAVING COUNT(DISTINCT year)=4) GROUP BY year ORDER BY year",
+   "read": "Restricted to reporters that have data in every year 2022-2025 (European customs feeds, India, plus a few shipment-level feeds such as Pakistan, Vietnam, Uganda), so the coverage artefact is removed. Value fell ~48% and price ~31%. Do not read this as the global market: the growth markets (Japan, Korea, Saudi) are not in the 2022-25 history.",
+   "caveat": "This is the only fair trend in the data. A naive yearly sum shows a 2026 spike that is purely new reporters being added."
+  },
+  {
+   "id": "shell-destinations",
+   "title": "440220: China imports ~62% of tracked value",
+   "chart": "bar",
+   "x": "destination",
+   "y": "value_m",
+   "sql": "SELECT destination, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440220' AND flow='Import' AND destination IS NOT NULL GROUP BY destination ORDER BY value_m DESC LIMIT 10",
+   "read": "China ~$181M (~214,000 t at ~$850/t), then India, Japan, Sri Lanka, Netherlands, Saudi Arabia. Japan pays ~$1,400/t, about 65% above China: the activated-carbon grade premium.",
+   "caveat": "China's rows are monthly customs aggregates (no buyer names). Share is of tracked reporters only."
+  },
+  {
+   "id": "shell-origin",
+   "title": "440220 supply: Philippines and Indonesia",
+   "chart": "bar",
+   "x": "origin",
+   "y": "value_m",
+   "sql": "SELECT origin, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440220' AND flow='Import' AND origin IS NOT NULL GROUP BY origin ORDER BY value_m DESC LIMIT 10",
+   "read": "Philippines ~$150M, Indonesia ~$84M, then Sri Lanka, Vietnam, Thailand. Nigeria prices at ~$300/t, a clear outlier: cheap feedstock exists but its quality is unknown.",
+   "caveat": "Prices here are the customs value, mixing grades."
+  },
+  {
+   "id": "shell-buyers",
+   "title": "Named buyers of 440220 are activated-carbon makers",
+   "chart": "table",
+   "sql": "SELECT buyer, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, GROUP_CONCAT(DISTINCT destination) AS destinations FROM shipments WHERE hs6='440220' AND record_type='shipment' AND buyer IS NOT NULL GROUP BY buyer ORDER BY tonnes DESC LIMIT 15",
+   "read": "Xiamen Phisoul, Jacobi Carbons Lanka, Tianjin Brilliant, Kuraray, Osaka Gas Chemicals, Chang Zhou Qi Di are the real activated-carbon converters. They are the natural targets for an AC-raw-material offer. Guess: some would test bamboo char as an alternative feedstock.",
+   "caveat": "Names come from export-side shipment feeds (Philippines, Vietnam, Sri Lanka). Buyers in China's aggregates are anonymous."
+  },
+  {
+   "id": "bamboo-buyers",
+   "title": "Named 440210 buyers are thin and small",
+   "chart": "table",
+   "sql": "SELECT buyer, COUNT(*) AS shipments, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,2) AS value_m, GROUP_CONCAT(DISTINCT destination) AS destinations FROM shipments WHERE hs6='440210' AND record_type='shipment' AND buyer IS NOT NULL GROUP BY buyer ORDER BY tonnes DESC, shipments DESC LIMIT 15",
+   "read": "Only ~950 of 10,400 bamboo records are shipment-level, and the biggest named buyer with a usable weight moved 128 t in total. US bill-of-lading rows name importers (B&B Charcoal, EB Express Provisions, Dancoal, Susshi) but carry no usable tonnage, and many are Brazilian/Colombian wood charcoal declared under this code. This data will not build a bamboo buyer list; use it for market and price sizing, then buy contact data elsewhere.",
+   "caveat": "Many named buyers are traders (Pakistan, Vietnam, Uganda), not end users. HS 440210 is also misused for general charcoal."
+  },
+  {
+   "id": "quality",
+   "title": "Data quality: what each record type can and cannot answer",
+   "chart": "table",
+   "sql": "SELECT record_type, COUNT(*) AS rows, SUM(buyer IS NOT NULL) AS with_buyer, SUM(kg IS NOT NULL) AS with_weight, SUM(price_ok) AS priced_ok, ROUND(100.0*SUM(price_ok)/COUNT(*)) AS pct_priced, ROUND(SUM(value_usd)/1e6,1) AS value_m FROM shipments GROUP BY record_type",
+   "read": "monthly_aggregate rows (customs totals per country pair) carry ~70% of value but no names. shipment rows carry names but ~30%. directory rows are a one-off listing. Aggregates and shipments overlap for the same trade: never add them.",
+   "caveat": "Rows with units other than KGS (pieces, bags) have no tonnage or price. Prices outside $50-15,000/t are flagged price_ok=0; implied prices under $50/t also lose their tonnage (source unit errors, e.g. India-Bhutan rows reporting 365,000 t). US bill-of-lading rows have no value and no usable weight."
+  },
+  {
+   "id": "coverage",
+   "title": "Coverage map: which reporter has data from when (read before trusting any trend)",
+   "chart": "table",
+   "sql": "SELECT reporter, flow, hs6, MIN(month) AS first_month, MAX(month) AS last_month, COUNT(*) AS rows FROM shipments WHERE reporter IS NOT NULL GROUP BY reporter, flow, hs6 ORDER BY rows DESC LIMIT 60",
+   "read": "European feeds run Nov-2021 to Jul-2026. China imports start 2025; Japan, Korea, Saudi, UK, Australia start Jan-2026. HS 440290 was pulled for Nov-2025 to Oct-2026 only, for 20 importer markets.",
+   "caveat": "Import and Export feeds of the same trade overlap: a Philippines export to China is also a China import. Never add the two flows."
+  },
+  {
+   "id": "shell-price",
+   "title": "440220 import price by month (weighted, tracked reporters)",
+   "chart": "line",
+   "x": "month",
+   "y": "avg_price_usd_t",
+   "sql": "SELECT month, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, ROUND(SUM(tonnes)) AS tonnes FROM shipments WHERE hs6='440220' AND flow='Import' AND month>='2025-11' GROUP BY month ORDER BY month",
+   "read": "A twelve-month view of the AC feedstock price. Check the tonnes column: thin months are noisy.",
+   "caveat": "Only 12 months of shell charcoal were pulled; no multi-year trend is possible yet."
+  }
+ ]
+}
