@@ -9,6 +9,32 @@ ALIAS = {"value": "valueusd", "stdunitrate": "stdunitrateusd", "unitrate": "unit
 def canon(h):
     k = re.sub(r"[^a-z0-9]", "", str(h).lower()); return ALIAS.get(k, k)
 
+NA_SET = {"", "-", "NA", "N/A", "NOT AVAILABLE", "NONE"}
+def _t(x):
+    x = (x or "").strip().upper() if x is not None else ""
+    return "" if x in NA_SET else x
+def _num(x):
+    try: return round(float(str(x).replace(",", "")), 3)
+    except Exception: return _t(x)
+def _sig(r):
+    return (str(r["Date"] or "")[:10], re.sub(r"\D", "", r["HS_Code"] or "")[:6], _t(r["Buyer"]), _t(r["Supplier"]), _num(r["Std_Quantity"]), _t(r["Std_Unit"]), _num(r["Value_usd"]),
+            _t(r["Country_of_Origin"]), _t(r["Country_of_Destination"]), _t(r["Bill_of_Lading"]), re.sub(r"\s+", " ", _t(r["Source_Country"])))
+
+def dedupe_by_content(db):
+    """Different Volza export layouts give the same shipment different Record Ids (or none). Collapse rows that are the same shipment across batches,
+    keeping the batch with the most lines for that signature (so genuinely repeated identical lines inside one batch are preserved)."""
+    db.row_factory = sqlite3.Row
+    groups = {}
+    for r in db.execute("select rowid, * from shipments"):
+        groups.setdefault(_sig(r), {}).setdefault(r["source_file"], []).append((r["rowid"], 0 if str(r["Record_Id"]).startswith("gen-") else 1))
+    drop = []
+    for bys in groups.values():
+        if len(bys) < 2: continue
+        best = max(bys.values(), key=lambda v: (len(v), sum(x[1] for x in v))); keep = {x[0] for x in best}
+        drop += [rid for rows in bys.values() for rid, _ in rows if rid not in keep]
+    db.executemany("delete from shipments where rowid=?", [(x,) for x in drop]); db.commit(); db.row_factory = None
+    return len(drop)
+
 def norm_date(s):
     s = s.strip()
     for f in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%d-%b-%Y", "%d/%m/%Y", "%m/%d/%Y"):
@@ -72,5 +98,6 @@ def main():
             cols = list(rec); db.execute(f"INSERT INTO shipments({','.join(chr(34)+c+chr(34) for c in cols)}) VALUES({','.join('?'*len(cols))})", [rec[c] for c in cols])
             have_ids.add(rid); added += 1
         db.commit(); print(f"{path}: +{added} new rows, {dup} duplicates skipped")
+    removed = dedupe_by_content(db); print(f"content dedupe removed {removed} cross-batch duplicate rows")
     db.close(); build.main()
 if __name__ == "__main__": main()

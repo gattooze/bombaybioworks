@@ -3,12 +3,12 @@
  "cards": [
   {
    "id": "hs-sizing",
-   "title": "440290 is ~27x 440210 by value and over twice 440220",
+   "title": "440290 is ~28x 440210 by value and over twice 440220",
    "chart": "bar",
    "x": "hsn",
    "y": "value_m",
    "sql": "SELECT hs6 AS hsn, COUNT(DISTINCT destination) AS markets, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE flow='Import' AND record_type='monthly_aggregate' AND date>='2025-11-01' GROUP BY hs6 ORDER BY value_m DESC",
-   "read": "Official customs import totals, Nov-25 onward. 440290 is ~$610M and ~0.9M t across the 20 markets pulled; 440220 ~$268M; 440210 ~$22M. 440210 is a niche inside a very large category.",
+   "read": "Official customs import totals, Nov-25 onward. 440290 is ~$642M and ~0.93M t across the 25 markets with official totals; 440220 ~$268M; 440210 ~$23M. 440210 is a niche inside a very large category.",
    "caveat": "Markets covered differ by HSN, so sizes are lower bounds, not market totals."
   },
   {
@@ -19,7 +19,7 @@
    "y": "tonnes",
    "sql": "SELECT destination, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, COUNT(*) AS rows_ FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND destination IS NOT NULL GROUP BY destination ORDER BY tonnes DESC LIMIT 16",
    "read": "China imports ~192,000 t but at ~$285/t (mostly Myanmar), so only ~$55M. Saudi Arabia ~88,000 t, Germany ~82,000 t, Netherlands ~74,000 t, Japan ~65,000 t, South Korea ~58,000 t. By value Germany (~$66M), South Korea (~$64M), Japan (~$63M) and the Netherlands (~$62M) are level; Korea and Japan pay the most per tonne among the big importers.",
-   "caveat": "Only the 20 importer markets pulled. UK's official feed starts Jan-2026 (understated). The US has no official totals here, only bill-of-lading rows."
+   "caveat": "Only the importer markets pulled (see the coverage table in About). UK's official feed starts Jan-2026 (understated). The US has no official totals here, only bill-of-lading rows."
   },
   {
    "id": "wood-price",
@@ -144,7 +144,7 @@
    "title": "Coverage map: which reporter has data from when (read before trusting any trend)",
    "chart": "table",
    "sql": "SELECT reporter, flow, hs6, MIN(month) AS first_month, MAX(month) AS last_month, COUNT(*) AS rows FROM shipments WHERE reporter IS NOT NULL GROUP BY reporter, flow, hs6 ORDER BY rows DESC LIMIT 60",
-   "read": "European feeds run Nov-2021 to Jul-2026. China imports start 2025; Japan, Korea, Saudi, UK, Australia start Jan-2026. HS 440290 was pulled for Nov-2025 to Oct-2026 only, for 20 importer markets.",
+   "read": "European feeds run Nov-2021 to Jul-2026. China imports start 2025; Japan, Korea, Saudi, UK, Australia start Jan-2026. HS 440290 was pulled for Nov-2025 to Oct-2026 only, for 28 importer markets.",
    "caveat": "Import and Export feeds of the same trade overlap: a Philippines export to China is also a China import. Never add the two flows."
   },
   {
