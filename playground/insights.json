@@ -3,13 +3,39 @@
  "cards": [
   {
    "id": "hs-sizing",
-   "title": "440290 is ~28x 440210 by value and over twice 440220",
+   "title": "440290 is ~32x 440210 by value and 2.7x 440220",
    "chart": "bar",
    "x": "hsn",
    "y": "value_m",
    "sql": "SELECT hs6 AS hsn, COUNT(DISTINCT destination) AS markets, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE flow='Import' AND record_type='monthly_aggregate' AND date>='2025-11-01' GROUP BY hs6 ORDER BY value_m DESC",
-   "read": "Official customs import totals, Nov-25 onward. 440290 is ~$642M and ~0.93M t across the 25 markets with official totals; 440220 ~$268M; 440210 ~$23M. 440210 is a niche inside a very large category.",
+   "read": "Official customs import totals, Nov-25 onward. 440290 is ~$736M and ~1.05M t across the 37 markets with official totals; 440220 ~$269M; 440210 ~$23M. 440210 is a niche inside a very large category.",
    "caveat": "Markets covered differ by HSN, so sizes are lower bounds, not market totals."
+  },
+  {
+   "id": "eu-trend",
+   "title": "EU official imports 2022-2025: 440290 is flat, 440220 up 58%, 440210 halved",
+   "chart": "table",
+   "sql": "SELECT year, ROUND(SUM(CASE WHEN hs6='440290' THEN value_usd END)/1e6,1) AS v440290_m, ROUND(SUM(CASE WHEN hs6='440290' AND price_ok THEN value_usd END)/SUM(CASE WHEN hs6='440290' AND price_ok THEN kg END)*1000) AS price_440290, ROUND(100.0*SUM(CASE WHEN hs6='440290' AND kg IS NOT NULL THEN value_usd END)/SUM(CASE WHEN hs6='440290' THEN value_usd END)) AS pct_value_with_weight_440290, ROUND(SUM(CASE WHEN hs6='440220' THEN value_usd END)/1e6,1) AS v440220_m, ROUND(SUM(CASE WHEN hs6='440220' AND price_ok THEN value_usd END)/SUM(CASE WHEN hs6='440220' AND price_ok THEN kg END)*1000) AS price_440220, ROUND(SUM(CASE WHEN hs6='440210' THEN value_usd END)/1e6,1) AS v440210_m, ROUND(SUM(CASE WHEN hs6='440210' AND price_ok THEN value_usd END)/SUM(CASE WHEN hs6='440210' AND price_ok THEN kg END)*1000) AS price_440210 FROM shipments WHERE flow='Import' AND record_type='monthly_aggregate' AND destination IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') AND reporter IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') AND year BETWEEN 2022 AND 2025 GROUP BY year ORDER BY year",
+   "read": "The EU buys ~$490-540M a year of 440290 at a steady $635-665/t: a mature, price-stable market. 440220 grew from $18M to $29M (+58%) at ~$880-930/t. 440210 imports halved in 2025 ($7M against $15-18M before) and its price fell from ~$2,000 to ~$1,400/t.",
+   "caveat": "EU member-state customs totals, 27 countries. Volza carries no quantity for ~39% of 2024 440290 value (generic UNT unit, zero quantity), so 2024 tonnes are understated: use value and price for that year. 2026 is excluded (partial)."
+  },
+  {
+   "id": "eu-seasonality",
+   "title": "EU 440290 demand is seasonal: ~90 kt a month in May-June against ~51 kt in autumn",
+   "chart": "bar",
+   "x": "month_of_year",
+   "y": "avg_kt",
+   "sql": "SELECT substr(month,6,2) AS month_of_year, ROUND(SUM(tonnes)/3/1000,1) AS avg_kt FROM shipments WHERE flow='Import' AND record_type='monthly_aggregate' AND destination IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') AND reporter IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') AND hs6='440290' AND year IN (2022,2023,2025) GROUP BY 1 ORDER BY 1",
+   "read": "Average monthly EU imports (2022, 2023, 2025) climb from ~57 kt in January to a peak of ~92 kt in May, stay high through July, then fall to ~51-54 kt from September. This is the BBQ season, so shipments need to land by March to April.",
+   "caveat": "2024 is excluded because of the weight gap noted in the trend card. Tonnes are official weights."
+  },
+  {
+   "id": "eu-origins",
+   "title": "Who supplies the EU with 440290: Ukraine, Namibia and Cuba lead, Indonesia and Paraguay are shrinking",
+   "chart": "table",
+   "sql": "SELECT origin, ROUND(SUM(CASE WHEN year=2022 THEN value_usd END)/1e6,1) AS v_2022, ROUND(SUM(CASE WHEN year=2023 THEN value_usd END)/1e6,1) AS v_2023, ROUND(SUM(CASE WHEN year=2024 THEN value_usd END)/1e6,1) AS v_2024, ROUND(SUM(CASE WHEN year=2025 THEN value_usd END)/1e6,1) AS v_2025, ROUND(SUM(CASE WHEN year IN (2022,2023,2025) THEN tonnes END)/3/1000,0) AS avg_kt_yr FROM shipments WHERE flow='Import' AND record_type='monthly_aggregate' AND destination IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') AND reporter IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') AND hs6='440290' AND year BETWEEN 2022 AND 2025 AND origin IS NOT NULL AND origin NOT IN ('Austria','Belgium','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden') GROUP BY origin ORDER BY SUM(value_usd) DESC LIMIT 12",
+   "read": "Extra-EU suppliers by value ($M). Ukraine is steady at ~$75M a year (~115 kt). Namibia has risen to $73M in 2025 (~119 kt), Nigeria to $29M. Indonesia collapsed from $54M in 2022 to ~$24M and Paraguay from $30M to ~$19M. Vietnam is marginal at ~$5M.",
+   "caveat": "Official country-of-origin data. 2024 tonnage is understated (see trend card), so avg_kt_yr uses 2022, 2023 and 2025 only."
   },
   {
    "id": "wood-markets",
@@ -17,7 +43,7 @@
    "chart": "bar",
    "x": "destination",
    "y": "tonnes",
-   "sql": "SELECT destination, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, COUNT(*) AS rows_ FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND destination IS NOT NULL GROUP BY destination ORDER BY tonnes DESC LIMIT 16",
+   "sql": "SELECT destination, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, COUNT(*) AS rows_ FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND date>='2025-11-01' AND destination IS NOT NULL GROUP BY destination ORDER BY tonnes DESC LIMIT 16",
    "read": "China imports ~192,000 t but at ~$285/t (mostly Myanmar), so only ~$55M. Saudi Arabia ~88,000 t, Germany ~82,000 t, Netherlands ~74,000 t, Japan ~65,000 t, South Korea ~58,000 t. By value Germany (~$66M), South Korea (~$64M), Japan (~$63M) and the Netherlands (~$62M) are level; Korea and Japan pay the most per tonne among the big importers.",
    "caveat": "Only the importer markets pulled (see the coverage table in About). UK's official feed starts Jan-2026 (understated). The US has no official totals here, only bill-of-lading rows."
   },
@@ -27,8 +53,8 @@
    "chart": "bar",
    "x": "destination",
    "y": "avg_price_usd_t",
-   "sql": "SELECT destination, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, ROUND(SUM(CASE WHEN price_ok THEN tonnes END)) AS tonnes_priced FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND destination IS NOT NULL GROUP BY destination HAVING tonnes_priced>=5000 ORDER BY avg_price_usd_t DESC",
-   "read": "Weighted customs value per tonne. South Korea ~$1,113, France ~$1,076, Sweden ~$978, Japan ~$958, Germany ~$813, UK ~$839, Saudi ~$575, Poland ~$565, China ~$285. The spread is mostly product mix: cheap lump charcoal (Paraguay, Myanmar) versus briquettes and sawdust charcoal (Indonesia, Vietnam) versus premium restaurant grade.",
+   "sql": "SELECT destination, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t, ROUND(SUM(CASE WHEN price_ok THEN tonnes END)) AS tonnes_priced FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND date>='2025-11-01' AND destination IS NOT NULL GROUP BY destination HAVING tonnes_priced>=5000 ORDER BY avg_price_usd_t DESC",
+   "read": "Weighted customs value per tonne. South Korea ~$1,113, France ~$1,074, Sweden ~$974, Japan ~$958, Germany ~$813, UK ~$839, Saudi ~$575, Poland ~$566, China ~$285. The spread is mostly product mix: cheap lump charcoal (Paraguay, Myanmar) versus briquettes and sawdust charcoal (Indonesia, Vietnam) versus premium restaurant grade.",
    "caveat": "Customs value, not a quote. Rows implying under $50/t were dropped from tonnage as unit errors (318 rows in 440290)."
   },
   {
@@ -51,8 +77,8 @@
    "id": "wood-coverage",
    "title": "How much of each market's official volume is visible as named shipments",
    "chart": "table",
-   "sql": "SELECT d.destination, ROUND(d.t) AS named_shipment_t, ROUND(o.t) AS official_t, ROUND(100.0*d.t/o.t) AS pct_visible FROM (SELECT destination, SUM(tonnes) AS t FROM shipments WHERE hs6='440290' AND record_type='shipment' AND destination IS NOT NULL GROUP BY destination) d JOIN (SELECT destination, SUM(tonnes) AS t FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' GROUP BY destination) o USING (destination) WHERE o.t > 0 ORDER BY o.t DESC LIMIT 20",
-   "read": "China 15%, Poland 25%, France 25%, Italy 33%, Netherlands 36%, South Korea 38%, Japan 54%, Germany 69%, Saudi Arabia ~100%. Over 100% (UK) means the official feed is incomplete for that country, not that named shipments are wrong: the UK official feed only starts in Jan-2026.",
+   "sql": "SELECT d.destination, ROUND(d.t) AS named_shipment_t, ROUND(o.t) AS official_t, ROUND(100.0*d.t/o.t) AS pct_visible FROM (SELECT destination, SUM(tonnes) AS t FROM shipments WHERE hs6='440290' AND record_type='shipment' AND destination IS NOT NULL GROUP BY destination) d JOIN (SELECT destination, SUM(tonnes) AS t FROM shipments WHERE hs6='440290' AND flow='Import' AND record_type='monthly_aggregate' AND date>='2025-11-01' GROUP BY destination) o USING (destination) WHERE o.t > 0 ORDER BY o.t DESC LIMIT 20",
+   "read": "China 16%, Poland 27%, France 27%, Italy 32%, Netherlands 37%, South Korea 43%, Japan 67%, Germany 70%. Over 100% (Saudi Arabia, UK) means the official feed is incomplete for that country, not that named shipments are wrong: the UK official feed only starts in Jan-2026.",
    "caveat": "Use official totals for market size and named shipments for who and at what price. Never add the two: the same trade appears in both."
   },
   {
@@ -101,7 +127,7 @@
    "chart": "bar",
    "x": "destination",
    "y": "value_m",
-   "sql": "SELECT destination, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440220' AND flow='Import' AND destination IS NOT NULL GROUP BY destination ORDER BY value_m DESC LIMIT 10",
+   "sql": "SELECT destination, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440220' AND flow='Import' AND date>='2025-11-01' AND destination IS NOT NULL GROUP BY destination ORDER BY value_m DESC LIMIT 10",
    "read": "China ~$181M (~214,000 t at ~$850/t), then India, Japan, Sri Lanka, Netherlands, Saudi Arabia. Japan pays ~$1,400/t, about 65% above China: the activated-carbon grade premium.",
    "caveat": "China's rows are monthly customs aggregates (no buyer names). Share is of tracked reporters only."
   },
@@ -111,7 +137,7 @@
    "chart": "bar",
    "x": "origin",
    "y": "value_m",
-   "sql": "SELECT origin, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440220' AND flow='Import' AND origin IS NOT NULL GROUP BY origin ORDER BY value_m DESC LIMIT 10",
+   "sql": "SELECT origin, ROUND(SUM(value_usd)/1e6,1) AS value_m, ROUND(SUM(tonnes)) AS tonnes, ROUND(SUM(CASE WHEN price_ok THEN value_usd END)/SUM(CASE WHEN price_ok THEN kg END)*1000) AS avg_price_usd_t FROM shipments WHERE hs6='440220' AND flow='Import' AND date>='2025-11-01' AND origin IS NOT NULL GROUP BY origin ORDER BY value_m DESC LIMIT 10",
    "read": "Philippines ~$150M, Indonesia ~$84M, then Sri Lanka, Vietnam, Thailand. Nigeria prices at ~$300/t, a clear outlier: cheap feedstock exists but its quality is unknown.",
    "caveat": "Prices here are the customs value, mixing grades."
   },

@@ -61,7 +61,7 @@
     const y = /^\d{4}/.test(d) ? parseInt(d.slice(0, 4), 10) : null;
     const id = g("recordid") ? String(g("recordid")) : "gen-" + hash([d, hs6, g("buyer"), g("supplier"), g("stdquantity"), g("valueusd"), g("billoflading"), reporter, flow].join("|"));
     return [id, d, y, d.slice(0, 7), y ? `${y}-Q${Math.floor((parseInt(d.slice(5, 7), 10) - 1) / 3) + 1}` : null,
-      hs6, hs6, String(g("productdescription") || "").slice(0, 300),
+      hs6, hs6, rtype === "shipment" ? String(g("productdescription") || "").slice(0, 160) : null,
       flow, reporter, tier, rtype,
       ctry(g("countryoforigin")), ctry(g("countryofdestination")), buyer, sup, ctry(g("buyercountry")),
       txt(g("portoforigin")), txt(g("portofdestination")),

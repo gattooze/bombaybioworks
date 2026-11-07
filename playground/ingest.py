@@ -5,7 +5,7 @@ Rows are de-duplicated on Record Id (a re-downloaded file adds nothing). Raw val
 --flow/--reporter are only needed when the file has no 'Source Country' column."""
 import sys, os, re, sqlite3, argparse, csv, hashlib, datetime
 import build
-ALIAS = {"value": "valueusd", "stdunitrate": "stdunitrateusd", "unitrate": "unitrateusd", "buyername": "buyer", "suppliername": "supplier", "billofladingno": "billoflading", "containerid": "containernoid", "masterbilloflading": "masterbilloflading", "masterbillofladingno": "masterbilloflading"}   # newer Volza headers ("Value $")
+ALIAS = {"value": "valueusd", "stdunitrate": "stdunitrateusd", "unitrate": "unitrateusd", "buyername": "buyer", "suppliername": "supplier", "billofladingno": "billoflading", "containerid": "containernoid", "masterbilloflading": "masterbilloflading", "fobvalue": "valueusd", "valueus": "valueusd", "authorizationdate": "date", "valueinvoicein": "valueusd", "totalgrossweight": "grossweight", "masterbillofladingno": "masterbilloflading"}   # newer Volza headers ("Value $")
 def canon(h):
     k = re.sub(r"[^a-z0-9]", "", str(h).lower()); return ALIAS.get(k, k)
 
@@ -13,11 +13,11 @@ NA_SET = {"", "-", "NA", "N/A", "NOT AVAILABLE", "NONE"}
 def _t(x):
     x = (x or "").strip().upper() if x is not None else ""
     return "" if x in NA_SET else x
-def _num(x):
-    try: return round(float(str(x).replace(",", "")), 3)
+def _num(x, nd=0):
+    try: return round(float(str(x).replace(",", "")), nd)
     except Exception: return _t(x)
 def _sig(r):
-    return (str(r["Date"] or "")[:10], re.sub(r"\D", "", r["HS_Code"] or "")[:6], _t(r["Buyer"]), _t(r["Supplier"]), _num(r["Std_Quantity"]), _t(r["Std_Unit"]), _num(r["Value_usd"]),
+    return (str(r["Date"] or "")[:10], re.sub(r"\D", "", r["HS_Code"] or "")[:6], _t(r["Buyer"]), _t(r["Supplier"]), _num(r["Std_Quantity"], 1), _t(r["Std_Unit"]), _num(r["Value_usd"], 0),
             _t(r["Country_of_Origin"]), _t(r["Country_of_Destination"]), _t(r["Bill_of_Lading"]), re.sub(r"\s+", " ", _t(r["Source_Country"])))
 
 def dedupe_by_content(db):
@@ -82,8 +82,11 @@ def main():
                         col = re.sub(r"[^A-Za-z0-9]+", "_", h).strip("_"); db.execute(f'ALTER TABLE shipments ADD COLUMN "{col}" text'); by_canon[canon(h)] = col
             rec = {by_canon[canon(h)]: ("" if v is None else str(v)) for h, v in zip(heads, row) if h}
             if "Date" in rec: rec["Date"] = norm_date(rec["Date"])
-            if a.flow and a.reporter and not rec.get("Source_Country"): rec["Source_Country"] = f"{a.reporter} T3  {a.flow}"
+            if a.flow and a.reporter and not rec.get("Source_Country"):
+                rep = rec.get("Country_of_Destination", "") if a.reporter == "__DEST__" else a.reporter   # __DEST__: each row's reporter is its destination (e.g. EU-wide T1 files)
+                rec["Source_Country"] = f"{rep} T1  {a.flow}" if a.reporter == "__DEST__" else f"{rep} T3  {a.flow}"
             if a.flow == "Import" and a.reporter and not rec.get("Country_of_Destination"): rec["Country_of_Destination"] = a.reporter
+            if a.flow == "Export" and a.reporter and not rec.get("Country_of_Origin"): rec["Country_of_Origin"] = a.reporter   # exporter-side databases have no origin column
             rid = rec.get("Record_Id")
             if rid:   # the same Record Id can repeat inside one file (e.g. one bill of lading, several container lines): keep every line
                 seen[rid] = seen.get(rid, 0) + 1

@@ -73,7 +73,7 @@ def main():
         if hs6 not in HS_NAME or hs6 == "380210": skipped += 1; continue   # keep the clean table to the HSNs in scope (raw keeps everything)
         y = int(d[:4]) if d[:4].isdigit() else None
         rows.append((r["Record_Id"], d, y, d[:7], f"{y}-Q{(int(d[5:7])-1)//3+1}" if y else None,
-          hs6, hs6, (r["Product_Description"] or "")[:300],
+          hs6, hs6, ((r["Product_Description"] or "")[:160] if rtype == "shipment" else None),
           flow, reporter, tier, rtype,
           ctry(r["Country_of_Origin"]), ctry(r["Country_of_Destination"]), buyer, sup, ctry(r["Buyer_Country"]),
           txt(r["Port_of_Origin"]), txt(r["Port_of_Destination"]),
