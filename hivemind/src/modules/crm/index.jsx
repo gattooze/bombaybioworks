@@ -4,7 +4,6 @@ import { useApp } from '../../context/AppContext.jsx';
 import { uid, nowISO, cx, fmtDateTime, typeOf } from '../../lib/utils.js';
 import { Field, Tag, TagInput, Btn, Modal, Empty, inputCls } from '../../components/ui.jsx';
 import Avatar from '../../components/Avatar.jsx';
-import { NoteContent } from '../../components/RichEditor.jsx';
 
 function PersonForm({ person, onSave, onClose }) {
   const [f, setF] = useState(person || { name: '', org: '', role: '', email: '', phone: '', tags: [], notes: '' });

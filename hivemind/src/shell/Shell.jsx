@@ -20,11 +20,12 @@ const ROUTE_LABELS = {
 };
 
 export default function Shell() {
-  const { me, user, data, editNote, setEditNote, editTask, setEditTask, saveNote, saveTask, removeNote, removeTask } = useApp();
+  const { me, user, data, editNote, setEditNote, editTask, setEditTask, saveNote, saveTask, removeTask } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState('');
   const [openNoteId, setOpenNoteId] = useState(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   // Global search results
   const results = (() => {

@@ -6,7 +6,6 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
-  collection,
   doc,
   getDoc,
   setDoc,
