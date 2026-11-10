@@ -4,70 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hivemind · Bombay Bioworks</title>
-  <meta name="description" content="Collective intelligence & note-taking hub for Bombay Bioworks — log conversations, take rich notes, track relationships." />
+  <meta name="description" content="Internal platform for Bombay Bioworks — notes, relationships, tasks, and beyond." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='k' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23D3EBDA'/%3E%3Cstop offset='1' stop-color='%23BFE0C8'/%3E%3C/linearGradient%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2368A4C2'/%3E%3Cstop offset='1' stop-color='%235C9AB8'/%3E%3C/linearGradient%3E%3ClinearGradient id='p' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23477451'/%3E%3Cstop offset='1' stop-color='%233E6448'/%3E%3C/linearGradient%3E%3ClinearGradient id='t' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23B05A6F'/%3E%3Cstop offset='1' stop-color='%23A85268'/%3E%3C/linearGradient%3E%3CclipPath id='c'%3E%3Cpath d='M16 1.5 28.56 8.75v14.5L16 30.5 3.44 23.25V8.75Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23c)'%3E%3Crect width='32' height='32' fill='url(%23k)'/%3E%3Cpath d='M0 15.5C8 11.5 14 14 20 12S28 9 32 10V32H0Z' fill='url(%23s)'/%3E%3Cpath d='M0 20.5C7 17.5 13 19.5 19 17.5S27 15.5 32 16.5V32H0Z' fill='url(%23p)'/%3E%3Cpath d='M0 27C7 24 13 26 19 24S27 22 32 23V32H0Z' fill='url(%23t)'/%3E%3C/g%3E%3C/svg%3E" />
-
-  <!-- Tailwind (Play CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: {
-        colors: { forest: { 50:'#f0f7f1',100:'#c8e4d0',200:'#9fd0ab',300:'#6ba870',400:'#4f7a59',500:'#3e6448',600:'#36583f',700:'#2d4c34',800:'#1e3222',900:'#132118' } },
-        fontFamily: { sans: ['Inter','system-ui','sans-serif'] }
-      } }
-    }
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Quill rich-text editor -->
-  <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
-
-  <!-- React + Babel (zero build) -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- Firebase compat SDK (no bundler required) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
-  <style>
-    html { scroll-behavior: smooth; }
-    body { background: #f2f5f2; }
-    .hex-bg { background-color:#f2f5f2; background-image: radial-gradient(#c8e4d055 1.5px, transparent 1.5px); background-size: 22px 22px; }
-    ::-webkit-scrollbar { width: 10px; height: 10px; }
-    ::-webkit-scrollbar-thumb { background: #3e6448; border-radius: 10px; }
-    /* Quill tweaks */
-    .ql-toolbar.ql-snow, .ql-container.ql-snow { border-color:#cbd5e1; }
-    .ql-toolbar.ql-snow { border-top-left-radius:.5rem; border-top-right-radius:.5rem; background:#f2f5f2; position:sticky; top:0; z-index:5; }
-    .ql-container.ql-snow { border-bottom-left-radius:.5rem; border-bottom-right-radius:.5rem; font-family:Inter,sans-serif; font-size:14px; }
-    .ql-editor { min-height: 200px; }
-    /* read-only rendered notes */
-    .note-render .ql-editor { min-height:0; padding:0; }
-    .note-render.ql-snow { border:none; }
-  </style>
 </head>
-<body class="hex-bg text-slate-800">
-  <div id="root" class="p-10 text-center text-forest-600">Loading Hivemind…</div>
-  <script>
-    // Compile the JSX app with the CLASSIC runtime (uses the UMD React global, no ES imports).
-    (async () => {
-      try {
-        const src = await (await fetch('app.jsx?v=' + Date.now())).text();
-        const { code } = Babel.transform(src, { presets: [['react', { runtime: 'classic' }]] });
-        const s = document.createElement('script');
-        s.textContent = code;
-        document.body.appendChild(s);
-      } catch (e) {
-        document.getElementById('root').innerHTML =
-          '<div style="color:#b45309;padding:2rem">Failed to load Hivemind: ' + e.message + '</div>';
-        console.error(e);
-      }
-    })();
-  </script>
+<body class="bg-[#f2f5f2] text-slate-800">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #f2f5f2;
+  background-image: radial-gradient(#c8e4d055 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #3e6448; border-radius: 10px; }
+
+/* Quill tweaks */
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow { border-color: #cbd5e1; }
+.ql-toolbar.ql-snow {
+  border-top-left-radius: .5rem;
+  border-top-right-radius: .5rem;
+  background: #f2f5f2;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.ql-container.ql-snow {
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+}
+.ql-editor { min-height: 200px; }
+.note-render .ql-editor { min-height: 0; padding: 0; }
+.note-render.ql-snow { border: none; }
