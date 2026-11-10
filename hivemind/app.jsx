@@ -88,21 +88,40 @@ const LocalAdapter = {
   async removeFile(id) { return idbDel('files', id); },
 };
 
-function makeCloudAdapter(client) {
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCt3XMeb7u7N0eOfKLJ9j2I36GjS0dhV7k",
+  authDomain: "bombay-bioworks.firebaseapp.com",
+  projectId: "bombay-bioworks",
+  storageBucket: "bombay-bioworks.firebasestorage.app",
+  messagingSenderId: "849464697051",
+  appId: "1:849464697051:web:3516f5b51cfeb6c4652cfe",
+};
+
+function makeFirebaseAdapter(db, storage) {
   return {
-    mode: 'cloud', client,
-    async list(t) { const { data, error } = await client.from(t).select('*').order('created_at',{ascending:false}); if(error) throw error; return data||[]; },
-    async put(t, rec) { const { data, error } = await client.from(t).upsert(rec).select().single(); if(error) throw error; return data; },
-    async remove(t, id) { const { error } = await client.from(t).delete().eq('id',id); if(error) throw error; },
+    mode: 'cloud',
+    async list(t) {
+      const snap = await db.collection(t).orderBy('created_at', 'desc').get();
+      return snap.docs.map(d => d.data());
+    },
+    async put(t, rec) {
+      await db.collection(t).doc(rec.id).set(rec, { merge: true });
+      return rec;
+    },
+    async remove(t, id) {
+      await db.collection(t).doc(id).delete();
+    },
     async uploadFile(file, meta) {
-      const path = `${(meta&&meta.folder)||'misc'}/${uid()}-${file.name}`;
-      const { error } = await client.storage.from('attachments').upload(path, file, { upsert:false });
-      if(error) throw error;
-      const { data } = client.storage.from('attachments').getPublicUrl(path);
-      return { id:path, name:file.name, type:file.type, size:file.size, url:data.publicUrl, storage:'cloud' };
+      const path = `attachments/${(meta && meta.folder) || 'misc'}/${uid()}-${file.name}`;
+      const ref = storage.ref(path);
+      await ref.put(file);
+      const url = await ref.getDownloadURL();
+      return { id: path, name: file.name, type: file.type, size: file.size, url, storage: 'cloud' };
     },
     async fileURL(att) { return att.url || null; },
-    async removeFile(path) { await client.storage.from('attachments').remove([path]); },
+    async removeFile(path) {
+      try { await storage.ref(path).delete(); } catch (e) { console.warn('removeFile', e); }
+    },
   };
 }
 
@@ -111,17 +130,37 @@ const useApp = () => useContext(AppCtx);
 const CFG_KEY = 'hivemind.config';
 const loadCfg = () => { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch { return {}; } };
 const saveCfg = (c) => localStorage.setItem(CFG_KEY, JSON.stringify(c));
-const DEFAULT_SUPABASE_URL = 'https://wxrcwvwefwfhbvwpgzti.supabase.co';
-const DEFAULT_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmN3dndlZndmaGJ2d3BnenRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMTEwNjMsImV4cCI6MjEwNDU4NzA2M30.AKW7PqHjun_WbjK53HocRdLUuZdgKZa9k5T5taCMry0';
 
-function buildAdapter(cfg) {
-  const url = cfg.supabaseUrl || DEFAULT_SUPABASE_URL;
-  const key = cfg.supabaseKey || DEFAULT_SUPABASE_KEY;
-  if (url && key && window.supabase) {
-    try { return makeCloudAdapter(window.supabase.createClient(url, key)); }
-    catch (e) { console.error('Supabase init failed', e); }
+function buildAdapter() {
+  if (window.firebase) {
+    try {
+      const db = firebase.firestore();
+      const storage = firebase.storage();
+      return makeFirebaseAdapter(db, storage);
+    } catch (e) { console.error('Firebase adapter failed', e); }
   }
   return LocalAdapter;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BB LOGO
+══════════════════════════════════════════════════════════════ */
+function BBLogo({ size = 28 }) {
+  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width={size} height={size} style={{flexShrink:0}}>
+    <defs>
+      <linearGradient id="bbl-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#D3EBDA"/><stop offset="1" stopColor="#BFE0C8"/></linearGradient>
+      <linearGradient id="bbl-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#68A4C2"/><stop offset="1" stopColor="#5C9AB8"/></linearGradient>
+      <linearGradient id="bbl-p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#477451"/><stop offset="1" stopColor="#3E6448"/></linearGradient>
+      <linearGradient id="bbl-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#B05A6F"/><stop offset="1" stopColor="#A85268"/></linearGradient>
+      <clipPath id="bbl-c"><path d="M16 1.5 28.56 8.75v14.5L16 30.5 3.44 23.25V8.75Z"/></clipPath>
+    </defs>
+    <g clipPath="url(#bbl-c)">
+      <rect width="32" height="32" fill="url(#bbl-k)"/>
+      <path d="M0 15.5C8 11.5 14 14 20 12S28 9 32 10V32H0Z" fill="url(#bbl-s)"/>
+      <path d="M0 20.5C7 17.5 13 19.5 19 17.5S27 15.5 32 16.5V32H0Z" fill="url(#bbl-p)"/>
+      <path d="M0 27C7 24 13 26 19 24S27 22 32 23V32H0Z" fill="url(#bbl-t)"/>
+    </g>
+  </svg>;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -132,7 +171,7 @@ function Avatar({ name, size=36 }) {
               style={{ width:size, height:size, background:avatarColor(name||'?'), fontSize:size*0.4 }}>{initials(name)}</div>;
 }
 function Tag({ children, onRemove }) {
-  return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-honey-100 text-honey-800 text-xs font-medium">
+  return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-forest-100 text-forest-800 text-xs font-medium">
     {children}{onRemove && <button type="button" onClick={onRemove} className="hover:text-red-600">×</button>}</span>;
 }
 function TypeBadge({ id, small }) {
@@ -145,9 +184,9 @@ function Field({ label, children, hint, right }) {
     <span className="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1"><span>{label}</span>{right}</span>
     {children}{hint && <span className="block text-[11px] text-slate-400 mt-1">{hint}</span>}</label>;
 }
-const inputCls = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-honey-400 focus:border-honey-400 bg-white";
+const inputCls = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400 focus:border-forest-400 bg-white";
 function Btn({ children, onClick, variant='primary', size='md', type='button', className }) {
-  const v = { primary:'bg-honey-500 hover:bg-honey-600 text-white shadow-sm', ghost:'bg-white hover:bg-honey-50 text-slate-700 border border-slate-200',
+  const v = { primary:'bg-forest-500 hover:bg-forest-600 text-white shadow-sm', ghost:'bg-white hover:bg-forest-50 text-slate-700 border border-slate-200',
               danger:'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200', dark:'bg-slate-800 hover:bg-slate-900 text-white' }[variant];
   const s = { sm:'px-2.5 py-1 text-xs', md:'px-3.5 py-2 text-sm', lg:'px-5 py-2.5' }[size];
   return <button type={type} onClick={onClick} className={cx('rounded-lg font-semibold transition inline-flex items-center gap-1.5', v, s, className)}>{children}</button>;
@@ -220,7 +259,7 @@ function AttachmentUploader({ attachments=[], onChange, folder }) {
   };
   return <div>
     <div onClick={()=>ref.current.click()} onDragOver={e=>e.preventDefault()} onDrop={e=>{e.preventDefault();handle([...e.dataTransfer.files]);}}
-         className="cursor-pointer rounded-lg border-2 border-dashed border-honey-300 bg-honey-50/50 px-4 py-4 text-center text-sm text-honey-700 hover:bg-honey-50">
+         className="cursor-pointer rounded-lg border-2 border-dashed border-forest-300 bg-forest-50/50 px-4 py-4 text-center text-sm text-forest-700 hover:bg-forest-50">
       {busy ? 'Uploading…' : '📎 Drop or click to add images, voice recordings, video or files'}
       <input ref={ref} type="file" multiple hidden accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.txt" onChange={e=>handle([...e.target.files])} />
     </div>
@@ -257,8 +296,8 @@ function PeoplePicker({ value=[], external=[], onChange, onExternalChange }) {
     <input className={inputCls} placeholder="Type a name to add a participant…" value={q} onChange={e=>setQ(e.target.value)}
            onKeyDown={e=>{ if(e.key==='Enter'){ e.preventDefault(); const m=matches.find(p=>!value.includes(p.id)); if(m){onChange([...value,m.id]);setQ('');} else if(q.trim()){addNew();} } }} />
     {q && <div className="mt-1 border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden">
-      {matches.filter(p=>!value.includes(p.id)).map(p=><button type="button" key={p.id} onClick={()=>{onChange([...value,p.id]);setQ('');}} className="w-full text-left px-3 py-2 text-sm hover:bg-honey-50 flex items-center gap-2"><Avatar name={p.name} size={24} />{p.name}<span className="text-slate-400 text-xs">{p.org}</span></button>)}
-      {!exact && q.trim() && <button type="button" onClick={addNew} className="w-full text-left px-3 py-2 text-sm hover:bg-honey-50 text-honey-700 font-medium">＋ Create contact "{q.trim()}"</button>}
+      {matches.filter(p=>!value.includes(p.id)).map(p=><button type="button" key={p.id} onClick={()=>{onChange([...value,p.id]);setQ('');}} className="w-full text-left px-3 py-2 text-sm hover:bg-forest-50 flex items-center gap-2"><Avatar name={p.name} size={24} />{p.name}<span className="text-slate-400 text-xs">{p.org}</span></button>)}
+      {!exact && q.trim() && <button type="button" onClick={addNew} className="w-full text-left px-3 py-2 text-sm hover:bg-forest-50 text-forest-700 font-medium">＋ Create contact "{q.trim()}"</button>}
     </div>}
   </div>;
 }
@@ -317,7 +356,7 @@ function TaskForm({ task, defaults={}, onSave, onClose }) {
           style={f.status===s.id?{background:s.color,borderColor:s.color}:{}}>{s.label}</button>)}
       </div>
     </Field>
-    {f.linked_note_title && <div className="text-xs text-slate-500 bg-honey-50 rounded-lg px-3 py-2">📝 From note: <span className="font-medium">{f.linked_note_title}</span></div>}
+    {f.linked_note_title && <div className="text-xs text-slate-500 bg-forest-50 rounded-lg px-3 py-2">📝 From note: <span className="font-medium">{f.linked_note_title}</span></div>}
     <Field label="Tags"><TagInput value={f.tags||[]} onChange={v=>set('tags',v)} /></Field>
     <div className="flex justify-end gap-2 pt-1"><Btn variant="ghost" onClick={onClose}>Cancel</Btn><Btn type="submit">Save task</Btn></div>
   </form>;
@@ -351,7 +390,7 @@ function TaskCard({ t, onOpen, onStatusChange }) {
       <div className="flex items-center gap-1.5">
         {name ? <><Avatar name={name} size={18} /><span className="text-[11px] text-slate-500">{name}</span></> : <span className="text-[11px] text-slate-300">Unassigned</span>}
       </div>
-      {t.due_date && <span className={cx('text-[11px] font-medium', overdue?'text-red-600':today?'text-honey-600':'text-slate-400')}>
+      {t.due_date && <span className={cx('text-[11px] font-medium', overdue?'text-red-600':today?'text-forest-600':'text-slate-400')}>
         {overdue?'⚠ ':today?'Today · ':''}{!overdue&&!today?fmtDate(t.due_date):today?fmtTime(new Date()):fmtDate(t.due_date)}
       </span>}
     </div>
@@ -413,8 +452,8 @@ function TasksView() {
       </div>
       <div className="flex gap-2">
         <div className="flex rounded-lg border border-slate-200 overflow-hidden">
-          <button onClick={()=>setView('list')} className={cx('px-3 py-1.5 text-xs font-medium', view==='list'?'bg-honey-500 text-white':'bg-white text-slate-600 hover:bg-slate-50')}>☰ List</button>
-          <button onClick={()=>setView('board')} className={cx('px-3 py-1.5 text-xs font-medium', view==='board'?'bg-honey-500 text-white':'bg-white text-slate-600 hover:bg-slate-50')}>⊞ Board</button>
+          <button onClick={()=>setView('list')} className={cx('px-3 py-1.5 text-xs font-medium', view==='list'?'bg-forest-500 text-white':'bg-white text-slate-600 hover:bg-slate-50')}>☰ List</button>
+          <button onClick={()=>setView('board')} className={cx('px-3 py-1.5 text-xs font-medium', view==='board'?'bg-forest-500 text-white':'bg-white text-slate-600 hover:bg-slate-50')}>⊞ Board</button>
         </div>
         <Btn onClick={()=>openNewTask()}>＋ New task</Btn>
       </div>
@@ -458,7 +497,7 @@ function TasksView() {
               {col.length===0 && <div className="text-xs text-slate-300 text-center py-10">Nothing here</div>}
             </div>
             <div className="p-2 border-t border-slate-100">
-              <button onClick={()=>openNewTask({status:s.id})} className="w-full text-xs text-slate-400 hover:text-honey-600 py-1.5 hover:bg-white rounded-lg transition">＋ Add task</button>
+              <button onClick={()=>openNewTask({status:s.id})} className="w-full text-xs text-slate-400 hover:text-forest-600 py-1.5 hover:bg-white rounded-lg transition">＋ Add task</button>
             </div>
           </div>;
         })}
@@ -509,7 +548,7 @@ function NoteForm({ note, onSave, onClose, defaultType }) {
       <Field label="Location / Channel"><input className={inputCls} value={f.location} onChange={e=>set('location',e.target.value)} placeholder="Zoom, Mumbai office…" /></Field>
     </div>
     <Field label="Notes"><RichEditor value={f.body} onChange={v=>setF(s=>({...s, body:v, summary:s.summaryEdited?s.summary:autoSummary(v)}))} /></Field>
-    <Field label="Summary" right={<button type="button" onClick={()=>setF(s=>({...s,summary:autoSummary(s.body),summaryEdited:false}))} className="text-honey-600 hover:underline font-medium">✨ Auto-summarise</button>}
+    <Field label="Summary" right={<button type="button" onClick={()=>setF(s=>({...s,summary:autoSummary(s.body),summaryEdited:false}))} className="text-forest-600 hover:underline font-medium">✨ Auto-summarise</button>}
            hint="Generated automatically — edit freely.">
       <textarea rows={2} className={inputCls} value={f.summary} onChange={e=>setF(s=>({...s,summary:e.target.value,summaryEdited:true}))} placeholder="A one-line summary will appear here as you type…" />
     </Field>
@@ -541,7 +580,7 @@ function NoteCard({ n, onOpen }) {
       <div className="flex -space-x-2 items-center">
         {people.slice(0,5).map(p=><div key={p.id} title={p.name}><Avatar name={p.name} size={26} /></div>)}
         {(n.external_participants||[]).slice(0,3).map((x,i)=><div key={'e'+i} title={x}><Avatar name={x} size={26} /></div>)}
-        {n.context && <span className="ml-3 text-[11px] px-1.5 py-0.5 rounded bg-honey-100 text-honey-700">{n.context}</span>}
+        {n.context && <span className="ml-3 text-[11px] px-1.5 py-0.5 rounded bg-forest-100 text-forest-700">{n.context}</span>}
       </div>
       <div className="flex items-center gap-2 text-xs text-slate-400">
         {(n.attachments||[]).length>0 && <span>📎 {n.attachments.length}</span>}
@@ -598,7 +637,7 @@ function TimelineView({ onOpen }) {
       : groups.map(g => <div key={g.k} className="mb-5">
         <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">{g.k}</div>
         <div className="relative pl-6">
-          <div className="absolute left-2 top-1 bottom-1 w-0.5 bg-honey-200" />
+          <div className="absolute left-2 top-1 bottom-1 w-0.5 bg-forest-200" />
           {g.items.map(n => { const who=[...(n.participant_ids||[]).map(nameOf), ...(n.external_participants||[])]; const t=typeOf(n.type);
             return <div key={n.id} className="relative mb-3">
               <div className="absolute -left-[18px] top-2 w-3 h-3 rounded-full ring-2 ring-white" style={{background:t.color}} />
@@ -607,7 +646,7 @@ function TimelineView({ onOpen }) {
                   <div className="text-sm"><span className="font-semibold text-slate-700">{n.logged_by||'Someone'}</span>
                     <span className="text-slate-400"> · {t.label.toLowerCase()} with </span>
                     <span className="font-semibold text-slate-700">{who.join(', ')||'—'}</span>
-                    {n.context && <span className="ml-1 text-[11px] px-1.5 py-0.5 rounded bg-honey-100 text-honey-700">{n.context}</span>}</div>
+                    {n.context && <span className="ml-1 text-[11px] px-1.5 py-0.5 rounded bg-forest-100 text-forest-700">{n.context}</span>}</div>
                   <span className="text-xs text-slate-400">{fmtTime(n.datetime)}</span>
                 </div>
                 {(n.summary||n.title) && <p className="text-sm text-slate-500 mt-1">{n.summary||n.title}</p>}
@@ -665,10 +704,10 @@ function PeopleView({ onOpenPerson }) {
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-50 text-xs text-slate-400">
             <span className="flex gap-3">
               <span>{noteCount(p.id)} note{noteCount(p.id)!==1?'s':''}</span>
-              {taskCount(p.id)>0 && <span className="text-honey-600 font-medium">✅ {taskCount(p.id)} open</span>}
+              {taskCount(p.id)>0 && <span className="text-forest-600 font-medium">✅ {taskCount(p.id)} open</span>}
             </span>
             <div className="opacity-0 group-hover:opacity-100 flex gap-2" onClick={e=>e.stopPropagation()}>
-              <button onClick={()=>setEditing(p)} className="hover:text-honey-600">Edit</button>
+              <button onClick={()=>setEditing(p)} className="hover:text-forest-600">Edit</button>
               <button onClick={()=>{ if(confirm('Delete '+p.name+'?')) removePerson(p.id); }} className="hover:text-red-600">Delete</button></div></div>
         </div>))}</div>}
     <Modal open={!!editing} onClose={()=>setEditing(null)} title={editing&&editing.id?'Edit contact':'New contact'}>
@@ -689,9 +728,9 @@ function PersonDetail({ id, onClose, onOpenNote }) {
     <div className="flex items-start gap-4"><Avatar name={p.name} size={56} />
       <div className="flex-1"><h3 className="text-xl font-bold text-slate-800">{p.name}</h3>
         <p className="text-slate-500">{[p.role,p.org].filter(Boolean).join(' · ')}</p>
-        <div className="flex flex-wrap gap-3 mt-2 text-sm">{p.email && <a href={'mailto:'+p.email} className="text-honey-600 hover:underline">✉ {p.email}</a>}{p.phone && <a href={'tel:'+p.phone} className="text-honey-600 hover:underline">☎ {p.phone}</a>}</div>
+        <div className="flex flex-wrap gap-3 mt-2 text-sm">{p.email && <a href={'mailto:'+p.email} className="text-forest-600 hover:underline">✉ {p.email}</a>}{p.phone && <a href={'tel:'+p.phone} className="text-forest-600 hover:underline">☎ {p.phone}</a>}</div>
         <div className="flex flex-wrap gap-1 mt-2">{(p.tags||[]).map(t=><Tag key={t}>{t}</Tag>)}</div></div></div>
-    {p.notes && <div className="mt-4 bg-honey-50 rounded-lg p-3 text-sm text-slate-600 whitespace-pre-wrap">{p.notes}</div>}
+    {p.notes && <div className="mt-4 bg-forest-50 rounded-lg p-3 text-sm text-slate-600 whitespace-pre-wrap">{p.notes}</div>}
 
     <div className="flex items-center justify-between mt-5 mb-2">
       <h4 className="font-bold text-slate-700">Tasks · {openTasks.length} open</h4>
@@ -717,7 +756,7 @@ function NoteDetail({ id, onClose, onEdit }) {
     <div className="flex items-start justify-between gap-3">
       <div><div className="flex items-center gap-2 flex-wrap"><h3 className="text-xl font-bold text-slate-800">{n.title}</h3><TypeBadge id={n.type} /></div>
         <div className="text-sm text-slate-500 mt-0.5">{fmtDateTime(n.datetime)} {n.location && '· '+n.location} {n.logged_by && '· logged by '+n.logged_by}</div>
-        <div className="flex flex-wrap gap-1.5 mt-2">{n.context && <span className="text-xs px-2 py-0.5 rounded bg-honey-100 text-honey-700">{n.context}</span>}{(n.tags||[]).map(t=><Tag key={t}>{t}</Tag>)}</div></div>
+        <div className="flex flex-wrap gap-1.5 mt-2">{n.context && <span className="text-xs px-2 py-0.5 rounded bg-forest-100 text-forest-700">{n.context}</span>}{(n.tags||[]).map(t=><Tag key={t}>{t}</Tag>)}</div></div>
       <div className="flex gap-1.5 shrink-0 flex-wrap justify-end">
         <Btn variant="ghost" size="sm" onClick={()=>openNewTask({linked_note_id:n.id,linked_note_title:n.title})}>＋ Action item</Btn>
         <Btn variant="ghost" size="sm" onClick={()=>{onClose();onEdit(n);}}>Edit</Btn>
@@ -727,7 +766,7 @@ function NoteDetail({ id, onClose, onEdit }) {
     {(people.length>0 || (n.external_participants||[]).length>0) && <div className="mt-4"><div className="text-xs font-semibold text-slate-500 mb-1">Participants</div>
       <div className="flex flex-wrap gap-2">{people.map(p=><span key={p.id} className="inline-flex items-center gap-1.5 bg-white border border-slate-200 rounded-full pl-1 pr-3 py-1 text-sm"><Avatar name={p.name} size={22} />{p.name}</span>)}
         {(n.external_participants||[]).map((x,i)=><span key={'e'+i} className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-full pl-1 pr-3 py-1 text-sm"><Avatar name={x} size={22} />{x}</span>)}</div></div>}
-    {n.summary && <div className="mt-4 bg-honey-50 border border-honey-100 rounded-lg p-3"><div className="text-xs font-semibold text-honey-700 mb-0.5">✨ Summary</div><p className="text-slate-700">{n.summary}</p></div>}
+    {n.summary && <div className="mt-4 bg-forest-50 border border-forest-100 rounded-lg p-3"><div className="text-xs font-semibold text-forest-700 mb-0.5">✨ Summary</div><p className="text-slate-700">{n.summary}</p></div>}
     {n.body && <div className="mt-4"><div className="text-xs font-semibold text-slate-500 mb-1">Notes</div><div className="bg-white border border-slate-200 rounded-lg p-4"><NoteContent html={n.body} /></div></div>}
     {linkedTasks.length>0 && <div className="mt-4"><div className="text-xs font-semibold text-slate-500 mb-1">Action items · {linkedTasks.length}</div>
       <div className="space-y-1.5">{linkedTasks.map(t=><div key={t.id} className="flex items-center gap-2 text-sm py-1">
@@ -767,10 +806,10 @@ function Home({ go, onOpen, openNew }) {
   const byType = TYPES.map(t=>({ t, n:data.notes.filter(x=>x.type===t.id).length })).filter(x=>x.n>0);
 
   return <div className="space-y-5">
-    <div className="rounded-2xl bg-gradient-to-br from-honey-400 to-honey-600 text-white p-6 shadow-lg">
-      <div className="text-sm font-medium text-honey-100">Welcome back, {me} 🧠</div>
+    <div className="rounded-2xl bg-gradient-to-br from-forest-400 to-forest-600 text-white p-6 shadow-lg">
+      <div className="text-sm font-medium text-forest-100">Welcome back, {me} 🧠</div>
       <h1 className="text-2xl font-extrabold mt-1">Hivemind · Bombay Bioworks</h1>
-      <p className="text-honey-50/90 text-sm mt-1 max-w-lg">The shared brain and control panel of the company — notes, relationships, tasks, all in one place.</p>
+      <p className="text-forest-50/90 text-sm mt-1 max-w-lg">The shared brain and control panel of the company — notes, relationships, tasks, all in one place.</p>
       <div className="flex gap-2 mt-4 flex-wrap">
         <Btn variant="dark" onClick={()=>openNew()}>＋ New note</Btn>
         <Btn variant="ghost" onClick={()=>openNewTask()}>＋ New task</Btn>
@@ -788,7 +827,7 @@ function Home({ go, onOpen, openNew }) {
     <div className="grid lg:grid-cols-3 gap-4">
       <div className="lg:col-span-2 space-y-4">
         <div>
-          <div className="flex items-center justify-between mb-2"><h3 className="font-bold text-slate-700">Recent notes</h3><button onClick={()=>go('notes')} className="text-sm text-honey-600 hover:underline">All notes →</button></div>
+          <div className="flex items-center justify-between mb-2"><h3 className="font-bold text-slate-700">Recent notes</h3><button onClick={()=>go('notes')} className="text-sm text-forest-600 hover:underline">All notes →</button></div>
           {recent.length===0 ? <div className="bg-white rounded-xl border border-dashed border-slate-200 p-8 text-center text-slate-400 text-sm">Nothing yet — start with your latest conversation.</div>
             : <div className="space-y-2">{recent.map(n=><NoteCard key={n.id} n={n} onOpen={onOpen} />)}</div>}
         </div>
@@ -797,16 +836,16 @@ function Home({ go, onOpen, openNew }) {
         <div>
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-bold text-slate-700">My tasks{overdueCount>0&&<span className="ml-1 text-xs text-red-600 font-semibold">⚠ {overdueCount}</span>}</h3>
-            <button onClick={()=>go('tasks')} className="text-sm text-honey-600 hover:underline">All tasks →</button>
+            <button onClick={()=>go('tasks')} className="text-sm text-forest-600 hover:underline">All tasks →</button>
           </div>
           <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
             {myOpenTasks.length===0
-              ? <div className="p-4 text-sm text-slate-400 text-center">No open tasks for you.<br /><button onClick={()=>openNewTask()} className="text-honey-600 hover:underline mt-1">Create one →</button></div>
+              ? <div className="p-4 text-sm text-slate-400 text-center">No open tasks for you.<br /><button onClick={()=>openNewTask()} className="text-forest-600 hover:underline mt-1">Create one →</button></div>
               : <div className="divide-y divide-slate-50">
                   {myOpenTasks.slice(0,5).map(t=><div key={t.id} className="px-3 py-2.5 flex items-center gap-2 hover:bg-slate-50 cursor-pointer" onClick={()=>go('tasks')}>
-                    <span className={cx('text-xs font-bold', isOverdue(t.due_date)?'text-red-600':'text-honey-500')}>{isOverdue(t.due_date)?'⚠':'●'}</span>
+                    <span className={cx('text-xs font-bold', isOverdue(t.due_date)?'text-red-600':'text-forest-500')}>{isOverdue(t.due_date)?'⚠':'●'}</span>
                     <span className={cx('text-sm flex-1 truncate', t.status==='done'?'line-through text-slate-400':'text-slate-700')}>{t.title}</span>
-                    {t.due_date && <span className={cx('text-[11px] shrink-0', isOverdue(t.due_date)?'text-red-600 font-medium':isDueToday(t.due_date)?'text-honey-600 font-medium':'text-slate-400')}>{isDueToday(t.due_date)?'Today':fmtDate(t.due_date)}</span>}
+                    {t.due_date && <span className={cx('text-[11px] shrink-0', isOverdue(t.due_date)?'text-red-600 font-medium':isDueToday(t.due_date)?'text-forest-600 font-medium':'text-slate-400')}>{isDueToday(t.due_date)?'Today':fmtDate(t.due_date)}</span>}
                   </div>)}
                   {myOpenTasks.length>5 && <div className="px-3 py-2 text-xs text-slate-400 text-center">+{myOpenTasks.length-5} more</div>}
                 </div>}
@@ -837,8 +876,8 @@ function Home({ go, onOpen, openNew }) {
    SETTINGS
 ══════════════════════════════════════════════════════════════ */
 function SettingsView() {
-  const { cfg, setConfig, store, data, reload } = useApp();
-  const [url, setUrl] = useState(cfg.supabaseUrl||''); const [key, setKey] = useState(cfg.supabaseKey||''); const [name, setName] = useState(cfg.me||'');
+  const { cfg, setConfig, store, user, data, reload } = useApp();
+  const [name, setName] = useState(cfg.me || user?.displayName || '');
   const exportData = () => {
     const blob=new Blob([JSON.stringify({people:data.people, notes:data.notes, tasks:data.tasks||[], exported:nowISO()},null,2)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='hivemind-backup-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
@@ -855,18 +894,23 @@ function SettingsView() {
     <h2 className="text-xl font-bold text-slate-800">Settings</h2>
     <section className="bg-white rounded-xl border border-slate-200 p-5">
       <h3 className="font-bold text-slate-700 mb-3">Your identity</h3>
-      <Field label="Your name" hint="Used to filter 'My Tasks' and stamp what you log.">
-        <div className="flex gap-2"><input className={inputCls} value={name} onChange={e=>setName(e.target.value)} /><Btn onClick={()=>setConfig({...cfg,me:name.trim()||'Me'})}>Save</Btn></div></Field>
+      {user && <div className="flex items-center gap-3 mb-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
+        {user.photoURL
+          ? <img src={user.photoURL} alt="" className="w-9 h-9 rounded-full" />
+          : <Avatar name={user.displayName||user.email} size={36} />}
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-slate-800 text-sm truncate">{user.displayName}</div>
+          <div className="text-xs text-slate-400 truncate">{user.email}</div>
+        </div>
+        <Btn variant="ghost" size="sm" onClick={()=>firebase.auth().signOut()}>Sign out</Btn>
+      </div>}
+      <Field label="Display name" hint="Overrides your Google name inside Hivemind (task stamps, note author).">
+        <div className="flex gap-2"><input className={inputCls} value={name} onChange={e=>setName(e.target.value)} placeholder={user?.displayName||'Your name'} /><Btn onClick={()=>setConfig({...cfg,me:name.trim()||user?.displayName||'Me'})}>Save</Btn></div></Field>
     </section>
     <section className="bg-white rounded-xl border border-slate-200 p-5">
-      <div className="flex items-center gap-2 mb-1"><h3 className="font-bold text-slate-700">Shared cloud sync</h3>
-        <span className={cx('text-xs px-2 py-0.5 rounded-full', store.mode==='cloud'?'bg-green-100 text-green-700':'bg-slate-100 text-slate-500')}>{store.mode==='cloud'?'● Connected':'Local only'}</span></div>
-      <p className="text-sm text-slate-500 mb-3">Connect a free Supabase project to share one brain across the team. See README for the 2-minute setup.</p>
-      <div className="space-y-3">
-        <Field label="Supabase Project URL"><input className={inputCls} value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxx.supabase.co" /></Field>
-        <Field label="Supabase anon public key"><input className={inputCls} value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJ…" /></Field>
-        <div className="flex gap-2"><Btn onClick={()=>setConfig({...cfg,supabaseUrl:url.trim(),supabaseKey:key.trim()})}>Connect & reload</Btn>
-          {store.mode==='cloud' && <Btn variant="ghost" onClick={()=>setConfig({...cfg,supabaseUrl:'',supabaseKey:''})}>Disconnect</Btn>}</div></div>
+      <div className="flex items-center gap-2 mb-1"><h3 className="font-bold text-slate-700">Cloud sync</h3>
+        <span className={cx('text-xs px-2 py-0.5 rounded-full', store.mode==='cloud'?'bg-green-100 text-green-700':'bg-slate-100 text-slate-500')}>{store.mode==='cloud'?'● Firebase connected':'Local only'}</span></div>
+      <p className="text-sm text-slate-500">Synced to Firebase (Bombay Bioworks project). Data is shared across the team automatically.</p>
     </section>
     <section className="bg-white rounded-xl border border-slate-200 p-5">
       <h3 className="font-bold text-slate-700 mb-3">Backup & restore</h3>
@@ -888,10 +932,10 @@ const NAV = [
   { id:'settings', label:'Settings', icon:'⚙️' },
 ];
 
-function App() {
+function App({ user }) {
   const [cfg, setCfg] = useState(loadCfg);
-  const store = useMemo(()=>buildAdapter(cfg), [cfg.supabaseUrl, cfg.supabaseKey]);
-  const me = cfg.me || 'Me';
+  const store = useMemo(()=>buildAdapter(), []);
+  const me = cfg.me || user?.displayName || 'Me';
   const [tab, setTab] = useState('home');
   const [data, setData] = useState({ people:[], notes:[], tasks:[] });
   const [loading, setLoading] = useState(true);
@@ -920,7 +964,7 @@ function App() {
   const removeTask = async (id) => { await store.remove('tasks',id); reload(); };
   const openNewTask = (defaults={}) => setEditTask({__new:true,...defaults});
 
-  const ctx = { cfg, setConfig, store, me, data, reload, savePerson, removePerson, saveNote, removeNote, saveTask, removeTask, openNewTask };
+  const ctx = { cfg, setConfig, store, me, user, data, reload, savePerson, removePerson, saveNote, removeNote, saveTask, removeTask, openNewTask };
 
   const results = useMemo(()=>{
     if(!search.trim()) return null;
@@ -934,31 +978,31 @@ function App() {
 
   return <AppCtx.Provider value={ctx}>
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-honey-100">
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-forest-100">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
           <div className="flex items-center gap-2 font-extrabold text-slate-800 cursor-pointer" onClick={()=>setTab('home')}>
-            <span className="text-xl">🧠</span><span>Hivemind</span><span className="hidden sm:inline text-xs font-medium text-slate-400">· Bombay Bioworks</span></div>
+            <BBLogo size={28} /><span>Hivemind</span><span className="hidden sm:inline text-xs font-medium text-slate-400">· Bombay Bioworks</span></div>
           <div className="flex-1 max-w-md mx-auto relative">
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search the hive…" className="w-full rounded-full bg-honey-50 border border-honey-100 px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-honey-300" />
+            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search the hive…" className="w-full rounded-full bg-forest-50 border border-forest-100 px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300" />
             {results && <div className="absolute mt-1 w-full bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden z-50 max-h-96 overflow-y-auto">
               {!results.notes.length&&!results.people.length&&!results.tasks.length && <div className="p-3 text-sm text-slate-400">No matches.</div>}
               {results.notes.length>0 && <><div className="px-3 pt-2 text-[11px] font-semibold text-slate-400 uppercase">Notes</div>
-                {results.notes.map(n=><button key={n.id} onClick={()=>{setOpenNoteId(n.id);setSearch('');}} className="w-full text-left px-3 py-2 hover:bg-honey-50 text-sm">{typeOf(n.type).icon} {n.title} <span className="text-slate-400">· {fmtDate(n.datetime)}</span></button>)}</>}
+                {results.notes.map(n=><button key={n.id} onClick={()=>{setOpenNoteId(n.id);setSearch('');}} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm">{typeOf(n.type).icon} {n.title} <span className="text-slate-400">· {fmtDate(n.datetime)}</span></button>)}</>}
               {results.tasks.length>0 && <><div className="px-3 pt-2 text-[11px] font-semibold text-slate-400 uppercase">Tasks</div>
-                {results.tasks.map(t=><button key={t.id} onClick={()=>{setEditTask(t);setSearch('');setTab('tasks');}} className="w-full text-left px-3 py-2 hover:bg-honey-50 text-sm">✅ {t.title} <span className="text-slate-400">{t.assigned_to_name?'· '+t.assigned_to_name:''}</span></button>)}</>}
+                {results.tasks.map(t=><button key={t.id} onClick={()=>{setEditTask(t);setSearch('');setTab('tasks');}} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm">✅ {t.title} <span className="text-slate-400">{t.assigned_to_name?'· '+t.assigned_to_name:''}</span></button>)}</>}
               {results.people.length>0 && <><div className="px-3 pt-2 text-[11px] font-semibold text-slate-400 uppercase">People</div>
-                {results.people.map(p=><button key={p.id} onClick={()=>{setOpenPerson(p.id);setSearch('');}} className="w-full text-left px-3 py-2 hover:bg-honey-50 text-sm">🙋 {p.name} <span className="text-slate-400">· {p.org}</span></button>)}</>}
+                {results.people.map(p=><button key={p.id} onClick={()=>{setOpenPerson(p.id);setSearch('');}} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm">🙋 {p.name} <span className="text-slate-400">· {p.org}</span></button>)}</>}
             </div>}
           </div>
           <div title={me} className="hidden sm:block"><Avatar name={me} size={32} /></div>
         </div>
         <nav className="max-w-6xl mx-auto px-2 flex gap-1 overflow-x-auto">
-          {NAV.map(n=><button key={n.id} onClick={()=>setTab(n.id)} className={cx('px-3 py-2 text-sm font-medium border-b-2 -mb-px whitespace-nowrap transition', tab===n.id?'border-honey-500 text-honey-700':'border-transparent text-slate-500 hover:text-slate-800')}><span className="mr-1">{n.icon}</span>{n.label}</button>)}
+          {NAV.map(n=><button key={n.id} onClick={()=>setTab(n.id)} className={cx('px-3 py-2 text-sm font-medium border-b-2 -mb-px whitespace-nowrap transition', tab===n.id?'border-forest-500 text-forest-700':'border-transparent text-slate-500 hover:text-slate-800')}><span className="mr-1">{n.icon}</span>{n.label}</button>)}
         </nav>
       </header>
 
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
-        {loading ? <div className="text-center py-20 text-honey-600">Loading the hive…</div> : <>
+        {loading ? <div className="text-center py-20 text-forest-600">Loading the hive…</div> : <>
           {tab==='home'     && <Home go={setTab} onOpen={setOpenNoteId} openNew={(t)=>setEditNote({__new:true,type:t})} />}
           {tab==='notes'    && <NotesView onOpen={setOpenNoteId} openNew={(t)=>setEditNote({__new:true,type:t})} />}
           {tab==='tasks'    && <TasksView />}
@@ -968,7 +1012,7 @@ function App() {
         </>}
       </main>
 
-      <footer className="text-center text-xs text-slate-400 py-6">🧠 Hivemind · Bombay Bioworks · {store.mode==='cloud'?'cloud-synced':'local — connect Supabase in Settings to share with the team'}</footer>
+      <footer className="text-center text-xs text-slate-400 py-6">🧠 Hivemind · Bombay Bioworks · {store.mode==='cloud'?'cloud-synced':'local only'}</footer>
 
       {openPerson && <PersonDetail id={openPerson} onClose={()=>setOpenPerson(null)} onOpenNote={setOpenNoteId} />}
       {openNoteId && <NoteDetail id={openNoteId} onClose={()=>setOpenNoteId(null)} onEdit={n=>{setOpenNoteId(null);setEditNote(n);}} />}
@@ -981,6 +1025,93 @@ function App() {
   </AppCtx.Provider>;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   AUTH — LOGIN SCREEN
+══════════════════════════════════════════════════════════════ */
+function LoginScreen() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  async function signIn() {
+    setLoading(true); setError('');
+    try {
+      await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    } catch(e) { setError(e.message); setLoading(false); }
+  }
+  return <div className="min-h-screen hex-bg flex items-center justify-center px-4">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-10 max-w-sm w-full text-center">
+      <div className="flex justify-center mb-5"><BBLogo size={56} /></div>
+      <h1 className="text-2xl font-bold text-slate-800 mb-1">Hivemind</h1>
+      <p className="text-slate-400 text-sm mb-8">Bombay Bioworks · Internal tool</p>
+      <button onClick={signIn} disabled={loading}
+        className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition text-sm shadow-sm disabled:opacity-50">
+        <svg width="18" height="18" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.7 2.5 30.2 0 24 0 14.7 0 6.8 5.4 2.9 13.4l7.9 6.1C12.7 13.5 17.9 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.4 46.5 31.3 46.5 24.5z"/>
+          <path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3.1-.8-4.5s.3-3 .8-4.5L2.9 13.4C1 17 0 20.9 0 25s1 8 2.9 11.6l7.9-6.1z"/>
+          <path fill="#34A853" d="M24 50c6.2 0 11.4-2 15.2-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.1 0-11.3-4-13.2-9.5l-7.9 6.1C6.8 44.6 14.7 50 24 50z"/>
+        </svg>
+        {loading ? 'Signing in…' : 'Sign in with Google'}
+      </button>
+      {error && <p className="text-red-500 text-xs mt-4 text-left">{error}</p>}
+      <p className="text-slate-400 text-xs mt-6">Access restricted to the Bombay Bioworks team.</p>
+    </div>
+  </div>;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ACCESS PENDING — SIGNED IN BUT NOT APPROVED YET
+══════════════════════════════════════════════════════════════ */
+function AccessPendingScreen({ user }) {
+  const [submitted, setSubmitted] = useState(false);
+  useEffect(() => {
+    if (!user || submitted) return;
+    firebase.firestore().collection('_requests').doc(user.uid).set({
+      uid: user.uid, email: user.email, name: user.displayName || '', requestedAt: new Date().toISOString(),
+    }).then(()=>setSubmitted(true)).catch(()=>{});
+  }, [user]);
+  return <div className="min-h-screen hex-bg flex items-center justify-center px-4">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-10 max-w-sm w-full text-center">
+      <div className="text-5xl mb-4">🔐</div>
+      <h1 className="text-xl font-bold text-slate-800 mb-2">Access pending</h1>
+      <p className="text-slate-500 text-sm mb-3">You're signed in as <strong>{user.email}</strong>.</p>
+      <p className="text-slate-400 text-sm mb-6">Your access request has been sent to the admin. Once approved, refresh this page.</p>
+      <div className="bg-slate-50 rounded-lg p-3 mb-6 text-left">
+        <p className="text-xs text-slate-400 mb-1">Your access code (share with admin if needed)</p>
+        <code className="text-xs text-slate-700 break-all">{user.uid}</code>
+      </div>
+      <Btn variant="ghost" onClick={()=>firebase.auth().signOut()}>Sign out</Btn>
+    </div>
+  </div>;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ROOT — INITIALISES FIREBASE + AUTH + ACCESS GATE
+══════════════════════════════════════════════════════════════ */
+function Root() {
+  const [state, setState] = useState({ phase: 'loading', user: null });
+  useEffect(() => {
+    if (!window.firebase) { setState({ phase: 'ready', user: null }); return; }
+    let app;
+    try { app = firebase.app(); } catch { app = firebase.initializeApp(FIREBASE_CONFIG); }
+    return firebase.auth().onAuthStateChanged(async user => {
+      if (!user) { setState({ phase: 'login', user: null }); return; }
+      // Founders + org domain always have access
+      const AUTO = ['connect@pratikagarwal.com','mukundkhetan@gmail.com','karan@mbplgroup.com'];
+      if (AUTO.includes(user.email) || user.email?.endsWith('@bombaybioworks.com')) { setState({ phase: 'ready', user }); return; }
+      // Others: check allowlist
+      try {
+        const doc = await firebase.firestore().collection('_access').doc(user.uid).get();
+        setState({ phase: doc.exists ? 'ready' : 'pending', user });
+      } catch { setState({ phase: 'pending', user }); }
+    });
+  }, []);
+  if (state.phase === 'loading') return <div className="min-h-screen hex-bg flex items-center justify-center"><span className="text-forest-600 font-medium">Loading Hivemind…</span></div>;
+  if (state.phase === 'login') return <LoginScreen />;
+  if (state.phase === 'pending') return <AccessPendingScreen user={state.user} />;
+  if (!window.firebase) return <App user={null} />;
+  return <App user={state.user} />;
+}
+
 const rootEl = document.getElementById('root');
 rootEl.className = '';
-ReactDOM.createRoot(rootEl).render(<App />);
+ReactDOM.createRoot(rootEl).render(<Root />);

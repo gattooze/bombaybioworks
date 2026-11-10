@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Pratik is always admin — no approval needed
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'connect@pratikagarwal.com';
+    }
+
+    // Founders + bombaybioworks.com org + existing allowlist
+    function isApproved() {
+      return request.auth != null && (
+        request.auth.token.email == 'connect@pratikagarwal.com'
+        || request.auth.token.email == 'mukundkhetan@gmail.com'
+        || request.auth.token.email == 'karan@mbplgroup.com'
+        || request.auth.token.email.matches('.*@bombaybioworks\\.com')
+        || exists(/databases/$(database)/documents/_access/$(request.auth.uid))
+      );
+    }
+
+    // Users can read their own access doc to check approval status
+    match /_access/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // Admin manages via Firebase Console only
+    }
+
+    // Unapproved users can submit one access request (their own)
+    match /_requests/{uid} {
+      allow create: if request.auth != null && request.auth.uid == uid;
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    // All app data requires approved access
+    match /{document=**} {
+      allow read, write: if isApproved();
+    }
+  }
+}
