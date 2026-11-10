@@ -106,12 +106,29 @@ export default function Shell() {
             )}
           </div>
 
-          {/* User avatar + sign out */}
+          {/* User avatar + menu */}
           {user && (
-            <div className="hidden sm:flex items-center gap-2">
-              <div title={`${me} · Sign out`} onClick={() => signOut(auth)} className="cursor-pointer hover:opacity-70 transition">
+            <div className="hidden sm:flex items-center gap-2 relative">
+              <div onClick={() => setShowUserMenu(v => !v)} className="cursor-pointer hover:opacity-80 transition">
                 <Avatar name={me} size={32} />
               </div>
+              {showUserMenu && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
+                  <div className="absolute right-0 top-10 z-50 bg-white rounded-xl border border-slate-200 shadow-xl py-1 w-44">
+                    <div className="px-3 py-2 border-b border-slate-100">
+                      <div className="text-xs font-semibold text-slate-700 truncate">{me}</div>
+                      <div className="text-[11px] text-slate-400 truncate">{user.email}</div>
+                    </div>
+                    <button onClick={() => { navigate('/settings'); setShowUserMenu(false); }} className="w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-forest-50">
+                      Settings
+                    </button>
+                    <button onClick={() => { signOut(auth); setShowUserMenu(false); }} className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50">
+                      Sign out
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
