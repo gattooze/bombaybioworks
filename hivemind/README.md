@@ -54,8 +54,8 @@ Google Sign-In only. Auto-approved:
 Others request access from the app; admin approves via Firebase Console → Firestore → `_access/{uid}`.
 
 ## Architecture
-See `PLATFORM.md` for the full module roadmap, data ontology, and non-negotiable architecture decisions.  
-See `CLAUDE.md` for Firestore schema, access rules, and AI agent guidance.
+See [`PLATFORM.md`](PLATFORM.md) for the module roadmap, ontology decisions, and target architecture.  
+Firestore schema and collection shapes are in [`CLAUDE.md`](CLAUDE.md) (also serves as AI agent context).
 
 ## Design system
 Bombay Bioworks Design System v1 — tokens in [`src/styles/tokens.css`](src/styles/tokens.css).

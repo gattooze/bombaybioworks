@@ -1,53 +1,60 @@
 # Hivemind — Platform Roadmap
 
-This document captures where Hivemind is going. If you are a Claude agent reading this, the current state of `app.jsx` is a Phase 1 prototype. Build toward the architecture described here.
+The operational nerve centre of Bombay Bioworks — a manufacturing company building bamboo activated carbon. Starts as a CRM and grows into a full internal platform covering relationships, production runs, quality, R&D, procurement, and eventually real-time machine data from the plant floor.
+
+Reference architectures: Palantir Foundry (ontology layer, module composability), OSIsoft PI (time-series historian + document split), standard MES patterns (SCADA → historian → app layer).
+
+**Live:** https://hivemind.bombaybioworks.com  
+**Stack:** Vite 6 + React 18 + React Router v6 + Firebase v10 (Firestore, Auth, Storage)
 
 ---
 
-## What Hivemind will become
+## Current state — Phase 1 complete
 
-The operational nerve centre of Bombay Bioworks — a manufacturing company building bamboo activated carbon. It starts as a CRM and grows into a full internal platform covering relationships, production runs, quality, R&D, procurement, and eventually real-time machine data from the plant floor.
-
-The reference platform architectures we modelled this on: Palantir Foundry (ontology layer, module composability), OSIsoft PI (time-series historian + document split), and standard MES patterns (SCADA → historian → app layer).
+The Vite migration is done. The app runs as a modular, lazy-loaded SPA with:
+- App shell (Shell.jsx, React Router, global modal architecture)
+- CRM (People + interaction history)
+- Notes (rich text, participants, attachments, TF-IDF auto-summary)
+- Tasks (board + list, priorities, assignments)
+- Timeline (notes grouped by month)
+- Settings
+- Google Auth with allowlist access control
+- IndexedDB fallback when signed out
 
 ---
 
-## Three non-negotiable decisions
+## The one open architecture decision
 
-Lock these in before adding any new module. Retrofitting them onto N modules costs N× more.
+### Define the ontology — do this before Phase 2
 
-### 1. Migrate to Vite
-Current zero-build (single app.jsx, CDN React) is correct for a prototype. Wrong for a platform. It prevents code splitting, lazy loading, proper module isolation, and testability. Vite adds a 5-minute build step and unlocks everything else.
+The shared object model all modules read from. Core objects:
 
-Do this before the next module is built.
-
-### 2. Define the ontology
-The shared object model that all modules read from. Core objects:
 - **Equipment** — carbonisers, activators, any plant asset
 - **Batch** — a production run, the central object for manufacturing
 - **Site** — Guwahati plant, future sites
-- **Person** — contacts, team members, suppliers' reps
+- **Person** — contacts, team members, suppliers' reps (exists today)
 - **Supplier** — raw material and service suppliers
 - **Document** — SOPs, reports, compliance records
 
 No module should query raw Firestore collections directly. Every module reads through these typed objects. This is what prevents the "every module has its own schema" entropy that kills internal platforms.
 
-### 3. Split the database before machine data arrives
-Firestore handles documents and collaborative data. It cannot handle machine sensor data — high-frequency, time-indexed, append-only reads/writes.
+---
 
-Two databases:
-- **Firestore** — notes, tasks, people, batches, decisions, QC reports
-- **TimescaleDB or InfluxDB** — temperature, pressure, flow, cycle times, OEE components (anything at >1 reading/minute from a machine)
+## The one rule above all
 
-Pick the time-series DB and provision it before any plant connectivity work begins. Migration after the fact is brutal.
+When machine data eventually flows from the plant, a network outage or app bug must never stop the line. **The plant runs; the app catches up.**
+
+Every architectural decision should be made with this constraint in mind: offline-first at the floor, sync when available, never block production on connectivity.
 
 ---
 
 ## Module roadmap
 
-### Phase 1 — Foundation (current)
-- **App shell** — Vite migration, React Router, lazy-loaded modules, card grid homepage, role-aware module visibility
-- **CRM + Notes** — already built, refactor into proper module structure during migration
+### Phase 1 — Foundation ✓ done
+- App shell, React Router, lazy-loaded modules, homepage
+- CRM + Notes, Tasks, Timeline, Settings
+- Firebase Auth + Firestore + Storage
+- Bombay Bioworks design system tokens applied
 
 ### Phase 2 — Manufacturing core
 - **Manufacturing Ops** — production runs, batch tracking, manual downtime logging, OEE (manual entry first)
@@ -56,9 +63,9 @@ Pick the time-series DB and provision it before any plant connectivity work begi
 - **Procurement** — supplier contacts, PO tracking, raw material inventory, pricing history
 
 ### Phase 3 — Plant connectivity
-- **Maintenance** — equipment history, preventive maintenance schedules, work orders (linked to Equipment ontology object)
+- **Maintenance** — equipment history, preventive maintenance schedules, work orders
 - **Machine data** — real-time sensor feeds via MQTT → stream processor → time-series DB → WebSocket → live dashboards; offline-first on the floor
-- **Simulator** — process modelling, yield and efficiency optimisation, what-if scenarios (informed by real production data)
+- **Simulator** — process modelling, yield and efficiency optimisation, what-if scenarios
 
 ### Phase 4 — Intelligence layer
 - **Analytics** — cross-module reporting, BigQuery backend
@@ -96,6 +103,18 @@ Machine data ingestion path:
 
 ---
 
+## Database split
+
+Firestore handles documents and collaborative data. It cannot handle machine sensor data — high-frequency, time-indexed, append-only reads/writes.
+
+Two databases (Phase 3):
+- **Firestore** — notes, tasks, people, batches, decisions, QC reports
+- **TimescaleDB or InfluxDB** — temperature, pressure, flow, cycle times, OEE components (anything at >1 reading/minute from a machine)
+
+Pick the time-series DB and provision it before any plant connectivity work begins.
+
+---
+
 ## Permission hierarchy
 
 ```
@@ -111,22 +130,15 @@ Access granted at any node is inherited downward. Financial and HR data sits out
 
 ---
 
-## Tech stack evolution
+## Tech stack
 
-| Now | Phase 1 | Phase 2 | Phase 3 |
-|-----|---------|---------|---------|
-| Zero-build SPA | Vite + React Router | Cloud Functions backend | TimescaleDB + MQTT |
-| Single app.jsx | Module files, lazy-loaded | Manufacturing modules | Real-time WebSocket |
-| CDN React | npm packages | Ontology locked | Offline floor support |
-| Firebase Hosting | Same hosting | Role-based permissions | Simulator |
-
----
-
-## The one rule above all
-
-When machine data eventually flows from the plant, a network outage or app bug must never stop the line. **The plant runs; the app catches up.**
-
-Every architectural decision should be made with this constraint in mind: offline-first at the floor, sync when available, never block production on connectivity.
+| Layer | Current | Phase 2 | Phase 3 |
+|-------|---------|---------|---------|
+| Build | Vite 6 + React 18 | Same | Same |
+| Routing | React Router v6, lazy modules | Add ontology layer | Same |
+| Backend | Firebase Firestore + Auth + Storage | Cloud Functions | TimescaleDB + MQTT |
+| Styling | Tailwind v3 + BB DS tokens | Same | Same |
+| Real-time | Firestore listeners | Same | WebSocket from time-series DB |
 
 ---
 
@@ -135,5 +147,3 @@ Every architectural decision should be made with this constraint in mind: offlin
 - Company: Bombay Bioworks — building bamboo activated carbon, Guwahati-first
 - Stage: Early — first plant being designed, no machine connectivity yet
 - Team: Pratik Agarwal (PA), Mukund Khetan (MK), Karan Vora (KV)
-- Live app: https://bombay-bioworks.web.app
-- Current data: 5 people + 3 notes seeded (key advisor calls, founders meeting)
