@@ -21,17 +21,27 @@ Internal operating platform for the Bombay Bioworks team — notes, relationship
 ## Dev setup
 ```bash
 npm install
-npm run dev                        # Vite at localhost:5173, auto-connects to emulators
-~/.npm-global/bin/firebase emulators:start   # separate terminal
 ```
+
+Start emulators first (separate terminal — required before `npm run dev`):
+```bash
+firebase emulators:start
+```
+
+Then start the dev server:
+```bash
+npm run dev        # Vite at localhost:5173, auto-connects to emulators
+```
+
+> Firebase CLI: install once with `npm install -g firebase-tools`, then authenticate with `firebase login`.  
+> In dev mode the app talks to local emulators only — no production data is touched.
 
 ## Deploy
 ```bash
 npm run build
-~/.npm-global/bin/firebase deploy --only hosting
+firebase deploy --only hosting
 ```
 
-Firebase CLI: `~/.npm-global/bin/firebase`  
 Project: `bombay-bioworks`
 
 ## Access
@@ -48,4 +58,9 @@ See `PLATFORM.md` for the full module roadmap, data ontology, and non-negotiable
 See `CLAUDE.md` for Firestore schema, access rules, and AI agent guidance.
 
 ## Design system
-Forest Green `#3E6448` · Steel Blue `#5C9AB8` · Cranberry `#A85268` · Inter font · hexagon BBLogo
+Bombay Bioworks Design System v1 — tokens in [`src/styles/tokens.css`](src/styles/tokens.css).
+
+- **Fonts:** Inter (all copy) · IBM Plex Mono (numbers, stats, meta)
+- **Colors:** Forest Green `#3E6448` (primary) · Steel Blue `#5C9AB8` (secondary) · Cranberry `#A85268` (CarbonFuel/energy only)
+- **Tokens:** CSS custom properties (`--p`, `--tx`, `--card`, `--line`, `--sp-*`, `--r-*`, `--shadow-*`) — use these in new components, not Tailwind gray values
+- **Source of truth:** [BB Design System artifact](https://claude.ai/artifact/EGNPavepYRXERqnM9aZzfc)
