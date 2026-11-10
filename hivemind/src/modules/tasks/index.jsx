@@ -10,33 +10,37 @@ function TaskCard({ task, onEdit }) {
   const overdue = isOverdue(task.due_date) && task.status !== 'done';
   const dueToday = isDueToday(task.due_date) && task.status !== 'done';
 
+  const borderColor = task.status === 'done' ? 'var(--line)' : overdue ? 'rgba(220,38,38,.3)' : 'var(--line)';
   return (
     <div
       onClick={() => onEdit(task)}
-      className={cx('bg-white rounded-xl border p-4 cursor-pointer hover:shadow-md transition group', task.status === 'done' ? 'border-slate-100 opacity-60' : overdue ? 'border-red-200' : 'border-slate-200 hover:border-forest-300')}
+      className="p-4 cursor-pointer transition"
+      style={{ background: 'var(--card)', borderRadius: 'var(--r-lg)', border: `1px solid ${borderColor}`, opacity: task.status === 'done' ? 0.6 : 1 }}
+      onMouseEnter={e => { if (task.status !== 'done') { e.currentTarget.style.borderColor = 'var(--line-hv)'; e.currentTarget.style.boxShadow = overdue ? '0 12px 40px rgba(220,38,38,.08)' : 'var(--shadow-card-forest)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = borderColor; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
     >
       <div className="flex items-start gap-2 mb-2">
         <span className="text-base mt-0.5">{stat.icon}</span>
-        <span className={cx('font-semibold text-sm flex-1 group-hover:text-forest-700 transition', task.status === 'done' ? 'line-through text-slate-400' : 'text-slate-800')}>
+        <span className={cx('type-h4 flex-1', task.status === 'done' ? 'line-through' : '')} style={{ color: task.status === 'done' ? 'var(--tx2)' : 'var(--tx)' }}>
           {task.title}
         </span>
-        <span className="text-xs font-semibold px-1.5 py-0.5 rounded" style={{ background: prio.color + '20', color: prio.color }}>
+        <span className="text-xs font-semibold px-1.5 py-0.5" style={{ background: prio.color + '20', color: prio.color, borderRadius: 'var(--r-sm)' }}>
           {prio.icon} {prio.label}
         </span>
       </div>
       {task.description && (
-        <p className="text-xs text-slate-500 mb-2 line-clamp-2">{task.description}</p>
+        <p className="type-body-sm mb-2 line-clamp-2" style={{ color: 'var(--tx2)' }}>{task.description}</p>
       )}
       <div className="flex items-center justify-between mt-2">
         <div className="flex items-center gap-2 flex-wrap">
           {task.assigned_to_name && (
-            <span className="flex items-center gap-1 text-xs text-slate-500">
+            <span className="flex items-center gap-1 type-body-sm" style={{ color: 'var(--tx2)' }}>
               <Avatar name={task.assigned_to_name} size={16} />
               {task.assigned_to_name}
             </span>
           )}
           {task.due_date && (
-            <span className={cx('text-xs', overdue ? 'text-red-600 font-semibold' : dueToday ? 'text-amber-600 font-semibold' : 'text-slate-400')}>
+            <span className={cx('type-body-sm', overdue ? 'font-semibold' : dueToday ? 'font-semibold' : '')} style={{ color: overdue ? '#dc2626' : dueToday ? '#d97706' : 'var(--tx3)' }}>
               {overdue ? '⚠ Overdue · ' : dueToday ? '⚡ Today · ' : ''}{fmtDate(task.due_date)}
             </span>
           )}
@@ -72,13 +76,14 @@ export default function TasksView() {
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Tasks</h1>
-          <p className="text-sm text-slate-400">{openCount} open · {tasks.length} total</p>
+          <h1 className="text-xl font-bold" style={{ color: 'var(--tx)', letterSpacing: '-0.03em' }}>Tasks</h1>
+          <p className="text-sm" style={{ color: 'var(--tx2)' }}>{openCount} open · {tasks.length} total</p>
         </div>
         <div className="flex gap-2">
-          <div className="flex rounded-lg border border-slate-200 overflow-hidden">
+          <div className="flex overflow-hidden" style={{ border: '1px solid var(--line-hv)', borderRadius: 'var(--r-md)' }}>
             {['board', 'list'].map(v => (
-              <button key={v} onClick={() => setView(v)} className={cx('px-3 py-1.5 text-xs font-medium', view === v ? 'bg-forest-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50')}>
+              <button key={v} onClick={() => setView(v)} className="px-3 py-1.5 text-xs font-medium transition"
+                style={view === v ? { background: 'var(--p)', color: '#fff' } : { background: 'var(--card)', color: 'var(--tx2)' }}>
                 {v === 'board' ? '⊞ Board' : '☰ List'}
               </button>
             ))}
@@ -92,7 +97,8 @@ export default function TasksView() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search tasks…"
-          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 bg-white max-w-xs"
+          className="px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 max-w-xs transition"
+          style={{ background: 'var(--card)', border: '1px solid var(--line-hv)', borderRadius: 'var(--r-md)', color: 'var(--tx)' }}
         />
       </div>
 
@@ -108,14 +114,17 @@ export default function TasksView() {
             return (
               <div key={col.id}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">{col.icon} {col.label}</span>
-                  <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{colTasks.length}</span>
+                  <span className="type-caption" style={{ color: 'var(--tx2)' }}>{col.icon} {col.label}</span>
+                  <span className="text-xs px-2 py-0.5" style={{ color: 'var(--tx3)', background: 'var(--line)', borderRadius: 'var(--r-full)' }}>{colTasks.length}</span>
                 </div>
                 <div className="space-y-3">
                   {colTasks.map(t => <TaskCard key={t.id} task={t} onEdit={setEditTask} />)}
                   <button
                     onClick={() => openNewTask({ status: col.id })}
-                    className="w-full text-center text-xs text-slate-400 hover:text-forest-600 py-2 border border-dashed border-slate-200 hover:border-forest-300 rounded-lg transition"
+                    className="w-full text-center text-xs py-2 transition"
+                    style={{ color: 'var(--tx3)', border: '1px dashed var(--line-hv)', borderRadius: 'var(--r-lg)' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--p)'; e.currentTarget.style.borderColor = 'var(--p)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--tx3)'; e.currentTarget.style.borderColor = 'var(--line-hv)'; }}
                   >
                     ＋ Add task
                   </button>

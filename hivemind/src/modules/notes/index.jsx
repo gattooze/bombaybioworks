@@ -12,20 +12,23 @@ function NoteCard({ note, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="bg-white rounded-xl border border-slate-200 p-4 text-left hover:shadow-md hover:border-forest-300 transition w-full group"
+      className="p-4 text-left w-full group transition"
+      style={{ background: 'var(--card)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line)' }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--line-hv)'; e.currentTarget.style.boxShadow = 'var(--shadow-card-forest)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--line)'; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <span className="font-semibold text-slate-800 text-sm leading-snug group-hover:text-forest-700 transition line-clamp-2 flex-1">{note.title}</span>
+        <span className="type-h4 leading-snug line-clamp-2 flex-1 transition" style={{ color: 'var(--tx)' }}>{note.title}</span>
         <TypeBadge type={note.type} />
       </div>
       {note.summary && (
-        <p className="text-xs text-slate-500 leading-relaxed mb-2 line-clamp-2">{note.summary}</p>
+        <p className="type-body-sm leading-relaxed mb-2 line-clamp-2" style={{ color: 'var(--tx2)' }}>{note.summary}</p>
       )}
       <div className="flex items-center justify-between mt-2">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-slate-400">{fmtDate(note.datetime)}</span>
+          <span className="type-caption" style={{ color: 'var(--tx3)' }}>{fmtDate(note.datetime)}</span>
           {participants.length > 0 && (
-            <span className="text-[11px] text-slate-400">· {participants.slice(0, 2).join(', ')}{participants.length > 2 ? ` +${participants.length - 2}` : ''}</span>
+            <span className="type-caption" style={{ color: 'var(--tx3)' }}>· {participants.slice(0, 2).join(', ')}{participants.length > 2 ? ` +${participants.length - 2}` : ''}</span>
           )}
         </div>
         {(note.tags || []).length > 0 && (
@@ -63,8 +66,8 @@ export default function NotesView() {
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Notes</h1>
-          <p className="text-sm text-slate-400">{data.notes.length} interaction{data.notes.length !== 1 ? 's' : ''} logged</p>
+          <h1 className="text-xl font-bold" style={{ color: 'var(--tx)', letterSpacing: '-0.03em' }}>Notes</h1>
+          <p className="text-sm" style={{ color: 'var(--tx2)' }}>{data.notes.length} interaction{data.notes.length !== 1 ? 's' : ''} logged</p>
         </div>
         <Btn onClick={() => openNewNote()}>＋ New note</Btn>
       </div>
@@ -75,14 +78,18 @@ export default function NotesView() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search notes…"
-          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 bg-white flex-1 max-w-xs"
+          className="px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 flex-1 max-w-xs transition"
+          style={{ background: 'var(--card)', border: '1px solid var(--line-hv)', borderRadius: 'var(--r-md)', color: 'var(--tx)' }}
         />
         <div className="flex gap-1 flex-wrap">
           {TYPES_FILTER.map(t => (
             <button
               key={t.id}
               onClick={() => setTypeFilter(t.id)}
-              className={cx('px-3 py-1 rounded-full text-xs font-medium border transition', typeFilter === t.id ? 'bg-forest-600 text-white border-forest-600' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300')}
+              className="px-3 py-1 text-xs font-medium transition"
+              style={typeFilter === t.id
+                ? { background: 'var(--p)', color: '#fff', borderRadius: 'var(--r-full)', border: '1px solid var(--p)' }
+                : { background: 'var(--card)', color: 'var(--tx2)', borderRadius: 'var(--r-full)', border: '1px solid var(--line-hv)' }}
             >
               {t.label}
             </button>

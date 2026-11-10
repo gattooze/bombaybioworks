@@ -105,19 +105,25 @@ function PersonCard({ person, onClick }) {
   const { data } = useApp();
   const count = data.notes.filter(n => (n.participant_ids || []).includes(person.id)).length;
   return (
-    <button onClick={onClick} className="bg-white rounded-xl border border-slate-200 p-4 text-left hover:shadow-md hover:border-forest-300 transition group w-full">
+    <button
+      onClick={onClick}
+      className="p-4 text-left w-full transition"
+      style={{ background: 'var(--card)', borderRadius: 'var(--r-lg)', border: '1px solid var(--line)' }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--line-hv)'; e.currentTarget.style.boxShadow = 'var(--shadow-card-forest)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--line)'; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
+    >
       <div className="flex items-center gap-3 mb-2">
         <Avatar name={person.name} size={36} />
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-slate-800 group-hover:text-forest-700 transition truncate">{person.name}</div>
-          <div className="text-xs text-slate-400 truncate">{[person.role, person.org].filter(Boolean).join(' · ')}</div>
+          <div className="type-h4 truncate" style={{ color: 'var(--tx)' }}>{person.name}</div>
+          <div className="type-body-sm truncate" style={{ color: 'var(--tx2)' }}>{[person.role, person.org].filter(Boolean).join(' · ')}</div>
         </div>
       </div>
       <div className="flex items-center justify-between mt-2">
         <div className="flex gap-1 flex-wrap">
           {(person.tags || []).slice(0, 3).map(t => <Tag key={t} small>{t}</Tag>)}
         </div>
-        <span className="text-xs text-slate-400">{count} note{count !== 1 ? 's' : ''}</span>
+        <span className="type-body-sm" style={{ color: 'var(--tx3)' }}>{count} note{count !== 1 ? 's' : ''}</span>
       </div>
     </button>
   );
@@ -150,8 +156,8 @@ export default function PeopleView() {
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">People</h1>
-          <p className="text-sm text-slate-400">{data.people.length} contact{data.people.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-xl font-bold" style={{ color: 'var(--tx)', letterSpacing: '-0.03em' }}>People</h1>
+          <p className="text-sm" style={{ color: 'var(--tx2)' }}>{data.people.length} contact{data.people.length !== 1 ? 's' : ''}</p>
         </div>
         <Btn onClick={() => setEditing({})}>＋ New contact</Btn>
       </div>
@@ -161,7 +167,8 @@ export default function PeopleView() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search people…"
-          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 bg-white max-w-xs"
+          className="px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 max-w-xs transition"
+          style={{ background: 'var(--card)', border: '1px solid var(--line-hv)', borderRadius: 'var(--r-md)', color: 'var(--tx)' }}
         />
       </div>
 

@@ -42,9 +42,9 @@ export default function Shell() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-forest-100">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
+      {/* Header — DS: nav-bg + blur, 56px nav-h, line border */}
+      <header className="sticky top-0 z-40 backdrop-blur-md" style={{ background: 'var(--nav-bg)', borderBottom: '1px solid var(--line)', height: 'var(--nav-h)' }}>
+        <div className="max-w-6xl mx-auto px-4 h-full flex items-center gap-3">
           {/* Logo */}
           <button
             onClick={() => navigate('/')}
@@ -65,39 +65,40 @@ export default function Shell() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search the hive…"
-              className="w-full rounded-full bg-forest-50 border border-forest-100 px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300"
+              className="w-full px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 transition"
+              style={{ background: 'var(--p-c)', border: '1px solid var(--line)', borderRadius: 'var(--r-full)', color: 'var(--tx)' }}
             />
             {results && (
-              <div className="absolute mt-1 w-full bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden z-50 max-h-96 overflow-y-auto">
+              <div className="absolute mt-1 w-full overflow-hidden z-50 max-h-96 overflow-y-auto" style={{ background: 'var(--card)', border: '1px solid var(--line-hv)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--shadow-float)' }}>
                 {!results.notes.length && !results.people.length && !results.tasks.length && (
-                  <div className="p-3 text-sm text-slate-400">No matches.</div>
+                  <div className="p-3 text-sm" style={{ color: 'var(--tx2)' }}>No matches.</div>
                 )}
                 {results.notes.length > 0 && (
                   <>
-                    <div className="px-3 pt-2 text-[11px] font-semibold text-slate-400 uppercase">Notes</div>
+                    <div className="type-caption px-3 pt-2" style={{ color: 'var(--tx3)' }}>Notes</div>
                     {results.notes.map(n => (
-                      <button key={n.id} onClick={() => { setOpenNoteId(n.id); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm">
-                        {typeOf(n.type).icon} {n.title} <span className="text-slate-400">· {fmtDate(n.datetime)}</span>
+                      <button key={n.id} onClick={() => { setOpenNoteId(n.id); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm transition" style={{ color: 'var(--tx)' }}>
+                        {typeOf(n.type).icon} {n.title} <span style={{ color: 'var(--tx3)' }}>· {fmtDate(n.datetime)}</span>
                       </button>
                     ))}
                   </>
                 )}
                 {results.tasks.length > 0 && (
                   <>
-                    <div className="px-3 pt-2 text-[11px] font-semibold text-slate-400 uppercase">Tasks</div>
+                    <div className="type-caption px-3 pt-2" style={{ color: 'var(--tx3)' }}>Tasks</div>
                     {results.tasks.map(t => (
-                      <button key={t.id} onClick={() => { setEditTask(t); setSearch(''); navigate('/tasks'); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm">
-                        ✅ {t.title} <span className="text-slate-400">{t.assigned_to_name ? '· ' + t.assigned_to_name : ''}</span>
+                      <button key={t.id} onClick={() => { setEditTask(t); setSearch(''); navigate('/tasks'); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm transition" style={{ color: 'var(--tx)' }}>
+                        ✅ {t.title} <span style={{ color: 'var(--tx3)' }}>{t.assigned_to_name ? '· ' + t.assigned_to_name : ''}</span>
                       </button>
                     ))}
                   </>
                 )}
                 {results.people.length > 0 && (
                   <>
-                    <div className="px-3 pt-2 text-[11px] font-semibold text-slate-400 uppercase">People</div>
+                    <div className="type-caption px-3 pt-2" style={{ color: 'var(--tx3)' }}>People</div>
                     {results.people.map(p => (
-                      <button key={p.id} onClick={() => { navigate('/crm?person=' + p.id); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm">
-                        🙋 {p.name} <span className="text-slate-400">· {p.org}</span>
+                      <button key={p.id} onClick={() => { navigate('/crm?person=' + p.id); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm transition" style={{ color: 'var(--tx)' }}>
+                        🙋 {p.name} <span style={{ color: 'var(--tx3)' }}>· {p.org}</span>
                       </button>
                     ))}
                   </>
@@ -115,15 +116,15 @@ export default function Shell() {
               {showUserMenu && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
-                  <div className="absolute right-0 top-10 z-50 bg-white rounded-xl border border-slate-200 shadow-xl py-1 w-44">
-                    <div className="px-3 py-2 border-b border-slate-100">
-                      <div className="text-xs font-semibold text-slate-700 truncate">{me}</div>
-                      <div className="text-[11px] text-slate-400 truncate">{user.email}</div>
+                  <div className="absolute right-0 top-10 z-50 py-1 w-44" style={{ background: 'var(--card)', border: '1px solid var(--line-hv)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--shadow-float)' }}>
+                    <div className="px-3 py-2" style={{ borderBottom: '1px solid var(--line)' }}>
+                      <div className="text-xs font-semibold truncate" style={{ color: 'var(--tx)' }}>{me}</div>
+                      <div className="text-[11px] truncate" style={{ color: 'var(--tx3)' }}>{user.email}</div>
                     </div>
-                    <button onClick={() => { navigate('/settings'); setShowUserMenu(false); }} className="w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-forest-50">
+                    <button onClick={() => { navigate('/settings'); setShowUserMenu(false); }} className="w-full text-left px-3 py-2 text-sm hover:bg-forest-50 transition" style={{ color: 'var(--tx)' }}>
                       Settings
                     </button>
-                    <button onClick={() => { signOut(auth); setShowUserMenu(false); }} className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50">
+                    <button onClick={() => { signOut(auth); setShowUserMenu(false); }} className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition">
                       Sign out
                     </button>
                   </div>

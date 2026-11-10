@@ -1,3 +1,4 @@
+@import './styles/tokens.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,29 +6,38 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background: #f2f5f2;
-  background-image: radial-gradient(#c8e4d055 1.5px, transparent 1.5px);
+  background: var(--bg);
+  background-image: radial-gradient(var(--p-c) 1.5px, transparent 1.5px);
   background-size: 22px 22px;
+  color: var(--tx);
+  font-family: var(--font-sans);
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #3e6448; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: var(--p); border-radius: 10px; }
+
+/* DS type scale */
+.type-h4    { font-size: 14.5px; line-height: 1.6; font-weight: 600; letter-spacing: -0.015em; }
+.type-label { font-size: 12px;   line-height: 1.6; font-weight: 500; letter-spacing: -0.005em; }
+.type-caption { font-size: 11px; line-height: 1.6; font-weight: 600; letter-spacing: 0.09em;  text-transform: uppercase; }
+.type-body-sm { font-size: 13px; line-height: 1.6; font-weight: 400; }
+.type-mono  { font-family: var(--font-mono); }
 
 /* Quill tweaks */
 .ql-toolbar.ql-snow,
-.ql-container.ql-snow { border-color: #cbd5e1; }
+.ql-container.ql-snow { border-color: var(--line-hv); }
 .ql-toolbar.ql-snow {
-  border-top-left-radius: .5rem;
-  border-top-right-radius: .5rem;
-  background: #f2f5f2;
+  border-top-left-radius: var(--r-lg);
+  border-top-right-radius: var(--r-lg);
+  background: var(--bg);
   position: sticky;
   top: 0;
   z-index: 5;
 }
 .ql-container.ql-snow {
-  border-bottom-left-radius: .5rem;
-  border-bottom-right-radius: .5rem;
-  font-family: Inter, sans-serif;
+  border-bottom-left-radius: var(--r-lg);
+  border-bottom-right-radius: var(--r-lg);
+  font-family: var(--font-sans);
   font-size: 14px;
 }
 .ql-editor { min-height: 200px; }
