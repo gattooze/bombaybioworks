@@ -1,0 +1,23 @@
+{
+  "name": "bombay-bioworks-whatsapp",
+  "version": "1.0.0",
+  "description": "WhatsApp intelligence bot — reads group history, extracts data, answers questions",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "history": "node src/history.js",
+    "groups": "node src/list-groups.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.5",
+    "dotenv": "^16.4.5",
+    "firebase-admin": "^12.1.0",
+    "pino": "^9.1.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
