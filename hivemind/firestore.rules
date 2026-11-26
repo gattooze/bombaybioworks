@@ -2,13 +2,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Pratik is always admin — no approval needed
+    // ── Who ────────────────────────────────────────────────────────────────
+    // Pratik is always admin; no approval needed.
     function isAdmin() {
       return request.auth != null
         && request.auth.token.email == 'connect@pratikagarwal.com';
     }
 
-    // Founders + bombaybioworks.com org + existing allowlist
+    // Founders, the bombaybioworks.com Workspace, and the admin-managed allowlist.
     function isApproved() {
       return request.auth != null && (
         request.auth.token.email == 'connect@pratikagarwal.com'
@@ -19,22 +20,147 @@ service cloud.firestore {
       );
     }
 
-    // Users can read their own access doc to check approval status
-    match /_access/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false; // Admin manages via Firebase Console only
+    // ── Shape checks shared by every ontology object ─────────────────────
+    // The app validates the full schema (ontology/schemas.js); these rules are the
+    // backstop that stops a buggy or hostile client writing junk.
+    function d() { return request.resource.data; }
+
+    function hasBase(docId) {
+      return d().id == docId
+        && d().created_at is string
+        && d().created_by is string;
     }
 
-    // Unapproved users can submit one access request (their own)
+    // created_at and created_by never change after creation.
+    function keepsCreation() {
+      // Older records may lack them; the repo fills them in on first edit.
+      return d().created_at == resource.data.get('created_at', d().created_at)
+        && d().created_by == resource.data.get('created_by', d().created_by);
+    }
+
+    function inList(v, xs) { return v in xs; }
+
+    // Standard object: approved users read and write, shape enforced.
+    function canCreate(docId) { return isApproved() && hasBase(docId); }
+    function canUpdate(docId) { return isApproved() && hasBase(docId) && keepsCreation(); }
+
+    // ── Access control docs ──────────────────────────────────────────────
+    match /_access/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // Admin manages via the Firebase console only
+    }
+
     match /_requests/{uid} {
       allow create: if request.auth != null && request.auth.uid == uid;
       allow read, delete: if isAdmin();
       allow update: if false;
     }
 
-    // All app data requires approved access
+    // ── Existing collections (Phase 1 data) ──────────────────────────────
+    match /people/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().name is string && d().name.size() > 0;
+      allow update: if canUpdate(id) && d().name is string && d().name.size() > 0;
+      allow delete: if isApproved();
+    }
+
+    match /notes/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().title is string && d().title.size() > 0;
+      allow update: if canUpdate(id) && d().title is string && d().title.size() > 0;
+      allow delete: if isApproved();
+    }
+
+    match /tasks/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().title is string
+        && inList(d().status, ['todo', 'in_progress', 'done']);
+      allow update: if canUpdate(id) && d().title is string
+        && inList(d().status, ['todo', 'in_progress', 'done']);
+      allow delete: if isApproved();
+    }
+
+    // ── New CRM and company-state collections ────────────────────────────
+    match /organisations/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().name is string && d().name.size() > 0 && d().roles is list;
+      allow update: if canUpdate(id) && d().name is string && d().name.size() > 0 && d().roles is list;
+      allow delete: if isApproved();
+    }
+
+    match /deals/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().org_id is string
+        && inList(d().pipeline, ['sales', 'sourcing', 'funding']) && d().stage is string;
+      allow update: if canUpdate(id) && d().org_id is string
+        && inList(d().pipeline, ['sales', 'sourcing', 'funding']) && d().stage is string;
+      allow delete: if isApproved();
+    }
+
+    match /samples/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().org_id is string && d().grade is string;
+      allow update: if canUpdate(id) && d().org_id is string && d().grade is string;
+      allow delete: if isApproved();
+    }
+
+    match /commitments/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().text is string && d().owner_id is string;
+      allow update: if canUpdate(id) && d().text is string && d().owner_id is string;
+      allow delete: if isApproved();
+    }
+
+    match /decisions/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().text is string;
+      allow update: if canUpdate(id) && d().text is string;
+      allow delete: if isAdmin(); // decisions are the company record
+    }
+
+    // Capture inbox: machine writers use the admin SDK; people accept or reject.
+    match /observations/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().status == 'pending';
+      allow update: if canUpdate(id)
+        && inList(d().status, ['pending', 'accepted', 'rejected', 'merged'])
+        && d().kind == resource.data.kind;
+      allow delete: if isAdmin();
+    }
+
+    // Outbound messages. A client can draft, approve or cancel. Only the server
+    // (admin SDK, which bypasses these rules) can mark a message sending, sent or failed.
+    match /outbox/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().status == 'draft' && d().to is list && d().to.size() > 0;
+      allow update: if canUpdate(id)
+        && inList(resource.data.status, ['draft', 'approved'])
+        && inList(d().status, ['draft', 'approved', 'cancelled'])
+        && (d().status != 'approved' || d().approved_by == request.auth.token.email);
+      allow delete: if isApproved() && resource.data.status in ['draft', 'cancelled'];
+    }
+
+    // Standing approvals: blanket permission is Pratik's call only.
+    match /approvals/{id} {
+      allow read: if isApproved();
+      allow create, update: if isAdmin() && hasBase(id) && d().max_sends is int && d().expires_at is string;
+      allow delete: if false; // revoke instead, so the record stays
+    }
+
+    // Event log: append-only, and a client can only log itself as the actor.
+    match /events/{id} {
+      allow read: if isApproved();
+      allow create: if isApproved()
+        && d().id == id
+        && d().actor == request.auth.token.email
+        && d().at is string
+        && inList(d().verb, ['created', 'updated', 'deleted', 'approved', 'merged']);
+      allow update, delete: if false;
+    }
+
+    // Anything not listed above is closed. Add a match block (and a schema) to open it.
     match /{document=**} {
-      allow read, write: if isApproved();
+      allow read, write: if false;
     }
   }
 }

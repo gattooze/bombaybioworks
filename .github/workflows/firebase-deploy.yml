@@ -11,8 +11,26 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # The hosting action posts a check run and a preview-link comment on PRs.
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: hivemind/package-lock.json
+
+      - name: Install, test and build
+        working-directory: hivemind
+        run: |
+          npm ci
+          npm test
+          npm run build
 
       - name: Deploy to Firebase Hosting (live)
         if: github.event_name == 'push'

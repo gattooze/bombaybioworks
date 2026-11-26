@@ -1,141 +1,62 @@
-# Hivemind — AI Agent Collaboration Guide
+# Hivemind: guide for AI agents
 
-## What this is
-Hivemind is Bombay Bioworks' internal CRM + note-taking + task management tool. It is a **zero-build SPA** deployed on Firebase Hosting at `https://bombay-bioworks.web.app`.
+Hivemind is Bombay Bioworks' internal platform: CRM, notes, tasks, and over time the
+assistant, production, quality and plant data. Live at https://hivemind.bombaybioworks.com.
+Roadmap and architecture: `PLATFORM.md`.
 
 ## Stack
-- **Frontend**: React 18 (UMD CDN), Babel Standalone (runtime JSX), Tailwind Play CDN, Quill rich-text editor
-- **Backend**: Firebase Firestore (data), Firebase Auth (Google Sign-In), Firebase Storage (attachments)
-- **Deploy**: Firebase Hosting — `firebase deploy` from this directory
-- **No bundler, no node_modules**. All JS loaded from CDN at runtime.
+- Vite 6 + React 18 + React Router v6, Tailwind v3 with the BB DS v1.0 tokens (`src/styles/tokens.css`)
+- Firebase v10: Firestore, Auth (Google), Storage. Project `bombay-bioworks`
+- zod for the ontology schemas; vitest for tests
 
-## Files
-| File | Purpose |
-|------|---------|
-| `index.html` | Shell, Tailwind config, CDN imports, favicon |
-| `app.jsx` | Entire application (~1100 lines React JSX) |
-| `firestore.rules` | Firestore security rules (allowlist-based) |
-| `firebase.json` | Firebase project config |
-| `.firebaserc` | Active project: `bombay-bioworks` |
+## Layout
+| Path | What |
+|---|---|
+| `app/index.html` | Vite entry. Keep it here. |
+| `index.html` | GitHub Pages redirect for bombaybioworks.com/hivemind. Not the app. Do not turn it back into the Vite entry. |
+| `ontology/` | The shared object model: schemas, repo, normalisation, storage adapters. Framework-free, used by the app, the bot and scripts. |
+| `src/` | The React app. `lib/store.js` builds the repo; `context/AppContext.jsx` exposes it. |
+| `firestore.rules` | Per-collection rules. Unlisted collections are closed. |
+| `tests/` | `ontology.test.js` (pure), `rules.test.js` (needs the emulator) |
+| `scripts/` | One-off jobs, dry run by default (`migrate-orgs.mjs`) |
 
-## Design System
-Brand: **Bombay Bioworks v1.0**
-- Primary: Forest Green `#3E6448` → Tailwind class `forest-500`
-- Steel Blue: `#5C9AB8`
-- Cranberry: `#A85268`
-- Font: Inter (Google Fonts)
-- Logo: `BBLogo` SVG component in app.jsx (hexagon with 4 gradient wave layers)
-- Tailwind forest palette defined in `index.html` tailwind.config
+## The rules that matter
+1. **Every read and write goes through the ontology repo** (`ontology/repo.js`). It validates
+   against `ontology/schemas.js` and writes an Event in the same batch. Never call Firestore
+   directly from a module, the bot or a script.
+2. **Only the Hivemind core thread changes `ontology/`.** Other workstreams ask for schema changes there.
+   A schema change ships with: the zod schema, the matching block in `firestore.rules`, and tests.
+3. **Events are append-only.** A client may only log itself as the actor. Only the server marks
+   outbound messages sent.
+4. **Nothing leaves the company without approval.** Outbound email and WhatsApp go to `outbox`
+   as drafts. A person approves, or a standing approval in `approvals` (granted only by Pratik) covers it.
+5. **Machine-extracted data lands in `observations`** (the capture inbox) for a human to accept,
+   never straight into people or notes.
+6. Apply the BB Design System v1.0 to all UI. No em-dashes in user-facing copy.
+7. Do not weaken security rules. Keep `isApproved()` on every collection.
 
-## Access Rules
-Access is controlled by `firestore.rules` AND the `Root` component in `app.jsx`.
+## Collections
+Existing data keeps its collection names: `people` (Person), `notes` (Interaction), `tasks` (Task).
+New: `organisations`, `deals`, `samples`, `commitments`, `decisions`, `observations`, `outbox`,
+`approvals`, `events`. Field definitions live in `ontology/schemas.js`, which is the source of truth.
 
-**Auto-approved (no Firestore check):**
-- `connect@pratikagarwal.com` — Pratik Agarwal (PA) — admin
-- `mukundkhetan@gmail.com` — Mukund Khetan (MK)
-- `karan@mbplgroup.com` — Karan Vora (KV)
-- Any `*@bombaybioworks.com` email
+Founder person ids: PA `b74cd94f-1949-407a-af1e-18985667ade3`, MK `3acbe1d8-a619-4627-911b-1384446aa47d`,
+KV `c50858cb-a46c-4686-8ebf-0b948dd19eb1`.
 
-**Allowlist-approved**: Users in `_access/{uid}` collection (admin grants via Firebase Console)
+## Access
+Auto-approved: connect@pratikagarwal.com (admin), mukundkhetan@gmail.com, karan@mbplgroup.com,
+any @bombaybioworks.com address. Others need a `_access/{uid}` doc (Firebase console).
+Company mailbox: founders@bombaybioworks.com (a Workspace user).
 
-**Admin**: Only `connect@pratikagarwal.com` can read/delete `_requests` documents.
-
-## Firestore Collections
-
-### `people`
-```
-{
-  id: string (UUID),
-  name: string,
-  org: string,
-  role: string,
-  email: string,
-  phone: string,
-  tags: string[],
-  notes: string,
-  created_at: ISO string,
-  created_by: string
-}
-```
-
-**Founder records (pre-seeded IDs):**
-- Pratik Agarwal (PA): `b74cd94f-1949-407a-af1e-18985667ade3`
-- Mukund Khetan (MK): `3acbe1d8-a619-4627-911b-1384446aa47d`
-- Karan Vora (KV): `c50858cb-a46c-4686-8ebf-0b948dd19eb1`
-
-### `notes`
-```
-{
-  id: string (UUID),
-  title: string,
-  type: 'in_person' | 'phone' | 'video' | 'email' | 'message' | 'event' | 'note' | 'other',
-  datetime: ISO string,
-  context: string,
-  location: string,
-  participant_ids: string[] (people IDs),
-  external_participants: string[],
-  tags: string[],
-  body: string (Quill HTML),
-  summary: string,
-  attachments: array,
-  created_at: ISO string,
-  created_by: string,
-  logged_by: string
-}
-```
-
-### `tasks`
-```
-{
-  id: string (UUID),
-  title: string,
-  description: string,
-  assigned_to: string | null (people ID),
-  assigned_to_name: string,
-  due_date: string (YYYY-MM-DD),
-  priority: 'high' | 'medium' | 'low',
-  status: 'todo' | 'in_progress' | 'done',
-  linked_note_id: string | null,
-  linked_note_title: string | null,
-  tags: string[],
-  created_at: ISO string,
-  created_by: string
-}
-```
-
-### `_access` (admin-managed)
-```
-{ uid: string } — presence = approved user
-```
-
-### `_requests` (user-created)
-```
-{ uid, email, name, requestedAt } — pending access request
-```
-
-## Deployment
+## Commands
 ```bash
-# Deploy everything
-firebase deploy
-
-# Deploy only rules
-firebase deploy --only firestore:rules
-
-# Deploy only hosting
-firebase deploy --only hosting
+npm install
+npm run dev          # needs the emulators running: npm run emulators
+npm test             # ontology tests
+npm run test:rules   # rules tests, starts the Firestore emulator (needs Java)
+npm run build        # outputs dist/
+npm run migrate:orgs # dry run; add -- --apply to write
 ```
-
-Firebase CLI is at `~/.npm-global/bin/firebase`. The project is `bombay-bioworks`.
-
-## People aliases
-When referencing founders in code, tasks, or notes:
-- PA = Pratik Agarwal (`connect@pratikagarwal.com`)
-- MK = Mukund Khetan (`mukundkhetan@gmail.com`)
-- KV = Karan Vora (`karan@mbplgroup.com`)
-
-## Collaboration notes
-- Do not add bundlers, build steps, or node_modules to this project.
-- All styling uses Tailwind utility classes with the `forest` color palette.
-- Firestore rules must maintain `isApproved()` check on all app data.
-- Do not weaken security rules (no `allow read, write: if true`).
-- The API key in `app.jsx` is a Firebase web API key (safe to commit — Firestore rules enforce auth).
+Deploys: merging to main runs `.github/workflows/firebase-deploy.yml` (build, then Firebase Hosting).
+Pull requests get a preview channel that talks to the **live** Firestore. Treat previews as production data.
+Rules deploy separately: `npx firebase deploy --only firestore:rules`.
