@@ -50,18 +50,18 @@ export function AppProvider({ user, children }) {
     finally { reload(); }
   };
 
-  const savePerson = (p) => guarded(() => repo.save('person', { created_by: me, ...p }));
+  const savePerson = (p) => guarded(() => repo.save('person', { created_by: repo.actor, ...p }));
   const removePerson = (id) => guarded(() => repo.remove('person', id));
 
   const saveNote = (n) => {
     const { summaryEdited, __new, ...rest } = n;
-    return guarded(() => repo.save('interaction', { created_by: me, logged_by: n.logged_by || me, ...rest }));
+    return guarded(() => repo.save('interaction', { created_by: repo.actor, logged_by: n.logged_by || me, ...rest }));
   };
   const removeNote = (id) => guarded(() => repo.remove('interaction', id));
 
   const saveTask = (t) => {
     const { __new, ...rest } = t;
-    return guarded(() => repo.save('task', { created_by: me, ...rest }));
+    return guarded(() => repo.save('task', { created_by: repo.actor, ...rest }));
   };
   const removeTask = (id) => guarded(() => repo.remove('task', id));
 
