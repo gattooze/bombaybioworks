@@ -1,0 +1,23 @@
+{
+  "name": "hivemind-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hivemind as an MCP server: lets Claude and the assistant read and write Hivemind through the ontology repo",
+  "scripts": {
+    "start": "node src/http.js",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "firebase-admin": "^12.7.0",
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "^3.25.1"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
