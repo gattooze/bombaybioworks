@@ -18,6 +18,7 @@ import {
   getDoc,
   query,
   orderBy,
+  writeBatch,
 } from 'firebase/firestore';
 import {
   getStorage,
@@ -62,6 +63,7 @@ export {
   getDoc,
   query,
   orderBy,
+  writeBatch,
   ref,
   uploadBytes,
   getDownloadURL,

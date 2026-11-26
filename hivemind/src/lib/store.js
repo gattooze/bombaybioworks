@@ -8,18 +8,21 @@ import {
   deleteDoc,
   query,
   orderBy,
+  writeBatch,
+  getDoc,
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
 } from '../firebase.js';
 import { uid } from './utils.js';
+import { createRepo, firestoreClientAdapter, REGISTRY } from '../../ontology/index.js';
 
 // ── IndexedDB (local fallback) ──────────────────────────────────────────────
-const IDB_STORES = ['people', 'notes', 'files', 'tasks'];
+const IDB_STORES = ['files', ...Object.values(REGISTRY).map(r => r.collection)];
 function openIDB() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open('hivemind', 2);
+    const req = indexedDB.open('hivemind', 3);
     req.onupgradeneeded = () => {
       const db = req.result;
       IDB_STORES.forEach(s => { if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' }); });
@@ -49,11 +52,20 @@ export const LocalAdapter = {
     return rec && rec.blob ? URL.createObjectURL(rec.blob) : null;
   },
   async removeFile(id) { return idbDel('files', id); },
+  // Ontology adapter contract
+  async get(t, id) { return (await idbGet(t, id)) || null; },
+  async commit(ops) {
+    for (const op of ops) { if (op.kind === 'set') await idbPut(op.collection, op.data); else await idbDel(op.collection, op.id); }
+  },
 };
 
 // ── Firebase Adapter (Firestore + Storage) ──────────────────────────────────
+const fsAdapter = firestoreClientAdapter(db, { doc, getDoc, getDocs, collection, writeBatch });
+
 export const FirebaseAdapter = {
   mode: 'cloud',
+  get: fsAdapter.get,
+  commit: fsAdapter.commit,
   async list(collName) {
     const q = query(collection(db, collName), orderBy('created_at', 'desc'));
     const snap = await getDocs(q);
@@ -78,3 +90,6 @@ export const FirebaseAdapter = {
     try { await deleteObject(ref(storage, path)); } catch (e) { console.warn('removeFile', e); }
   },
 };
+
+// ── Ontology repo: every app write goes through this ───────────────────────
+export const makeRepo = (store, actor) => createRepo({ adapter: store, actor, source: { channel: 'manual', by: actor } });

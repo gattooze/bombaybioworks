@@ -7,20 +7,28 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "emulators": "firebase emulators:start"
+    "emulators": "firebase emulators:start",
+    "test": "vitest run tests/ontology.test.js",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-hivemind \"vitest run tests/rules.test.js\"",
+    "migrate:orgs": "node scripts/migrate-orgs.mjs"
   },
   "dependencies": {
     "firebase": "^10.14.0",
     "quill": "^2.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
+    "react-router-dom": "^6.28.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "firebase-admin": "^12.7.0",
+    "firebase-tools": "^13.29.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "vite": "^6.0.6"
+    "vite": "^6.0.6",
+    "vitest": "^2.1.8"
   }
 }
