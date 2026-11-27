@@ -44,7 +44,7 @@ async function readBody(req) {
 
 http.createServer(async (req, res) => {
   try {
-    if (req.url === '/healthz') { res.writeHead(200).end('ok'); return; }
+    if (req.url === '/health' || req.url === '/healthz') { res.writeHead(200).end('ok'); return; }
     if (!req.url.startsWith('/mcp')) { res.writeHead(404).end(); return; }
     if (!authorised(req)) { res.writeHead(401).end('unauthorised'); return; }
 

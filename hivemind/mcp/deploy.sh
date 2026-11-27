@@ -33,7 +33,7 @@ gcloud run deploy hivemind-mcp --source . --project "$P" --region "$R" \
 
 echo "5/5 Checking"
 URL=$(gcloud run services describe hivemind-mcp --project "$P" --region "$R" --format 'value(status.url)')
-curl -fsS "$URL/healthz" && echo " <- health check"
+curl -fsS "$URL/health" && echo " <- health check"
 echo
 echo "Connector URL (keep it private, it grants access to Hivemind):"
 echo "$URL/mcp/$(gcloud secrets versions access latest --secret hivemind-mcp-secret --project "$P")"
