@@ -26,8 +26,10 @@ gcloud projects add-iam-policy-binding "$P" --member "serviceAccount:$NUM-comput
 echo "4/5 Building and deploying (3 to 5 minutes)"
 cp mcp/Dockerfile Dockerfile
 trap 'rm -f Dockerfile' EXIT
+# --no-invoker-iam-check: the org blocks allUsers IAM bindings, so --allow-unauthenticated silently fails.
+# The app checks its own secret instead.
 gcloud run deploy hivemind-mcp --source . --project "$P" --region "$R" \
-  --service-account "$SA" --allow-unauthenticated \
+  --service-account "$SA" --no-invoker-iam-check \
   --min-instances 0 --max-instances 2 --memory 512Mi \
   --set-secrets MCP_SECRET=hivemind-mcp-secret:latest --quiet
 
