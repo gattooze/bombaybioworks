@@ -26,6 +26,10 @@ MCP_SECRET=$(openssl rand -hex 32) GOOGLE_APPLICATION_CREDENTIALS=sa.json npm st
 ```
 
 ## Deploy (Cloud Run, needs the Blaze plan)
+Easiest: from Cloud Shell, `bash hivemind/mcp/deploy.sh`. It enables the APIs, creates the secret and a
+Firestore-only service account, deploys, health-checks and prints the connector URL. Safe to re-run.
+
+By hand:
 From `hivemind/`:
 ```bash
 gcloud run deploy hivemind-mcp --source . --dockerfile mcp/Dockerfile \
