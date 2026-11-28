@@ -10,9 +10,14 @@ const MODULES = [
     path: '/notes', phase: 1, live: true,
   },
   {
-    id: 'crm',      icon: '👥', label: 'People',
-    desc: 'Contacts, relationships and interaction history.',
+    id: 'crm',      icon: '👥', label: 'CRM',
+    desc: 'Demand contacts, organisations and their history.',
     path: '/crm', phase: 1, live: true,
+  },
+  {
+    id: 'inbox',    icon: '📥', label: 'Review inbox',
+    desc: 'Accept or reject what the assistant and WhatsApp picked up.',
+    path: '/inbox', phase: 1, live: true,
   },
   {
     id: 'tasks',    icon: '✅', label: 'Tasks',
@@ -113,7 +118,7 @@ export default function Homepage() {
         <div className="text-sm font-medium text-forest-100">Welcome back, {me} 🧠</div>
         <h1 className="text-2xl font-extrabold mt-1">Hivemind · Bombay Bioworks</h1>
         <p className="text-forest-50/90 text-sm mt-2 max-w-xl">
-          The operating system of the company — notes, relationships, tasks, and eventually the full plant.
+          The operating system of the company: notes, relationships, tasks, and eventually the full plant.
         </p>
         <div className="flex gap-2 mt-5 flex-wrap">
           <button

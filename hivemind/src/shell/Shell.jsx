@@ -13,7 +13,13 @@ import NoteDetailModule from '../modules/notes/NoteDetail.jsx';
 const ROUTE_LABELS = {
   '/':        'Hivemind',
   '/notes':   'Notes',
-  '/crm':     'People',
+  '/crm':     'CRM',
+  '/crm/orgs': 'CRM',
+  '/crm/duplicates': 'CRM',
+  '/crm/pipelines': 'CRM',
+  '/crm/samples': 'CRM',
+  '/crm/follow-ups': 'CRM',
+  '/inbox':   'Review inbox',
   '/tasks':   'Tasks',
   '/timeline':'Timeline',
   '/settings':'Settings',
@@ -33,7 +39,9 @@ export default function Shell() {
     const q = search.toLowerCase();
     return {
       notes:  data.notes.filter(n => (n.title + n.summary + stripHtml(n.body) + n.context).toLowerCase().includes(q)).slice(0, 4),
-      people: data.people.filter(p => (p.name + p.org + p.role + (p.tags || []).join('')).toLowerCase().includes(q)).slice(0, 4),
+      people: data.people.filter(p => !p.archived && !(p.tags || []).includes('org-record') && (p.name + p.org + p.role + (p.tags || []).join('')).toLowerCase().includes(q)).slice(0, 4),
+      orgs:   (data.organisations || []).filter(o => !o.archived && (o.name + (o.city || '') + (o.notes || '')).toLowerCase().includes(q)).slice(0, 4),
+      deals:  (data.deals || []).filter(d => !d.archived && (d.title + d.product + d.next_action).toLowerCase().includes(q)).slice(0, 3),
       tasks:  (data.tasks || []).filter(t => (t.title + (t.description || '') + (t.assigned_to_name || '')).toLowerCase().includes(q)).slice(0, 4),
     };
   })();
@@ -64,13 +72,13 @@ export default function Shell() {
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search the hive…"
+              placeholder="Search people, organisations, deals, notes"
               className="w-full px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 transition"
               style={{ background: 'var(--p-c)', border: '1px solid var(--line)', borderRadius: 'var(--r-full)', color: 'var(--tx)' }}
             />
             {results && (
               <div className="absolute mt-1 w-full overflow-hidden z-50 max-h-96 overflow-y-auto" style={{ background: 'var(--card)', border: '1px solid var(--line-hv)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--shadow-float)' }}>
-                {!results.notes.length && !results.people.length && !results.tasks.length && (
+                {!results.notes.length && !results.people.length && !results.tasks.length && !results.orgs.length && !results.deals.length && (
                   <div className="p-3 text-sm" style={{ color: 'var(--tx2)' }}>No matches.</div>
                 )}
                 {results.notes.length > 0 && (
@@ -98,7 +106,27 @@ export default function Shell() {
                     <div className="type-caption px-3 pt-2" style={{ color: 'var(--tx3)' }}>People</div>
                     {results.people.map(p => (
                       <button key={p.id} onClick={() => { navigate('/crm?person=' + p.id); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm transition" style={{ color: 'var(--tx)' }}>
-                        🙋 {p.name} <span style={{ color: 'var(--tx3)' }}>· {p.org}</span>
+                        🙋 {p.name}{p.role ? <span style={{ color: 'var(--tx3)' }}> · {p.role}</span> : null}
+                      </button>
+                    ))}
+                  </>
+                )}
+                {results.orgs.length > 0 && (
+                  <>
+                    <div className="type-caption px-3 pt-2" style={{ color: 'var(--tx3)' }}>Organisations</div>
+                    {results.orgs.map(o => (
+                      <button key={o.id} onClick={() => { navigate('/crm/orgs?org=' + o.id); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm transition" style={{ color: 'var(--tx)' }}>
+                        🏢 {o.name}
+                      </button>
+                    ))}
+                  </>
+                )}
+                {results.deals.length > 0 && (
+                  <>
+                    <div className="type-caption px-3 pt-2" style={{ color: 'var(--tx3)' }}>Deals</div>
+                    {results.deals.map(d => (
+                      <button key={d.id} onClick={() => { navigate('/crm/pipelines' + (d.pipeline === 'sales' ? '' : '?p=' + d.pipeline)); setSearch(''); }} className="w-full text-left px-3 py-2 hover:bg-forest-50 text-sm transition" style={{ color: 'var(--tx)' }}>
+                        📈 {d.title}
                       </button>
                     ))}
                   </>
