@@ -38,10 +38,17 @@ Roadmap and architecture: `PLATFORM.md`.
 ## Collections
 Existing data keeps its collection names: `people` (Person), `notes` (Interaction), `tasks` (Task).
 New: `organisations`, `deals`, `samples`, `commitments`, `decisions`, `observations`, `outbox`,
-`approvals`, `events`. Field definitions live in `ontology/schemas.js`, which is the source of truth.
+`approvals`, `events`, and for company state `objectives`, `workstreams`, `status_reports`. Field definitions live in `ontology/schemas.js`, which is the source of truth.
 
 Founder person ids: PA `b74cd94f-1949-407a-af1e-18985667ade3`, MK `3acbe1d8-a619-4627-911b-1384446aa47d`,
 KV `c50858cb-a46c-4686-8ebf-0b948dd19eb1`.
+
+Repo helpers beyond create/update: `merge(type, winnerId, loserId, picks)` for person and
+organisation duplicates (archives the loser with `merged_into`, re-points references, one commit),
+`acceptObservation(id, {type, id?, data})` and `rejectObservation(id)` for the capture inbox.
+These are human actions in the app; the MCP server does not expose them.
+
+Assistant behaviour lives in `assistant/INSTRUCTIONS.md`.
 
 ## Access
 Auto-approved: connect@pratikagarwal.com (admin), mukundkhetan@gmail.com, karan@mbplgroup.com,
