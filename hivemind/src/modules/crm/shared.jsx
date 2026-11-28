@@ -1,12 +1,18 @@
 import { NavLink } from 'react-router-dom';
 import { useApp } from '../../context/AppContext.jsx';
 import { cx } from '../../lib/utils.js';
+import { CLOSED_STAGES as CLOSED } from '../../../ontology/index.js';
 
 export const SEGMENTS = [
   { id: 'demand',    label: 'Demand',    hint: 'Buyers and prospects. This is the CRM.' },
   { id: 'directory', label: 'Directory', hint: 'Suppliers, peers, competitors, advisors, government.' },
   { id: 'unsorted',  label: 'Unsorted',  hint: 'Waiting to be filed.' },
 ];
+
+/** Today's date in the user's time zone, YYYY-MM-DD. */
+export const localToday = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+
+export const addDaysIso = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
 export const DUP_TAG = 'possible-duplicate-of:';
 export const dupTargetId = (r) => (r.tags || []).find(t => t.startsWith(DUP_TAG))?.slice(DUP_TAG.length) || null;
@@ -30,9 +36,16 @@ export function CrmNav() {
   const { data } = useApp();
   const pending = data.observations.filter(o => o.status === 'pending').length;
   const dups = live(data.people).filter(dupTargetId).length;
+  const today = localToday();
+  const followUps = live(data.deals).filter(d => d.next_action_date && d.next_action_date <= today && !CLOSED.includes(d.stage)).length
+    + live(data.commitments).filter(c => c.status === 'open' && c.due_date && c.due_date <= today).length
+    + live(data.samples).filter(s => ['sent', 'received', 'testing'].includes(s.status) && s.sent_date && addDaysIso(s.sent_date, 14) <= today).length;
   const items = [
     { to: '/crm', label: 'People', end: true },
     { to: '/crm/orgs', label: 'Organisations' },
+    { to: '/crm/pipelines', label: 'Pipelines' },
+    { to: '/crm/samples', label: 'Samples' },
+    { to: '/crm/follow-ups', label: 'Follow-ups', count: followUps },
     { to: '/crm/duplicates', label: 'Duplicates', count: dups },
     { to: '/inbox', label: 'Review inbox', count: pending },
   ];
@@ -139,3 +152,18 @@ export function suggestWinner(a, b, refCount) {
   if (ra !== rb) return ra > rb ? [a, b] : [b, a];
   return (a.name || '').length >= (b.name || '').length ? [a, b] : [b, a];
 }
+
+/** Pick one organisation (required on deals and samples). */
+export function OrgSelect({ value, onChange }) {
+  const { data } = useApp();
+  const orgs = live(data.organisations).sort((a, b) => a.name.localeCompare(b.name));
+  return (
+    <select className="w-full px-3 py-2 text-sm bg-white border border-[rgba(0,0,0,0.12)] rounded-[7px]" value={value || ''} onChange={e => onChange(e.target.value)}>
+      <option value="">Choose an organisation</option>
+      {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+    </select>
+  );
+}
+
+export const STAGE_LABEL = (s) => s.split('_').map((w, i) => (i ? w : w.charAt(0).toUpperCase() + w.slice(1))).join(' ').replace(/^Po$/, 'PO');
+export const money = (n, cur = 'INR') => (n || n === 0) ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: cur || 'INR', maximumFractionDigits: 0 }).format(n) : '';

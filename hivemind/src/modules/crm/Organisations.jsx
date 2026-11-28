@@ -170,7 +170,7 @@ export default function OrganisationsView() {
   const q = search.trim().toLowerCase();
   const orgs = live(data.organisations);
   const rows = orgs
-    .filter(o => !demandOnly || stats[o.id]?.demand || (o.roles || []).includes('customer'))
+    .filter(o => !demandOnly || stats[o.id]?.demand || (o.tags || []).includes('demand') || (o.roles || []).includes('customer'))
     .filter(o => !role || (o.roles || []).includes(role))
     .filter(o => !q || [o.name, o.city, o.notes].join(' ').toLowerCase().includes(q))
     .sort((a, b) => a.name.localeCompare(b.name));

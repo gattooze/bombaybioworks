@@ -17,7 +17,7 @@ export function AppProvider({ user, children }) {
   // Events and audit fields record the signed-in email (rules check it), else the local name.
   const repo = useMemo(() => makeRepo(store, user?.email || me), [store, user, me]);
 
-  const [data, setData] = useState({ people: [], notes: [], tasks: [], organisations: [], observations: [], deals: [], samples: [] });
+  const [data, setData] = useState({ people: [], notes: [], tasks: [], organisations: [], observations: [], deals: [], samples: [], commitments: [] });
   const [loading, setLoading] = useState(true);
 
   // Global modals (note + task editors are app-level since they open from anywhere)
@@ -29,7 +29,7 @@ export function AppProvider({ user, children }) {
     try {
       // CRM collections are optional: an older local store or a rules error must not blank the app.
       const soft = (c) => store.list(c).catch(e => { console.warn(`load ${c} failed`, e); return []; });
-      const [people, notes, tasks, organisations, observations, deals, samples] = await Promise.all([
+      const [people, notes, tasks, organisations, observations, deals, samples, commitments] = await Promise.all([
         store.list('people'),
         store.list('notes'),
         store.list('tasks'),
@@ -37,8 +37,9 @@ export function AppProvider({ user, children }) {
         soft('observations'),
         soft('deals'),
         soft('samples'),
+        soft('commitments'),
       ]);
-      setData({ people, notes, tasks, organisations, observations, deals, samples });
+      setData({ people, notes, tasks, organisations, observations, deals, samples, commitments });
     } catch (e) {
       console.error('reload failed', e);
     }
@@ -62,6 +63,9 @@ export function AppProvider({ user, children }) {
   const updatePerson = (id, patch, summary) => guarded(() => repo.update('person', id, patch, { summary }));
   const saveOrg = (o) => guarded(() => repo.save('organisation', { created_by: repo.actor, ...o }));
   const updateOrg = (id, patch, summary) => guarded(() => repo.update('organisation', id, patch, { summary }));
+  // Generic CRM writes (deal, sample, commitment): validated and logged by the repo.
+  const saveObj = (type, o) => guarded(() => repo.save(type, { created_by: repo.actor, ...o }));
+  const updateObj = (type, id, patch, summary) => guarded(() => repo.update(type, id, patch, { summary }));
   const mergeRecords = (type, winnerId, loserId, picks) => guarded(() => repo.merge(type, winnerId, loserId, picks));
   const acceptObservation = (id, target) => guarded(() => repo.acceptObservation(id, target));
   const rejectObservation = (id, reason) => guarded(() => repo.rejectObservation(id, { reason }));
@@ -84,7 +88,7 @@ export function AppProvider({ user, children }) {
   const ctx = {
     cfg, setConfig, store, repo, me, user, data, loading, reload,
     savePerson, removePerson, updatePerson,
-    saveOrg, updateOrg, mergeRecords,
+    saveOrg, updateOrg, mergeRecords, saveObj, updateObj,
     acceptObservation, rejectObservation,
     saveNote, removeNote,
     saveTask, removeTask,
