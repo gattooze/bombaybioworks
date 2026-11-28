@@ -138,3 +138,79 @@ describe('organisation migration plan', async () => {
     expect(skipped.map(s => s.id)).toEqual(['p4']);
   });
 });
+
+describe('company state', () => {
+  it('validates objectives, workstreams and status reports', async () => {
+    const repo = fixed();
+    const o = await repo.create('objective', { title: 'First 1 MT steel order', target_date: '2027-03-31' });
+    expect(o.status).toBe('active');
+    const w = await repo.create('workstream', { name: 'Machinery', objective_ids: [o.id] });
+    const s = await repo.create('status_report', { week_of: '2026-11-23', summary: 'Ontology live', workstreams: [{ workstream_id: w.id, health: 'on_track' }] });
+    expect(s.workstreams[0].note).toBe('');
+    await expect(repo.create('status_report', { week_of: '2026-11-23', summary: 'x', workstreams: [{ workstream_id: w.id, health: 'fine' }] })).rejects.toBeInstanceOf(ValidationError);
+    await expect(repo.create('workstream', { name: 'X', status: 'stalled' })).rejects.toBeInstanceOf(ValidationError);
+  });
+});
+
+describe('merge', () => {
+  it('merges a duplicate person, re-points references and logs merged events', async () => {
+    const repo = fixed();
+    const org = await repo.create('organisation', { name: 'Ankur Carbons' });
+    const a = await repo.create('person', { name: 'Ramesh Das', email: 'ramesh@ankur.in', tags: ['buyer'] });
+    const b = await repo.create('person', { name: 'Ramesh', phone: '+919864012345', org_ids: [org.id], tags: ['assam'] });
+    const note = await repo.create('interaction', { title: 'Call', datetime: '2026-11-20T10:00:00Z', participant_ids: [b.id, a.id] });
+    const c = await repo.create('commitment', { text: 'Send price', owner_id: b.id, links: [{ type: 'person', id: b.id }] });
+    const r = await repo.merge('person', a.id, b.id, { phone: '+919864012345' });
+    expect(r.repointed).toBe(2);
+    expect(r.winner).toMatchObject({ phone: '+919864012345', org_ids: [org.id], tags: ['buyer', 'assam'] });
+    expect(r.loser).toMatchObject({ archived: true, merged_into: a.id });
+    expect((await repo.get('interaction', note.id)).participant_ids).toEqual([a.id]);
+    const cm = await repo.get('commitment', c.id);
+    expect(cm.owner_id).toBe(a.id);
+    expect(cm.links).toEqual([{ type: 'person', id: a.id }]);
+    expect((await repo.history('person', b.id))[0].verb).toBe('merged');
+  });
+
+  it('merges organisations and re-points people', async () => {
+    const repo = fixed();
+    const o1 = await repo.create('organisation', { name: 'PepsiCo India', roles: ['customer'] });
+    const o2 = await repo.create('organisation', { name: 'Pepsi', roles: ['partner'] });
+    const p = await repo.create('person', { name: 'Anita', org_ids: [o2.id] });
+    const r = await repo.merge('organisation', o1.id, o2.id);
+    expect(r.winner.roles).toEqual(['customer', 'partner']);
+    expect((await repo.get('person', p.id)).org_ids).toEqual([o1.id]);
+  });
+
+  it('refuses other types, self merges and archived records', async () => {
+    const repo = fixed();
+    const a = await repo.create('person', { name: 'A' });
+    const b = await repo.create('person', { name: 'B' });
+    await expect(repo.merge('deal', a.id, b.id)).rejects.toThrow();
+    await expect(repo.merge('person', a.id, a.id)).rejects.toThrow();
+    await repo.merge('person', a.id, b.id);
+    await expect(repo.merge('person', a.id, b.id)).rejects.toThrow(/archived/);
+  });
+});
+
+describe('capture inbox', () => {
+  it('accepts an observation into a new record in one commit', async () => {
+    const repo = fixed();
+    const obs = await repo.create('observation', { kind: 'person', summary: 'New buyer Ravi', payload: { name: 'Ravi' } });
+    const r = await repo.acceptObservation(obs.id, { type: 'person', data: { name: 'Ravi', segment: 'demand' } });
+    expect(r.record.segment).toBe('demand');
+    expect(r.observation).toMatchObject({ status: 'accepted', resolved_by: 'test@bombaybioworks.com', result_link: { type: 'person', id: r.record.id } });
+    await expect(repo.acceptObservation(obs.id, { type: 'person', data: { name: 'Ravi' } })).rejects.toThrow(/already/);
+  });
+
+  it('merges an observation into an existing record, or rejects it', async () => {
+    const repo = fixed();
+    const p = await repo.create('person', { name: 'Ravi' });
+    const o1 = await repo.create('observation', { kind: 'fact', summary: 'Ravi phone', payload: {} });
+    const r = await repo.acceptObservation(o1.id, { type: 'person', id: p.id, data: { phone: '9864000000' } });
+    expect(r.observation.status).toBe('merged');
+    expect((await repo.get('person', p.id)).phone).toBe('9864000000');
+    const o2 = await repo.create('observation', { kind: 'fact', summary: 'Noise', payload: {} });
+    expect((await repo.rejectObservation(o2.id)).status).toBe('rejected');
+    await expect(repo.acceptObservation(o2.id, { type: 'observation', data: {} })).rejects.toThrow();
+  });
+});

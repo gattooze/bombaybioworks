@@ -120,6 +120,32 @@ service cloud.firestore {
       allow delete: if isAdmin(); // decisions are the company record
     }
 
+    match /objectives/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().title is string
+        && inList(d().status, ['active', 'achieved', 'dropped']);
+      allow update: if canUpdate(id) && d().title is string
+        && inList(d().status, ['active', 'achieved', 'dropped']);
+      allow delete: if isAdmin();
+    }
+
+    match /workstreams/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().name is string
+        && inList(d().status, ['active', 'paused', 'done']);
+      allow update: if canUpdate(id) && d().name is string
+        && inList(d().status, ['active', 'paused', 'done']);
+      allow delete: if isAdmin();
+    }
+
+    // Weekly company status: part of the company record, like decisions.
+    match /status_reports/{id} {
+      allow read: if isApproved();
+      allow create: if canCreate(id) && d().summary is string && d().week_of is string;
+      allow update: if canUpdate(id) && d().summary is string && d().week_of is string;
+      allow delete: if isAdmin();
+    }
+
     // Capture inbox: machine writers use the admin SDK; people accept or reject.
     match /observations/{id} {
       allow read: if isApproved();

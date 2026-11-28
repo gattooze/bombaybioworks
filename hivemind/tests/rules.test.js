@@ -142,6 +142,19 @@ describe('the app repo against the real rules', () => {
     expect(events.size).toBe(12);
   });
 
+  it('allows company state, merge and inbox accept for approved users', async () => {
+    const repo = repoAs('mk@bombaybioworks.com');
+    const o = await repo.create('objective', { title: 'First steel order' });
+    const w = await repo.create('workstream', { name: 'Machinery', objective_ids: [o.id] });
+    await repo.create('status_report', { week_of: '2026-11-23', summary: 'Week one', workstreams: [{ workstream_id: w.id, health: 'at_risk' }] });
+    const a = await repo.create('person', { name: 'Ramesh Das' });
+    const b = await repo.create('person', { name: 'Ramesh' });
+    await repo.create('task', { title: 'Call Ramesh', assigned_to: b.id });
+    await repo.merge('person', a.id, b.id);
+    const obs = await repo.create('observation', { kind: 'person', summary: 'Ravi', payload: {} });
+    await repo.acceptObservation(obs.id, { type: 'person', data: { name: 'Ravi' } });
+  });
+
   it('blocks a repo acting under another email', async () => {
     const forged = createRepo({ adapter: firestoreClientAdapter(as('mk@bombaybioworks.com'), { doc, getDoc, getDocs, collection, writeBatch }), actor: 'connect@pratikagarwal.com' });
     await assertFails(forged.create('task', { title: 'X' }));

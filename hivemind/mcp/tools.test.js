@@ -113,3 +113,13 @@ describe('MCP wiring', () => {
     expect(JSON.parse(res.content[0].text).results[0].id).toBe('p1');
   });
 });
+
+describe('company state tools', () => {
+  it('creates a workstream, links a status report and shows it on the timeline', async () => {
+    const w = out(await h.create({ type: 'workstream', data: { name: 'Machinery' } })).created;
+    await h.create({ type: 'status_report', data: { week_of: '2026-11-23', summary: 'Quotes in', workstreams: [{ workstream_id: w.id, health: 'on_track' }] } });
+    const t = out(await h.timeline({ type: 'workstream', id: w.id }));
+    expect(t.related.map(x => x.type)).toEqual(['status_report']);
+    expect(out(await h.describe({ type: 'objective' })).writable).toBe(true);
+  });
+});

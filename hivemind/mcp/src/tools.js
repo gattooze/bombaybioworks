@@ -7,9 +7,9 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { REGISTRY, PIPELINES, CLOSED_STAGES } from '../../ontology/index.js';
 
 // Types Claude may read. Approvals are readable so the assistant knows its limits.
-export const READABLE = ['organisation', 'person', 'interaction', 'task', 'deal', 'sample', 'commitment', 'decision', 'observation', 'outbox', 'approval'];
+export const READABLE = ['organisation', 'person', 'interaction', 'task', 'deal', 'sample', 'commitment', 'decision', 'observation', 'outbox', 'approval', 'objective', 'workstream', 'status_report'];
 // Types Claude may create or edit. Approvals (blanket permission) are Pratik's alone.
-export const WRITABLE = ['organisation', 'person', 'interaction', 'task', 'deal', 'sample', 'commitment', 'decision', 'observation', 'outbox'];
+export const WRITABLE = ['organisation', 'person', 'interaction', 'task', 'deal', 'sample', 'commitment', 'decision', 'observation', 'outbox', 'objective', 'workstream', 'status_report'];
 
 const label = (r) => r.name || r.title || r.text || r.subject || r.grade || r.summary || r.id;
 const text = (r) => JSON.stringify(r).toLowerCase();
@@ -25,8 +25,10 @@ function referencesTo(all, type, id) {
       const hit =
         (r.links || []).some(l => l.type === type && l.id === id) ||
         (type === 'organisation' && (r.org_id === id || (r.org_ids || []).includes(id) || r.counterparty_id === id)) ||
-        (type === 'person' && ((r.participant_ids || []).includes(id) || (r.contact_ids || []).includes(id) || r.owner_id === id || r.assigned_to === id || r.counterparty_id === id || r.contact_id === id)) ||
+        (type === 'person' && ((r.participant_ids || []).includes(id) || (r.owner_ids || []).includes(id) || (r.contact_ids || []).includes(id) || r.owner_id === id || r.assigned_to === id || r.counterparty_id === id || r.contact_id === id)) ||
         (type === 'deal' && r.deal_id === id) ||
+        (type === 'objective' && (r.objective_ids || []).includes(id)) ||
+        (type === 'workstream' && (r.workstreams || []).some(w => w.workstream_id === id)) ||
         (type === 'interaction' && r.linked_note_id === id);
       if (hit) out.push({ type: t, id: r.id, label: label(r), date: r.datetime || r.due_date || r.next_action_date || r.sent_date || r.created_at, status: r.status || r.stage });
     }

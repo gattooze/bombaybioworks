@@ -7,6 +7,7 @@ import { z } from 'zod';
 export const OBJECT_TYPES = [
   'organisation', 'person', 'interaction', 'task', 'deal', 'sample',
   'commitment', 'decision', 'observation', 'outbox', 'approval', 'event',
+  'objective', 'workstream', 'status_report',
 ];
 
 const isoDateTime = z.string().datetime({ offset: true });
@@ -47,6 +48,7 @@ export const Organisation = z.object({
   gstin: z.string().regex(/^[0-9A-Z]{15}$/, 'GSTIN is 15 characters').optional().or(z.literal('')),
   notes: z.string().default(''),
   owner_id: optStr, // team member responsible
+  merged_into: optStr, // set on the archived duplicate by repo.merge
   source: Source,
 });
 
@@ -67,6 +69,7 @@ export const Person = z.object({
   notes: z.string().default(''),
   is_team: z.boolean().default(false),
   segment: z.enum(PERSON_SEGMENTS).default('unsorted'),
+  merged_into: optStr, // set on the archived duplicate by repo.merge
   source: Source,
 }).passthrough();
 
@@ -87,6 +90,8 @@ export const Interaction = z.object({
   attachments: z.array(z.any()).default([]),
   logged_by: optStr,
   source_channel: optStr, // legacy, superseded by source
+  provider_ref: optStr,   // e.g. Gmail message id, so re-syncs do not duplicate
+  thread_ref: optStr,     // e.g. Gmail thread id
   source: Source,
 }).passthrough();
 
@@ -175,6 +180,51 @@ export const Decision = z.object({
   source: Source,
 });
 
+// What the company is trying to achieve, e.g. "First 1 MT order from a steel buyer by Mar 2027".
+export const OBJECTIVE_STATUSES = ['active', 'achieved', 'dropped'];
+
+export const Objective = z.object({
+  ...base,
+  title: z.string().trim().min(1, 'Title is required'),
+  description: z.string().default(''),
+  owner_id: optStr,            // founder person id
+  metric: z.string().default(''), // how we know it is done
+  target_date: isoDate.optional().or(z.literal('')),
+  status: z.enum(OBJECTIVE_STATUSES).default('active'),
+});
+
+// An ongoing stream of work (Machinery, Demand, Website, Hivemind, DPR...).
+export const WORKSTREAM_STATUSES = ['active', 'paused', 'done'];
+
+export const Workstream = z.object({
+  ...base,
+  name: z.string().trim().min(1, 'Name is required'),
+  description: z.string().default(''),
+  owner_ids: z.array(id).default([]),
+  objective_ids: z.array(id).default([]),
+  status: z.enum(WORKSTREAM_STATUSES).default('active'),
+  next_milestone: z.string().default(''),
+  next_milestone_date: isoDate.optional().or(z.literal('')),
+});
+
+// Weekly snapshot of company state. One per week; the assistant drafts it, a founder edits.
+export const HEALTH = ['on_track', 'at_risk', 'off_track'];
+
+export const StatusReport = z.object({
+  ...base,
+  week_of: isoDate,            // Monday of the week
+  summary: z.string().trim().min(1, 'Summary is required'),
+  workstreams: z.array(z.object({
+    workstream_id: id,
+    health: z.enum(HEALTH),
+    note: z.string().default(''),
+  })).default([]),
+  highlights: z.array(z.string()).default([]),
+  risks: z.array(z.string()).default([]),
+  asks: z.array(z.string()).default([]), // what the founders need to decide or do
+  source: Source,
+});
+
 // ── Capture inbox: anything machine-extracted waits here for a human ───────
 export const Observation = z.object({
   ...base,
@@ -249,6 +299,9 @@ export const REGISTRY = {
   outbox:       { collection: 'outbox',        schema: Outbox,       label: 'Outbox message' },
   approval:     { collection: 'approvals',     schema: Approval,     label: 'Standing approval' },
   event:        { collection: 'events',        schema: Event,        label: 'Event' },
+  objective:    { collection: 'objectives',    schema: Objective,    label: 'Objective' },
+  workstream:   { collection: 'workstreams',   schema: Workstream,   label: 'Workstream' },
+  status_report:{ collection: 'status_reports',schema: StatusReport, label: 'Status report' },
 };
 
 export const collectionOf = (type) => {
