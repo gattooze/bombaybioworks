@@ -60,3 +60,24 @@ npm run migrate:orgs # dry run; add -- --apply to write
 Deploys: merging to main runs `.github/workflows/firebase-deploy.yml` (build, then Firebase Hosting).
 Pull requests get a preview channel that talks to the **live** Firestore. Treat previews as production data.
 Rules deploy separately: `npx firebase deploy --only firestore:rules`.
+
+## Hivemind data from any Claude thread
+
+Native MCP tools from `.mcp.json` do not load in project threads (tested 28 Nov 2026).
+Call the live server directly instead. It works from every cloud session in this environment:
+the allowed host is set, and the environment's network secret adds the Bearer token, so no secret
+goes in code or chat.
+
+```bash
+hivemind/mcp/hm.sh hivemind_attention
+hivemind/mcp/hm.sh hivemind_search '{"query":"steel"}'
+hivemind/mcp/hm.sh hivemind_list '{"type":"person","where":{"segment":"demand"},"limit":20}'
+hivemind/mcp/hm.sh hivemind_get '{"type":"person","id":"<id>"}'
+hivemind/mcp/hm.sh hivemind_describe '{"type":"person"}'
+```
+
+Tools: `hivemind_describe`, `hivemind_search`, `hivemind_get`, `hivemind_timeline`, `hivemind_list`,
+`hivemind_attention`, `hivemind_create`, `hivemind_update`, `hivemind_capture`.
+Run `hivemind_describe` before a write to see the fields. Writes go through the ontology repo
+and log an Event. Facts you are unsure of go to `hivemind_capture`, not `hivemind_create`.
+The script exits 1 on a tool error and 2 if the server is unreachable (host not allowed or secret missing).
