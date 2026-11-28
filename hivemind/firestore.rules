@@ -39,6 +39,8 @@ service cloud.firestore {
     }
 
     function inList(v, xs) { return v in xs; }
+    // Legacy people have no segment yet; anything written with one must use a known value.
+    function segmentOk() { return !('segment' in d()) || inList(d().segment, ['demand', 'directory', 'unsorted']); }
 
     // Standard object: approved users read and write, shape enforced.
     function canCreate(docId) { return isApproved() && hasBase(docId); }
@@ -59,8 +61,8 @@ service cloud.firestore {
     // ── Existing collections (Phase 1 data) ──────────────────────────────
     match /people/{id} {
       allow read: if isApproved();
-      allow create: if canCreate(id) && d().name is string && d().name.size() > 0;
-      allow update: if canUpdate(id) && d().name is string && d().name.size() > 0;
+      allow create: if canCreate(id) && d().name is string && d().name.size() > 0 && segmentOk();
+      allow update: if canUpdate(id) && d().name is string && d().name.size() > 0 && segmentOk();
       allow delete: if isApproved();
     }
 

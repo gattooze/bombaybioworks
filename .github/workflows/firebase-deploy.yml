@@ -32,6 +32,12 @@ jobs:
           npm test
           npm run build
 
+      - name: Test the MCP server
+        working-directory: hivemind/mcp
+        run: |
+          npm ci
+          npm test
+
       - name: Deploy to Firebase Hosting (live)
         if: github.event_name == 'push'
         uses: FirebaseExtended/action-hosting-deploy@v0

@@ -55,6 +55,12 @@ describe('object shape', () => {
     await assertSucceeds(setDoc(doc(team(), 'people/old'), { id: 'old', name: 'Legacy', created_at: T, created_by: 'unknown' }));
   });
 
+  it('accepts known person segments and rejects others', async () => {
+    await assertSucceeds(setDoc(doc(team(), 'people/s1'), { ...base('s1'), name: 'Buyer', segment: 'demand' }));
+    await assertSucceeds(setDoc(doc(team(), 'people/s2'), { ...base('s2'), name: 'Vendor', segment: 'directory' }));
+    await assertFails(setDoc(doc(team(), 'people/s3'), { ...base('s3'), name: 'X', segment: 'friends' }));
+  });
+
   it('rejects a deal in an unknown pipeline', async () => {
     await assertFails(setDoc(doc(team(), 'deals/d1'), { ...base('d1'), org_id: 'o1', pipeline: 'marketing', stage: 'lead' }));
   });

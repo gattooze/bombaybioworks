@@ -82,6 +82,15 @@ describe('repo writes', () => {
   });
 });
 
+describe('person segment', () => {
+  it('defaults to unsorted and rejects unknown values', async () => {
+    const repo = createRepo({ adapter: memoryAdapter(), actor: 'pa', source: { channel: 'manual' } });
+    expect((await repo.create('person', { name: 'New Contact' })).segment).toBe('unsorted');
+    expect((await repo.create('person', { name: 'Buyer', segment: 'demand' })).segment).toBe('demand');
+    await expect(repo.create('person', { name: 'X', segment: 'friends' })).rejects.toThrow();
+  });
+});
+
 describe('normalisation and duplicates', () => {
   it('normalises organisation names', () => {
     expect(orgKey('Assam Bamboo Co.')).toBe('assam bamboo');
