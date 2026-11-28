@@ -6,18 +6,20 @@
   "scripts": {
     "start": "node src/index.js",
     "history": "node src/history.js",
-    "groups": "node src/list-groups.js"
+    "groups": "node src/list-groups.js",
+    "test": "node --test test/*.test.js"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "@hapi/boom": "^10.0.1",
     "@whiskeysockets/baileys": "^6.7.5",
     "dotenv": "^16.4.5",
     "firebase-admin": "^12.1.0",
     "pino": "^9.1.0",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode-terminal": "^0.12.0",
+    "@anthropic-ai/sdk": "^1.14.0",
+    "zod": "^3.25.76"
   }
 }

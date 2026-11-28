@@ -1,5 +1,5 @@
 /**
- * Parse and ingest a WhatsApp chat export (.txt) into Hivemind's Firestore.
+ * Parse a WhatsApp chat export (.txt) and send what matters to the Hivemind capture inbox.
  * Run: node src/history.js path/to/chat.txt
  *
  * Progress is checkpointed in SQLite so it can resume if interrupted.
@@ -7,8 +7,8 @@
 const fs = require('fs');
 const { cfg, validate } = require('./config');
 const store = require('./store');
-const { extractBatch } = require('./extract');
-const { writeFacts, writePeople } = require('./firestore');
+const { extract } = require('./llm');
+const { captureItems } = require('./capture');
 
 validate();
 
@@ -67,28 +67,16 @@ async function ingest() {
   }
 
   let processed = 0;
-  let factsTotal = 0;
-  let peopleTotal = 0;
+  let captured = 0;
 
   for (let i = offset; i < messages.length; i += BATCH) {
     const batch = messages.slice(i, i + BATCH);
 
-    let extracted;
     try {
-      extracted = await extractBatch(batch);
+      const items = await extract(batch.map(m => `[${m.msg_date}] ${m.sender}: ${m.text}`));
+      captured += await captureItems(items, { sourceRef: `export:${CHAT_FILE}#${i}`, sender: 'group export', date: batch[batch.length - 1].msg_date });
     } catch (err) {
       console.error(`\n  Extraction error at batch ${i}:`, err.message);
-      extracted = { facts: [], people: [], decisions: [] };
-    }
-
-    // Write to Hivemind Firestore
-    if (extracted.facts?.length) {
-      const n = await writeFacts(extracted.facts);
-      factsTotal += n;
-    }
-    if (extracted.people?.length) {
-      const n = await writePeople(extracted.people);
-      peopleTotal += n;
     }
 
     processed += batch.length;
@@ -96,18 +84,14 @@ async function ingest() {
 
     const pct = Math.round((processed / messages.length) * 100);
     process.stdout.write(
-      `\r  ${pct}% (${processed}/${messages.length} msgs) — ${factsTotal} facts, ${peopleTotal} people → Hivemind`
+      `\r  ${pct}% (${processed}/${messages.length} msgs), ${captured} items to the inbox`
     );
 
-    // 1 req/s to stay within Haiku rate limits
     if (i + BATCH < messages.length) await new Promise(r => setTimeout(r, 1000));
   }
 
   store.setState(offsetKey, '0');
-  console.log('\n\nDone — data is now in Hivemind.\n');
-  console.log(`  Facts written to notes   : ${factsTotal}`);
-  console.log(`  People written           : ${peopleTotal}`);
-  console.log('\nOpen Hivemind → Notes and filter by tag "whatsapp" to see the extracted intelligence.\n');
+  console.log(`\n\nDone. ${captured} items wait in the Hivemind inbox for a founder to accept or reject.\n`);
 }
 
 ingest().catch(err => { console.error('\n', err); process.exit(1); });

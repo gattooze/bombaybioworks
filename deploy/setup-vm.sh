@@ -21,7 +21,10 @@ npm install --omit=dev
 
 echo "=== Writing .env ==="
 cat > .env << 'ENVEOF'
-GEMINI_API_KEY=PLACEHOLDER_GEMINI
+ANTHROPIC_API_KEY=PLACEHOLDER_ANTHROPIC
+HIVEMIND_MCP_SECRET=PLACEHOLDER_HIVEMIND
+FOUNDER_PHONES=PLACEHOLDER_FOUNDER_PHONES
+READ_ONLY=true
 FIREBASE_PROJECT_ID=bombay-bioworks
 GROUP_JID=120363428077194867@g.us
 GROUP_NAME=Bombay Bioworks
@@ -35,7 +38,7 @@ echo "FIREBASE_SERVICE_ACCOUNT_JSON='PLACEHOLDER_SA_JSON'" >> .env
 echo ""
 echo "=== Edit .env with real values, then run: ==="
 echo "  cd /home/$(whoami)/bombaybioworks/whatsapp"
-echo "  nano .env   # fill in GEMINI_API_KEY and FIREBASE_SERVICE_ACCOUNT_JSON"
+echo "  nano .env   # fill in ANTHROPIC_API_KEY, HIVEMIND_MCP_SECRET, FOUNDER_PHONES, FIREBASE_SERVICE_ACCOUNT_JSON"
 echo "  pm2 start src/index.js --name whatsapp-bot"
 echo "  pm2 save"
 echo "  pm2 startup  # follow the printed command to enable autostart"

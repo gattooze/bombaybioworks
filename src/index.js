@@ -3,8 +3,9 @@
  *
  * Always-on service that:
  * - Listens to the team WhatsApp group
- * - Extracts data/numbers from messages → Hivemind Firestore
- * - Answers @hive questions using Hivemind's knowledge base
+ * - Extracts people, commitments, decisions and facts into the Hivemind capture inbox
+ * - When READ_ONLY=false: answers when tagged (@hive, an @mention, or a reply to Hive),
+ *   and takes instructions from founders only (FOUNDER_PHONES)
  *
  * Session stored in Firestore (USE_FIRESTORE_AUTH=true) for cloud/server deployment,
  * or in local files for development.
@@ -18,9 +19,9 @@ const qrcode = require('qrcode-terminal');
 const path = require('path');
 const fs = require('fs');
 const { cfg, validate } = require('./config');
-const { extractBatch } = require('./extract');
-const { writeFacts, writePeople } = require('./firestore');
-const { answer } = require('./responder');
+const { extract, answer } = require('./llm');
+const { captureItems } = require('./capture');
+const { isTagged, senderPhone, isFounder, Recent } = require('./group');
 const { useFirestoreAuthState } = require('./auth-state');
 
 validate();
@@ -44,44 +45,43 @@ function msgText(msg) {
   );
 }
 
+const recent = new Recent(40);
+
 async function handleMessage(sock, msg) {
   const jid = msg.key.remoteJid;
   if (!jid?.endsWith('@g.us')) return;
   if (cfg.groupJid && jid !== cfg.groupJid) return;
-  if (msg.key.fromMe) return;
 
   const text = msgText(msg);
-  if (!text || text.length < 3) return;
+  if (!text) return;
+  const sender = msg.pushName || senderPhone(msg.key) || 'unknown';
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
 
-  const sender = msg.pushName || msg.key.participant || 'unknown';
-  const today = new Date().toISOString().slice(0, 10);
+  if (msg.key.fromMe) { recent.add('Hive', text); return; }
+  recent.add(sender, text);
 
-  // Question trigger: @hive ...
-  const triggerRE = new RegExp(`^\\s*${cfg.triggerPrefix}\\b`, 'i');
-  if (triggerRE.test(text)) {
-    console.log(`[Q] ${sender}: ${text.slice(0, 100)}`);
+  if (!cfg.readOnly && isTagged(msg, sock.user, cfg.triggerPrefix)) {
+    const founder = isFounder(msg.key, cfg.founderPhones);
+    console.log(`[Q] ${sender}${founder ? ' (founder)' : ''}: ${text.slice(0, 100)}`);
     try {
-      const reply = await answer(text);
-      if (reply) {
-        await sock.sendMessage(jid, { text: reply }, { quoted: msg });
-        console.log(`[A] ${reply.slice(0, 80)}…`);
-      }
+      await sock.sendPresenceUpdate('composing', jid);
+      const reply = await answer({ question: text, sender, isFounder: founder, recent: recent.lines().slice(0, -1) });
+      if (reply) await sock.sendMessage(jid, { text: reply }, { quoted: msg });
     } catch (err) {
-      console.error('[responder error]', err.message);
-      await sock.sendMessage(jid, { text: '⚡ Hive had a brain freeze. Try again in a moment.' }, { quoted: msg });
+      console.error('[answer error]', err.message);
+      await sock.sendMessage(jid, { text: 'Hive hit an error. Try again in a minute.' }, { quoted: msg });
     }
     return;
   }
 
-  // For regular messages: extract intelligence (don't block message handling)
+  // Everything else: extract into the capture inbox without blocking the socket.
+  if (text.length < 8) return;
   setImmediate(async () => {
     try {
-      const extracted = await extractBatch([{ msg_date: today, sender, text }]);
-      if (extracted.facts?.length) await writeFacts(extracted.facts);
-      if (extracted.people?.length) await writePeople(extracted.people);
-      if (extracted.facts?.length) {
-        console.log(`[+] ${sender}: ${extracted.facts.length} fact(s) → Hivemind`);
-      }
+      const items = await extract([`[${today}] ${sender}: ${text}`]);
+      if (!items.length) return;
+      const n = await captureItems(items, { sourceRef: `whatsapp:${msg.key.id}`, sender, date: today });
+      console.log(`[+] ${sender}: ${n} item(s) → Hivemind inbox`);
     } catch (err) {
       console.error('[extract error]', err.message);
     }
@@ -124,7 +124,7 @@ async function connect() {
         ? `  Listening on group: ${cfg.groupJid}`
         : '  Listening on ALL groups (set GROUP_JID to restrict)'
       );
-      console.log(`  Trigger: "${cfg.triggerPrefix} <question>"\n`);
+      console.log(cfg.readOnly ? '  Read-only: extracting, never replying\n' : `  Replies when tagged: "${cfg.triggerPrefix}", an @mention, or a reply to Hive\n`);
     }
 
     if (connection === 'close') {
