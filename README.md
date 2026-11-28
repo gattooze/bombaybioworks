@@ -1,206 +1,53 @@
-# Bombay Bioworks WhatsApp Intelligence Bot
+# Hive: the Bombay Bioworks WhatsApp bot
 
-Always-on bot that sits in the team WhatsApp group, extracts intelligence from messages (numbers, figures, decisions), feeds it into Hivemind, and answers questions on demand.
-
-**Flow:**
-```
-WhatsApp group
-    → Baileys (WhatsApp Web library)
-    → Claude Haiku (extract numbers, facts, people)
-    → Hivemind Firestore (notes + people collections)
-    ← @hive question → Claude answers from Hivemind context
-```
-
----
-
-## First-time setup
-
-### 1. Install dependencies
-
-```bash
-cd whatsapp
-npm install
-```
-
-Requires Node.js ≥18 and Python/make for `better-sqlite3` compilation (Xcode CLI tools on macOS).
-
-### 2. Firebase service account
-
-Download from: **Firebase Console → Project Settings → Service Accounts → Generate new private key**
-
-Save it as `whatsapp/serviceAccount.json` (never commit this file — it's gitignored).
-
-### 3. Create .env
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-```
-ANTHROPIC_API_KEY=sk-ant-...
-FIREBASE_PROJECT_ID=bombay-bioworks
-FIREBASE_SERVICE_ACCOUNT=./serviceAccount.json
-GROUP_JID=                    # fill in after step 5
-```
-
-### 4. Link WhatsApp (one-time QR scan)
-
-```bash
-npm run groups
-```
-
-Scan the QR code with WhatsApp → **Linked Devices → Link a Device**.
-
-After connecting, the script lists all your groups with their JIDs:
-```
-Bombay Bioworks
-  JID: 1234567890-1234567890@g.us
-  Participants: 3
-```
-
-Copy the JID and set `GROUP_JID=` in `.env`.
-
----
-
-## Processing chat history (7+ months)
-
-Export the group chat from WhatsApp:  
-**WhatsApp → [Group] → ⋯ More → Export Chat → Without Media**
-
-This downloads a `.txt` file. Run:
-
-```bash
-node src/history.js ~/Downloads/WhatsApp\ Chat\ -\ Bombay\ Bioworks.txt
-```
-
-Progress is checkpointed — if interrupted, re-run the same command to resume.
-
-When complete, open **Hivemind → Notes** and filter by tag `whatsapp` to see all extracted intelligence.
-
----
-
-## Running the live bot
-
-**Local / development (laptop must stay on):**
-```bash
-npm start
-```
-
-**Cloud Run (always-on, recommended for production):**
-See [Cloud Run deployment](#cloud-run-deployment) below.
-
-Once running, the bot:
-- Extracts facts/numbers from every message → adds to Hivemind Notes
-- Answers questions: anyone in the group can type `@hive <question>` to query the full knowledge base
-
----
-
-## Asking questions in the group
-
-Send a WhatsApp message starting with `@hive`:
+Hive sits in the founders' WhatsApp group. It reads every message, sends what matters
+(people, organisations, commitments, decisions, business numbers) to the Hivemind capture
+inbox for a founder to accept, and, once it has its own number, answers when tagged and takes
+instructions from founders.
 
 ```
-@hive what was the bamboo price we agreed with Assam supplier?
-@hive what iodine value did we get from the last batch?
-@hive who is our contact at IPIRTI?
-@hive what was the activation yield in October?
+WhatsApp group ─ Baileys ─┬─ every message ─ Claude Haiku extraction ─ hivemind_capture ─ inbox
+                          └─ @hive / @mention / reply to Hive ─ Claude + Hivemind tools ─ reply
 ```
 
-Hive searches Hivemind's notes and replies in the group.
+Hive's rules live in `hivemind/assistant/INSTRUCTIONS.md`. All reads and writes go through the
+Hivemind MCP server, so they are validated and logged like any other change.
 
----
+## Who can do what
+| Sender | Ask questions | Change records | Draft outbound messages |
+|---|---|---|---|
+| Founder (number in `FOUNDER_PHONES`) | Yes | Yes, logged and undoable | Yes, as drafts a founder approves in Hivemind |
+| Anyone else in the group | Yes | No | No |
 
-## Cloud Run deployment
+Nothing is ever sent outside the group by Hive. `READ_ONLY=true` (the default) means extract
+only, never reply. Keep it on until Hive runs on its own SIM: Baileys is an unofficial client,
+and WhatsApp can ban numbers that send automated messages.
 
-This is the right way to run the bot — your laptop doesn't need to be on.
+## Setup
+1. `npm install` (Node 18 or later).
+2. `cp .env.example .env` and fill in `ANTHROPIC_API_KEY`, `HIVEMIND_MCP_SECRET`
+   (`gcloud secrets versions access latest --secret hivemind-mcp-secret`), `FOUNDER_PHONES`.
+3. `npm start`, then scan the QR code from Hive's phone: WhatsApp, Linked devices, Link a device.
+4. `npm run groups` to find the group JID, set `GROUP_JID`, restart.
+5. When ready for replies: `READ_ONLY=false`, restart.
 
-The bot uses **Firestore** to store its WhatsApp session credentials, so it survives container restarts without needing to re-scan QR.
+Backfill from a chat export: `node src/history.js path/to/WhatsApp_Chat.txt` (resumable).
 
-### First run (get the session into Firestore)
+Server: `deploy/create-vm.sh` then `deploy/setup-vm.sh` on an e2-micro VM. Set
+`USE_FIRESTORE_AUTH=true` to keep the WhatsApp session in Firestore.
 
-```bash
-# Run locally once to scan QR and populate Firestore session
-USE_FIRESTORE_AUTH=true npm start
-```
-
-Scan the QR. Once connected, Ctrl+C. The session is now in Firestore under `_whatsapp_session/whatsapp-bot`.
-
-### Build and deploy to Cloud Run
-
-```bash
-# Build the container
-gcloud builds submit --tag gcr.io/bombay-bioworks/whatsapp-bot
-
-# Deploy with min 1 instance (always on)
-gcloud run deploy whatsapp-bot \
-  --image gcr.io/bombay-bioworks/whatsapp-bot \
-  --platform managed \
-  --region asia-south1 \
-  --min-instances 1 \
-  --max-instances 1 \
-  --memory 512Mi \
-  --no-allow-unauthenticated \
-  --set-env-vars "ANTHROPIC_API_KEY=sk-ant-...,FIREBASE_PROJECT_ID=bombay-bioworks,GROUP_JID=...,USE_FIRESTORE_AUTH=true"
-```
-
-> **Note:** `--min-instances 1` is required. Without it, the container scales to zero and loses the WebSocket connection.
-
-### Firestore rules for session storage
-
-Add this to your `firestore.rules` to restrict session access to the bot's service account:
-
-```
-match /_whatsapp_session/{document=**} {
-  allow read, write: if false; // server-only via Admin SDK
-}
-```
-
----
-
-## Architecture
-
-```
-WhatsApp group messages
-        ↓
-  Baileys (Node.js)              — receives messages via WhatsApp Web protocol
-        ↓
-  extract.js (Claude Haiku)      — extracts facts, people, decisions per message
-        ↓
-  firestore.js                   — writes to Hivemind's notes + people collections
-        ↑
-  responder.js (Claude Haiku)    — queries Hivemind context to answer @hive questions
-        ↑
-  @hive trigger in group         — anyone types "@hive ..."
-```
-
-**What goes into Hivemind:**
-- Each extracted fact → a `note` with tags `['whatsapp', 'extracted', category]`
-- Each new external person → a `people` record tagged `whatsapp`
-- Browse them in Hivemind → Notes → filter by tag `whatsapp`
-
-**Future (Phase 2):**
-- Hivemind UI shows an "Assistant" panel that surfaces WhatsApp intelligence inline
-- Other channels (email, calls) feed the same pipeline
-- Cross-channel timeline: see all intelligence by person, topic, or date
-
----
+## Cost
+Haiku 5.5 at USD 0.10 / 0.50 per million tokens. A busy day of group traffic plus a few dozen
+questions should stay well under a dollar (guess, to be measured on a week of real traffic).
+Set a monthly limit in the Anthropic console; the company cap is USD 25.
 
 ## Files
-
-```
-whatsapp/
-  src/
-    index.js        — main process: Baileys connection + message listener
-    history.js      — parse WhatsApp .txt export → batch extract → Hivemind
-    extract.js      — Claude Haiku extraction (facts, people, decisions)
-    firestore.js    — write intelligence to Hivemind Firestore
-    auth-state.js   — Firestore-backed session persistence for cloud deployment
-    responder.js    — answer @hive questions from Hivemind context
-    store.js        — SQLite for local processing state (progress checkpointing)
-    config.js       — env vars
-    list-groups.js  — helper to list all WhatsApp groups and their JIDs
-  Dockerfile        — Cloud Run container
-  .env.example      — env var template
-  serviceAccount.json  — Firebase service account (gitignored, never commit)
-```
+| File | What |
+|---|---|
+| `src/index.js` | Connects to WhatsApp, routes each message to extraction or a reply |
+| `src/llm.js` | Claude calls: structured extraction and the tool-use loop for replies |
+| `src/hivemind-client.js` | JSON-RPC client for the Hivemind MCP server |
+| `src/capture.js` | Turns extracted items into capture-inbox entries |
+| `src/group.js` | Sender phone, founder check, tag detection, recent-message buffer |
+| `src/history.js` | Backfill from a chat export |
+| `src/auth-state.js`, `src/firestore.js` | WhatsApp session storage in Firestore |
