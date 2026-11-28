@@ -46,3 +46,9 @@ Then add a custom connector in claude.ai with the URL `https://<service-url>/mcp
 The secret in the URL is v1 only: anyone holding the URL can read and write Hivemind
 (never delete, approve or send). Keep it to the founders, rotate it by updating the secret,
 and move to OAuth before sharing more widely.
+
+## Using it from Claude Code cloud sessions
+The repo root `.mcp.json` points sessions at the server with **no secret in the repo**. The secret is a
+Network secret on the cloud environment (host `hivemind-mcp-849464697051.asia-south1.run.app`, header
+`Authorization`, value `Bearer <secret>`), which the proxy adds to each request. The host must also be on the
+environment's allowed hosts.
