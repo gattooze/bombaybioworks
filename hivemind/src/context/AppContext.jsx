@@ -17,7 +17,7 @@ export function AppProvider({ user, children }) {
   // Events and audit fields record the signed-in email (rules check it), else the local name.
   const repo = useMemo(() => makeRepo(store, user?.email || me), [store, user, me]);
 
-  const [data, setData] = useState({ people: [], notes: [], tasks: [] });
+  const [data, setData] = useState({ people: [], notes: [], tasks: [], organisations: [], observations: [], deals: [], samples: [] });
   const [loading, setLoading] = useState(true);
 
   // Global modals (note + task editors are app-level since they open from anywhere)
@@ -27,12 +27,18 @@ export function AppProvider({ user, children }) {
   const reload = useCallback(async () => {
     setLoading(true);
     try {
-      const [people, notes, tasks] = await Promise.all([
+      // CRM collections are optional: an older local store or a rules error must not blank the app.
+      const soft = (c) => store.list(c).catch(e => { console.warn(`load ${c} failed`, e); return []; });
+      const [people, notes, tasks, organisations, observations, deals, samples] = await Promise.all([
         store.list('people'),
         store.list('notes'),
         store.list('tasks'),
+        soft('organisations'),
+        soft('observations'),
+        soft('deals'),
+        soft('samples'),
       ]);
-      setData({ people, notes, tasks });
+      setData({ people, notes, tasks, organisations, observations, deals, samples });
     } catch (e) {
       console.error('reload failed', e);
     }
@@ -52,6 +58,13 @@ export function AppProvider({ user, children }) {
 
   const savePerson = (p) => guarded(() => repo.save('person', { created_by: repo.actor, ...p }));
   const removePerson = (id) => guarded(() => repo.remove('person', id));
+  // CRM: records are archived, never deleted (Pratik's rule).
+  const updatePerson = (id, patch, summary) => guarded(() => repo.update('person', id, patch, { summary }));
+  const saveOrg = (o) => guarded(() => repo.save('organisation', { created_by: repo.actor, ...o }));
+  const updateOrg = (id, patch, summary) => guarded(() => repo.update('organisation', id, patch, { summary }));
+  const mergeRecords = (type, winnerId, loserId, picks) => guarded(() => repo.merge(type, winnerId, loserId, picks));
+  const acceptObservation = (id, target) => guarded(() => repo.acceptObservation(id, target));
+  const rejectObservation = (id, reason) => guarded(() => repo.rejectObservation(id, { reason }));
 
   const saveNote = (n) => {
     const { summaryEdited, __new, ...rest } = n;
@@ -70,7 +83,9 @@ export function AppProvider({ user, children }) {
 
   const ctx = {
     cfg, setConfig, store, repo, me, user, data, loading, reload,
-    savePerson, removePerson,
+    savePerson, removePerson, updatePerson,
+    saveOrg, updateOrg, mergeRecords,
+    acceptObservation, rejectObservation,
     saveNote, removeNote,
     saveTask, removeTask,
     editNote, setEditNote, openNewNote,

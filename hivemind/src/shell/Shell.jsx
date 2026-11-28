@@ -13,7 +13,10 @@ import NoteDetailModule from '../modules/notes/NoteDetail.jsx';
 const ROUTE_LABELS = {
   '/':        'Hivemind',
   '/notes':   'Notes',
-  '/crm':     'People',
+  '/crm':     'CRM',
+  '/crm/orgs': 'CRM',
+  '/crm/duplicates': 'CRM',
+  '/inbox':   'Review inbox',
   '/tasks':   'Tasks',
   '/timeline':'Timeline',
   '/settings':'Settings',
