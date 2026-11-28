@@ -51,6 +51,10 @@ export const Organisation = z.object({
 });
 
 // Legacy collections keep unknown fields (passthrough) so nothing already stored is lost.
+// CRM shows demand contacts (buyers, prospects). Directory holds other business
+// contacts (suppliers, vendors, advisors, government). Unsorted waits for triage.
+export const PERSON_SEGMENTS = ['demand', 'directory', 'unsorted'];
+
 export const Person = z.object({
   ...base,
   name: z.string().trim().min(1, 'Name is required'),
@@ -62,6 +66,7 @@ export const Person = z.object({
   linkedin_url: optStr,
   notes: z.string().default(''),
   is_team: z.boolean().default(false),
+  segment: z.enum(PERSON_SEGMENTS).default('unsorted'),
   source: Source,
 }).passthrough();
 
